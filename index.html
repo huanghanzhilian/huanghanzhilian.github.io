@@ -1,10 +1,94 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>黄继鹏</title>
-</head>
-<body>
-	我叫黄继鹏，前端工程师，他们叫我小黄。
-</body>
-</html>
+---
+layout: default
+title: 继小鹏的前端博客 | 热爱编程，关注前端开发技术
+---
+
+<div id="container" class="clearfix">
+  <main id="main" class="hfeed">
+    <ul>
+      {% for post in paginator.posts %}
+      　　<li class="entry_list">
+          <a href="{{ site.baseurl }}{{ post.url }}">
+            <h2 class="entry-title">{{ post.title }}</h2>
+            <div class="entry-meta">{{ post.date | date_to_string }}</div>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <!-- 分页链接 -->
+    {% if paginator.total_pages > 1 %}
+        {% if paginator.previous_page %}
+            <a href="{{ paginator.previous_page_path }}">上一页</a>
+        {% endif %}
+
+        {% if paginator.next_page %}
+            <a href="{{ paginator.next_page_path }}">下一页</a>
+        {% endif %}
+    {% endif %}
+
+  </main>
+  <div class="sidebar" id="sidebar">
+    <div id="sidebar-top">
+      <aside class="widjhuh">
+        <h3 class="widget-title">最新文章</h3>
+        <ul class="minty_thumblist">
+          <li>
+            <a href="">
+              <img src="" alt="">
+              <span>哈哈哈</span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <img src="" alt="">
+              <span>哈哈哈</span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <img src="" alt="">
+              <span>哈哈哈sss </span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <img src="" alt="">
+              <span>哈哈哈</span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <img src="" alt="">
+              <span>哈哈哈</span>
+            </a>
+          </li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<h2>{{ page.title }}</h2>
+
+{% for category in site.categories %}
+<h2>{{ category | first }}</h2>
+</span>{{ category | last | size }}</span>
+<ul class="arc-list">
+    {% for post in category.last %}
+        <li>{{ post.date | date:"%d/%m/%Y"}}<a href="{{ post.url }}">{{ post.title }}</a></li>
+    {% endfor %}
+</ul>
+{% endfor %}
+
+<ul class="nav navbar-nav">    
+        <li>
+          <a href="{{ '/' | prepend: site.baseurl }}">Home</a>
+        </li>
+        <li>
+          <a href="{{ '/categories/' | prepend: site.baseurl }}">大类分解</a>
+        </li>
+        <li>
+          <a href="{{ '/tag' | prepend: site.baseurl }}">小类内聚</a>
+        </li>
+      </ul>
