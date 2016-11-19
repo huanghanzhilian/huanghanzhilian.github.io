@@ -1,12 +1,12 @@
 ---
 layout: default
-title: 我的Blog1
+title: 继小鹏的前端博客 | 热爱编程，关注前端开发技术
 ---
 
 <div id="container" class="clearfix">
 	<main id="main" class="hfeed">
 		<ul>
-			{% for post in site.posts %}
+			{% for post in paginator.posts %}
 			　　<li class="entry_list">
 					<a href="{{ site.baseurl }}{{ post.url }}">
 						<h2 class="entry-title">{{ post.title }}</h2>
@@ -15,6 +15,19 @@ title: 我的Blog1
 				</li>
 			{% endfor %}
 		</ul>
+
+		<!-- 分页链接 -->
+	    {% if paginator.total_pages > 1 %}
+	        {% if paginator.previous_page %}
+	            <a href="{{ paginator.previous_page_path }}">上一页</a>
+	        {% endif %}
+
+	        {% if paginator.next_page %}
+	            <a href="{{ paginator.next_page_path }}">下一页</a>
+	        {% endif %}
+	    {% endif %}
+	    <!-- 分页链接 -->
+
 	</main>
 	<div class="sidebar" id="sidebar">
 		<div id="sidebar-top">
@@ -58,34 +71,4 @@ title: 我的Blog1
 </div>
 <h2>{{ page.title }}</h2>
 
-
-<!-- 遍历分页后的文章 -->
-{% for post in paginator.posts %}
-  <h1><a href="{{ post.url }}">{{ post.title }}</a></h1>
-  <p class="author">
-    <span class="date">{{ post.date }}</span>
-  </p>
-  <div class="content">
-    {{ post.content }}
-  </div>
-{% endfor %}
-
-
-<!-- 分页链接 -->
-<div class="pagination">
-  {% if paginator.previous_page %}
-    <a href="/page{{ paginator.previous_page }}" class="previous">Previous</a>
-  {% else %}
-    <span class="previous">Previous</span>
-  {% endif %}
-  <span class="page_number ">Page: {{ paginator.page }} of {{ paginator.total_pages }}</span>
-  {% if paginator.next_page %}
-    <a href="/page{{ paginator.next_page }}" class="next">Next</a>
-  {% else %}
-    <span class="next ">Next</span>
-  {% endif %}
-</div>
-
-
-<!--<p>最新文章</p> -->
 
