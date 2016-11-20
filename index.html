@@ -67,8 +67,36 @@ title: 继小鹏的前端博客 | 热爱编程，关注前端开发技术
 				</ul>
 			</aside>
 		</div>
+
+		<div id="sidebar-top">
+			<aside class="widjhuh clearfix">
+				<h3 class="widget-title">分类目录</h3>
+				<ul class="minty_thumblist minty_thumblist_a">
+					{% for category in site.categories %}
+					<li>
+						<a href="/categories/{{ category | first }}/" title="view all
+posts">
+							{{ category | first }} ({{ category | last | size }})
+						</a>
+					</li>
+					{% endfor %}
+				</ul>
+			</aside>
+		</div>
+
 	</div>
 </div>
 <h2>{{ page.title }}</h2>
+
+
+<h4>Category</h4>
+<ul>
+    {% for category in site.categories %}
+    <li><a href="/categories/{{ category | first }}/" title="view all
+posts">{{ category | first }} {{ category | last | size }}</a>
+    </li>
+    {% endfor %}
+</ul>
+
 
 

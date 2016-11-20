@@ -166,6 +166,9 @@ body {
     margin-right: 7px;
     box-shadow: 0 2px 3px rgba(128,128,128,.61);
 }
+.minty_thumblist_a li{
+	width: 50%; float: left;
+}
 
 .minty_thumblist li a, .minty_thumblist li span {
     overflow: hidden;
