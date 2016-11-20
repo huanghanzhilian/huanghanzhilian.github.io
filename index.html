@@ -1,31 +1,86 @@
----
-layout: default
-title: 继小鹏的前端博客 | 热爱编程，关注前端开发技术
----
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>继小鹏的前端博客 | 热爱编程，关注前端开发技术</title>
+	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	    (function($) {
+	    	var temp = 0;
+	    	$(document).scroll(function() {
 
-<div id="container" class="clearfix">
+	    		if ($(document).scrollTop() > temp) {
+	    			$("#header").addClass("hide-top");
+	    		} else {
+	    			$("#header").removeClass("hide-top");
+	    		}
+	    		temp = $(document).scrollTop();
+	    	});
+	    })(jQuery);
+	</script>
+</head>
+<body>
+    <header id="header" role="banner">
+	<a id="hgroup" href="" rel="home">
+		<h1 id="logo"></h1>
+		<i class="slogan" title="返回首页">
+			热爱编程，关注前端开发技术
+		</i>
+	</a>
+	<div class="connect">
+		<a href="" class="rss"></a>
+	</div>
+	<nav id="nav">
+		<ul class="menu">
+			<li class="menu_item">
+				<a href="">首页11</a>
+			</li>
+			<li class="menu_item">
+				<a href="">关于本站</a>
+			</li>
+			<li class="menu_item">
+				<a href="">留言板</a>
+			</li>
+		</ul>
+	</nav>
+</header>
+	<div id="container" class="clearfix">
 	<main id="main" class="hfeed">
 		<ul>
-			{% for post in paginator.posts %}
+			
 			　　<li class="entry_list">
-					<a href="{{ site.baseurl }}{{ post.url }}">
-						<h2 class="entry-title">{{ post.title }}</h2>
-						<div class="entry-meta">{{ post.date | date_to_string }}</div>
+					<a href="/vvv/2016/11/02/hello-world1.html">
+						<h2 class="entry-title">我的sssssssss</h2>
+						<div class="entry-meta">02 Nov 2016</div>
 					</a>
 				</li>
-			{% endfor %}
+			
+			　　<li class="entry_list">
+					<a href="/ggg/2016/11/01/hello-world1.html">
+						<h2 class="entry-title">我的</h2>
+						<div class="entry-meta">01 Nov 2016</div>
+					</a>
+				</li>
+			
+			　　<li class="entry_list">
+					<a href="/gg/2016/10/29/hello-world.html">
+						<h2 class="entry-title">我的</h2>
+						<div class="entry-meta">29 Oct 2016</div>
+					</a>
+				</li>
+			
 		</ul>
 
 		<!-- 分页链接 -->
-	    {% if paginator.total_pages > 1 %}
-	        {% if paginator.previous_page %}
-	            <a href="{{ paginator.previous_page_path }}">上一页</a>
-	        {% endif %}
+	    
+	        
 
-	        {% if paginator.next_page %}
-	            <a href="{{ paginator.next_page_path }}">下一页</a>
-	        {% endif %}
-	    {% endif %}
+	        
+	            <a href="/page2">下一页</a>
+	        
+	    
 	    <!-- 分页链接 -->
 
 	</main>
@@ -72,31 +127,89 @@ title: 继小鹏的前端博客 | 热爱编程，关注前端开发技术
 			<aside class="widjhuh clearfix">
 				<h3 class="widget-title">分类目录</h3>
 				<ul class="minty_thumblist minty_thumblist_a">
-					{% for category in site.categories %}
+					
 					<li>
-						<a href="/categories/{{ category | first }}/" title="view all
+						<a href="/categories/aa/" title="view all
 posts">
-							{{ category | first }} ({{ category | last | size }})
+							aa (2)
 						</a>
 					</li>
-					{% endfor %}
+					
+					<li>
+						<a href="/categories/bb/" title="view all
+posts">
+							bb (2)
+						</a>
+					</li>
+					
+					<li>
+						<a href="/categories/cc/" title="view all
+posts">
+							cc (1)
+						</a>
+					</li>
+					
+					<li>
+						<a href="/categories/gg/" title="view all
+posts">
+							gg (1)
+						</a>
+					</li>
+					
+					<li>
+						<a href="/categories/ggg/" title="view all
+posts">
+							ggg (1)
+						</a>
+					</li>
+					
+					<li>
+						<a href="/categories/vvv/" title="view all
+posts">
+							vvv (1)
+						</a>
+					</li>
+					
 				</ul>
 			</aside>
 		</div>
 
 	</div>
 </div>
-<h2>{{ page.title }}</h2>
+<h2>继小鹏的前端博客 | 热爱编程，关注前端开发技术</h2>
 
 
 <h4>Category</h4>
 <ul>
-    {% for category in site.categories %}
-    <li><a href="/categories/{{ category | first }}/" title="view all
-posts">{{ category | first }} {{ category | last | size }}</a>
+    
+    <li><a href="/categories/aa/" title="view all
+posts">aa 2</a>
     </li>
-    {% endfor %}
+    
+    <li><a href="/categories/bb/" title="view all
+posts">bb 2</a>
+    </li>
+    
+    <li><a href="/categories/cc/" title="view all
+posts">cc 1</a>
+    </li>
+    
+    <li><a href="/categories/gg/" title="view all
+posts">gg 1</a>
+    </li>
+    
+    <li><a href="/categories/ggg/" title="view all
+posts">ggg 1</a>
+    </li>
+    
+    <li><a href="/categories/vvv/" title="view all
+posts">vvv 1</a>
+    </li>
+    
 </ul>
 
 
 
+
+</body>
+</html>
