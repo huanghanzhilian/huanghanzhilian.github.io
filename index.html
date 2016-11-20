@@ -29,63 +29,11 @@ title: 继小鹏的前端博客 | 热爱编程，关注前端开发技术
 	    <!-- 分页链接 -->
 
 	</main>
-	<div class="sidebar" id="sidebar">
-		<div id="sidebar-top">
-			<aside class="widjhuh">
-				<h3 class="widget-title">最新文章</h3>
-				<ul class="minty_thumblist">
-					<li>
-						<a href="">
-							<img src="" alt="">
-							<span>哈哈哈</span>
-						</a>
-					</li>
-					<li>
-						<a href="">
-							<img src="" alt="">
-							<span>哈哈哈</span>
-						</a>
-					</li>
-					<li>
-						<a href="">
-							<img src="" alt="">
-							<span>哈哈哈sss </span>
-						</a>
-					</li>
-					<li>
-						<a href="">
-							<img src="" alt="">
-							<span>哈哈哈</span>
-						</a>
-					</li>
-					<li>
-						<a href="">
-							<img src="" alt="">
-							<span>哈哈哈</span>
-						</a>
-					</li>
-				</ul>
-			</aside>
-		</div>
-
-		<div id="sidebar-top">
-			<aside class="widjhuh clearfix">
-				<h3 class="widget-title">分类目录</h3>
-				<ul class="minty_thumblist minty_thumblist_a">
-					{% for category in site.categories %}
-					<li>
-						<a href="/categories/{{ category | first }}/" title="view all
-posts">
-							{{ category | first }} ({{ category | last | size }})
-						</a>
-					</li>
-					{% endfor %}
-				</ul>
-			</aside>
-		</div>
-
-	</div>
+	{% include sidebar.html %}
 </div>
+
+
+
 <h2>{{ page.title }}</h2>
 
 

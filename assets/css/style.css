@@ -1,12 +1,11 @@
 body {
-    margin: 0;
-    padding-top: 64px;
-    background: #eee;
-    color: #333;
-    line-height: 1.5;
-    -ms-overflow-style: -ms-autohiding-scrollbar;
+	margin: 0;
+	padding-top: 64px;
+	background: #eee;
+	color: #333;
+	line-height: 1.5;
+	-ms-overflow-style: -ms-autohiding-scrollbar;
 }
-
 
 /*header*/
 #header {
@@ -19,10 +18,10 @@ body {
 	height: 64px;
 	box-shadow: 0 2px 10px rgba(138, 138, 138, 0.5), 0 2px 3px rgba(119, 119, 119, 0.5);
 	-webkit-transition: all 1s;
-    -moz-transition: all 1s;
+	-moz-transition: all 1s;
 }
 #header.hide-top {
-    top: -64px;
+	top: -64px;
 }
 #hgroup {
 	float: left;
@@ -97,8 +96,6 @@ body {
 }
 
 /*header*/
-
-
 #container {
 	clear: both;
 	margin: 0 auto 40px;
@@ -124,60 +121,68 @@ body {
 	color: #aaa;
 }
 .entry-title {
-    font-weight: 400;
-    font-size: 1.7em;
+	font-weight: 400;
+	font-size: 1.7em;
 }
-
 #sidebar {
-    float: right;
-    overflow: hidden;
-    width: 254px;
+	float: right;
+	overflow: hidden;
+	width: 254px;
 }
-
 .widjhuh {
 	background-color: #fff;
 	box-shadow: 0 2px 3px rgba(0, 0, 0, .1);
 	padding: 10px;
 	border-radius: 4px;
 }
-
 .widget-title {
-    margin: 0;
-    padding-bottom: 15px;
-    border-bottom: 1px dotted #ccc;
-    text-align: center;
-    padding-bottom: .5em;
+	margin: 0;
+	padding-bottom: 15px;
+	border-bottom: 1px dotted #ccc;
+	text-align: center;
+	padding-bottom: .5em;
 }
-
 .widjhuh li {
 	border-bottom: 1px dotted #ccc;
 }
-
 .widjhuh li a {
 	display: block;
 	padding: .5em 0;
 	overflow: hidden;
 	display: block;
 }
-
 .minty_thumblist li img {
-    float: left;
-    width: 64px;
-    margin-right: 7px;
-    box-shadow: 0 2px 3px rgba(128,128,128,.61);
+	float: left;
+	width: 64px;
+	margin-right: 7px;
+	box-shadow: 0 2px 3px rgba(128, 128, 128, .61);
 }
-.minty_thumblist_a li{
-	width: 50%; float: left;
+.minty_thumblist_a li {
+	width: 50%;
+	float: left;
 }
-
 .minty_thumblist li a, .minty_thumblist li span {
-    overflow: hidden;
-    display: block;
+	overflow: hidden;
+	display: block;
+}
+.hentry {
+	overflow: hidden;
+	margin-bottom: 20px;
+	border-radius: 3px;
+	background: #fff;
+	box-shadow: 0 2px 3px rgba(0, 0, 0, .1);
+	padding: 20px;
 }
 
-
-
-
-
-
-
+.entry-header {
+    overflow: hidden;
+   }
+.entry-title {
+    margin: 0;
+    font-weight: 400;
+    font-size: 1.7em;
+}
+.entry-meta {
+    margin-top: .5em;
+    color: #aaa;
+}

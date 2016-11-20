@@ -1,0 +1,19 @@
+---
+layout: default
+---
+
+
+<div id="container" class="clearfix">
+	<main id="main" class="hfeed">
+		<article id="post-157" class="post-157 hentry">
+			<header class="entry-header">
+				<h1 class="entry-title">{{ page.title }}</h1>
+				<div class="entry-meta">Posted on <span class="postdate">{{ page.date | date: "%b %d, %Y" }}</span> By <a target="_blank" href="{{site.url}}">{{ site.author }}</a></div>
+			</header>
+			<article class="post-content">
+              {{ content }}
+            </article>
+		</article>
+	</main>
+	{% include sidebar.html %}
+</div>
