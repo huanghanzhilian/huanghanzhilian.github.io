@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 我的
-category: gg
+category: php
 tag: jekyll update
 ---
 

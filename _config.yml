@@ -28,6 +28,6 @@ github_username:  jekyll
 # Build settings
 markdown: kramdown
 
-paginate: 3
+paginate: 10
 paginate_path: "page:num"
 gems: [jekyll-paginate]

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>requireJS实现原理研究1</title>
+	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css">
+	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	    (function($) {
+	    	var temp = 0;
+	    	$(document).scroll(function() {
+
+	    		if ($(document).scrollTop() > temp) {
+	    			$("#header").addClass("hide-top");
+	    		} else {
+	    			$("#header").removeClass("hide-top");
+	    		}
+	    		temp = $(document).scrollTop();
+	    	});
+	    })(jQuery);
+	</script>
+</head>
+<body>
+    <header id="header" role="banner">
+	<a id="hgroup" href="/" rel="home">
+		<h1 id="logo"></h1>
+		<i class="slogan" title="返回首页">
+			热爱编程，关注前端开发技术
+		</i>
+	</a>
+	<div class="connect">
+		<a href="" class="rss"></a>
+	</div>
+	<nav id="nav">
+		<ul class="menu">
+			<li class="menu_item">
+				<a href="/">首页</a>
+			</li>
+			<li class="menu_item">
+				<a href="">关于本站</a>
+			</li>
+			<li class="menu_item">
+				<a href="">留言板</a>
+			</li>
+		</ul>
+	</nav>
+</header>
+	<div id="container" class="clearfix">
+	<main id="main" class="hfeed">
+		<article id="post-157" class="post-157 hentry">
+			<header class="entry-header">
+				<h1 class="entry-title">requireJS实现原理研究1</h1>
+				<div class="entry-meta">2016-11-02 <span class="dot">•</span>mysql<span class="dot">•</span>继小鹏</div>
+			</header>
+			<article class="post-content">
+              <h3>众所周知，Javascript有一个很棒的模块化库requireJS，这个基于AMD规范的js库受到越来越多的程序员喜爱，那么，下面就来谈谈我对requireJS的研究和理解。</h3>
+
+<ol>
+  <li>
+    <p>简单流程概括：</p>
+
+    <p>我们在使用requireJS时，都会把所有的js交给requireJS来管理，也就是我们的页面上只引入一个require.js，把data-main指向我们的main.js。
+ 通过我们在main.js里面定义的require方法或者define方法，requireJS会把这些依赖和回调方法都用一个数据结构保存起来。
+ 当页面加载时，requireJS会根据这些依赖预先把需要的js通过document.createElement的方法引入到dom中，这样，被引入dom中的script便会运行。
+ 由于我们依赖的js也是要按照requireJS的规范来写的，所以他们也会有define或者require方法，同样类似第二步这样循环向上查找依赖，同样会把他们村起来。
+ 当我们的js里需要用到依赖所返回的结果时(通常是一个key value类型的object),requireJS便会把之前那个保存回调方法的数据结构里面的方法拿出来并且运行，然后把结果给需要依赖的方法。
+ 以上就是一个简单的流程。</p>
+  </li>
+  <li>
+    <p>测试代码</p>
+  </li>
+</ol>
+
+<p>下面我把一个requireJS小Demo写出来，是下面研究源码的基础：
+main.js</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">require</span><span class="p">.</span><span class="nf">config</span><span class="p">({</span>
+	<span class="ss">paths: </span><span class="p">{</span>
+		<span class="s2">"a"</span><span class="p">:</span> <span class="s2">"a"</span><span class="p">,</span>
+		<span class="s2">"b"</span><span class="p">:</span> <span class="s2">"b"</span>
+	<span class="p">}</span>
+<span class="p">});</span>
+<span class="nb">require</span><span class="p">([</span><span class="s1">'a'</span><span class="p">],</span> <span class="n">function</span> <span class="p">(</span><span class="n">a</span><span class="p">){</span>
+    <span class="n">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="s1">'main'</span><span class="p">);</span>
+    <span class="sr">//</span><span class="n">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+<span class="p">});</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">print_hi</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+  <span class="nb">puts</span> <span class="s2">"Hi, </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">"</span>
+<span class="k">end</span>
+<span class="n">print_hi</span><span class="p">(</span><span class="s1">'Tom'</span><span class="p">)</span>
+<span class="c1">#=&gt; prints 'Hi, Tom' to STDOUT.</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">show</span>
+  <span class="vi">@widget</span> <span class="o">=</span> <span class="no">Widget</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+  <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+    <span class="nb">format</span><span class="p">.</span><span class="nf">html</span> <span class="c1"># show.html.erb</span>
+    <span class="nb">format</span><span class="p">.</span><span class="nf">json</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">json: </span><span class="vi">@widget</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">req</span> <span class="o">=</span> <span class="n">requirejs</span> <span class="o">=</span> <span class="n">function</span> <span class="p">(</span><span class="n">deps</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">errback</span><span class="p">,</span> <span class="n">optional</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="sr">//</span><span class="no">Find</span> <span class="n">the</span> <span class="n">right</span> <span class="n">context</span><span class="p">,</span> <span class="n">use</span> <span class="n">default</span>
+    <span class="n">var</span> <span class="n">context</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span>
+        <span class="n">contextName</span> <span class="o">=</span> <span class="n">defContextName</span><span class="p">;</span>
+
+    <span class="sr">//</span> <span class="no">Determine</span> <span class="k">if</span> <span class="n">have</span> <span class="n">config</span> <span class="n">object</span> <span class="k">in</span> <span class="n">the</span> <span class="n">call</span><span class="p">.</span>
+    <span class="nf">if</span> <span class="p">(</span><span class="o">!</span><span class="n">isArray</span><span class="p">(</span><span class="n">deps</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">typeof</span> <span class="n">deps</span> <span class="o">!==</span> <span class="s1">'string'</span><span class="p">)</span> <span class="p">{</span>
+        <span class="sr">//</span> <span class="n">deps</span> <span class="n">is</span> <span class="n">a</span> <span class="n">config</span> <span class="n">object</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">deps</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">isArray</span><span class="p">(</span><span class="n">callback</span><span class="p">))</span> <span class="p">{</span>
+            <span class="sr">//</span> <span class="no">Adjust</span> <span class="n">args</span> <span class="k">if</span> <span class="n">there</span> <span class="n">are</span> <span class="n">dependencies</span>
+            <span class="n">deps</span> <span class="o">=</span> <span class="n">callback</span><span class="p">;</span>
+            <span class="n">callback</span> <span class="o">=</span> <span class="n">errback</span><span class="p">;</span>
+            <span class="n">errback</span> <span class="o">=</span> <span class="n">optional</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="n">deps</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">config</span> <span class="o">&amp;&amp;</span> <span class="n">config</span><span class="p">.</span><span class="nf">context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">contextName</span> <span class="o">=</span> <span class="n">config</span><span class="p">.</span><span class="nf">context</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">context</span> <span class="o">=</span> <span class="n">getOwn</span><span class="p">(</span><span class="n">contexts</span><span class="p">,</span> <span class="n">contextName</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">contexts</span><span class="p">[</span><span class="n">contextName</span><span class="p">]</span> <span class="o">=</span> <span class="n">req</span><span class="p">.</span><span class="nf">s</span><span class="p">.</span><span class="nf">newContext</span><span class="p">(</span><span class="n">contextName</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">context</span><span class="p">.</span><span class="nf">configure</span><span class="p">(</span><span class="n">config</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">var</span> <span class="n">fg</span> <span class="o">=</span> <span class="n">context</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="n">deps</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">errback</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">fg</span><span class="p">;</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>转载请注明本文出自xiaanming的博客（http://blog.csdn.net/xiaanming/article/details/26810303），请尊重他人的辛勤劳动成果，谢谢！</p>
+
+<p>大家好！差不多两个来月没有写文章了，前段时间也是在忙换工作的事，准备笔试面试什么的事情，现在新工作找好了，新工作自己也比较满意，唯一遗憾的就是自己要去一个新的城市，新的环境新的开始，希望自己能尽快的适应新环境，现在在准备交接的事情，自己也有一些时间了，所以就继续给大家分享Android方面的东西。</p>
+
+<p>相信大家平时做Android应用的时候，多少会接触到异步加载图片，或者加载大量图片的问题，而加载图片我们常常会遇到许多的问题，比如说图片的错乱，OOM等问题，对于新手来说，这些问题解决起来会比较吃力，所以就有很多的开源图片加载框架应运而生，比较著名的就是Universal-Image-Loader，相信很多朋友都听过或者使用过这个强大的图片加载框架，今天这篇文章就是对这个框架的基本介绍以及使用，主要是帮助那些没有使用过这个框架的朋友们。该项目存在于Github上面https://github.com/nostra13/Android-Universal-Image-Loader，我们可以先看看这个开源库存在哪些特征</p>
+
+<p>多线程下载图片，图片可以来源于网络，文件系统，项目文件夹assets中以及drawable中等
+支持随意的配置ImageLoader，例如线程池，图片下载器，内存缓存策略，硬盘缓存策略，图片显示选项以及其他的一些配置
+支持图片的内存缓存，文件系统缓存或者SD卡缓存
+支持图片下载过程的监听
+根据控件(ImageView)的大小对Bitmap进行裁剪，减少Bitmap占用过多的内存
+较好的控制图片的加载过程，例如暂停图片加载，重新开始加载图片，一般使用在ListView,GridView中，滑动过程中暂停加载图片，停止滑动的时候去加载图片
+提供在较慢的网络下对图片进行加载</p>
+
+<p>当然上面列举的特性可能不全，要想了解一些其他的特性只能通过我们的使用慢慢去发现了，接下来我们就看看这个开源库的简单使用吧</p>
+
+<p>新建一个Android项目，下载JAR包添加到工程libs目录下</p>
+
+<p>新建一个MyApplication继承Application，并在onCreate()中创建ImageLoader的配置参数，并初始化到ImageLoader中代码如下</p>
+<p>个人简历</p>
+<p>02 Nov 2016</p>
+
+            </article>
+		</article>
+	</main>
+	<div class="sidebar" id="sidebar">
+	<div class="sidebar-top">
+		<aside class="widjhuh">
+			<h3 class="widget-title">最新文章</h3>
+			<ul class="minty_thumblist">
+				<li>
+					<a href="">
+						<img src="" alt="">
+						<span>哈哈哈</span>
+					</a>
+				</li>
+				<li>
+					<a href="">
+						<img src="" alt="">
+						<span>哈哈哈</span>
+					</a>
+				</li>
+				<li>
+					<a href="">
+						<img src="" alt="">
+						<span>哈哈哈sss </span>
+					</a>
+				</li>
+				<li>
+					<a href="">
+						<img src="" alt="">
+						<span>哈哈哈</span>
+					</a>
+				</li>
+				<li>
+					<a href="">
+						<img src="" alt="">
+						<span>哈哈哈</span>
+					</a>
+				</li>
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">分类目录</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+				
+				<li>
+					<a href="/categories/javascript/" title="view all
+posts">
+						javascript (3)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/css3/" title="view all
+posts">
+						css3 (3)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/git/" title="view all
+posts">
+						git (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/React/" title="view all
+posts">
+						React (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/node/" title="view all
+posts">
+						node (3)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/php/" title="view all
+posts">
+						php (2)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/mysql/" title="view all
+posts">
+						mysql (1)
+					</a>
+				</li>
+				
+			</ul>
+		</aside>
+	</div>
+
+</div>
+</div>
+	<footer id="footer">
+	<nav class="links">
+		<a href="">作品</a>
+		<a href="">关于本站</a>
+		<a href="">留言板</a>
+	</nav>
+	<div class="copyright">
+		© 2016 <a href="">继小鹏的前端博客</a>
+	</div>
+	<a href="javascript:pageScroll();" id="rocket" class=""></a>
+</footer>
+<script>
+var fhdb = document.getElementById("rocket");
+
+//获取页面可视区高度
+var dqy = document.documentElement.clientHeight;
+
+//滚动条滚动时触发   在滚动的时候触发
+window.onscroll = function() {
+	var sTop = document.documentElement.scrollTop || document.body.scrollTop;
+	if (sTop >= dqy) {
+		$("#rocket").addClass('show');
+	} else {
+		$("#rocket").removeClass('show');
+	}
+}
+
+function pageScroll() {
+	//把内容滚动指定的像素数（第一个参数是向右滚动的像素数，第二个参数是向下滚动的像素数）
+	window.scrollBy(0, -100);
+	//延时递归调用，模拟滚动向上效果
+	scrolldelay = setTimeout('pageScroll()', 30);
+	//获取scrollTop值，声明了DTD的标准网页取document.documentElement.scrollTop，否则取document.body.scrollTop；因为二者只有一个会生效，另一个就恒为0，所以取和值可以得到网页的真正的scrollTop值
+	var sTop = document.documentElement.scrollTop + document.body.scrollTop;
+	//判断当页面到达顶部，取消延时代码（否则页面滚动到顶部会无法再向下正常浏览页面）
+	if (sTop == 0) clearTimeout(scrolldelay)
+
+}
+
+</script>
+</body>
+</html>

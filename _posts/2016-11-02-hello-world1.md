@@ -1,15 +1,99 @@
 ---
 layout: post
-title: 我的sssssssss
-category: vvv
+title: requireJS实现原理研究1
+category: mysql
 tag: jekyll update
 ---
+<h3>众所周知，Javascript有一个很棒的模块化库requireJS，这个基于AMD规范的js库受到越来越多的程序员喜爱，那么，下面就来谈谈我对requireJS的研究和理解。</h3>
+
+
+
+
+
+1. 简单流程概括：
+
+    我们在使用requireJS时，都会把所有的js交给requireJS来管理，也就是我们的页面上只引入一个require.js，把data-main指向我们的main.js。
+    通过我们在main.js里面定义的require方法或者define方法，requireJS会把这些依赖和回调方法都用一个数据结构保存起来。
+    当页面加载时，requireJS会根据这些依赖预先把需要的js通过document.createElement的方法引入到dom中，这样，被引入dom中的script便会运行。
+    由于我们依赖的js也是要按照requireJS的规范来写的，所以他们也会有define或者require方法，同样类似第二步这样循环向上查找依赖，同样会把他们村起来。
+    当我们的js里需要用到依赖所返回的结果时(通常是一个key value类型的object),requireJS便会把之前那个保存回调方法的数据结构里面的方法拿出来并且运行，然后把结果给需要依赖的方法。
+    以上就是一个简单的流程。
+
+ 
+2. 测试代码
+
+下面我把一个requireJS小Demo写出来，是下面研究源码的基础：
+main.js
+
+{% highlight ruby %}
+require.config({
+	paths: {
+		"a": "a",
+		"b": "b"
+	}
+});
+require(['a'], function (a){
+    console.log('main');
+    //console.log(a);
+});
+{% endhighlight %}
+
+
 {% highlight ruby %}
 def print_hi(name)
   puts "Hi, #{name}"
 end
 print_hi('Tom')
 #=> prints 'Hi, Tom' to STDOUT.
+{% endhighlight %}
+
+{% highlight ruby %}
+def show
+  @widget = Widget(params[:id])
+  respond_to do |format|
+    format.html # show.html.erb
+    format.json { render json: @widget }
+  end
+end
+{% endhighlight %}
+
+
+{% highlight ruby %}
+req = requirejs = function (deps, callback, errback, optional) {
+
+    //Find the right context, use default
+    var context, config,
+        contextName = defContextName;
+
+    // Determine if have config object in the call.
+    if (!isArray(deps) && typeof deps !== 'string') {
+        // deps is a config object
+        config = deps;
+        if (isArray(callback)) {
+            // Adjust args if there are dependencies
+            deps = callback;
+            callback = errback;
+            errback = optional;
+        } else {
+            deps = [];
+        }
+    }
+
+    if (config && config.context) {
+        contextName = config.context;
+    }
+
+    context = getOwn(contexts, contextName);
+    if (!context) {
+        context = contexts[contextName] = req.s.newContext(contextName);
+    }
+
+    if (config) {
+        context.configure(config);
+    }
+    var fg = context.require(deps, callback, errback);
+    return fg;
+};
 {% endhighlight %}
 
 转载请注明本文出自xiaanming的博客（http://blog.csdn.net/xiaanming/article/details/26810303），请尊重他人的辛勤劳动成果，谢谢！

@@ -3,25 +3,38 @@ layout: default
 title: 分类
 ---
 
-<ul class="post-list">
-  {% for post in site.categories[page.category] %}
-    <li>
-      <div class="post-title">
-        <a href="{{site.baseurl}}{{post.url}}"> {{post.title}}</a> </br>
-      </div>
 
-      <div class="post-info">
-        <ol>
-          <li class="post-time">{{ post.date | date: '%Y-%m-%d' }}</li> 
-          <li class="post-category"> {{ post.category }} </li>
-        </ol>
-      </div>
 
-      <div class="post-preview">
-        {{ post.excerpt }} 
-        <a href="{{site.baseurl}}{{post.url}}"> Read More ... </a> </br>
-      </div>
+<div id="container" class="clearfix">
+  <main id="main" class="hfeed">
+    <ul>
+      {% for post in site.categories[page.category] %}
+      　　<li class="entry_list">
+          <a href="{{ site.baseurl }}{{ post.url }}">
+            <h2 class="entry-title">{{ post.title }}</h2>
+            <div class="entry-meta">{{ post.date | date: '%Y-%m-%d' }} <span class="dot">•</span>{{ post.category }}<span class="dot">•</span>继小鹏</div>
+            <div class="entry-summary">
+              <p>
+                {{ post.excerpt }} 
+              </p>
+            </div>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
 
-    </li>
-  {% endfor %}
-</ul>
+    <!-- 分页链接 -->
+      {% if paginator.total_pages > 1 %}
+          {% if paginator.previous_page %}
+              <a href="{{ paginator.previous_page_path }}">上一页</a>
+          {% endif %}
+
+          {% if paginator.next_page %}
+              <a href="{{ paginator.next_page_path }}">下一页</a>
+          {% endif %}
+      {% endif %}
+      <!-- 分页链接 -->
+
+  </main>
+  {% include sidebar.html %}
+</div>

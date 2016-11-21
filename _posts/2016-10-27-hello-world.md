@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 我的
-category: bb
+category: node
 tag: jekyll update
 ---
 
