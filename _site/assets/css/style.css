@@ -262,3 +262,53 @@ body {
 .paginator_po{ text-align: center; margin: 40px 0; }
 
 .sidebar-top{ margin-top: 20px; }
+
+
+
+
+
+#m-btns a, #m-btns div, #m-btns span {
+    float: right;
+    width: 48px;
+    height: 48px;
+    background: url(../images/m-btns.png) no-repeat 50%;
+    background-size: 24px;
+}
+
+#m-btns .menu {
+    background-position: 50% -96px;
+}
+#m-btns {
+    display: none;
+    float: right;
+    width: 144px;
+}
+
+
+
+
+
+
+
+
+@media only screen and (max-width: 568px) {
+    #nav, .slogan,#header .connect {
+      display: none!important;
+    }
+    #m-btns {
+    	display:block;
+        width:107px
+    }
+}
+
+
+@media only screen and (max-device-width: 1024px) and (min-device-width: 768px) and (orientation: portrait), only screen and (max-width: 800px) {
+    #container {
+      width: auto;
+    }
+    #main{
+      width: auto;
+      float:none;
+    }
+    .sidebar{ display: none; }
+}
