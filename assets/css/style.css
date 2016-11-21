@@ -186,3 +186,79 @@ body {
     margin-top: .5em;
     color: #aaa;
 }
+
+
+#footer {
+    clear: both;
+    margin: 0 auto;
+    padding: 2em 0;
+    width: 100%;
+    border-top: 3px solid #ddd;
+    color: #999;
+    text-align: center;
+}
+
+#footer .links {
+    margin-bottom: .5em;
+}
+#footer .links a {
+    margin: 0 1em;
+}
+
+
+#rocket {
+    position: fixed;
+    right: 50px;
+    bottom: 50px;
+    z-index: 7;
+    display: block;
+    visibility: hidden;
+    width: 26px;
+    height: 48px;
+    background: url(../images/rocket.png) no-repeat 50% 0;
+    opacity: 0;
+    -webkit-transition: visibility .6s cubic-bezier(.6,.04,.98,.335),opacity .6s cubic-bezier(.6,.04,.98,.335),-webkit-transform .6s cubic-bezier(.6,.04,.98,.335);
+    -moz-transition: visibility .6s cubic-bezier(.6,.04,.98,.335),opacity .6s cubic-bezier(.6,.04,.98,.335),-moz-transform .6s cubic-bezier(.6,.04,.98,.335);
+    transition: visibility .6s cubic-bezier(.6,.04,.98,.335),opacity .6s cubic-bezier(.6,.04,.98,.335),transform .6s cubic-bezier(.6,.04,.98,.335);
+}
+
+#rocket.show {
+    visibility: visible;
+    opacity: 1;
+}
+#rocket i {
+    display: block;
+    margin-top: 48px;
+    height: 14px;
+    background: url(../images/rocket.png) no-repeat 50% -48px;
+    opacity: .5;
+    -webkit-transition: -webkit-transform .2s;
+    -moz-transition: -moz-transform .2s;
+    transition: transform .2s;
+    -webkit-transform-origin: 50% 0;
+    -moz-transform-origin: 50% 0;
+    transform-origin: 50% 0;
+}
+
+.entry-content, .entry-summary {
+    margin: 15px 0px;
+    word-wrap: break-word;
+    word-break: normal;
+    line-height: 1.7;
+}
+
+.entry-meta .dot {
+    margin: 0 .4em;
+}
+.post-content, .entry-summary {
+    margin: 15px 0px;
+    word-wrap: break-word;
+    word-break: normal;
+    line-height: 1.7;
+}
+.post-content p{margin: 0 0 10px;}
+.entry-summary h3{ font-weight: normal; font-size: 14px; }
+
+.paginator_po{ text-align: center; margin: 40px 0; }
+
+.sidebar-top{ margin-top: 20px; }
