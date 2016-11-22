@@ -53,4 +53,27 @@ posts">
 		</aside>
 	</div>
 
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">标签目录</h3>
+			<div class="tagcloud" id="tagcloud">
+				{% for tag in site.tags %}
+					<a href="/tag/{{ tag | first }}/" title="view all
+posts">
+						{{ tag | first }}
+					</a>
+				{% endfor %}
+			</div>
+
+		</aside>
+	</div>
+	<script>
+	var box=document.getElementById("tagcloud").getElementsByTagName("a");
+	for(var i=0;i<box.length;i++){
+		var a =Math.round(Math.random()*20)/10;
+		box[i].style.fontSize=a+'em';
+	}
+	</script>
+
 </div>

@@ -2,7 +2,7 @@
 layout: post
 title: requireJS实现原理研究1
 category: mysql
-tag: jekyll update
+tag: jekyll
 ---
 <h3>111111111111111111111111111111111111qqqqqqqqqqq</h3>
 

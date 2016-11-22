@@ -2,7 +2,7 @@
 layout: post
 title: xaaaaaaaaaaaaaaa
 category: mysql
-tag: jekyll update
+tag: jekyll
 ---
 <h3>ssssssssssss</h3>
 
