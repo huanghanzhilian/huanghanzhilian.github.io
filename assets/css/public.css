@@ -1,0 +1,27 @@
+/*清除浮动*/
+.clearfix:after{ content: "020"; display: block;  height: 0; clear: both; visibility: hidden;} 
+.clearfix {  
+/* 触发 hasLayout */  
+ zoom: 1; }
+
+/*css清零*/
+body,ul,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,table,td,img,div,input{margin:0;padding:0;}
+body{font-size:14px; font-family:"微软雅黑",Helvetica,sans-serif;}
+form{font-size:14px; font-family:"微软雅黑",Helvetica,sans-serif;}
+img{border:none;}
+li{list-style:none;}
+input,select,textarea{outline:none; border: none; font-family:"微软雅黑",Helvetica,sans-serif;}
+textarea{resize:none;}
+a{text-decoration:none; transition: color .2s; color: #666;}
+
+.fl{ float:left;}
+.fr{ float:right;}
+
+
+
+.h_30{ height:30px;}
+
+input[type="button"], input[type="submit"], input[type="reset"] {
+-webkit-appearance: none;
+}
+textarea {  -webkit-appearance: none;} 
