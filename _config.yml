@@ -31,3 +31,9 @@ markdown: kramdown
 paginate: 10
 paginate_path: "page:num"
 gems: [jekyll-paginate]
+
+# Comment setting
+comments :
+  provider : duoshuo
+  duoshuo :
+    short_name : huanghuanlian
