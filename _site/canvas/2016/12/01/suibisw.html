@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>继小鹏的前端博客 | 热爱编程，关注前端开发技术</title>
+<title>Canvas 刮刮卡</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
 	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
@@ -56,59 +56,92 @@
 </header>
 	<div id="container" class="clearfix">
 	<main id="main" class="hfeed">
-		<ul>
-			
-			　　<li class="entry_list">
-					<a href="/markdown/2016/12/01/markdown-jbf.html">
-						<h2 class="entry-title">markdown 简明语法</h2>
-						<div class="entry-meta">2016-12-01 <span class="dot">•</span>Markdown<span class="dot">•</span>继小鹏</div>
-						<div class="entry-summary">
-			              <p>
-			                <h4 id="section">基本符号</h4>
+		<article id="post-157" class="post-157 hentry">
+			<header class="entry-header">
+				<h1 class="entry-title">Canvas 刮刮卡</h1>
+				<div class="entry-meta">2016-12-01 <span class="dot">•</span>Canvas<span class="dot">•</span>继小鹏</div>
+			</header>
+			<article class="post-content">
+              <p>演示地址：<a href="http://jsfiddle.net/299X4/">http://jsfiddle.net/299X4/</a></p>
+
+<p>闲来无事，做了个小demo，顺便练习一下用原生js实现拖动效果。</p>
+
+<pre><code>document.getElementById("can3").addEventListener("mousedown",function(e){
+    var rect = e.currentTarget.getBoundingClientRect();
+    var gravityPoint = {
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top
+          };
+
+    if (gravityPoint.x &gt;= ctx3_x &amp;&amp; gravityPoint.x &lt;= ctx3_x + 10 &amp;&amp; gravityPoint.y &gt;= ctx3_y &amp;&amp; gravityPoint.y &lt;= ctx3_y + 50) {
+        dragFlag = true;
+        pre_x = gravityPoint.x - ctx3_x;
+        pre_y = gravityPoint.y - ctx3_y;
+    }
+
+});
+document.getElementById("can3").addEventListener("mouseup",function(e){
+    var rect = e.currentTarget.getBoundingClientRect();
+    var gravityPoint = {
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top
+          };
+
+    if (gravityPoint.x &gt;= ctx3_x &amp;&amp; gravityPoint.x &lt;= ctx3_x + 10 &amp;&amp; gravityPoint.y &gt;= ctx3_y &amp;&amp; gravityPoint.y &lt;= ctx3_y + 50) {
+        dragFlag = false;
+
+    }
+});
+document.getElementById("can3").addEventListener("mousemove",function(e){
+    var rect = e.currentTarget.getBoundingClientRect();
+    var gravityPoint = {
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top
+          };
+
+    if (dragFlag) {
+        ctx3_x = gravityPoint.x - pre_x;
+        ctx3_y = gravityPoint.y - pre_y;
+        ctx2.clearRect(ctx3_x, ctx3_y, 10, 50);
+    }
+
+});
+</code></pre>
+
+<p>我给ctx3绑定了3个事件，可以看到，mousedown鼠标按下，mousemove鼠标移到，mouseup鼠标松开</p>
+
+<p>分情况判断，当鼠标按下，且此时鼠标坐标在橡皮的方块内时，dragflag为true，松开时为false，此时在mousemove方法里让橡皮移动。</p>
+
+<p>然后来3个canvas，依次覆盖前一个，由于clearrect方法可以把canvas变透明，</p>
+
+<h4 id="canvas3canvas2canvas1">所以鼠标在canvas3上移动，canvas2的内容被擦除，canvas1的文字显示出来，就是这个思路！</h4>
+
+<p>ok！</p>
+
+<p>完！</p>
+
+              <!-- 多说评论框 start -->
+              		<!-- <span class="ds-thread-count" data-thread-key="/canvas/2016/12/01/suibisw" data-count-type="comments"></span> -->
+					<div class="ds-thread" data-thread-key="http://yourdomain.com/canvas/2016/12/01/suibisw" data-title="Canvas 刮刮卡" data-url="http://yourdomain.com/canvas/2016/12/01/suibisw"></div>
+				<!-- 多说评论框 end -->
+				<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+				<script type="text/javascript">
+				var duoshuoQuery = {short_name:"huanghuanlian"};
+					(function() {
+						var ds = document.createElement('script');
+						ds.type = 'text/javascript';ds.async = true;
+						ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+						ds.charset = 'UTF-8';
+						(document.getElementsByTagName('head')[0]
+						 || document.getElementsByTagName('body')[0]).appendChild(ds);
+					})();
+				</script>
+				<!-- 多说公共JS代码 end -->
 
 
-			              </p>
-			            </div>
-					</a>
-				</li>
-			
-			　　<li class="entry_list">
-					<a href="/canvas/2016/12/01/suibisw.html">
-						<h2 class="entry-title">Canvas 刮刮卡</h2>
-						<div class="entry-meta">2016-12-01 <span class="dot">•</span>Canvas<span class="dot">•</span>继小鹏</div>
-						<div class="entry-summary">
-			              <p>
-			                <p>演示地址：<a href="http://jsfiddle.net/299X4/">http://jsfiddle.net/299X4/</a></p>
-
-
-			              </p>
-			            </div>
-					</a>
-				</li>
-			
-			　　<li class="entry_list">
-					<a href="/markdown/2016/12/01/markdown.html">
-						<h2 class="entry-title">献给写作者的 Markdown 新手指南</h2>
-						<div class="entry-meta">2016-12-01 <span class="dot">•</span>Markdown<span class="dot">•</span>继小鹏</div>
-						<div class="entry-summary">
-			              <p>
-			                <p><img src="https://oc5n93kni.qnssl.com/H5FullscreenPage.png" alt="" /></p>
-
-
-			              </p>
-			            </div>
-					</a>
-				</li>
-			
-		</ul>
-
-		<div class="paginator_po">
-			<!-- 分页链接 -->
-		    
-		    <!-- 分页链接 -->
-		</div>
-
-
+				
+            </article>
+		</article>
 
 	</main>
 	<div class="sidebar" id="sidebar">
@@ -118,9 +151,9 @@
 			<ul class="minty_thumblist">
 				
                   <li>
-                    <a href="/canvas/2016/12/01/suibisw.html">
+                    <a href="/markdown/2016/12/01/markdown-jbf.html">
                     	
-                    	<span>Canvas 刮刮卡</span>
+                    	<span>markdown 简明语法</span>
                     </a>
                   </li>
 				
@@ -211,28 +244,6 @@ posts">
 
 </div>
 </div>
-
-
-
-<!-- <h2>继小鹏的前端博客 | 热爱编程，关注前端开发技术</h2>
-
-
-<h4>Category</h4>
-<ul>
-    
-    <li><a href="/categories/Markdown/" title="view all
-posts">Markdown 2</a>
-    </li>
-    
-    <li><a href="/categories/Canvas/" title="view all
-posts">Canvas 1</a>
-    </li>
-    
-</ul> -->
-
-
-
-
 	<footer id="footer">
 	<nav class="links">
 		<a href="">作品</a>

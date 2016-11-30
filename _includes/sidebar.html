@@ -3,36 +3,14 @@
 		<aside class="widjhuh">
 			<h3 class="widget-title">最新文章</h3>
 			<ul class="minty_thumblist">
-				<li>
-					<a href="">
-						<img src="" alt="">
-						<span>哈哈哈</span>
-					</a>
-				</li>
-				<li>
-					<a href="">
-						<img src="" alt="">
-						<span>哈哈哈</span>
-					</a>
-				</li>
-				<li>
-					<a href="">
-						<img src="" alt="">
-						<span>哈哈哈sss </span>
-					</a>
-				</li>
-				<li>
-					<a href="">
-						<img src="" alt="">
-						<span>哈哈哈</span>
-					</a>
-				</li>
-				<li>
-					<a href="">
-						<img src="" alt="">
-						<span>哈哈哈</span>
-					</a>
-				</li>
+				{% for post in site.related_posts limit:6 %}
+                  <li>
+                    <a href="{{ post.url }}">
+                    	
+                    	<span>{{ post.title }}</span>
+                    </a>
+                  </li>
+				{% endfor %} 
 			</ul>
 		</aside>
 	</div>
