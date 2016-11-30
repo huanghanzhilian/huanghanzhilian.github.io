@@ -313,3 +313,12 @@ body {
     }
     .sidebar{ display: none; }
 }
+
+.sidebar img{
+    max-width: 100%;
+    height: auto;
+    border-radius: 2px;
+    box-shadow: 0 2px 3px rgba(128,128,128,.61);
+}
+
+.visitorsopi .ds-avatar img{ margin: 5px 0 !important; }
