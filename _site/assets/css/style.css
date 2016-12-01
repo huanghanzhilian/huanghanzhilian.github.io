@@ -37,18 +37,19 @@ body {
 	background-size: 208px 64px;
 }
 .connect {
-	background: red;
 	float: right;
 	margin: 20px 20px 0 0;
 }
-.connect .rss {
-	background-color: red;
+.connect a {
+	background-image: url(../images/connect-icons.png);
 	width: 24px;
 	height: 24px;
 	opacity: .5;
 	border-radius: 2px;
 	display: block;
 }
+.connect a.rss{ background-position:  0 -24px; }
+
 #hgroup .slogan {
 	margin-left: 16px;
 	background: #ccc;
@@ -257,7 +258,7 @@ body {
     word-break: normal;
     line-height: 1.7;
 }
-.post-content p{margin: 0 0 10px;}
+.post-content p{margin: 15px 0; line-height: 24px;}
 .entry-summary h3{ font-weight: normal; font-size: 14px; }
 
 .paginator_po{ text-align: center; margin: 40px 0; }
@@ -322,3 +323,9 @@ body {
 }
 
 .visitorsopi .ds-avatar img{ margin: 5px 0 !important; }
+
+
+.post-content ol {
+    line-height: 3;}
+
+.post-content blockquote{ font-style: normal; }
