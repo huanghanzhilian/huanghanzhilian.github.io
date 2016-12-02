@@ -15,6 +15,8 @@ var fhdb = document.getElementById("rocket");
 //获取页面可视区高度
 var dqy = document.documentElement.clientHeight;
 
+var main_left=$('#main').offset().left+$('#main').width()+16;
+
 //滚动条滚动时触发   在滚动的时候触发
 window.onscroll = function() {
 	var sTop = document.documentElement.scrollTop || document.body.scrollTop;
@@ -36,5 +38,7 @@ function pageScroll() {
 	if (sTop == 0) clearTimeout(scrolldelay)
 
 }
+
+
 
 </script>

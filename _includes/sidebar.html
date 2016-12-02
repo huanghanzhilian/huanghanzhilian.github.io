@@ -6,11 +6,11 @@
 				{% for post in site.related_posts limit:6 %}
                   <li>
                     <a href="{{ post.url }}">
-                    	
+
                     	<span>{{ post.title }}</span>
                     </a>
                   </li>
-				{% endfor %} 
+				{% endfor %}
 			</ul>
 		</aside>
 	</div>
@@ -69,6 +69,47 @@ posts">
 
 		</aside>
 	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">友情链接</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+
+				<li>
+					<a href="http://blog.csdn.net/u013861109?viewmode=contents" target="blank">
+						csdn博客
+					</a>
+				</li>
+				<li>
+					<a href="http://www.imooc.com/" target="blank">
+						慕课网
+					</a>
+				</li>
+				<li>
+					<a href="http://www.dglives.com/" target="blank">
+						数字生活前端
+					</a>
+				</li>
+				<li>
+					<a href="http://www.jianshu.com/" target="blank">
+						简书
+					</a>
+				</li>
+				<li>
+					<a href="http://www.runoob.com/" target="blank">
+						菜鸟
+					</a>
+				</li>
+				<li>
+					<a href="http://www.qdfuns.com/" target="blank">
+						前端网
+					</a>
+				</li>
+			</ul>
+		</aside>
+	</div>
+
+
 	<script>
 	var box=document.getElementById("tagcloud").getElementsByTagName("a");
 	for(var i=0;i<box.length;i++){

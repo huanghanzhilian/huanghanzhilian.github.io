@@ -102,7 +102,7 @@ body {
 	clear: both;
 	margin: 0 auto 40px;
 	padding: 20px 20px 0;
-	width: 1010px;
+	width: 1010px; position: relative;
 }
 
 /*main*/
