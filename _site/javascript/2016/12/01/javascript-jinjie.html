@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>JavaScript 精粹 基础 进阶</title>
+<title>JavaScript 精粹 基础 进阶(1)数据类型</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
 	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
@@ -61,7 +61,7 @@
 	<main id="main" class="hfeed">
 		<article id="post-157" class="post-157 hentry">
 			<header class="entry-header">
-				<h1 class="entry-title">JavaScript 精粹 基础 进阶</h1>
+				<h1 class="entry-title">JavaScript 精粹 基础 进阶(1)数据类型</h1>
 				<div class="entry-meta">2016-12-01 <span class="dot">•</span>JavaScript<span class="dot">•</span>继小鹏</div>
 			</header>
 			<article class="post-content">
@@ -204,128 +204,10 @@ Object.prototype.toString.apply(undefined); === “[object Undefined]”
 <p><code>instanceof</code>
 适合自定义对象，也可以用来检测原生对象，在不同iframe和window间检测时失效。</p>
 
-<h4 id="section-1">表达式和运算符</h4>
-
-<blockquote>
-  <p>JavaScript 表达式</p>
-</blockquote>
-
-<p>** 表达式是指能计算出值得任何可用程序单元。——Wiki**</p>
-
-<p><strong>表达式是一种JS短语，可使JS解释器用来产生一个值。——《JS权威指南》</strong></p>
-
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-6919f7e22ae1bb76.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
-
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-3ab28e638286a3aa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
-
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-e80ce19d6f1a3f10.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
-
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-1e624122622bf128.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
-
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-72f96222c9135c06.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
-
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-cdce00cca295adaa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
-
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-766d0f239887b430.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
-
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-3f85e4e4f73a4cd1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
-
-<blockquote>
-  <p>JavaScript 运算符</p>
-</blockquote>
-
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-7140a60ac8368ce6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
-
-<p><strong>三元运算符</strong></p>
-
-<pre><code>c ? a : b
-var val = true ? 1 : 2; // val = 1
-//val值为true就会返回冒号前面的值，如果是false就会取冒号右边的值。
-</code></pre>
-
-<p><strong>逗号运算符</strong></p>
-
-<pre><code>a, b
-var val = (1, 2, 3); // val = 3
-//非常少见的，它会从左到右依次去计算表达式的值，最后会取最右边的值。
-</code></pre>
-
-<p><strong>delete 运算符</strong></p>
-
-<pre><code>delete obj.x;
-var obj = {x : 1};
-obj.x;                      // 1
-delete obj.x;
-obj.x;                      // undefined
-//delete 运算符就是删除对象上的属性，变量obj，obj.x被删除了。
-</code></pre>
-
-<p>并不是对象上的所有属性都可以成功的被delete 掉的。</p>
-
-<pre><code>var obj = {};
-Object.defineProperty(obj, 'x', {
-  configurable : false, 
-  value : 1
-});
-delete obj.x; // false
-obj.x;            // 1
-</code></pre>
-
-<p>只有<code>configurable : true</code>, 为true，才可以被删除。</p>
-
-<p><strong><code>in</code>运算符</strong></p>
-
-<pre><code>window.x = 1;  //创建全局变量x为1
-x’ in window; // true   判断是否win下有x
-</code></pre>
-
-<p>**instanceof, typeof运算符 **</p>
-
-<pre><code>{} instanceof Object                // true  判断对象类型，基于原型链去判断的
-typeof 100 === ‘number’ // true  返回字符串，常用语原始类型，或者函数对象。
-</code></pre>
-
-<p><strong>new运算符</strong></p>
-
-<pre><code>function Foo(){}     //创建函数构造器，或者说创建空函数
-Foo.prototype.x = 1;     //prototype属性x
-var obj = new Foo();   //创建一个新的对象obj
-obj.x;  // 1   现在就能在prototype属性x拿到1
-obj.hasOwnProperty('x'); // false     来判断这个属性到底是这个对象上的还是这个对象原型链上，这个x当然不是属于直接对象上的属性，
-obj.__proto__.hasOwnProperty('x'); // true    拿到对象原型。可以发现x是对象原型上的属性，而不是这个对象本身上的属性。
-</code></pre>
-
-<p><strong>this运算符</strong></p>
-
-<pre><code>this;  // window (浏览器)  在全局下this会指向win
-var obj = {
-  func : function(){return this;}
-}; 
-obj.func(); // obj
-//如果在对象值如果是个函数的话那么在这样的函数里，this会指向对象本身。
-</code></pre>
-
-<p><strong>void运算符</strong></p>
-
-<p>void运算符是一元运算符，</p>
-
-<pre><code>void 0  // undefined
-void(0) // undefined
-//不管值是多少都会返回undefined
-</code></pre>
-
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-5e9759be8cdba5d3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
-
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-227317d72f8e3d08.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
-
-<blockquote>
-  <p>未完！！！</p>
-</blockquote>
-
 
               <!-- 多说评论框 start -->
               		<!-- <span class="ds-thread-count" data-thread-key="/javascript/2016/12/01/javascript_jinjie" data-count-type="comments"></span> -->
-					<div class="ds-thread" data-thread-key="http://yourdomain.com/javascript/2016/12/01/javascript_jinjie" data-title="JavaScript 精粹 基础 进阶" data-url="http://yourdomain.com/javascript/2016/12/01/javascript_jinjie"></div>
+					<div class="ds-thread" data-thread-key="http://yourdomain.com/javascript/2016/12/01/javascript_jinjie" data-title="JavaScript 精粹 基础 进阶(1)数据类型" data-url="http://yourdomain.com/javascript/2016/12/01/javascript_jinjie"></div>
 				<!-- 多说评论框 end -->
 				<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 				<script type="text/javascript">
@@ -354,6 +236,27 @@ void(0) // undefined
 			<ul class="minty_thumblist">
 				
                   <li>
+                    <a href="/javascript/2016/12/05/javascript-jinjie4.html">
+
+                    	<span>JavaScript 精粹 基础 进阶(4)对象</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/05/javascript-jinjie3.html">
+
+                    	<span>JavaScript 精粹 基础 进阶(3)语句</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/05/javascript-jinjie2.html">
+
+                    	<span>JavaScript 精粹 基础 进阶(2)表达式和运算符</span>
+                    </a>
+                  </li>
+				
+                  <li>
                     <a href="/git/2016/12/01/git-fenzhi.html">
 
                     	<span>Git的版本和分支管理</span>
@@ -371,13 +274,6 @@ void(0) // undefined
                     <a href="/canvas/2016/12/01/suibisw.html">
 
                     	<span>Canvas 刮刮卡</span>
-                    </a>
-                  </li>
-				
-                  <li>
-                    <a href="/markdown/2016/12/01/markdown.html">
-
-                    	<span>献给写作者的 Markdown 新手指南</span>
                     </a>
                   </li>
 				
@@ -437,7 +333,7 @@ posts">
 				<li>
 					<a href="/categories/JavaScript/" title="view all
 posts">
-						JavaScript (1)
+						JavaScript (4)
 					</a>
 				</li>
 				

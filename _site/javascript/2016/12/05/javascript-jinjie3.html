@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>JavaScript 精粹 基础 进阶(3)语句</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css">
+	<link rel="shortcut icon" href="/assets/images/logo_ioc.ico" type="images/x-icon"/>
+	<link rel="icon" href="/assets/images/logo_ioc.png" type="images/png"/>
+	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	    (function($) {
+
+	    	var temp = 0;
+	    	$(document).scroll(function() {
+
+	    		if ($(document).scrollTop() > temp) {
+	    			$("#header").addClass("hide-top");
+	    		} else {
+	    			$("#header").removeClass("hide-top");
+	    		}
+	    		temp = $(document).scrollTop();
+	    	});
+	    })(jQuery);
+
+	</script>
+
+</head>
+<body>
+    <header id="header" role="banner">
+	<a id="hgroup" href="/" rel="home">
+		<h1 id="logo"></h1>
+		<i class="slogan" title="返回首页">
+			热爱编程，关注前端开发技术
+		</i>
+	</a>
+	<div class="connect">
+		<a href="" class="rss"></a>
+	</div>
+	<nav id="nav">
+		<ul class="menu">
+			<li class="menu_item">
+				<a href="/">首页</a>
+			</li>
+			<li class="menu_item">
+				<a href="/about/">关于本站</a>
+			</li>
+			<li class="menu_item">
+				<a href="/report/">留言板</a>
+			</li>
+		</ul>
+	</nav>
+	<div id="m-btns">
+		<div class="menu"></div>
+	</div>
+</header>
+	<div id="container" class="clearfix">
+	<main id="main" class="hfeed">
+		<article id="post-157" class="post-157 hentry">
+			<header class="entry-header">
+				<h1 class="entry-title">JavaScript 精粹 基础 进阶(3)语句</h1>
+				<div class="entry-meta">2016-12-05 <span class="dot">•</span>JavaScript<span class="dot">•</span>继小鹏</div>
+			</header>
+			<article class="post-content">
+              <p>JavaScript程序由语句组成，语句遵守特定的语法规则。例如：if语句, while语句, with语句等等。</p>
+
+<h4 id="section">语句</h4>
+
+<blockquote>
+  <p>语句、严格模式</p>
+</blockquote>
+
+<p><strong>JavaScript程序由语句组成，语句遵守特定的语法规则。例如：if语句, while语句, with语句等等。</strong></p>
+
+<p><em>语句种类</em></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-fc0d134cf88a6bbf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p><strong>块 block</strong></p>
+
+<p><em>块语句常用于组合0 ~ 多个语句。块语句用一对花括号定义。</em></p>
+
+<pre><code>语法：
+{
+  语句1;
+  语句2;
+  ...
+  语句n;
+}
+比如
+{
+    var str = "hi";
+    console.log(str);
+}//但在实际开发中，很少单独使用块语句
+而是用if...else  或者for  while去结合起来使用，
+
+if(true){
+//然后{}是一个块，
+然后{里面可以放多条语句}
+ console.log('hi');
+}
+</code></pre>
+
+<p><strong>声明语句 var</strong></p>
+
+<pre><code>声明变量语句
+var a=1;
+
+在一个var里也可以声明多个变量
+var a=b=1;
+这段语句确实创建了a,b两个变量并且赋值为1，但是其中b实际上是隐式的创建了全局变量，不信看下面的例子
+
+function foo() {
+    var a = b = 1;
+}
+foo();
+
+console.log(typeof a);  // ‘undefined’
+console.log(typeof b);  // ‘number  
+
+在一条语句里定义多个变量的方式使用，号分隔
+var a=1,b=1;
+</code></pre>
+
+<p><strong>try catch语句</strong></p>
+
+<pre><code>try {    //工作流程首先执行try,catch中的代码
+    throw "test";    //如果抛出了异常  ，如果没有发生异常catch中的代码就会被忽略掉
+} catch (ex) {    //会由catch去捕获
+    console.log(ex); // test    //并执行
+} finally {    //finally 不管有没有异常，finally 都会执行
+    console.log('finally');
+}
+
+javascript中try...catch可以有三种形式
+try {
+    throw "test";
+} catch (ex) {
+    console.log(ex); // test
+}
+
+try {
+    throw "test";
+}finally {
+    console.log('finally');
+}
+
+//还有一种就是两者皆有
+try {
+    throw "test";
+} catch (ex) {
+    console.log(ex); // test
+} finally {
+    console.log('finally');
+}
+</code></pre>
+
+<p><em>例子1</em></p>
+
+<pre><code>try {
+    // do sth.
+} finally {
+    console.log('finally');
+}
+//不管有没有异常最后都有执行finally中的内容
+</code></pre>
+
+<p><em>例子2</em></p>
+
+<pre><code>try {
+    try {
+        throw new Error("oops");
+    }
+    finally {
+        console.log("finally");
+    }
+    //内部try没有catch，那么他会跳到最近的catch，也就是外层的catch去处理，再跳出block之前需要先执行finally
+}
+catch (ex) {
+    console.error("outer", ex.message);
+}
+//所以这里的执行结果
+"finally"
+"outer" "oops"
+</code></pre>
+
+<p><em>例子3</em></p>
+
+<pre><code>try {
+  try {
+    throw new Error("oops");
+  }
+  catch (ex) {
+    console.error("inner", ex.message);
+  }
+  finally {
+    console.log("finally");
+  }
+}
+catch (ex) {
+  console.error("outer", ex.message);
+}//由于内部异常已经处理过，所以不会再跳出到外部处理
+执行结果
+"inner" "oops"
+"finally"
+</code></pre>
+
+<p><em>例子4</em></p>
+
+<pre><code>try {
+  try {
+    throw new Error("oops");
+  }
+  catch (ex) {
+    console.error("inner", ex.message);
+    throw ex;
+  }
+  finally {
+    console.log("finally");
+  }
+}
+catch (ex) {
+  console.error("outer", ex.message);
+}//由于内部catch再次抛出异常就会由外部catch来处理
+执行结果是
+"inner" "oops"
+"finally"
+"outer" "oops"
+</code></pre>
+
+<p><strong>function语句</strong></p>
+
+<p><em>函数声明</em></p>
+
+<pre><code>fd(); // true
+function fd() {
+    // do sth.
+    return true;
+}
+</code></pre>
+
+<p><em>函数表达式</em></p>
+
+<pre><code>fe(); // TypeError
+var fe = function() {  //定义变量fe，然后把一个匿名函数赋值给fe
+    // do sth.
+};
+</code></pre>
+
+<p><em>两者区别在函数声明前面调用函数也是可以的，函数表达式就不可以。</em></p>
+
+<p><strong>for…in语句</strong></p>
+
+<pre><code>var p;
+var obj = {x : 1, y: 2}
+
+for (p in obj) {
+}
+</code></pre>
+
+<ol>
+  <li>顺序不确定</li>
+  <li>enumerable为false时不会出现</li>
+  <li>for in对象属性时受原型链影响</li>
+</ol>
+
+<p><strong>switch语句</strong></p>
+
+<p><em>例子1</em>
+    var val = 2;</p>
+
+<pre><code>switch(val) {
+    case 1:
+        console.log(1);
+        break;
+    case 2:
+        console.log(2);    //val==2,会执行这段代码
+        break;             //使用 break 来阻止代码自动地向下一个 case 运行。
+    default:               //使用 default 关键词来规定匹配不存在时做的事情
+        console.log(0);
+        break;
+}
+</code></pre>
+
+<p><em>例子2</em></p>
+
+<pre><code>var val = 2;
+
+switch(val) {
+    case 1:
+        console.log(1);
+    case 2:
+        console.log(2);
+    default:
+        console.log(0);
+}
+//输出2,0
+</code></pre>
+
+<p><em>例子3</em></p>
+
+<pre><code>var val = 2;
+
+switch(val) {
+    case 1:
+    case 2:
+    case 3:
+        console.log(123);
+        break;
+    case 4:
+    case 5:
+        console.log(45); 
+        break;
+    default:
+        console.log(0);
+}
+//输出123
+</code></pre>
+
+<p><strong>循环语句while</strong></p>
+
+<pre><code>while (条件)
+{
+    需要执行的代码
+}
+</code></pre>
+
+<p><em>例子</em></p>
+
+<pre><code>var x="",i=0;
+while (i&lt;5){
+    x=x + "该数字为 " + i ;
+    i++;
+}
+console.log(x);
+</code></pre>
+
+<p><strong>do/while 循环</strong></p>
+
+<pre><code>do
+{
+    需要执行的代码
+}
+while (条件);
+</code></pre>
+
+<p><em>例子</em></p>
+
+<pre><code>var x="",i=0;
+do{
+    x=x + "该数字为 " + i;
+    i++;
+}
+while (i&lt;5)  
+console.log(x)
+//该数字为 0该数字为 1该数字为 2该数字为 3该数字为 4
+</code></pre>
+
+<p><strong>JavaScript for 循环</strong></p>
+
+<pre><code>cars=["BMW","Volvo","Saab","Ford"];
+for (var i=0;i&lt;cars.length;i++){
+    console.log(cars[i])
+}
+// BMW
+// Volvo
+// Saab
+// For
+</code></pre>
+
+<blockquote>
+  <p>不同类型的循环</p>
+</blockquote>
+
+<p>JavaScript 支持不同类型的循环：</p>
+
+<p><strong>for</strong> - 循环代码块一定的次数</p>
+
+<p><strong>for/in</strong> - 循环遍历对象的属性</p>
+
+<p><strong>while</strong> - 当指定的条件为 true 时循环指定的代码块</p>
+
+<p><strong>do/while</strong> - 同样当指定的条件为 true 时循环指定的代码块</p>
+
+<p><strong>with语句</strong></p>
+
+<p>*with 语句可以方便地用来引用某个特定对象中已有的属性，但是不能用来给对象添加属性。要给对象创建新的属性，必须明确地引用该对象 *</p>
+
+<p>语法格式</p>
+
+<pre><code>with(object instance) 
+{ 
+        //代码块 
+}  
+</code></pre>
+
+<p>*举例 *</p>
+
+<pre><code>function Lakers() {
+   this.name = "kobe bryant";
+   this.age = "28";
+   this.gender = "boy";
+}
+var people=new Lakers();
+console.log(people)
+with(people)
+{
+   var str = "姓名: " + name + "&lt;br&gt;";
+   str += "年龄：" + age + "&lt;br&gt;";
+   str += "性别：" + gender;
+   document.write(str);
+}
+// 姓名: kobe bryant
+// 年龄：28
+// 性别：boy
+</code></pre>
+
+<ol>
+  <li>让JS引擎优化更难</li>
+  <li>可读性差</li>
+  <li>可被变量定义代替</li>
+  <li>严格模式下被禁用</li>
+</ol>
+
+<blockquote>
+  <p>JavaScript 严格模式</p>
+</blockquote>
+
+<p><em>严格模式是一种特殊的执行模式，
+它修复了部分语言上的不足，提供更强的错误检查，并增强安全性。</em></p>
+
+<pre><code>function func() {
+    'use strict';
+}
+
+'use strict';
+function func() {
+  
+}
+</code></pre>
+
+<p><strong>不允许用with</strong></p>
+
+<pre><code>!function() {
+     with({x : 1}) {
+           console.log(x);
+      }
+}();
+//输出1
+
+!function() {
+    'use strict';
+     with({x : 1}) {
+            console.log(x);
+      }
+}();
+SyntaxError报错
+</code></pre>
+
+<p><strong>不允许未声明的变量被赋值</strong></p>
+
+<pre><code>!function() {
+     x = 1;    //全局变量
+      console.log(window.x);
+}();
+//输出1
+
+!function() {
+    'use strict';
+     x = 1;
+      console.log(window.x);
+}();
+//ReferenceError
+//在use strict如果没有被声明的变量会报错
+</code></pre>
+
+<p><strong>arguments变为参数的静态副本</strong></p>
+
+<p>arguments.length 属性返回函数调用过程接收到的参数个数：
+arguments属性返回函数调用过程接收到的值</p>
+
+<p><em>一般模式下</em></p>
+
+<pre><code>!function(a) {
+    arguments[0] = 100;//给函数第一个值变成100
+    console.log(a);//输出的a变成100
+}(1);
+//输出100
+
+!function(a) {
+    arguments[0] = 100;
+    console.log(a);
+}();//如果()没有传值arguments长度为空所以更改arguments的值不成立
+输出undefined
+</code></pre>
+
+<p><em>严格模式下</em></p>
+
+<pre><code>!function(a) {
+    'use strict';
+    arguments[0] = 100;
+    console.log(a);
+}(1);
+//1
+
+!function(a) {
+    'use strict';
+    arguments[0].x = 100;
+    console.log(a.x);
+}({x:1});
+//100
+</code></pre>
+
+<p><strong>delete参数、函数名报错</strong></p>
+
+<p>一般模式下</p>
+
+<pre><code>!function(a) {
+    console.log(delete a);
+}(1);
+//false
+</code></pre>
+
+<p>‘use strict’;模式下</p>
+
+<pre><code>!function(a) {
+    'use strict';
+    delete a;
+}(1);
+SyntaxError报错语法错误
+</code></pre>
+
+<p><strong>delete不可配置的属性报错</strong></p>
+
+<p>一般模式下</p>
+
+<pre><code>!function(a) {
+    var obj = {};
+    Object.defineProperty(obj, 
+        'a', {configurable : false});
+    console.log(delete obj.a);
+}(1);
+//false
+</code></pre>
+
+<p>‘use strict’;模式下</p>
+
+<pre><code>!function(a) {
+    'use strict';
+    var obj = {};
+    Object.defineProperty(obj, 
+        'a', {configurable : false});
+    delete obj.a;
+}(1);
+//TypeError报错
+</code></pre>
+
+<p><strong>对象字面量重复属性名报错</strong></p>
+
+<p>一般模式下</p>
+
+<pre><code>!function() {
+    var obj = {x : 1, x : 2};//对象属性字面量去重复去写属性，这样也是合法的，属性以最后一个为准
+    console.log(obj.x);
+}();
+//输出为2
+</code></pre>
+
+<p>‘use strict’;模式下</p>
+
+<pre><code>!function() {
+    'use strict';
+    var obj = {x : 1, x : 2};
+}();
+
+//严格模式下
+//SyntaxError报错
+</code></pre>
+
+<p><strong>禁止八进制字面量</strong></p>
+
+<p>一般模式下</p>
+
+<pre><code>!function() {
+    console.log(0123);//8进制的值
+}();
+//输出83
+</code></pre>
+
+<p>在严格模式下是不允许8进制</p>
+
+<pre><code>!function() {
+    'use strict';
+    console.log(0123);
+}();
+//SyntaxError报错语法错误
+</code></pre>
+
+<p><strong>eval, arguments变为关键字，不能作为变量、函数名</strong></p>
+
+<p>一般模式</p>
+
+<pre><code>!function() {
+    function eval(){}
+    console.log(eval);
+}();
+//function eval(){}
+</code></pre>
+
+<p>严格模式</p>
+
+<pre><code>!function() {
+    'use strict';
+    function eval(){}
+}();
+//SyntaxError语法错误
+</code></pre>
+
+<p><strong>eval独立作用域</strong></p>
+
+<p>一般模式</p>
+
+<pre><code>!function() {
+    eval('var evalVal = 2;');      //在eval函数下定义变量evalVal等于数字2
+    console.log(typeof evalVal);   //evalVal所在的函数内部仍然可以拿到 evalVal
+}();
+//所以输出number
+</code></pre>
+
+<p>严格模式</p>
+
+<pre><code>!function() {
+    'use strict';
+    eval('var evalVal = 2;');    //eval代码会在独立作用域执行
+    console.log(typeof evalVal); //这里拿evalVal是拿不到的
+}();
+//所以输出undefined
+</code></pre>
+
+<h4 id="section-1">严格模式总结</h4>
+
+<blockquote>
+  <p>不允许用with
+所有变量必须声明, 赋值给为声明的变量报错，而不是隐式创建全局变量。
+eval中的代码不能创建eval所在作用域下的变量、函数。而是为eval单独创建一个作用域，并在eval返回时丢弃。
+函数中得特殊对象arguments是静态副本，而不像非严格模式那样，修改arguments或修改参数变量会相互影响。
+删除configurable=false的属性时报错，而不是忽略
+禁止八进制字面量，如010 (八进制的8)
+eval, arguments变为关键字，不可作为变量名、函数名等
+&gt;一般函数调用时(不是对象的方法调用，也不使用apply/call/bind等修改this)this指向null，而不是全局对象。
+若使用apply/call，当传入null或undefined时，this将指向null或undefined，而不是全局对象。
+试图修改不可写属性(writable=false)，在不可扩展的对象上添加属性时报TypeError，而不是忽略。
+arguments.caller, arguments.callee被禁用</p>
+</blockquote>
+
+<p><strong>严格模式是一种特殊的运行模式，
+它修复了部分语言上的不足，提供更强的错误检查，并增强安全性。</strong></p>
+
+              <!-- 多说评论框 start -->
+              		<!-- <span class="ds-thread-count" data-thread-key="/javascript/2016/12/05/javascript_jinjie3" data-count-type="comments"></span> -->
+					<div class="ds-thread" data-thread-key="http://yourdomain.com/javascript/2016/12/05/javascript_jinjie3" data-title="JavaScript 精粹 基础 进阶(3)语句" data-url="http://yourdomain.com/javascript/2016/12/05/javascript_jinjie3"></div>
+				<!-- 多说评论框 end -->
+				<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+				<script type="text/javascript">
+				var duoshuoQuery = {short_name:"huanghuanlian"};
+					(function() {
+						var ds = document.createElement('script');
+						ds.type = 'text/javascript';ds.async = true;
+						ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+						ds.charset = 'UTF-8';
+						(document.getElementsByTagName('head')[0]
+						 || document.getElementsByTagName('body')[0]).appendChild(ds);
+					})();
+				</script>
+				<!-- 多说公共JS代码 end -->
+
+
+				
+            </article>
+		</article>
+
+	</main>
+	<div class="sidebar" id="sidebar">
+	<div class="sidebar-top">
+		<aside class="widjhuh">
+			<h3 class="widget-title">最新文章</h3>
+			<ul class="minty_thumblist">
+				
+                  <li>
+                    <a href="/javascript/2016/12/05/javascript-jinjie4.html">
+
+                    	<span>JavaScript 精粹 基础 进阶(4)对象</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/05/javascript-jinjie2.html">
+
+                    	<span>JavaScript 精粹 基础 进阶(2)表达式和运算符</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/01/javascript-jinjie.html">
+
+                    	<span>JavaScript 精粹 基础 进阶(1)数据类型</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/git/2016/12/01/git-fenzhi.html">
+
+                    	<span>Git的版本和分支管理</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/markdown/2016/12/01/markdown-jbf.html">
+
+                    	<span>markdown 简明语法</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/canvas/2016/12/01/suibisw.html">
+
+                    	<span>Canvas 刮刮卡</span>
+                    </a>
+                  </li>
+				
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">最近访客</h3>
+			<ul class="minty_thumblist minty_thumblist_a ds-recent-visitors visitorsopi" data-num-items="20" data-avatar-size="38">
+
+			</ul>
+
+		    <!--多说js加载开始，一个页面只需要加载一次 -->
+		    <script type="text/javascript">
+		    var duoshuoQuery = {short_name:"huanghuanlian"};
+		    (function() {
+		        var ds = document.createElement('script');
+		        ds.type = 'text/javascript';ds.async = true;
+		        ds.src = 'http://static.duoshuo.com/embed.js';
+		        ds.charset = 'UTF-8';
+		        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+		    })();
+		    </script>
+		    <!--多说js加载结束，一个页面只需要加载一次 -->
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">分类目录</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+				
+				<li>
+					<a href="/categories/Markdown/" title="view all
+posts">
+						Markdown (2)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Canvas/" title="view all
+posts">
+						Canvas (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Git/" title="view all
+posts">
+						Git (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/JavaScript/" title="view all
+posts">
+						JavaScript (4)
+					</a>
+				</li>
+				
+			</ul>
+		</aside>
+	</div>
+
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">标签目录</h3>
+			<div class="tagcloud" id="tagcloud">
+				
+					<a href="/tag/Markdown/" title="view all
+posts">
+						Markdown
+					</a>
+				
+					<a href="/tag/Canvas/" title="view all
+posts">
+						Canvas
+					</a>
+				
+					<a href="/tag/Git/" title="view all
+posts">
+						Git
+					</a>
+				
+					<a href="/tag/JavaScript/" title="view all
+posts">
+						JavaScript
+					</a>
+				
+			</div>
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">友情链接</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+
+				<li>
+					<a href="http://blog.csdn.net/u013861109?viewmode=contents" target="blank">
+						csdn博客
+					</a>
+				</li>
+				<li>
+					<a href="http://www.imooc.com/" target="blank">
+						慕课网
+					</a>
+				</li>
+				<li>
+					<a href="http://www.dglives.com/" target="blank">
+						数字生活前端
+					</a>
+				</li>
+				<li>
+					<a href="http://www.jianshu.com/" target="blank">
+						简书
+					</a>
+				</li>
+				<li>
+					<a href="http://www.runoob.com/" target="blank">
+						菜鸟
+					</a>
+				</li>
+				<li>
+					<a href="http://www.qdfuns.com/" target="blank">
+						前端网
+					</a>
+				</li>
+			</ul>
+		</aside>
+	</div>
+
+
+	<script>
+	var box=document.getElementById("tagcloud").getElementsByTagName("a");
+	for(var i=0;i<box.length;i++){
+		var a =Math.round(Math.random()*20)/10;
+		box[i].style.fontSize=a+'em';
+	}
+	</script>
+
+</div>
+</div>
+	<footer id="footer">
+	<nav class="links">
+		<a href="">作品</a>
+		<a href="">关于本站</a>
+		<a href="">留言板</a>
+	</nav>
+	<div class="copyright">
+		© 2016 <a href="">继小鹏的前端博客</a>
+	</div>
+	<a href="javascript:pageScroll();" id="rocket" class=""></a>
+</footer>
+<script>
+var fhdb = document.getElementById("rocket");
+
+//获取页面可视区高度
+var dqy = document.documentElement.clientHeight;
+
+var main_left=$('#main').offset().left+$('#main').width()+16;
+
+//滚动条滚动时触发   在滚动的时候触发
+window.onscroll = function() {
+	var sTop = document.documentElement.scrollTop || document.body.scrollTop;
+	if (sTop >= dqy) {
+		$("#rocket").addClass('show');
+	} else {
+		$("#rocket").removeClass('show');
+	}
+}
+
+function pageScroll() {
+	//把内容滚动指定的像素数（第一个参数是向右滚动的像素数，第二个参数是向下滚动的像素数）
+	window.scrollBy(0, -100);
+	//延时递归调用，模拟滚动向上效果
+	scrolldelay = setTimeout('pageScroll()', 30);
+	//获取scrollTop值，声明了DTD的标准网页取document.documentElement.scrollTop，否则取document.body.scrollTop；因为二者只有一个会生效，另一个就恒为0，所以取和值可以得到网页的真正的scrollTop值
+	var sTop = document.documentElement.scrollTop + document.body.scrollTop;
+	//判断当页面到达顶部，取消延时代码（否则页面滚动到顶部会无法再向下正常浏览页面）
+	if (sTop == 0) clearTimeout(scrolldelay)
+
+}
+
+
+
+</script>
+</body>
+</html>
