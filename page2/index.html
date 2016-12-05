@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>JavaScript 精粹 基础 进阶(1)数据类型</title>
+<title>继小鹏的前端博客 | 热爱编程，关注前端开发技术</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
 	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
@@ -59,174 +59,37 @@
 </header>
 	<div id="container" class="clearfix">
 	<main id="main" class="hfeed">
-		<article id="post-157" class="post-157 hentry">
-			<header class="entry-header">
-				<h1 class="entry-title">JavaScript 精粹 基础 进阶(1)数据类型</h1>
-				<div class="entry-meta">2016-12-01 <span class="dot">•</span>JavaScript<span class="dot">•</span>黄继鹏</div>
-			</header>
-			<article class="post-content">
-              <p><img src="http://upload-images.jianshu.io/upload_images/3877962-a5cb0943cd4c3e52.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
-
-<h4 id="section">数据类型</h4>
-
-<blockquote>
-  <p>JavaScript六种数据类型</p>
-</blockquote>
-
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-98de2022473cc4a3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
-
-<p><strong>JavaScript一共有六种数据类型，其中有五种原始类型，和一种对象类型。</strong></p>
-
-<blockquote>
-  <p>JavaScript 隐式转换</p>
-</blockquote>
-
-<pre><code>var x='The answer'+42;//The answer42
-var y=42+'The answer';//42The answer
-</code></pre>
-
-<p><strong>这里的加号可以理解为字符串的拼接</strong></p>
-
-<pre><code>var x="37"-7;    //30
-var y="37"+7;    //377
-</code></pre>
-
-<p><strong>这里的减号会理解为减法运算，而加号会理解为字符串拼接</strong></p>
-
-<p><em>等于判断</em></p>
-
-<pre><code>var x="1.23"==1.23;//true  当等于一边是字符串一边是数字的时候会尝试把字符串转换为数字再进行比较
-var y=0==false;//true
-var e=null==undefined;//true
-var c=new Object()==new Object();//false
-var d=[1,2]==[1,2];//false
-</code></pre>
-
-<p><strong>类型不同，尝试类型转换和比较</strong></p>
-
-<p>类型不同，尝试类型转换和比较:  <br />
-null == undefined 相等  <br />
-number == string 转number     1 == “1.0” // true  <br />
-boolean == ?  转number       1 == true  // true  <br />
-object == number | string 尝试对象转为基本类型  new String(‘hi’) == ‘hi’ // true  <br />
-其它：false</p>
-
-<blockquote>
-  <p>严格等于</p>
-</blockquote>
-
-<p><strong>a===b</strong>
-顾名思义，它首先会判断等号两边的类型，如果两边类型不同，返回<code>false</code>  <br />
-如果类型相同，  <br />
-类型相同，同===</p>
-
-<pre><code>var h=null===null;//true   
-var f=undefined===undefined;//true
-var g=NaN===NaN;//false    number类型它和任何值比较都不会相等，包括和它自己
-var l=new Object()===new Object();//false   对象应该用引用去比较，而不是用值去比较，因为它们不是完全相同的对象。所以我们定义对象x和y去比较只有这样才会是true
-</code></pre>
-
-<blockquote>
-  <p>JavaScript 包装对象</p>
-</blockquote>
-
-<p>原始类型<code>number</code>，<code>string</code>，<code>boolean</code>这三种原始类型都有对应的包装类型。</p>
-
-<pre><code>var a = “string”;
-alert(a.length);//6
-a.t = 3;
-alert(a.t);//undefined
-</code></pre>
-
-<p><strong>字符串，当把一个基本类型尝试以对象的方式去使用它的时候，比如访问length属性，js会很智能的把基本类型转换为对应的包装类型对象。相当于new了string。当完成访问后，这个临时对象会被销毁掉。所以a.t赋值为3后再去输出a.t值是undefined</strong></p>
-
-<blockquote>
-  <p>JavaScript 类型检测</p>
-</blockquote>
-
-<p><strong>类型检测有以下几种</strong></p>
-
-<ol>
-  <li>typeof</li>
-  <li>instanceof</li>
-  <li>Object.prototype.toString</li>
-  <li>constructor</li>
-  <li>duck type</li>
-</ol>
-
-<p><strong>最常见的<code>typeof</code>它会返回一个字符串，非常适合函数对象和基本类型的判断</strong></p>
-
-<pre><code>typeof 100 === “number”
-typeof true === “boolean”
-typeof function () {} === “function”
-
-typeof(undefined) ) === “undefined”
-typeof(new Object() ) === “object”
-typeof( [1， 2] ) === “object”
-typeof(NaN ) === “number”
-typeof(null) === “object”
-</code></pre>
-
-<p><em><code>typeof</code>判断一些基本类型，函数对象的时候非常方便。但是对于其他对象的类型判断就会没有办法了。比如说想判断一个对象是不是数组，如果用<code>typeof</code>会返回<code>object</code>显然不是我想要的。</em></p>
-
-<p><strong>对于判断对象类型的话，常用<code>obj instanceof Object</code></strong></p>
-
-<pre><code>[1, 2] instanceof Array === true
-new Object() instanceof Array === false
-
-function person(){};
-function student(){};
-student.prototype=new person();
-var bosn =new student();
-console.log(bosn instanceof student)//true
-var one =new person();
-console.log(one instanceof person)//true
-console.log(bosn instanceof person)//true
-</code></pre>
-
-<p><strong>Object.prototype.toString</strong></p>
-
-<p>**IE6/7/8 Object.prototype.toString.apply(null) 返回”[object Object]”
-**</p>
-
-<pre><code>Object.prototype.toString.apply([]); === “[object Array]”;
-Object.prototype.toString.apply(function(){}); === “[object Function]”;
-Object.prototype.toString.apply(null); === “[object Null]”
-Object.prototype.toString.apply(undefined); === “[object Undefined]”
-</code></pre>
-
-<p><code>typeof</code>
-适合基本类型及function检测，遇到null失效。</p>
-
-<p><code>[[Class]]</code>
-通过{}.toString拿到，适合内置对象和基元类型，遇到null和undefined失效(IE678等返回[object Object])。</p>
-
-<p><code>instanceof</code>
-适合自定义对象，也可以用来检测原生对象，在不同iframe和window间检测时失效。</p>
+		<ul>
+			
+			　　<li class="entry_list">
+					<a href="/markdown/2016/12/01/markdown.html">
+						<h2 class="entry-title">献给写作者的 Markdown 新手指南</h2>
+						<div class="entry-meta">2016-12-01 <span class="dot">•</span>Markdown<span class="dot">•</span>黄继鹏</div>
+						<div class="entry-summary">
+			              <p>
+			                <p><img src="https://oc5n93kni.qnssl.com/H5FullscreenPage.png" alt="" /></p>
 
 
-              <!-- 多说评论框 start -->
-              		<!-- <span class="ds-thread-count" data-thread-key="/javascript/2016/12/01/javascript_jinjie" data-count-type="comments"></span> -->
-					<div class="ds-thread" data-thread-key="http://yourdomain.com/javascript/2016/12/01/javascript_jinjie" data-title="JavaScript 精粹 基础 进阶(1)数据类型" data-url="http://yourdomain.com/javascript/2016/12/01/javascript_jinjie"></div>
-				<!-- 多说评论框 end -->
-				<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-				<script type="text/javascript">
-				var duoshuoQuery = {short_name:"huanghuanlian"};
-					(function() {
-						var ds = document.createElement('script');
-						ds.type = 'text/javascript';ds.async = true;
-						ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-						ds.charset = 'UTF-8';
-						(document.getElementsByTagName('head')[0]
-						 || document.getElementsByTagName('body')[0]).appendChild(ds);
-					})();
-				</script>
-				<!-- 多说公共JS代码 end -->
+			              </p>
+			            </div>
+					</a>
+				</li>
+			
+		</ul>
+
+		<div class="paginator_po">
+			<!-- 分页链接 -->
+		    
+		        
+		            <a href="/">上一页</a>
+		        
+
+		        
+		    
+		    <!-- 分页链接 -->
+		</div>
 
 
-				
-            </article>
-		</article>
 
 	</main>
 	<div class="sidebar" id="sidebar">
@@ -234,13 +97,6 @@ Object.prototype.toString.apply(undefined); === “[object Undefined]”
 		<aside class="widjhuh">
 			<h3 class="widget-title">最新文章</h3>
 			<ul class="minty_thumblist">
-				
-                  <li>
-                    <a href="/javascript/2016/12/05/javascript-mxdx.html">
-
-                    	<span>JavaScript面向对象</span>
-                    </a>
-                  </li>
 				
                   <li>
                     <a href="/javascript/2016/12/05/javascript-cjdx.html">
@@ -274,6 +130,13 @@ Object.prototype.toString.apply(undefined); === “[object Undefined]”
                     <a href="/javascript/2016/12/05/javascript-jinjie2.html">
 
                     	<span>JavaScript 精粹 基础 进阶(2)表达式和运算符</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/01/javascript-jinjie.html">
+
+                    	<span>JavaScript 精粹 基础 进阶(1)数据类型</span>
                     </a>
                   </li>
 				
@@ -429,6 +292,36 @@ posts">
 
 </div>
 </div>
+
+
+
+<!-- <h2>继小鹏的前端博客 | 热爱编程，关注前端开发技术</h2>
+
+
+<h4>Category</h4>
+<ul>
+    
+    <li><a href="/categories/Markdown/" title="view all
+posts">Markdown 2</a>
+    </li>
+    
+    <li><a href="/categories/Canvas/" title="view all
+posts">Canvas 1</a>
+    </li>
+    
+    <li><a href="/categories/Git/" title="view all
+posts">Git 1</a>
+    </li>
+    
+    <li><a href="/categories/JavaScript/" title="view all
+posts">JavaScript 7</a>
+    </li>
+    
+</ul> -->
+
+
+
+
 	<footer id="footer">
 	<nav class="links">
 		<a href="">作品</a>
