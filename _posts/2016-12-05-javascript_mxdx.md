@@ -1,0 +1,287 @@
+---
+layout: post
+title: JavaScript面向对象
+subtitle: JavaScript面向对象
+author: 继小鹏
+date: 2016-12-05 17:54:39 +0800
+category: JavaScript
+tag: JavaScript
+---
+对象这个词如雷贯耳，同样出名的一句话：XXX语言中一切皆为对象！
+
+对象究竟是什么？什么叫面向对象编程？
+
+####理解对象
+
+
+
+>对象（object），台湾译作物件，是面向对象（Object Oriented）中的术语，既表示客观世界问题空间（Namespace）中的某个具体的事物，又表示软件系统解空间中的基本元素。        
+
+>在软件系统中，对象具有唯一的标识符，对象包括属性（Properties）和方法（Methods），属性就是需要记忆的信息，方法就是对象能够提供的服务。在面向对象（Object Oriented）的软件中，对象（Object）是某一个类（Class）的实例（Instance）。 —— 维基百科
+
+对象是从我们现实生活中抽象出来的一个概念，俗话说物以类聚，人以群分，我们也经常说有一类人，他们专业给隔壁家制造惊喜，也就是我们说的老王
+
+这里面就有两个重要概念
+
+1. 类：无论是物以类聚，还是有一类人，这里说的类并不是实际存在的事物，是一些特征、是一些规则等
+2. 老王：这是个实物，是现实存在，和类的关系就是符合类的描述
+
+对应到计算机术语，类就是class，定义了一些特点（属性 property）和行为（方法 method），比如说给隔壁制造惊喜的这类人有几个特征
+
+1. 长相文质彬彬，为人和善
+2. 姓王
+
+同时这些人还有技能（行为）
+
+1. 帮隔壁修下水道
+2. 亲切问候对方儿子
+
+我们刚才就描述了一个类，用代码表示就是
+
+	class LaoWang {
+		string name;
+		string familyNmae = "wang";
+		bool isKind = true;
+
+		LaoWang(string name) {
+			this.name = name;
+		}
+
+		void fixPipe() {
+			statement
+		}
+
+		void greetSon() {
+			statement
+		}
+	}
+
+符合这些特点并且有上述行为能力的，我们称之为老王，从描述我们就可以看出来`LaoWang`
+不是指某个人，而是指一类人，符合上述描述的都可能是老王！用计算机术语说就是没个活蹦乱跳的老王都是类`LaoWang`的**实例**。用代码描述就是
+
+
+	LaoWang lw1 = new LaoWang("yi");
+	LaoWang lw2 = new LaoWang("er");
+	...
+	LaoWang lw1000000 = new LaoWang("baiwan");
+
+可以看出我们能够根据类`LaoWang`实例化出成千百万个老王来，老王不是一个人在战斗！
+
+####封装
+
+刚才我们说的已经涉及到了对象的一个重要特性——封装
+
+以前我们可能会有这样的描述
+
+	王一长相文质彬彬，为人和善，姓王，有技能帮隔壁修下水道、亲切问候对方儿子
+	王二长相文质彬彬，为人和善，姓王，有技能帮隔壁修下水道、亲切问候对方儿子
+	王三长相文质彬彬，为人和善，姓王，有技能帮隔壁修下水道、亲切问候对方儿子
+	王四长相文质彬彬，为人和善，姓王，有技能帮隔壁修下水道、亲切问候对方儿子
+	...
+	王百万长相文质彬彬，为人和善，姓王，有技能帮隔壁修下水道、亲切问候对方儿子
+
+有了对象的思想我们可以这样说了，首先定义一类人
+
+
+	有那么一类人
+
+	1. 长相文质彬彬，为人和善
+	2. 姓王
+
+	同时这些人还有技能（行为）
+
+	1. 帮隔壁修下水道
+	2. 亲切问候对方儿子
+
+然后是实例化，也就是对号入座
+
+	王一是老王
+	王二是老王
+	...
+	王百万是老王
+
+也就是我们通过类来描述一套规则，其中包括
+
+
+1. 属性
+2. 行为
+
+对于这个类实例化出的对象，也就是副歌这个类描述的对象，不用去关心对象细节，我们认为符合类的描述，就会有类规定的属性和方法，至于每个方法具体实现细节不去关注，比如老王怎么给人修水管，我知道他有修水管的技能，然后用的时候让他去修就好了（只要不修我家的）
+
+我们称这种隐藏细节的特征叫做封装
+
+####JavaScript 对象
+
+因为JavaScript是基于原型（prototype）的，没有类的概念（ES6有了，这个暂且不谈），我们能接触到的都是对象，真正做到了一切皆为对象
+
+所以我们再说对象就有些模糊了，很多同学会搞混类型的对象和对象本身这个概念，我们在接下来的术语中不提对象，我们使用和Java类似的方式，方便理解
+
+	function People(name) {
+		this.name = name;
+
+		this.printName = function() {
+			console.log(name);
+		};
+	}
+
+
+这是一个函数，也是对象，我们称之为`类`
+
+    var p1 = new People('Byron');
+
+p1是People类new出来的对象，我们称之为`实例`
+
+类和实例的关系用我们码农的专业眼光看起来是这样的
+
+
+![Paste_Image.png](http://upload-images.jianshu.io/upload_images/3877962-00ea0df05798f4bf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+类就是搬砖的模具，实例就是根据模具印出来的砖块，一个模具可以印出（实例化）多个实例，每个实例都符合类的特征，这个例子和我们JavaScript中概念很像
+
+在Java中**类**不能称之为对象，如同`老王`
+是一个概念、规则的集合，但是在JavaScript中，本身没有类的概念，我们需要用对象模拟出类，然后用类去创建对象
+
+我们的例子中模具虽然是**“类”**，但同时也是个存在的实物，是个对象，我们为了方便理解，称之为`类`
+
+####Object
+
+我们知道JavaScript有`null`、`undefined`、`number`、`boolean`、`string`五种简单类型，`null`和`undefined`分别表示没有声明和声明后没有初始化的变量、对象，是两个简单的值，其余三个有对应的包装对象`Number`、`Boolean`、`String`
+
+其它的就都是`object`类型了，比如常用的`Array`、`Date`、`RegExp`等，我们最常用的`Function`也是个对象，虽然
+
+
+    typeof function(){}; // "function"
+
+但是Function实例和其它类型的实例没有什么区别，都是对象，只不过`typeof`操作符对其做了特殊处理
+
+在JavaScript中使用对象很简单，使用new操作符执行`Obejct`函数就可以构建一个最基本的对象
+
+    var obj = new Object();
+
+我们称new 调用的函数为构造函数，构造函数和普通函数区别仅仅在于是否使用了`new`来调用，它们的返回值也会不同
+
+所谓“构造函数”，就是专门用来生成“对象”的函数。它提供模板，作为对象的基本结构。一个构造函数，可以生成多个对象，这些对象都有相同的结构
+
+我们可以通过`.`来位对象添加属性和方法
+
+	obj.name = 'Byron';
+	obj.printName = function(){
+	    console.log(obj.name);
+	};
+
+这么写比较麻烦，我们可以使用字面量来创建一个对象，下面的写法和上面等价
+
+	var obj = {
+		name: 'Byron',
+		printNmae: function() {
+			console.log(obj.name);
+		}
+	}
+
+
+
+####构造对象
+
+
+我们可以抛开类，使用字面量来构造一个对象
+
+	var obj1 = {
+		nick: 'Byron',
+		age: 20,
+		printName: function() {
+			console.log(obj1.nick);
+		}
+	}
+	var obj2 = {
+		nick: 'Casper',
+		age: 25,
+		printName: function() {
+			console.log(obj2.nick);
+		}
+	}
+
+**问题**
+
+这样构造有两个明显问题
+
+1. 太麻烦了，每次构建一个对象都是复制一遍代码
+2. 如果想个性化，只能通过手工赋值，使用者必需了解对象详细
+
+这两个问题其实也是我们不能抛开类的重要原因，也是类的作用
+
+####使用函数做自动化
+
+	function createObj(nick, age) {
+		var obj = {
+			nick: nick,
+			age: age,
+			printName: function() {
+				console.log(this.nick);
+			}
+		};
+		return obj;
+	}
+
+	var obj3 = createObj('Byron', 30);
+	obj3.printName();
+
+我们通过创建一个函数来实现自动创建对象的过程，至于个性化通过参数实现，开发者不必关注细节，只需要传入指定参数即可
+
+**问题**
+
+这种方法解决了构造过程复杂，需要了解细节的问题，但是构造出来的对象类型都是Object，没有识别度
+
+####有型一些
+
+要想让我们构造出的函数有型一些，我们需要了解一些额外知识
+
+1. function作为构造函数（通过new操作符调用）的时候会返回一个类型为function的name的对象
+
+2. function可以接受参数，可以根据参数来创建相同类型不同值的对象
+
+3. function实例作用域内有一个constructor属性，这个属性就可以指示其构造器
+
+**new**
+
+new 运算符接受一个函数 F 及其参数：new F(arguments...)。这一过程分为三步：
+
+1. 创建类的实例。这步是把一个空的对象的 **proto** 属性设置为 F.prototype 。
+
+2. 初始化实例。函数 F 被传入参数并调用，关键字 this 被设定为该实例。
+
+3. 返回实例。
+
+根据这几个特性，我们可以改造一下创建对象的方式
+
+	function Person(nick, age) {
+		this.nick = nick;
+		this.age = age;
+		this.sayName = function() {
+			console.log(this.nick);
+		}
+	}
+	var p1 = new Person();
+
+
+**instanceof**
+
+instanceof是一个操作符，可以判断**对象**是否为某个类型的实例
+
+    p1 instanceof Person; // true
+    p1 instanceof Object;// true
+
+instanceof判断的是对象
+
+    1 instanceof Number; // false
+
+**问题**
+
+构造函数在解决了上面所有问题，同时为实例带来了类型，但可以注意到每个实例printName方法实际上作用一样，但是每个实例要重复一遍，大量对象存在的时候是浪费内存
+
+
+
+
+
+
+
+>未完
