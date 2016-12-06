@@ -78,25 +78,24 @@ a {
  * Blockquotes
  */
 blockquote {
-  color: #828282;
   border-left: 4px solid #999;
   padding: 10px 15px;
-  font-size: 18px;
-  letter-spacing: 1px;
+  
+  letter-spacing: 0px;
   font-style: italic; 
   background-color: whitesmoke;
 }
   blockquote > :last-child {
     margin-bottom: 0; }
 
-blockquote p{ margin: 0 !important; font-size: 15px;}
+blockquote p{ margin: 0 !important; }
 
 /**
  * Code formatting
  */
 pre,
 code {
-  font-size: 12px;
+  font-size: 14px;
   border: 1px solid #e8e8e8;
   border-radius: 3px;
   background: #fdf6e3; }
@@ -111,7 +110,7 @@ pre {
     border: 0;
     padding-right: 0;
     padding-left: 0; 
-    
+    color: #555;
   }
 
 /**
