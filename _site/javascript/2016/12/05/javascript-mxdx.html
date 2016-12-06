@@ -367,9 +367,568 @@ p1 instanceof Object;// true
 
 <p>构造函数在解决了上面所有问题，同时为实例带来了类型，但可以注意到每个实例printName方法实际上作用一样，但是每个实例要重复一遍，大量对象存在的时候是浪费内存</p>
 
+<h4 id="section-5">构造函数</h4>
+
+<ul>
+  <li>
+    <p>任何函数使用new表达式就是构造函数</p>
+  </li>
+  <li>
+    <p>每个<strong>函数</strong>都自动添加一个名称为prototype
+属性，这是一个对象</p>
+  </li>
+  <li>
+    <p>每个<strong>对象</strong>都有一个内部属性__proto__
+(规范中没有指定这个名称，但是浏览器都这么实现的) 指向其类型的prototype属性，类的实例也是对象，其<strong>**proto</strong>**属性指向“类”的prototype</p>
+  </li>
+</ul>
+
+<p><em>prototype</em></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-8dfce2b2d6264eed.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>通过图示我们可以看出一些端倪，实例可以通过<code>__prop__</code>访问到其类型的prototype属性，这就意味着类的prototype对象可以作为一个公共容器，供所有实例访问。</p>
+
+<h4 id="section-6">抽象重复</h4>
+
+<p>我们刚才的问题可以通过这个手段解决</p>
+
+<ul>
+  <li>
+    <p>所有实例都会通过原型链引用到类型的prototype</p>
+  </li>
+  <li>
+    <p>prototype相当于特定类型所有实例都可以访问到的一个公共容器</p>
+  </li>
+  <li>
+    <p>重复的东西移动到公共容器里放一份就可以了</p>
+  </li>
+</ul>
+
+<p>看下代码</p>
+
+<pre><code>function Person(nick, age) {
+    this.nick = nick;
+    this.age = age;
+}
+Person.prototype.sayName = function() {
+    console.log(this.nick);
+}
+
+var p1 = new Person(1, 2);
+console.log(p1);
+console.dir(p1);
+p1.sayName(); //1
+</code></pre>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-eff97ab844140719.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>这时候我们对应的关系是这样的</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-15fa541651ea4f67.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<h4 id="whats-this">What’s this?</h4>
+
+<p>由于运行期绑定的特性，JavaScript 中的 <code>this</code> 含义非常多，它可以是全局对象、当前对象或者任意对象，这完全取决于函数的调用方式</p>
+
+<p>随着函数使用场合的不同，this的值会发生变化。但是有一个总的原则，那就是this指的是，调用函数的那个对象</p>
+
+<h4 id="section-7">作为函数调用</h4>
+
+<p>在函数被直接调用时<code>this</code>绑定到全局对象。在浏览器中，<code>window</code> 就是该全局对象</p>
+
+<pre><code>console.log(this);
+
+function fn1() {
+    console.log(this);
+}
+
+fn1();
+</code></pre>
+
+<h4 id="section-8">内部函数</h4>
+
+<p>函数嵌套产生的内部函数的<code>this</code>不是其父函数，仍然是全局变量</p>
+
+<pre><code>function fn0() {
+    function fn() {
+        console.log(this);
+    }
+    fn();
+}
+
+fn0();
+</code></pre>
+
+<h4 id="settimeoutsetinterval">setTimeout、setInterval</h4>
+
+<p>这两个方法执行的函数this也是全局对象</p>
+
+<pre><code>document.addEventListener('click', function(e) {
+    console.log(this);
+    setTimeout(function() {
+        console.log(this);
+    }, 1000);
+}, false);
+</code></pre>
+
+<h4 id="section-9">作为构造函数调用</h4>
+
+<p>所谓构造函数，就是通过这个函数生成一个新对象（object）。这时，this就指这个新对象</p>
+
+<p>new 运算符接受一个函数 F 及其参数：new F(arguments…)。这一过程分为三步：</p>
+
+<ol>
+  <li>
+    <p>创建类的实例。这步是把一个空的对象的 <strong>proto</strong> 属性设置为 F.prototype 。</p>
+  </li>
+  <li>
+    <p>初始化实例。函数 F 被传入参数并调用，关键字 this 被设定为该实例。</p>
+  </li>
+  <li>
+    <p>返回实例。</p>
+  </li>
+</ol>
+
+<p>看例子</p>
+
+<pre><code>function Person(name) {
+    this.name = name;
+}
+Person.prototype.printName = function() {
+    console.log(this.name);
+};
+
+var p1 = new Person('Byron');
+var p2 = new Person('Casper');
+var p3 = new Person('Vincent');
+
+p1.printName();
+p2.printName();
+p3.printName();
+</code></pre>
+
+<h4 id="section-10">作为对象方法调用</h4>
+
+<pre><code>var obj1 = {
+	name: 'Byron',
+	fn: function() {
+		console.log(this);
+	}
+};
+
+obj1.fn();
+</code></pre>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-771cdc3c94b5c461.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p><strong>小陷阱</strong></p>
+
+<pre><code>var fn2 = obj1;
+
+fn2();
+</code></pre>
+
+<h4 id="dom">DOM对象绑定事件</h4>
+
+<p>在事件处理程序中<code>this</code>代表事件源DOM对象（低版本IE有bug，指向了window）</p>
+
+<pre><code>document.addEventListener('click', function(e) {
+	console.log(this);
+	var _document = this;
+	setTimeout(function() {
+		console.log(this);
+		console.log(_document);
+	}, 200);
+}, false);
+</code></pre>
+
+<h4 id="functionprototypebind">Function.prototype.bind</h4>
+
+<p>bind，返回一个新函数，并且使函数内部的this为传入的第一个参数</p>
+
+<pre><code>var obj1 = {
+	name: 'Byron',
+	fn: function() {
+		console.log(this);
+	}
+};
+obj1.fn();
+
+var fn3 = obj1.fn.bind(obj1);
+fn3();
+</code></pre>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-70730c54e10f4312.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<h4 id="callapplythis">使用call和apply设置this</h4>
+
+<p>call apply，调用一个函数，传入函数执行上下文及参数</p>
+
+<pre><code>fn.call(context, param1, param2...)
+
+fn.apply(context, paramArray)
+</code></pre>
+
+<p>语法很简单，第一个参数都是希望设置的<code>this</code>对象，不同之处在于<code>call</code>方法接收参数列表，而<code>apply</code>接收参数数组</p>
+
+<pre><code>fn2.call(obj1);
+fn2.apply(obj1);
+</code></pre>
+
+<h4 id="caller">caller</h4>
+
+<p>在函数<code>A</code>调用函数<code>B</code>时，被调用函数<code>B</code>会自动生成一个<code>caller</code>属性，指向调用它的函数对象，如果函数当前未被调用，或并非被其他函数调用，则<code>caller</code>为<code>null</code></p>
+
+<pre><code>function fn4() {
+	console.log(fn4.caller);
+
+	function fn() {
+		console.log(fn.caller);
+	}
+	fn();
+}
+
+fn4();
+</code></pre>
+
+<h4 id="arguments">arguments</h4>
+
+<ol>
+  <li>
+    <p>在函数调用时，会自动在该函数内部生成一个名为 arguments的隐藏对象</p>
+  </li>
+  <li>
+    <p>该对象类似于数组，可以使用[]运算符获取函数调用时传递的实参</p>
+  </li>
+  <li>
+    <p>只有函数被调用时，arguments对象才会创建，未调用时其值为null</p>
+
+    <p>function fn5(name, age) {
+     console.log(arguments);
+     name = ‘XXX’;
+     console.log(arguments);
+     arguments[1] = 30;
+     console.log(arguments);
+ }
+ fn5(‘Byron’, 20);</p>
+
+    <p>function arg() {
+     console.log(arguments)
+ }
+ arg()</p>
+  </li>
+</ol>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-75bf279d3457b9f9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<h4 id="callee">callee</h4>
+
+<p>当函数被调用时，它的arguments.callee对象就会指向自身，也就是一个对自己的引用</p>
+
+<p>由于arguments在函数被调用时才有效，因此arguments.callee在函数未调用时是不存在的（即null.callee），且解引用它会产生异常</p>
+
+<pre><code>function fn6() {
+	console.log(arguments.callee);
+}
+fn6();
+</code></pre>
+
+<p>匿名函数特好用</p>
+
+<pre><code>var i = 0;
+window.onclick = function() {
+	console.log(i);
+	if (i &lt; 5) {
+		i++;
+		setTimeout(arguments.callee, 200); //运行它自己了哈哈
+	}
+}
+</code></pre>
+
+<h4 id="section-11">函数的执行环境</h4>
+
+<p>JavaScript中的函数既可以被当作普通函数执行，也可以作为对象的方法执行，这是导致 this 含义如此丰富的主要原因</p>
+
+<p>一个函数被执行时，会创建一个执行环境（ExecutionContext），函数的所有的行为均发生在此执行环境中，构建该执行环境时，JavaScript 首先会创建 <code>arguments</code>变量，其中包含调用函数时传入的参数</p>
+
+<p>接下来创建作用域链，然后初始化变量。首先初始化函数的形参表，值为 arguments变量中对应的值，如果 arguments变量中没有对应值，则该形参初始化为<code>undefined</code>。</p>
+
+<p>如果该函数中含有内部函数，则初始化这些内部函数。如果没有，继续初始化该函数内定义的局部变量，需要注意的是此时这些变量初始化为 <code>undefined</code>，其赋值操作在执行环境（ExecutionContext）创建成功后，函数执行时才会执行，这点对于我们理解JavaScript中的变量作用域非常重要，最后为<code>this</code>变量赋值，会根据函数调用方式的不同，赋给<code>this</code>全局对象，当前对象等</p>
+
+<p>至此函数的执行环境（ExecutionContext）创建成功，函数开始逐行执行，所需变量均从之前构建好的执行环境（ExecutionContext）中读取</p>
+
+<h4 id="section-12">三种变量</h4>
+
+<ol>
+  <li>
+    <p>实例变量：（this）类的实例才能访问到的变量</p>
+  </li>
+  <li>
+    <p>静态变量：（属性）直接类型对象能访问到的变量</p>
+  </li>
+  <li>
+    <p>私有变量：（局部变量）当前作用域内有效的变量</p>
+  </li>
+</ol>
+
+<p>看个例子</p>
+
+<pre><code>function ClassA() {
+	var a = 1; //私有变量，只有函数内部可以访问
+	this.b = 2; //实例变量，只有实例可以访问
+}
+
+ClassA.c = 3; // 静态变量，也就是属性，类型访问
+
+console.log(a); // error
+console.log(ClassA.b) // undefined
+console.log(ClassA.c) //3
+
+var classa = new ClassA();
+console.log(classa.a); //undefined
+console.log(classa.b); // 2
+console.log(classa.c); //undefined
+</code></pre>
+
+<h4 id="section-13">原型链和继承</h4>
+
+<p>在一切开始之前回顾一下<code>类</code>、<code>实例</code>、<code>prototype</code>、<code>__proto__</code>的关系</p>
+
+<pre><code>function Person(nick, age) {
+	this.nick = nick;
+	this.age = age;
+}
+Person.prototype.sayName = function() {
+	console.log(this.nick);
+}
+
+var p1 = new Person();
+p1.sayName();
+</code></pre>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-cc020154b51491d8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<ol>
+  <li>我们通过函数定义了类<code>Person</code>，类（函数）自动获得属性<code>prototype</code></li>
+  <li>每个类的实例都会有一个内部属性<code>__proto__</code>，指向类的<code>prototype</code>属性</li>
+</ol>
+
+<h4 id="section-14">有趣的现象</h4>
+
+<p>我们定义一个数组，调用其<code>valueOf</code>方法</p>
+
+<pre><code>[1, 2, 3].valueOf(); // [1, 2, 3]
+</code></pre>
+
+<p>很奇怪的是我们在数组的类型Array中并不能找到<code>valueOf</code>的定义，根据之前的理论那么极有可能定义在了Array的<code>prototype</code>中用于实例共享方法，查看一下</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-d5203db102bae432.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>我们发现<code>Array</code>的<code>prototype</code>里面并未包含<code>valueOf</code>等定义，那么<code>valueOf</code>是哪里来的呢？</p>
+
+<p>一个有趣的现象是我们在Object实例的<code>__proto__</code>属性（也就是Object的prototype属性）中找到了找到了这个方法</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-2331a40e4293391b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>那么Array的实例为什么同样可以查找到Object的prototype里面定义的方法呢？</p>
+
+<h4 id="valueof">查找valueOf过程</h4>
+
+<p>因为任何类的<code>prototype</code>属性本质上都是个类<code>Object</code>的实例，所以<code>prototype</code>也和其它实例一样也有个<code>__proto__</code>内部属性，指向其类型<code>Object</code>的prototype</p>
+
+<p>我们大概可以知道为什么了，自己的类的prototype找不到的话，还会找prototypr的类型的prototype属性，这样层层向上查找</p>
+
+<p>大概过程是这样的</p>
+
+<ol>
+  <li>
+    <p>记当前对象位obj，查找obj属性、方法，找到后返回</p>
+  </li>
+  <li>
+    <p>没有找到，通过obj的<code>__proto__</code>属性，找到其类型<code>Array</code>的<code>prototype</code>属性（记为prop）继续查找，找到后返回</p>
+  </li>
+  <li>
+    <p>没有找到，把prop记为obj做递归重复步骤一，通过类似方法找到prop的类型<code>Object</code>的 prototype进行查找，找到返回</p>
+  </li>
+</ol>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-5a91e992ca39d03c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<h4 id="section-15">类型</h4>
+
+<p>之前介绍过<code>instanceof</code>操作符，判断一个对象是不是某个类型的实例</p>
+
+<pre><code>[1, 2, 3] instanceof Array; //true
+</code></pre>
+
+<p>可以看到<code>[1, 2, 3]</code>是类型<code>Array</code>的实例</p>
+
+<pre><code>[1, 2, 3] instanceof Object; //true
+</code></pre>
+
+<p>这个结果有些非议所思，怎么又是Array的实例，又是Object的实例，这不是乱套了</p>
+
+<p>其实这个现象在日常生活中很常见其实，比如我们有两种类型</p>
+
+<ol>
+  <li>类人猿</li>
+  <li>动物</li>
+</ol>
+
+<p>我们发现黑猩猩即是类人猿这个类的物种（实例），也是动物的实例</p>
+
+<p>是不是悟出其中的门道了，类人猿是动物的一种，也就是说我们的两个类型之间有一种父子关系</p>
+
+<p>这就是传说中的继承，JavaScript正是通过原型链实现继承机制的</p>
+
+<h4 id="section-16">继承</h4>
+
 <blockquote>
-  <p>未完</p>
+  <p>继承是指一个对象直接使用另一对象的属性和方法。</p>
 </blockquote>
+
+<p>JavaScript并不提供原生的继承机制，我们自己实现的方式很多，介绍一种最为通用的</p>
+
+<p>通过上面定义我们可以看出我们如果实现了两点的话就可以说我们实现了继承</p>
+
+<ol>
+  <li>得到一个类的属性</li>
+  <li>得到一个类的方法</li>
+</ol>
+
+<p>我们分开讨论一下，先定义两个个类</p>
+
+<pre><code>function Person(name, sex) {
+	this.name = name;
+	this.sex = sex;
+}
+
+Person.prototype.printName = function() {
+	console.log(this.name);
+};
+
+function Male(age) {
+	this.age = age;
+}
+
+Male.prototype.printAge = function() {
+	console.log(this.age);
+};
+</code></pre>
+
+<p><strong>属性获取</strong></p>
+
+<p>对象属性的获取是通过构造函数的执行，我们在一个类中执行另外一个类的构造函数，就可以把属性赋值到自己内部，但是我们需要把环境改到自己的作用域内，这就要借助我们讲过的函数<code>call</code>了</p>
+
+<p>改造一些<code>Male</code></p>
+
+<pre><code>function Male(name, sex, age){
+    Person.call(this, name, sex);
+    this.age = age;
+}
+
+Male.prototype.printAge = function(){
+    console.log(this.age);
+};
+</code></pre>
+
+<p>实例化结果</p>
+
+<pre><code>var m = new Male('Byron', 'male', 26);
+console.log(m.sex); // "male"
+</code></pre>
+
+<p><strong>方法获取</strong></p>
+
+<p>我们知道类的方法都定义在了prototype里面，所以只要我们把子类的prototype改为父类的prototype的备份就好了</p>
+
+<pre><code>Male.prototype = Object.create(Person.prototype);
+</code></pre>
+
+<p>这里我们通过<code>Object.createclone</code>了一个新的prototype而不是直接把Person.prtotype直接赋值，因为引用关系，这样会导致后续修改子类的prototype也修改了父类的prototype，因为修改的是一个值</p>
+
+<p>另外<code>Object.create</code>是ES5方法，之前版本通过遍历属性也可以实现浅拷贝</p>
+
+<p>这样做需要注意一点就是对子类添加方法，必须在修改其prototype之后，如果在之前会被覆盖掉</p>
+
+<pre><code>Male.prototype.printAge = function() {
+	console.log(this.age);
+};
+
+Male.prototype = Object.create(Person.prototype);
+</code></pre>
+
+<p>这样的话，<code>printAge</code>方法在赋值后就没了，因此得这么写</p>
+
+<pre><code>function Male(name, sex, age) {
+	Person.call(this, name, sex);
+	this.age = age;
+}
+
+Male.prototype = Object.create(Person.prototype);
+
+Male.prototype.printAge = function() {
+	console.log(this.age);
+};
+</code></pre>
+
+<p>这样写貌似没问题了，但是有个问题就是我们知道prototype对象有一个属性<code>constructor</code>指向其类型，因为我们复制的父元素的prototype，这时候<code>constructor</code>属性指向是不对的，导致我们判断类型出错</p>
+
+<pre><code>Male.prototype.constructor; //Person
+</code></pre>
+
+<p>因此我们需要再重新指定一下constructor属性到自己的类型</p>
+
+<p><strong>最终方案</strong></p>
+
+<p>我们可以通过一个函数实现刚才说的内容</p>
+
+<pre><code>function inherit(superType, subType) {
+	var _prototype = Object.create(superType.prototype);
+	_prototype.constructor = subType;
+	subType.prototype = _prototype;
+}
+</code></pre>
+
+<p>使用方式</p>
+
+<pre><code>function Person(name, sex) {
+	this.name = name;
+	this.sex = sex;
+}
+
+Person.prototype.printName = function() {
+	console.log(this.name);
+};
+
+function Male(name, sex, age) {
+	Person.call(this, name, sex);
+	this.age = age;
+}
+inherit(Person, Male);
+
+// 在继承函数之后写自己的方法，否则会被覆盖
+Male.prototype.printAge = function() {
+	console.log(this.age);
+};
+
+var m = new Male('Byron', 'm', 26);
+m.printName();
+</code></pre>
+
+<p>这样我们就在JavaScript中实现了继承</p>
+
+<h4 id="hasownproperty">hasOwnProperty</h4>
+
+<p>有同学可能会问一个问题，继承之后Male的实例也有了Person的方法，那么怎么判断某个是自己的还是父类的？</p>
+
+<p><code>hasOwnPerperty</code>是<code>Object.prototype</code>的一个方法，可以判断一个对象是否包含自定义属性而不是原型链上的属性，<code>hasOwnProperty</code>是JavaScript中唯一一个处理属性但是不查找原型链的函数</p>
+
+<pre><code>m.hasOwnProperty('name'); // true
+m.hasOwnProperty('printName'); // false
+Male.prototype.hasOwnProperty('printAge'); // true
+</code></pre>
 
               <!-- 多说评论框 start -->
               		<!-- <span class="ds-thread-count" data-thread-key="/javascript/2016/12/05/javascript_mxdx" data-count-type="comments"></span> -->
@@ -402,6 +961,34 @@ p1 instanceof Object;// true
 			<ul class="minty_thumblist">
 				
                   <li>
+                    <a href="/javascript/2016/12/06/javascript-mokuai.html">
+
+                    	<span>前端模块化</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/06/javascript-jszl.html">
+
+                    	<span>JavaScript 精粹整理</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/05/javascript-call.html">
+
+                    	<span>JS中的call()和apply()方法</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/05/javascript-bbssm.html">
+
+                    	<span>JavaScript 闭包到底是什么</span>
+                    </a>
+                  </li>
+				
+                  <li>
                     <a href="/javascript/2016/12/05/javascript-cjdx.html">
 
                     	<span>JavaScript创建对象</span>
@@ -412,34 +999,6 @@ p1 instanceof Object;// true
                     <a href="/javascript/2016/12/05/javascript-prototype.html">
 
                     	<span>JavaScript prototype</span>
-                    </a>
-                  </li>
-				
-                  <li>
-                    <a href="/javascript/2016/12/05/javascript-jinjie4.html">
-
-                    	<span>JavaScript 精粹 基础 进阶(4)对象</span>
-                    </a>
-                  </li>
-				
-                  <li>
-                    <a href="/javascript/2016/12/05/javascript-jinjie3.html">
-
-                    	<span>JavaScript 精粹 基础 进阶(3)语句</span>
-                    </a>
-                  </li>
-				
-                  <li>
-                    <a href="/javascript/2016/12/05/javascript-jinjie2.html">
-
-                    	<span>JavaScript 精粹 基础 进阶(2)表达式和运算符</span>
-                    </a>
-                  </li>
-				
-                  <li>
-                    <a href="/javascript/2016/12/01/javascript-jinjie.html">
-
-                    	<span>JavaScript 精粹 基础 进阶(1)数据类型</span>
                     </a>
                   </li>
 				
@@ -499,7 +1058,7 @@ posts">
 				<li>
 					<a href="/categories/JavaScript/" title="view all
 posts">
-						JavaScript (7)
+						JavaScript (11)
 					</a>
 				</li>
 				
