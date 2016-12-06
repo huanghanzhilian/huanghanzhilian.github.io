@@ -79,23 +79,27 @@ a {
  */
 blockquote {
   color: #828282;
-  border-left: 4px solid #e8e8e8;
-  padding-left: 15px;
+  border-left: 4px solid #999;
+  padding: 10px 15px;
   font-size: 18px;
-  letter-spacing: -1px;
-  font-style: italic; }
+  letter-spacing: 1px;
+  font-style: italic; 
+  background-color: whitesmoke;
+}
   blockquote > :last-child {
     margin-bottom: 0; }
+
+blockquote p{ margin: 0 !important; font-size: 15px;}
 
 /**
  * Code formatting
  */
 pre,
 code {
-  font-size: 15px;
+  font-size: 12px;
   border: 1px solid #e8e8e8;
   border-radius: 3px;
-  background-color: #eef; }
+  background: #fdf6e3; }
 
 code {
   padding: 1px 5px; }
@@ -106,7 +110,9 @@ pre {
   pre > code {
     border: 0;
     padding-right: 0;
-    padding-left: 0; }
+    padding-left: 0; 
+    
+  }
 
 /**
  * Wrapper
