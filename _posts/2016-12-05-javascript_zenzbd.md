@@ -392,6 +392,39 @@ JavaScript种正则表达式有两种定义方式，定义一个匹配类似 <%X
 
 
 
+>正则判断不能全为数字
+
+
+`var re=/[\d]/g;`全局匹配数字
+
+`var re=/[^\d]/g;`全局匹配非数字字符
+
+
+    var re = /[^\d]/g;
+    var msg = 12345;
+    if (!re.test(msg)) {
+        console.log("全是数字大哥")
+    }
+
+
+
+>正则判断不能全为字母
+
+
+`var re = /[a-zA-Z]/g;`全局匹配字母
+
+`var re = /[^a-zA-Z]/g;`全局匹配非字母字符
+
+
+    var re = /[^a-zA-Z]/g; //匹配所有除字母之外的东西
+    var msg = "asssssssssss";
+    if (!re.test(msg)) {
+        console.log("全是字母大哥")
+    }
+
+
+
+>针对这篇文章，做了个小[demo](https://github.com/huanghanzhilian/RegExp)。欢迎Star。
 
 
 
@@ -436,4 +469,6 @@ JavaScript种正则表达式有两种定义方式，定义一个匹配类似 <%X
 
 
 
->未完
+
+
+
