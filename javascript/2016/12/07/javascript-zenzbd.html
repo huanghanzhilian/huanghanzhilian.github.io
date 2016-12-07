@@ -433,8 +433,39 @@ if (g.length == m) {
 如果不是那就说明字符串不相同。</p>
 
 <blockquote>
-  <p>未完</p>
+  <p>正则判断不能全为数字</p>
 </blockquote>
+
+<p><code>var re=/[\d]/g;</code>全局匹配数字</p>
+
+<p><code>var re=/[^\d]/g;</code>全局匹配非数字字符</p>
+
+<pre><code>var re = /[^\d]/g;
+var msg = 12345;
+if (!re.test(msg)) {
+    console.log("全是数字大哥")
+}
+</code></pre>
+
+<blockquote>
+  <p>正则判断不能全为字母</p>
+</blockquote>
+
+<p><code>var re = /[a-zA-Z]/g;</code>全局匹配字母</p>
+
+<p><code>var re = /[^a-zA-Z]/g;</code>全局匹配非字母字符</p>
+
+<pre><code>var re = /[^a-zA-Z]/g; //匹配所有除字母之外的东西
+var msg = "asssssssssss";
+if (!re.test(msg)) {
+    console.log("全是字母大哥")
+}
+</code></pre>
+
+<blockquote>
+  <p>针对这篇文章，做了个小<a href="https://github.com/huanghanzhilian/RegExp">demo</a>。欢迎Star。</p>
+</blockquote>
+
 
               <!-- 多说评论框 start -->
               		<!-- <span class="ds-thread-count" data-thread-key="/javascript/2016/12/07/javascript_zenzbd" data-count-type="comments"></span> -->
