@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>markdown 简明语法</title>
+<title>JavaScript 获取鼠标点击位置坐标</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
 	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
@@ -62,72 +62,60 @@
 	<main id="main" class="hfeed">
 		<article id="post-157" class="post-157 hentry">
 			<header class="entry-header">
-				<h1 class="entry-title">markdown 简明语法</h1>
-				<div class="entry-meta">2016-12-01 <span class="dot">•</span>Markdown<span class="dot">•</span>黄继鹏<span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span></div>
+				<h1 class="entry-title">JavaScript 获取鼠标点击位置坐标</h1>
+				<div class="entry-meta">2016-12-11 <span class="dot">•</span>JavaScript<span class="dot">•</span>黄继鹏<span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span></div>
 			</header>
 			<article class="post-content">
-              <h4 id="section">基本符号</h4>
+              <p>在一些DOM操作中我们经常会跟元素的位置打交道，鼠标交互式一个经常用到的方面，令人失望的是不同的浏览器下会有不同的结果甚至是有的浏览器下没结果，这篇文章就上鼠标点击位置坐标获取做一些简单的总结，没特殊声明代码在IE8，FireFox，Chrome下进行测试兼容</p>
 
-<hr />
+<h4 id="section">鼠标点击位置坐标</h4>
 
-<pre><code>1. *,-,+ 3个符号效果都一样，这3个符号被称为 Markdown符号
-2. 空白行表示另起一个段落
-3. `是表示inline代码，tab是用来标记 代码段，分别对应html的code，pre标签
+<p><strong>相对于屏幕</strong></p>
+
+<p>如果是涉及到鼠标点击确定位置相对比较简单，获取到鼠标点击事件后，事件screenX，screenY获取的是点击位置相对于屏幕的左边距与上边距，不考虑iframe因素，不同浏览器下表现的还算一致。</p>
+
+<pre><code>document.onclick = function(event) {
+	var e = event || window.event;
+	console.log('x=' + e.screenX + ',' + 'y=' + e.screenY)
+}
 </code></pre>
 
-<h4 id="section-1">换行</h4>
+<p><strong>相对浏览器窗口</strong></p>
 
-<pre><code>单一段落( &lt;p&gt;) 用一个空白行
-连续两个空格 会变成一个 &lt;br&gt;
-连续3个符号，然后是空行，表示 hr横线
+<p>简单代码即可实现，然而这是还不够，因为绝大多数情况下我们希望获取鼠标点击位置相对于浏览器窗口的坐标，event的clientX，clientY属性分别表示鼠标点击位置相对于文档的左边距，上边距。于是类似的我们写出了这样的代码</p>
+
+<pre><code>document.onclick = function(event) {
+	var e = event || window.event;
+	console.log('x=' + e.clientX + ',' + 'y=' + e.clientX)
+}
 </code></pre>
 
-<h4 id="section-2">标题</h4>
+<p><strong>相对文档</strong></p>
 
-<pre><code>生成h1--h6,在文字前面加上 1--6个# 来实现
-文字加粗是通过 文字左右各两个符号
+<p>简单测试也没什么问题，但是clientX与clientY获取的是相对于当前屏幕的坐标，忽略页面滚动因素，这在很多条件下很有用，但当我们需要考虑页面滚动，也就是相对于文档（body元素）的坐标时怎么办呢？加上滚动的位移就可以了，下边我们试试怎么计算页面滚动的位移。</p>
+
+<p>其实在Firefox下问题会简单很多，因为Firefox支持属性pageX,与pageY属性，这两个属性已经把页面滚动计算在内了。</p>
+
+<p>在Chrome可以通过document.body.scrollLeft，document.body.scrollTop计算出页面滚动位移，而在IE下可以通过document.documentElement.scrollLeft
+ ，document.documentElement.scrollTop</p>
+
+<pre><code>document.body.style.height = "1500px"
+document.onclick = function getMousePos(event) {
+	var e = event || window.event;
+	var scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
+	var scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+	var x = e.pageX || e.clientX + scrollX;
+	var y = e.pageY || e.clientY + scrollY;
+	//alert('x: ' + x + '\ny: ' + y);
+
+	console.log('x=' + x + ',' + 'y=' + y)
+}
 </code></pre>
 
-<h4 id="section-3">引用</h4>
-
-<pre><code>在第一行加上 “&gt;”和一个空格，表示代码引用，还可以嵌套
-</code></pre>
-
-<h4 id="section-4">列表</h4>
-
-<p>这个是markdown文件的主要表示方式，主题要点化</p>
-
-<pre><code>使用*,+,-加上一个空格来表示
-可以支持嵌套
-有序列表用 数字+英文点+空格来表示
-列表内容很长，不需要手工输入换行符，css控制段落的宽度，会自动的缩放的
-</code></pre>
-
-<h4 id="section-5">链接</h4>
-
-<pre><code>直接写 [锚文本](url "可选的title")
-引用 先定义 [ref_name]:url，然后在需要写入url的地方， 这样使用[锚文本][ref_name]，通常的ref_name一般用数字表示，这样显得专业
-简写url：用尖括号包裹url
-这样生成的url锚文本就是url本身
-</code></pre>
-
-<h4 id="section-6">插入图片</h4>
-
-<pre><code>一行表示: ![alt_text](url "可选的title")
-引用表示法: ![alt_text][id],预先定义 [id]:url "可选title"
-直接使用&lt;img&gt;标签，这样可以指定图片的大小尺寸
-</code></pre>
-
-<h4 id="section-7">特殊符号</h4>
-
-<pre><code>用\来转义，表示文本中的markdown符号
-可以在文本种直接使用html标签，但是要注意在使用的时候，前后加上空行
-文本前后各加一个符号，表示斜体
-</code></pre>
 
               <!-- 多说评论框 start -->
-              		<!-- <span class="ds-thread-count" data-thread-key="/markdown/2016/12/01/markdown_jbf" data-count-type="comments"></span> -->
-					<div class="ds-thread" data-thread-key="http://yourdomain.com/markdown/2016/12/01/markdown_jbf" data-title="markdown 简明语法" data-url="http://yourdomain.com/markdown/2016/12/01/markdown_jbf"></div>
+              		<!-- <span class="ds-thread-count" data-thread-key="/javascript/2016/12/11/javascript_clien" data-count-type="comments"></span> -->
+					<div class="ds-thread" data-thread-key="http://yourdomain.com/javascript/2016/12/11/javascript_clien" data-title="JavaScript 获取鼠标点击位置坐标" data-url="http://yourdomain.com/javascript/2016/12/11/javascript_clien"></div>
 				<!-- 多说评论框 end -->
 				<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 				<script type="text/javascript">
@@ -191,9 +179,9 @@
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/11/javascript-clien.html">
+                    <a href="/javascript/2016/12/08/javasctipt-shijian.html">
 
-                    	<span>JavaScript 获取鼠标点击位置坐标</span>
+                    	<span>DOM事件探秘</span>
                     </a>
                   </li>
 				

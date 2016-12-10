@@ -265,6 +265,36 @@ body {
 
 .sidebar-top{ margin-top: 20px; }
 
+.post-content table{
+	max-width: 100%;
+	width: 100%;
+    margin-bottom: 20px;
+    border: 1px solid #dddddd;
+    border-collapse: collapse;
+    border-left: none;
+}
+
+.post-content table th{
+
+    padding: 8px;
+    border-left: 1px solid #dddddd;
+    border-top: 1px solid #dddddd;
+    line-height: 20px;
+    vertical-align: top;
+
+}
+
+.post-content table td{
+padding: 8px;
+    border-left: 1px solid #dddddd;
+    border-top: 1px solid #dddddd;
+    line-height: 20px;
+    vertical-align: top;
+}
+
+.post-content a{
+	color:#2a7ae2;
+}
 
 
 

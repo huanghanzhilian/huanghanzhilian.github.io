@@ -68,7 +68,7 @@
   
   
   <li class="archive_list">
-    <time style="color:#666;font-size:11px;" datetime='2016-12-07'>12/07/16</time> <a class="archive_list_article_link" href='/javascript/2016/12/07/javascript-zenzbd.html'>JavaScript 正则表达式</a>
+    <time style="color:#666;font-size:11px;" datetime='2016-12-11'>12/11/16</time> <a class="archive_list_article_link" href='/javascript/2016/12/11/javascript-wuqu.html'>JavaScript 误区</a>
     <p class="summary"></p>
     <ul class="tag_list">
       
@@ -76,6 +76,40 @@
       
     </ul>
   </li>
+  
+  
+  
+  
+  
+  <li class="archive_list">
+    <time style="color:#666;font-size:11px;" datetime='2016-12-11'>12/11/16</time> <a class="archive_list_article_link" href='/javascript/2016/12/11/settimeout-1.html'>setTimeout()和setInterval() 何时被调用执行</a>
+    <p class="summary"></p>
+    <ul class="tag_list">
+      
+      <li class="inline archive_list"><a class="tag_list_link" href="/tag/JavaScript">JavaScript</a></li>
+      
+    </ul>
+  </li>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   
@@ -263,18 +297,56 @@
       
       
       　　<li class="entry_list">
-          <a href="/javascript/2016/12/07/javascript-zenzbd.html">
-            <h2 class="entry-title">JavaScript 正则表达式</h2>
-            <div class="entry-meta">2016-12-07 <span class="dot">•</span>JavaScript<span class="dot">•</span>继小鹏</div>
+          <a href="/javascript/2016/12/11/javascript-wuqu.html">
+            <h2 class="entry-title">JavaScript 误区</h2>
+            <div class="entry-meta">2016-12-11 <span class="dot">•</span>JavaScript<span class="dot">•</span>继小鹏</div>
             <div class="entry-summary">
               <p>
-                <p>正则表达式的主要作用是用来<strong>匹配字符</strong>，由于他简单且功能强大，所以它不仅用在javascript，很多高级语言JAVA,PHP等，也都支持正则表达式。</p>
+                <p>接触JavaScript两年多遇到过各种错误，其中有一些让人防不胜防，原来对JavaScript的误会如此之深，仅以此文总结一下常见的各种想当然的误区</p>
 
 
               </p>
             </div>
           </a>
         </li>
+      
+      
+      
+      
+      
+      　　<li class="entry_list">
+          <a href="/javascript/2016/12/11/settimeout-1.html">
+            <h2 class="entry-title">setTimeout()和setInterval() 何时被调用执行</h2>
+            <div class="entry-meta">2016-12-11 <span class="dot">•</span>JavaScript<span class="dot">•</span>继小鹏</div>
+            <div class="entry-summary">
+              <p>
+                <p>setTimeout()和setInterval()经常被用来处理延时和定时任务。<strong>setTimeout</strong>() 方法用于在指定的毫秒数后调用函数或计算表达式,而<strong>setInterval</strong>()则可以在每隔指定的毫秒数循环调用函数或表达式，直到clearInterval把它清除。</p>
+
+
+              </p>
+            </div>
+          </a>
+        </li>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
       
       
       
@@ -561,7 +633,7 @@ posts">
 				<li>
 					<a href="/categories/JavaScript/" title="view all
 posts">
-						JavaScript (13)
+						JavaScript (19)
 					</a>
 				</li>
 				
@@ -593,6 +665,11 @@ posts">
 					<a href="/tag/JavaScript/" title="view all
 posts">
 						JavaScript
+					</a>
+				
+					<a href="/tag/RegExp/" title="view all
+posts">
+						RegExp
 					</a>
 				
 					<a href="/tag/DOM/" title="view all
@@ -702,7 +779,7 @@ function pageScroll() {
 	//把内容滚动指定的像素数（第一个参数是向右滚动的像素数，第二个参数是向下滚动的像素数）
 	window.scrollBy(0, -100);
 	//延时递归调用，模拟滚动向上效果
-	scrolldelay = setTimeout('pageScroll()', 30);
+	scrolldelay = setTimeout('pageScroll()', 5);
 	//获取scrollTop值，声明了DTD的标准网页取document.documentElement.scrollTop，否则取document.body.scrollTop；因为二者只有一个会生效，另一个就恒为0，所以取和值可以得到网页的真正的scrollTop值
 	var sTop = document.documentElement.scrollTop + document.body.scrollTop;
 	//判断当页面到达顶部，取消延时代码（否则页面滚动到顶部会无法再向下正常浏览页面）
