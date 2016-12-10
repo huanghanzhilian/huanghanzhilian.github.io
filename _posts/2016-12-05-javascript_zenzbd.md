@@ -5,7 +5,7 @@ subtitle: JavaScript 正则表达式
 author: 继小鹏
 date: 2016-12-07 02:22:19 +0800
 category: JavaScript
-tag: JavaScript
+tag: RegExp
 ---
 正则表达式的主要作用是用来**匹配字符**，由于他简单且功能强大，所以它不仅用在javascript，很多高级语言JAVA,PHP等，也都支持正则表达式。
 

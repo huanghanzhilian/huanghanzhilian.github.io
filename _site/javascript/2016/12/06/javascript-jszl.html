@@ -766,44 +766,44 @@ console.log(arr);
 			<ul class="minty_thumblist">
 				
                   <li>
-                    <a href="/javascript/2016/12/08/javasctipt-shijian.html">
+                    <a href="/javascript/2016/12/11/javascript-regexp-shili.html">
 
-                    	<span>DOM事件探秘</span>
+                    	<span>JavaScript 正则表达式（实例）</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/07/javascript-zenzbd.html">
+                    <a href="/javascript/2016/12/11/javascript-wuqu.html">
 
-                    	<span>JavaScript 正则表达式</span>
+                    	<span>JavaScript 误区</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/06/javascript-mokuai.html">
+                    <a href="/javascript/2016/12/11/settimeout-1.html">
 
-                    	<span>前端模块化</span>
+                    	<span>setTimeout()和setInterval() 何时被调用执行</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/05/javascript-call.html">
+                    <a href="/javascript/2016/12/11/javascript-shijian2.html">
 
-                    	<span>JS中的call()和apply()方法</span>
+                    	<span>DOM事件探秘(2)事件类型</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/05/javascript-bbssm.html">
+                    <a href="/javascript/2016/12/11/javascript-dom-size.html">
 
-                    	<span>JavaScript 闭包到底是什么</span>
+                    	<span>JavaScript获取DOM元素位置和尺寸大小</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/05/javascript-mxdx.html">
+                    <a href="/javascript/2016/12/11/javascript-clien.html">
 
-                    	<span>JavaScript面向对象</span>
+                    	<span>JavaScript 获取鼠标点击位置坐标</span>
                     </a>
                   </li>
 				
@@ -863,7 +863,7 @@ posts">
 				<li>
 					<a href="/categories/JavaScript/" title="view all
 posts">
-						JavaScript (13)
+						JavaScript (19)
 					</a>
 				</li>
 				
@@ -895,6 +895,11 @@ posts">
 					<a href="/tag/JavaScript/" title="view all
 posts">
 						JavaScript
+					</a>
+				
+					<a href="/tag/RegExp/" title="view all
+posts">
+						RegExp
 					</a>
 				
 					<a href="/tag/DOM/" title="view all
@@ -1004,7 +1009,7 @@ function pageScroll() {
 	//把内容滚动指定的像素数（第一个参数是向右滚动的像素数，第二个参数是向下滚动的像素数）
 	window.scrollBy(0, -100);
 	//延时递归调用，模拟滚动向上效果
-	scrolldelay = setTimeout('pageScroll()', 30);
+	scrolldelay = setTimeout('pageScroll()', 5);
 	//获取scrollTop值，声明了DTD的标准网页取document.documentElement.scrollTop，否则取document.body.scrollTop；因为二者只有一个会生效，另一个就恒为0，所以取和值可以得到网页的真正的scrollTop值
 	var sTop = document.documentElement.scrollTop + document.body.scrollTop;
 	//判断当页面到达顶部，取消延时代码（否则页面滚动到顶部会无法再向下正常浏览页面）

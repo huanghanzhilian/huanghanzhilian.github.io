@@ -24,8 +24,8 @@ task :new do
 			file.puts "subtitle: 请输入 post 子标题"
 			file.puts "author: 继小鹏"
 			file.puts "date: #{Time.now}"
-			file.puts "category: html"
-			file.puts "tag: html"
+			file.puts "category: JavaScript"
+			file.puts "tag: JavaScript"
 			file.puts "---"
 	end
 	exec "vi #{@post_name}"
