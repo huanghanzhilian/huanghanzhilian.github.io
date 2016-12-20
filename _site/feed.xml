@@ -1,0 +1,3721 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Your awesome title</title>
+    <description>Actually, less is more!</description>
+    <link>http://www.huanghanlian.com/</link>
+    <atom:link href="http://www.huanghanlian.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Tue, 20 Dec 2016 16:32:32 +0800</pubDate>
+    <lastBuildDate>Tue, 20 Dec 2016 16:32:32 +0800</lastBuildDate>
+    <generator>Jekyll v3.0.0</generator>
+    
+      <item>
+        <title>Ajax全接触(五) 处理跨域方式</title>
+        <description>&lt;p&gt;那么什么是跨域呢？&lt;/p&gt;
+
+&lt;h4 id=&quot;section&quot;&gt;处理跨域方式-代理&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-3b7e68f4ceee1be1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;我们在前端代码中将ajax访问后台&lt;code&gt;url&lt;/code&gt;改成&lt;code&gt;http://127.0.0.1:80/dengtu/serverjsonp.php&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$(document).ready(function() {
+	$(&quot;#search&quot;).click(function() {
+		$.ajax({
+			type: &quot;GET&quot;,
+			url: &quot;http://127.0.0.1:80/dengtu/serverjsonp.php?number=&quot; + $(&quot;#keyword&quot;).val(),
+			dataType: &quot;json&quot;,
+			success: function(data) {
+				if (data.success) {
+					$(&quot;#searchResult&quot;).html(data.msg);
+				} else {
+					$(&quot;#searchResult&quot;).html(&quot;出现错误：&quot; + data.msg);
+				}
+			},
+			error: function(jqXHR) {
+				alert(&quot;发生错误：&quot; + jqXHR.status);
+			},
+		});
+	});
+
+	$(&quot;#save&quot;).click(function() {
+		$.ajax({
+			type: &quot;POST&quot;,
+			url: &quot;http://127.0.0.1:80/dengtu/serverjsonp.php&quot;,
+			data: {
+				name: $(&quot;#staffName&quot;).val(),
+				number: $(&quot;#staffNumber&quot;).val(),
+				sex: $(&quot;#staffSex&quot;).val(),
+				job: $(&quot;#staffJob&quot;).val()
+			},
+			dataType: &quot;json&quot;,
+			success: function(data) {
+				if (data.success) {
+					$(&quot;#createResult&quot;).html(data.msg);
+				} else {
+					$(&quot;#createResult&quot;).html(&quot;出现错误：&quot; + data.msg);
+				}
+			},
+			error: function(jqXHR) {
+				alert(&quot;发生错误：&quot; + jqXHR.status);
+			},
+		});
+	});
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;http://127.0.0.1:80/dengtu&lt;/code&gt;指向的也是&lt;code&gt;http://localhost/dengtu&lt;/code&gt;但是他们不是一个域名，&lt;/p&gt;
+
+&lt;p&gt;这样我们能访问到吗？&lt;/p&gt;
+
+&lt;p&gt;答案是不能，返回错误告诉你没有权限访问。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-ff2eed58c0e4bf74.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这就要用到跨域了&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;那么什么是跨域呢？&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;JavaScript出于安全方面的考虑，不允许跨域调用其他页面的对象，什么是跨域呢，简单的理解就是因为JavaScript同源策略的限制，a.com域名下的js无法操作b.com或c.a.com域名下的对象。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-090891382cc0ad71.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;子域名不相同都会认为是跨域&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-46750de75c3040aa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;通过代理跨域&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;举个例子在上海服务器上，有一个服务&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;www.shanghai.com/service.php&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;在北京服务器上也有个服务&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;www.beijing.com/proxy.php&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;北京这个服务其实是从后端去访问上海的这个服务&lt;code&gt;www.shanghai.com/service.php&lt;/code&gt;然后把服务的响应值获取过来，返回给前端，&lt;/p&gt;
+
+&lt;p&gt;也就是北京的服务在后台做了个代理，这样前端只需要访问北京的代理的服务也就相当于访问了上海的服务。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-b72374f8f64ddb0f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;jsonp&quot;&gt;处理跨域方式–JSONP&lt;/h4&gt;
+
+&lt;p&gt;JSONP不支持post方式&lt;/p&gt;
+
+&lt;p&gt;在jquery的ajax中使用git方式访问跨域，&lt;/p&gt;
+
+&lt;p&gt;前端&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;需要改变&lt;code&gt;dataType: &quot;jsonp&quot;,&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;接着再增加一个属性&lt;code&gt;jsonp:&quot;callback&quot;,&lt;/code&gt;&lt;code&gt;jsonp:&quot;任意值&quot;,&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;后端&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;在git请求处理中，获取到&lt;code&gt;callback&lt;/code&gt;，&lt;code&gt;$jsonp=$_GET[&quot;callback&quot;];&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;改变返回值，&lt;code&gt;echo $jsonp.&#39;({&quot;success&quot;:false,&quot;msg&quot;:&quot;参数错误&quot;})&#39;;&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;前端代码&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$(document).ready(function() {
+	$(&quot;#search&quot;).click(function() {
+		$.ajax({
+			type: &quot;GET&quot;,
+			url: &quot;http://127.0.0.1:80/dengtu/serverjsonp.php?number=&quot; + $(&quot;#keyword&quot;).val(),
+			dataType: &quot;jsonp&quot;,
+			jsonp:&quot;callback&quot;,
+			success: function(data) {
+				if (data.success) {
+					$(&quot;#searchResult&quot;).html(data.msg);
+				} else {
+					$(&quot;#searchResult&quot;).html(&quot;出现错误：&quot; + data.msg);
+				}
+			},
+			error: function(jqXHR) {
+				alert(&quot;发生错误：&quot; + jqXHR.status);
+			},
+		});
+	});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;后端代码&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//通过员工编号搜索员工
+function search(){
+	$jsonp=$_GET[&quot;callback&quot;];
+	//检查是否有员工编号的参数
+	//isset检测变量是否设置；empty判断值为否为空
+	//超全局变量 $_GET 和 $_POST 用于收集表单数据
+	if (!isset($_GET[&quot;number&quot;]) || empty($_GET[&quot;number&quot;])) {
+		echo $jsonp.&#39;({&quot;success&quot;:false,&quot;msg&quot;:&quot;参数错误&quot;})&#39;;
+		return;
+	}
+	//函数之外声明的变量拥有 Global 作用域，只能在函数以外进行访问。
+	//global 关键词用于访问函数内的全局变量
+	global $staff;
+	//获取number参数
+	$number = $_GET[&quot;number&quot;];
+	$result = $jsonp.&#39;({&quot;success&quot;:false,&quot;msg&quot;:&quot;没有找到员工。&quot;})&#39;;
+	
+	//遍历$staff多维数组，查找key值为number的员工是否存在，如果存在，则修改返回结果
+	foreach ($staff as $value) {
+		if ($value[&quot;number&quot;] == $number) {
+			$result = $jsonp.&#39;({&quot;success&quot;:true,&quot;msg&quot;:&quot;找到员工：员工编号：&#39; . $value[&quot;number&quot;] . 
+							&#39;，员工姓名：&#39; . $value[&quot;name&quot;] . 
+							&#39;，员工性别：&#39; . $value[&quot;sex&quot;] . 
+							&#39;，员工职位：&#39; . $value[&quot;job&quot;] . &#39;&quot;})&#39;;
+			break;
+		}
+	}
+    echo $result;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样就能通过jsonp来获取跨域信息。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;callback和jsonp的作用和原理&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;1先定义一个”callback123”字段用来映射jquery生成的jQueryxxxxx_xxxxx函数名（这个函数在服务器处理完毕并返回数据时再由jquery调用）；&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;然后jsonp协议直接请求&lt;code&gt;http://127.0.0.1:8080/ajaxdemo/service.php?number=111；&lt;/code&gt;（个人感觉jsonp协议不受同源策略限制）&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;接着服务器端定义变量$jsonp获取请求中名为”callback123”的值，也就是获取到回调函数名”jQueryxxxxx_xxxxx”；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;再接着服务器处理完毕后将数据放到回调函数中，也就是视频中老师以jQueryxxxxx_xxxxx(jsondata)这种$jsonp拼接(jsondata)的形式返回给前端；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;最后前端接收到”jQueryxxxxx_xxxxx(jsondata)”，jquery调用这个jQueryxxxxx_xxxxx函数，将jsondata传入到success中的function中，这样就实现了跨域。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;xhr2&quot;&gt;处理跨域方式–XHR2&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-4936aeb13b5f82bd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;XMR2方法不支持ie10以下版本。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;使用XMR2方法&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;在服务端改写脚本&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;header(&#39;Access-Control-Allow-Origin:*&#39;);   //值设置为*。*意思是所有域都可以访问，当然可以设置特定的域名
+header(&#39;Access-Control-Allow-Methods:POST,GET&#39;);  //允许post/git
+header(&#39;Access-Control-Allow-Credentials:true&#39;); 
+header(&quot;Content-Type: application/json;charset=utf-8&quot;); 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样就能做到跨域&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 20 Dec 2016 13:00:17 +0800</pubDate>
+        <link>http://www.huanghanlian.com/javascript/2016/12/20/js-ajax5.html</link>
+        <guid isPermaLink="true">http://www.huanghanlian.com/javascript/2016/12/20/js-ajax5.html</guid>
+        
+        <category>Ajax</category>
+        
+        
+        <category>JavaScript</category>
+        
+      </item>
+    
+      <item>
+        <title>Ajax全接触(四) jQuery中的AJAX</title>
+        <description>&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;语法&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;pre&gt;&lt;code&gt;Query.ajax([*settings*])
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;参数&lt;/th&gt;
+      &lt;th&gt;描述&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;em&gt;settings&lt;/em&gt;&lt;/td&gt;
+      &lt;td&gt;可选。用于配置 Ajax 请求的键值对集合。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;可以通过 $.ajaxSetup() 设置任何选项的默认值。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;type&lt;/td&gt;
+      &lt;td&gt;类型：String&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;默认值: “GET”)。请求方式 (“POST” 或 “GET”)， 默认为 “GET”。注意：其它 HTTP 请求方法，如 PUT 和 DELETE 也可以使用，但仅部分浏览器支持。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;url&lt;/td&gt;
+      &lt;td&gt;类型：String&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;默认值: 当前页地址。发送请求的地址。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;data&lt;/td&gt;
+      &lt;td&gt;是一个对象，连同请求发送到服务器的数据&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;dataType&lt;/td&gt;
+      &lt;td&gt;预期服务器返回的数据类型。如果不指定，jQuery 将自动根据 HTTP 包 MIME 信息来智能判断，一般我们采用json格式，可以设置为json&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;success&lt;/td&gt;
+      &lt;td&gt;是一个方法，请求成功后的回调函数。参数：由服务器返回，并根据 dataType 参数进行处理后的数据；描述状态的字符串。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;error&lt;/td&gt;
+      &lt;td&gt;是一个方法，请求失败时调用此函数。有以下三个参数：XMLHttpRequest 对象、错误信息、（可选）捕获的异常对象。&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;!DOCTYPE HTML&amp;gt;
+&amp;lt;html&amp;gt;
+&amp;lt;head&amp;gt;
+&amp;lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;&amp;gt;
+&amp;lt;title&amp;gt;Demo&amp;lt;/title&amp;gt;
+&amp;lt;style&amp;gt;
+body, input, select, button, h1 {
+	font-size: 28px;
+	line-height:1.7;
+}
+&amp;lt;/style&amp;gt;
+&amp;lt;/head&amp;gt;
+
+&amp;lt;body&amp;gt;
+
+	&amp;lt;h1&amp;gt;员工查询&amp;lt;/h1&amp;gt;
+
+	&amp;lt;label&amp;gt;请输入员工编号：&amp;lt;/label&amp;gt;
+	&amp;lt;input type=&quot;text&quot; id=&quot;keyword&quot; /&amp;gt;
+	&amp;lt;button id=&quot;search&quot;&amp;gt;查询&amp;lt;/button&amp;gt;
+	&amp;lt;p id=&quot;searchResult&quot;&amp;gt;&amp;lt;/p&amp;gt;
+
+	&amp;lt;h1&amp;gt;员工新建&amp;lt;/h1&amp;gt;
+	&amp;lt;label&amp;gt;请输入员工姓名：&amp;lt;/label&amp;gt;
+	&amp;lt;input type=&quot;text&quot; id=&quot;staffName&quot; /&amp;gt;&amp;lt;br&amp;gt;
+	&amp;lt;label&amp;gt;请输入员工编号：&amp;lt;/label&amp;gt;
+	&amp;lt;input type=&quot;text&quot; id=&quot;staffNumber&quot; /&amp;gt;&amp;lt;br&amp;gt;
+	&amp;lt;label&amp;gt;请选择员工性别：&amp;lt;/label&amp;gt;
+	&amp;lt;select id=&quot;staffSex&quot;&amp;gt;
+	&amp;lt;option&amp;gt;女&amp;lt;/option&amp;gt;
+	&amp;lt;option&amp;gt;男&amp;lt;/option&amp;gt;
+	&amp;lt;/select&amp;gt;&amp;lt;br&amp;gt;
+	&amp;lt;label&amp;gt;请输入员工职位：&amp;lt;/label&amp;gt;
+	&amp;lt;input type=&quot;text&quot; id=&quot;staffJob&quot; /&amp;gt;&amp;lt;br&amp;gt;
+	&amp;lt;button id=&quot;save&quot;&amp;gt;保存&amp;lt;/button&amp;gt;
+	&amp;lt;p id=&quot;createResult&quot;&amp;gt;&amp;lt;/p&amp;gt;
+
+	&amp;lt;script src=&quot;http://apps.bdimg.com/libs/jquery/1.11.1/jquery.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+	&amp;lt;script&amp;gt;
+		$(document).ready(function() {
+			$(&quot;#search&quot;).click(function() {
+				$.ajax({
+					type: &quot;GET&quot;,
+					url: &quot;serverjson2.php?number=&quot; + $(&quot;#keyword&quot;).val(),
+					dataType: &quot;json&quot;,
+					success: function(data) {
+						if (data.success) {
+							$(&quot;#searchResult&quot;).html(data.msg);
+						} else {
+							$(&quot;#searchResult&quot;).html(&quot;出现错误：&quot; + data.msg);
+						}
+					},
+					error: function(jqXHR) {
+						alert(&quot;发生错误：&quot; + jqXHR.status);
+					},
+				});
+			});
+
+			$(&quot;#save&quot;).click(function() {
+				$.ajax({
+					type: &quot;POST&quot;,
+					url: &quot;serverjson.php&quot;,
+					data: {
+						name: $(&quot;#staffName&quot;).val(),
+						number: $(&quot;#staffNumber&quot;).val(),
+						sex: $(&quot;#staffSex&quot;).val(),
+						job: $(&quot;#staffJob&quot;).val()
+					},
+					dataType: &quot;json&quot;,
+					success: function(data) {
+						if (data.success) {
+							$(&quot;#createResult&quot;).html(data.msg);
+						} else {
+							$(&quot;#createResult&quot;).html(&quot;出现错误：&quot; + data.msg);
+						}
+					},
+					error: function(jqXHR) {
+						alert(&quot;发生错误：&quot; + jqXHR.status);
+					},
+				});
+			});
+		});
+	&amp;lt;/script&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+        <pubDate>Tue, 20 Dec 2016 12:59:57 +0800</pubDate>
+        <link>http://www.huanghanlian.com/javascript/2016/12/20/js-ajax4.html</link>
+        <guid isPermaLink="true">http://www.huanghanlian.com/javascript/2016/12/20/js-ajax4.html</guid>
+        
+        <category>Ajax</category>
+        
+        
+        <category>JavaScript</category>
+        
+      </item>
+    
+      <item>
+        <title>Ajax全接触(三)JSON格式</title>
+        <description>&lt;p&gt;JSON是存储和交换文本信息的语法，类似与XML。它采用键值的方式来组织，易于人们阅读和编写，同时也易于解析和生成&lt;/p&gt;
+
+&lt;h4 id=&quot;json&quot;&gt;json基本概念&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;JSON:JavaScript对象表示法，(JavaScript Object Notation)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;JSON是存储和交换文本信息的语法，类似与XML。它采用键值的方式来组织，易于人们阅读和编写，同时也易于解析和生成&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;JSON是独立于语言的，也就是说不管什么语言，都可以解析JSON，只需要按照JSON的规则来就行&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;jsonxml&quot;&gt;json与XML比较&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;json的长度和xml格式比起来很短小&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;json读写的速度更快&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;json可以使用javascript内建方法直接进行解析，转成javascript对象，非常方便。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;json-1&quot;&gt;JSON语法规则&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;JSON 数据的书写格式是：名称/值对。&lt;/strong&gt;  &lt;br /&gt;
+名称/值对组合中的名称写在前面(在双引号中)，值对写在后面(同样在双引号中)，中间用冒号隔开：比如&lt;code&gt;&quot;name&quot;:&quot;郭靖&quot;&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;json的值可以是下面这些类型：&lt;/strong&gt;  &lt;br /&gt;
+数字(整数或浮点数)，比如123，1.23
+字符串(在双引号中)
+逻辑值(true或false)
+数组(在方括号中)
+对象(在花括号中)
+null&lt;/p&gt;
+
+    &lt;p&gt;{
+      “staff”:[
+          {“name”:”洪七”,”age”:”70”},
+          {“name”:”郭靖”,”age”:”35”},
+          {“name”:”黄蓉”,”age”:”30”},
+      ]
+  }&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;这是一个典型的json。他首先用花括号括起来，表示这是一个json对象，对象里面有一个值对，这个值对名称叫staff，他的值是一个数组，这个数组是由很多晓得json对象组成，对象里面又有两个属性。&lt;/p&gt;
+
+&lt;h4 id=&quot;json-2&quot;&gt;json解析、格式化和校验工具&lt;/h4&gt;
+
+&lt;p&gt;&lt;strong&gt;json解析javascript&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;在js中解析json有两种方式eval和JSON.parse&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;em&gt;eval方法&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var jsonobj = &#39;{&quot;staff&quot;:[{&quot;name&quot;:&quot;洪七&quot;,&quot;age&quot;:&quot;70&quot;},{&quot;name&quot;:&quot;郭靖&quot;,&quot;age&quot;:&quot;35&quot;},{&quot;name&quot;:&quot;黄蓉&quot;,&quot;age&quot;:&quot;30&quot;},]}&#39;
+var jsonop = eval(&#39;(&#39; + jsonobj + &#39;)&#39;);
+alert(jsonop.staff[0].name);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-483a285fec5215a1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;JSON.parse方法&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var jsonobj = &#39;{&quot;staff&quot;:[{&quot;name&quot;:&quot;洪七&quot;,&quot;age&quot;:&quot;70&quot;},{&quot;name&quot;:&quot;郭靖&quot;,&quot;age&quot;:&quot;35&quot;},{&quot;name&quot;:&quot;黄蓉&quot;,&quot;age&quot;:&quot;30&quot;}]}&#39;
+var jsonop = JSON.parse(jsonobj);
+alert(jsonop.staff[0].name);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-ed7a6331fe80e4a5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;注意：用eval方法执行他不会去看你的json字符串是否合法，而且json中一些js方法会直接的执行，这是非常的危险。 所以尽量使用JSON.parse方法，来去解析json字符串，能返回一些语法错误，又安全又方便。&lt;/p&gt;
+
+&lt;p&gt;json在书写的时候非常容易出错，所以把json字符串进行校验是必不可少的。&lt;/p&gt;
+
+&lt;p&gt;推荐json校验在线工具&lt;a href=&quot;http://jsonlint.com/&quot;&gt;jsonlint.com&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;ajaxjson&quot;&gt;AJAX使用json方式&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+//设置页面内容是html编码格式是utf-8
+header(&quot;Content-Type: text/plain;charset=utf-8&quot;); 
+//header(&quot;Content-Type: application/json;charset=utf-8&quot;); 
+//header(&quot;Content-Type: text/xml;charset=utf-8&quot;); 
+//header(&quot;Content-Type: text/html;charset=utf-8&quot;); 
+//header(&quot;Content-Type: application/javascript;charset=utf-8&quot;); 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;服务器端返回json对象&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//通过员工编号搜索员工
+function search(){
+	//检查是否有员工编号的参数
+	//isset检测变量是否设置；empty判断值为否为空
+	//超全局变量 $_GET 和 $_POST 用于收集表单数据
+	if (!isset($_GET[&quot;number&quot;]) || empty($_GET[&quot;number&quot;])) {
+		echo &#39;{&quot;success&quot;:false,&quot;msg&quot;:&quot;参数错误&quot;}&#39;;
+		return;
+	}
+	//函数之外声明的变量拥有 Global 作用域，只能在函数以外进行访问。
+	//global 关键词用于访问函数内的全局变量
+	global $staff;
+	//获取number参数
+	$number = $_GET[&quot;number&quot;];
+	$result = &#39;{&quot;success&quot;:false,&quot;msg&quot;:&quot;没有找到员工。&quot;}&#39;;
+	
+	//遍历$staff多维数组，查找key值为number的员工是否存在，如果存在，则修改返回结果
+	foreach ($staff as $value) {
+		if ($value[&quot;number&quot;] == $number) {
+			$result = &#39;{&quot;success&quot;:true,&quot;msg&quot;:&quot;找到员工：员工编号：&#39; . $value[&quot;number&quot;] . 
+							&#39;，员工姓名：&#39; . $value[&quot;name&quot;] . 
+							&#39;，员工性别：&#39; . $value[&quot;sex&quot;] . 
+							&#39;，员工职位：&#39; . $value[&quot;job&quot;] . &#39;&quot;}&#39;;
+			break;
+		}
+	}
+    echo $result;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;返回json格式信息&lt;/p&gt;
+
+&lt;p&gt;查询错误是返回&lt;code&gt;{&quot;success&quot;:false,&quot;msg&quot;:&quot;参数错误&quot;}&lt;/code&gt;json格式对象&lt;/p&gt;
+
+&lt;p&gt;没有找到员工时返回&lt;code&gt;{&quot;success&quot;:false,&quot;msg&quot;:&quot;没有找到员工。&quot;}&lt;/code&gt;json格式对象&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//创建员工
+function create(){
+	//判断信息是否填写完全
+	if (!isset($_POST[&quot;name&quot;]) || empty($_POST[&quot;name&quot;])
+		|| !isset($_POST[&quot;number&quot;]) || empty($_POST[&quot;number&quot;])
+		|| !isset($_POST[&quot;sex&quot;]) || empty($_POST[&quot;sex&quot;])
+		|| !isset($_POST[&quot;job&quot;]) || empty($_POST[&quot;job&quot;])) {
+		echo &#39;{&quot;success&quot;:false,&quot;msg&quot;:&quot;参数错误，员工信息填写不全&quot;}&#39;;
+		return;
+	}
+	//TODO: 获取POST表单数据并保存到数据库
+	
+	//提示保存成功
+	echo &#39;{&quot;success&quot;:true,&quot;msg&quot;:&quot;员工：&#39; . $_POST[&quot;name&quot;] . &#39; 信息保存成功！&quot;}&#39;;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;新建员工时错误时也返回json对象&lt;/p&gt;
+
+&lt;p&gt;客户端修改&lt;/p&gt;
+
+&lt;p&gt;客户端要把服务端传来的json格式对象进行解析&lt;/p&gt;
+
+&lt;p&gt;查询修改&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;document.getElementById(&quot;search&quot;).onclick = function() { 
+	var request = new XMLHttpRequest();
+	request.open(&quot;GET&quot;, &quot;serverjson.php?number=&quot; + document.getElementById(&quot;keyword&quot;).value);
+	request.send();
+	request.onreadystatechange = function() {
+		if (request.readyState===4) {
+			if (request.status===200) { 
+				var data = JSON.parse(request.responseText);
+				if (data.success) { 
+					document.getElementById(&quot;searchResult&quot;).innerHTML = data.msg;
+				} else {
+					document.getElementById(&quot;searchResult&quot;).innerHTML = &quot;出现错误：&quot; + data.msg;
+				}
+			} else {
+				alert(&quot;发生错误：&quot; + request.status);
+			}
+		} 
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;var data = JSON.parse(request.responseText);&lt;/code&gt;定义变量data使用JSON.parse解析获取的json数据。再进行判断显示在页面&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;document.getElementById(&quot;save&quot;).onclick = function() { 
+	var request = new XMLHttpRequest();
+	request.open(&quot;POST&quot;, &quot;serverjson.php&quot;);
+	var data = &quot;name=&quot; + document.getElementById(&quot;staffName&quot;).value 
+	                  + &quot;&amp;amp;number=&quot; + document.getElementById(&quot;staffNumber&quot;).value 
+	                  + &quot;&amp;amp;sex=&quot; + document.getElementById(&quot;staffSex&quot;).value 
+	                  + &quot;&amp;amp;job=&quot; + document.getElementById(&quot;staffJob&quot;).value;
+	request.setRequestHeader(&quot;Content-type&quot;,&quot;application/x-www-form-urlencoded&quot;);
+	request.send(data);
+	request.onreadystatechange = function() {
+		if (request.readyState===4) {
+			if (request.status===200) { 
+				var data = JSON.parse(request.responseText);
+				if (data.success) { 
+					document.getElementById(&quot;createResult&quot;).innerHTML = data.msg;
+				} else {
+					document.getElementById(&quot;createResult&quot;).innerHTML = &quot;出现错误：&quot; + data.msg;
+				}
+			} else {
+				alert(&quot;发生错误：&quot; + request.status);
+			}
+		} 
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;wei&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        <pubDate>Tue, 20 Dec 2016 12:59:51 +0800</pubDate>
+        <link>http://www.huanghanlian.com/javascript/2016/12/20/js-ajax3.html</link>
+        <guid isPermaLink="true">http://www.huanghanlian.com/javascript/2016/12/20/js-ajax3.html</guid>
+        
+        <category>Ajax</category>
+        
+        
+        <category>JavaScript</category>
+        
+      </item>
+    
+      <item>
+        <title>Ajax全接触(二)例子ajax+php</title>
+        <description>&lt;p&gt;接触Ajax&lt;/p&gt;
+
+&lt;h4 id=&quot;section&quot;&gt;例子要求&lt;/h4&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;查询员工信息，可以通过输入员工编号查询员工基本信息；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;新建员工信息，包含员工姓名，员工编号，员工性别，员工职位；&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;section-1&quot;&gt;实现步骤&lt;/h4&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;纯html页面，用来实现员工查询和新建的页面；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;php页面，用来实现员工查询和新建员工的后台接口；&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-9d69936adb40e955.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在本地部署web服务器，用户来测试，通过本地web服务器，我们可以及时的查看编写的php代码实际效果。&lt;/p&gt;
+
+&lt;p&gt;选择一个一体软件包，XAMMP&lt;a href=&quot;https://www.apachefriends.org/download.html&quot;&gt;https://www.apachefriends.org/download.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-92d38a00a7841c00.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;下载即可，傻瓜化安装。&lt;/p&gt;
+
+&lt;h4 id=&quot;ajax-&quot;&gt;Ajax-服务器端实现&lt;/h4&gt;
+
+&lt;p&gt;&lt;strong&gt;设置页面内容是html编码格式是utf-8。防止页面返回值是乱码。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+//设置页面内容是html编码格式是utf-8
+header(&quot;Content-Type: text/plain;charset=utf-8&quot;);                  //代表格式是纯文本
+//header(&quot;Content-Type: application/json;charset=utf-8&quot;);          //代表格式是json字符串
+//header(&quot;Content-Type: text/xml;charset=utf-8&quot;);
+//header(&quot;Content-Type: text/html;charset=utf-8&quot;);
+//header(&quot;Content-Type: application/javascript;charset=utf-8&quot;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;定义一个多维数组，包含员工的信息，每条员工信息为一个数组&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$staff = array
+	(
+		array(&quot;name&quot; =&amp;gt; &quot;洪七&quot;, &quot;number&quot; =&amp;gt; &quot;101.&quot;, &quot;sex&quot; =&amp;gt; &quot;男&quot;, &quot;job&quot; =&amp;gt; &quot;总经理&quot;),
+		array(&quot;name&quot; =&amp;gt; &quot;郭靖&quot;, &quot;number&quot; =&amp;gt; &quot;102&quot;, &quot;sex&quot; =&amp;gt; &quot;男&quot;, &quot;job&quot; =&amp;gt; &quot;开发工程师&quot;),
+		array(&quot;name&quot; =&amp;gt; &quot;黄蓉&quot;, &quot;number&quot; =&amp;gt; &quot;103&quot;, &quot;sex&quot; =&amp;gt; &quot;女&quot;, &quot;job&quot; =&amp;gt; &quot;产品经理&quot;)
+	);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这是php定义多维数组的方式，可以包含键值的方式，定义了三名员工，名字是洪七，郭靖，黄蓉，编号性别职位都在多维数组中。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;判断如果是get请求，则进行搜索；如果是POST请求，则进行新建&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if ($_SERVER[&quot;REQUEST_METHOD&quot;] == &quot;GET&quot;) {
+	search();   //搜索员工函数
+} elseif ($_SERVER[&quot;REQUEST_METHOD&quot;] == &quot;POST&quot;){
+	create();   //新建员工函数
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;$_SERVER&lt;/code&gt;是一个超全局变量，在一个脚本的全部作用域中都可用，不用使用global关键字
+&lt;code&gt;$_SERVER[&quot;REQUEST_METHOD&quot;]&lt;/code&gt;返回访问页面使用的请求方法&lt;/p&gt;
+
+&lt;p&gt;php有个很奇怪的地方，就是我们设置的全局变量，比如说&lt;code&gt;$set=1&lt;/code&gt;他要是在函数中使用，还必须要加上一个&lt;code&gt;global&lt;/code&gt;的关键字，就是说他不能直接在函数中去使用，在函数中使用需要加上&lt;code&gt;global $set&lt;/code&gt;。&lt;code&gt;global&lt;/code&gt; 关键词用于访问函数内的全局变量&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;搜索员工函数&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//通过员工编号搜索员工
+function search(){
+	//检查是否有员工编号的参数
+	//isset检测变量是否设置；empty判断值为否为空
+	//超全局变量 $_GET 和 $_POST 用于收集表单数据
+	if (!isset($_GET[&quot;number&quot;]) || empty($_GET[&quot;number&quot;])) {
+		echo &quot;参数错误&quot;;
+		return;
+	}
+	//函数之外声明的变量拥有 Global 作用域，只能在函数以外进行访问。
+	//global 关键词用于访问函数内的全局变量
+	global $staff;
+	//获取number参数
+	$number = $_GET[&quot;number&quot;];
+	$result = &quot;没有找到员工。&quot;;
+
+	//遍历$staff多维数组，查找key值为number的员工是否存在，如果存在，则修改返回结果
+	foreach ($staff as $value) {
+		if ($value[&quot;number&quot;] == $number) {
+			$result = &quot;找到员工：员工编号：&quot; . $value[&quot;number&quot;] . &quot;，员工姓名：&quot; . $value[&quot;name&quot;] .
+			                  &quot;，员工性别：&quot; . $value[&quot;sex&quot;] . &quot;，员工职位：&quot; . $value[&quot;job&quot;];
+			break;
+		}
+	}
+    echo $result;   //输出$result
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;新建员工函数&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//创建员工
+function create(){
+	//判断信息是否填写完全
+	if (!isset($_POST[&quot;name&quot;]) || empty($_POST[&quot;name&quot;])
+		|| !isset($_POST[&quot;number&quot;]) || empty($_POST[&quot;number&quot;])
+		|| !isset($_POST[&quot;sex&quot;]) || empty($_POST[&quot;sex&quot;])
+		|| !isset($_POST[&quot;job&quot;]) || empty($_POST[&quot;job&quot;])) {
+		echo &quot;参数错误，员工信息填写不全&quot;;
+		return;
+	}
+	//TODO: 获取POST表单数据并保存到数据库
+
+	//提示保存成功
+	echo &quot;员工：&quot; . $_POST[&quot;name&quot;] . &quot; 信息保存成功！&quot;;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;php&quot;&gt;PHP服务端代码测试&lt;/h4&gt;
+
+&lt;p&gt;PHP服务端代码测试 是在没有客户端的情况下对服务端的一些请求进行测试。&lt;/p&gt;
+
+&lt;p&gt;通过&lt;code&gt;Fiddler&lt;/code&gt;工具来进行测试&lt;/p&gt;
+
+&lt;p&gt;这个工具非常好用，他可以监听整个电脑所有发出的HTTP请求，可以监听传入的值和响应的值。它还可以去模拟。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;使用方法&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;打开软件右框上部点击composer按钮，&lt;/p&gt;
+
+&lt;p&gt;填写要测试的服务端页面地址&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-148fb03f8ad377c8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;GIT请求&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;点击执行&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-1067020176e8bcb9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;然后查看左侧记录打开&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-7a66b27c39942dcf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这样就测试成功了&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;POST请求&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-1b3cf2c77e739d9c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;POST请求的时候在请求地址栏下面加上&lt;code&gt;Content-type: application/x-www-form-urlencoded&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-229c0cb8d5792d8c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这样就测试成功了&lt;/p&gt;
+
+&lt;p&gt;在日常开发中，有时候后台做好后，总是等待或依赖前台完成后才可以去调试，其实完全没有必要，我们只需要约定好接口，发送的报文，和返回的报文，通过Fiddler或者类似的工具，直接可以进行调试。&lt;/p&gt;
+
+&lt;h4 id=&quot;section-2&quot;&gt;客户端实现&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;body&amp;gt;
+
+	&amp;lt;h1&amp;gt;员工查询&amp;lt;/h1&amp;gt;
+
+	&amp;lt;label&amp;gt;请输入员工编号：&amp;lt;/label&amp;gt;
+	&amp;lt;input type=&quot;text&quot; id=&quot;keyword&quot; /&amp;gt;
+	&amp;lt;button id=&quot;search&quot;&amp;gt;查询&amp;lt;/button&amp;gt;
+	&amp;lt;p id=&quot;searchResult&quot;&amp;gt;&amp;lt;/p&amp;gt;
+
+	&amp;lt;h1&amp;gt;员工新建&amp;lt;/h1&amp;gt;
+	&amp;lt;label&amp;gt;请输入员工姓名：&amp;lt;/label&amp;gt;
+	&amp;lt;input type=&quot;text&quot; id=&quot;staffName&quot; /&amp;gt;&amp;lt;br&amp;gt;
+	&amp;lt;label&amp;gt;请输入员工编号：&amp;lt;/label&amp;gt;
+	&amp;lt;input type=&quot;text&quot; id=&quot;staffNumber&quot; /&amp;gt;&amp;lt;br&amp;gt;
+	&amp;lt;label&amp;gt;请选择员工性别：&amp;lt;/label&amp;gt;
+	&amp;lt;select id=&quot;staffSex&quot;&amp;gt;
+	&amp;lt;option&amp;gt;女&amp;lt;/option&amp;gt;
+	&amp;lt;option&amp;gt;男&amp;lt;/option&amp;gt;
+	&amp;lt;/select&amp;gt;&amp;lt;br&amp;gt;
+	&amp;lt;label&amp;gt;请输入员工职位：&amp;lt;/label&amp;gt;
+	&amp;lt;input type=&quot;text&quot; id=&quot;staffJob&quot; /&amp;gt;&amp;lt;br&amp;gt;
+	&amp;lt;button id=&quot;save&quot;&amp;gt;保存&amp;lt;/button&amp;gt;
+	&amp;lt;p id=&quot;createResult&quot;&amp;gt;&amp;lt;/p&amp;gt;
+
+	&amp;lt;script&amp;gt;
+		document.getElementById(&quot;search&quot;).onclick = function() {
+			var request = new XMLHttpRequest();
+			request.open(&quot;GET&quot;, &quot;server.php?number=&quot; + document.getElementById(&quot;keyword&quot;).value);
+			request.send();
+			request.onreadystatechange = function() {
+				if (request.readyState === 4) {
+					if (request.status === 200) {
+						document.getElementById(&quot;searchResult&quot;).innerHTML = request.responseText;
+					} else {
+						alert(&quot;发生错误：&quot; + request.status);
+					}
+				}
+			}
+		}
+
+		document.getElementById(&quot;save&quot;).onclick = function() {
+			var request = new XMLHttpRequest();
+			request.open(&quot;POST&quot;, &quot;server.php&quot;);
+			var data = &quot;name=&quot; + document.getElementById(&quot;staffName&quot;).value + &quot;&amp;amp;number=&quot; + document.getElementById(&quot;staffNumber&quot;).value + &quot;&amp;amp;sex=&quot; + document.getElementById(&quot;staffSex&quot;).value + &quot;&amp;amp;job=&quot; + document.getElementById(&quot;staffJob&quot;).value;
+			request.setRequestHeader(&quot;Content-type&quot;, &quot;application/x-www-form-urlencoded&quot;);
+			request.send(data);
+			request.onreadystatechange = function() {
+				if (request.readyState === 4) {
+					if (request.status === 200) {
+						document.getElementById(&quot;createResult&quot;).innerHTML = request.responseText;
+					} else {
+						alert(&quot;发生错误：&quot; + request.status);
+					}
+				}
+			}
+		}
+	&amp;lt;/script&amp;gt;
+&amp;lt;/body&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;案例源码和使用到的安装包可下载&lt;/p&gt;
+</description>
+        <pubDate>Tue, 20 Dec 2016 12:59:44 +0800</pubDate>
+        <link>http://www.huanghanlian.com/javascript/2016/12/20/js-ajax2.html</link>
+        <guid isPermaLink="true">http://www.huanghanlian.com/javascript/2016/12/20/js-ajax2.html</guid>
+        
+        <category>Ajax</category>
+        
+        
+        <category>JavaScript</category>
+        
+      </item>
+    
+      <item>
+        <title>Ajax全接触(一)基础理论</title>
+        <description>&lt;p&gt;什么是同步? 客户端要发起请求，服务器端要去处理，而且去响应，这时候客户端完全是等待，等待服务器端的处理和响应，当服务器端处理响应后客户端会重新载入页面。这时候如果你有错误，那么只能再次发起请求，再次等待。同步的事件会让人疯狂。&lt;/p&gt;
+
+&lt;h4 id=&quot;section&quot;&gt;同步和异步&lt;/h4&gt;
+
+&lt;p&gt;&lt;strong&gt;什么是同步&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-b6b3af70fc67c9a2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;客户端要发起请求，服务器端要去处理，而且去响应，这时候客户端完全是等待，等待服务器端的处理和响应，当服务器端处理响应后客户端会重新载入页面。这时候如果你有错误，那么只能再次发起请求，再次等待。同步的事件会让人疯狂。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;什么是异步&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-0cae80f727d40a6f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;当你填写表单数据时，页面当时就把数据发送到服务器，也就是页面发送了个请求，服务器去做处理和响应，得到你的数据不符合要求，他会把响应结果，发给页面，但是在这个过程中，你还是可以依旧去填写，表单其他内容，这时候服务器告诉你有填写错误的地方，在页面上的表现，只是把你填写错误的旁边标上一行字，并没有刷新你的页面，这样在填写表单时，所有的错误信息都会显示在页面，你可以实时的更正，这个过程中你不会有整个页面的刷新，也不会有整个页面的提交和等待，当你最后点击提交一切都可以搞定了。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;怎么实现Ajax技术呢？&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;运用HTML和CSS来实现页面，表达信息；&lt;/li&gt;
+  &lt;li&gt;运用XMLHttpRequest对象和web服务器进行数据的异步交换；&lt;/li&gt;
+  &lt;li&gt;运用JavaScript操作DOM，实现动态局部刷新；&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;ajax-xmlhttprequest&quot;&gt;Ajax-XMLHttpRequest对象创建&lt;/h4&gt;
+
+&lt;p&gt;目前浏览器都支持标准的XHR对象，也支持标准的构造函数。&lt;/p&gt;
+
+&lt;p&gt;但是在IE5和IE6浏览器中，是不支持&lt;code&gt;var request=new XMLHttpRequest();&lt;/code&gt;因为那时候&lt;code&gt;XHR&lt;/code&gt;还未定义。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;如何兼容IE5和IE6甚至更早的版本？&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var request;
+if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+	request = new XMLHttpRequest();
+} else { // code for IE6, IE5
+	request = new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;只需要判断下，如果有XHR定义，我们就使用标准的构造函数，我们直接  &lt;code&gt;new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);&lt;/code&gt;就可以了。&lt;/p&gt;
+
+&lt;h4 id=&quot;ajax-http&quot;&gt;Ajax-HTTP请求&lt;/h4&gt;
+
+&lt;p&gt;&lt;strong&gt;什么是HTTP&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;HTTP是计算机，通过网络进行通信的规则。&lt;/p&gt;
+
+&lt;p&gt;它主要使我们客户，也就是常说的浏览器能够从服务器也就是常说的web服务器，去请求信息和服务。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-57f1baa5da1bef94.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;HTTP是一种无状态的协议&lt;/p&gt;
+
+&lt;p&gt;无状态指的是不建立持久的连接，也就是说服务端不保留连接的一些相关信息。&lt;/p&gt;
+
+&lt;p&gt;一个客户端，想服务器发送请求，然后web服务器返回响应，接着连接就被关闭了，这个处理过程是没有记忆的。如果后续的处理需要之前传递的一些信息，那么就要重新的传递。这就是经常说HTTP是一种无状态的协议。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;概念介绍–HTTP请求&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;一个完整的HTTP请求过程，通常有下面7个步骤。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;建立TCP连接；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Web浏览器向Web服务器发送请求命令；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Web浏览器发送请求头信息；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Web服务器做出应答；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Web服务器发送应答头信息；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Web服务器向浏览器发送数据；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Web服务器关闭TCP连接；&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;一个HTTP请求一般由四部分组成&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;HTTP请求的方法或动作，比如是GIT还是POST请求；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;正在请求的URL，总得知道请求的地址是什么吧；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;请求头，包含一些客户端环境信息，身份验证信息等；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;请求体，也就是请求正文，请求正文中可以包含客户提交的查询字符串信息，表单信息等等。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-e3b24aa4ea98a261.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;GIT请求和POST请求&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;GIT：一般用于信息获取
+使用URL传递参数
+对所发送信息的数量也有限制，一般在2000个字符&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;POST：一般用于修改服务器上的资源。
+对所发送信息的数量无限制&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;HTTP响应&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;一个HTTP响应一般由三部分组成&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;一个数字和文字组成的状态码，用来显示请求是否成功还是失败；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;响应头，响应头也和请求头一样包含许多有用的信息，例如服务类型，日期时间，内容类型和长度等；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;响应体，也就是响应正文；&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-9b1fc81d3595d15b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;HTTP响应状态码介绍&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;HTTP响应状态码由3位数字构成，其中首位数字定义了状态码的类型：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;1XX:1开头，信息类，表示收到web浏览器请求，正在进一步的处理中；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;2XX:2开头，成功，表示用户请求被正确接收，理解和处理例如：200 OK；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;3XX:3开头，重定向，表示请求没有成功，客户必须采取进一步的动作；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;4XX:4开头，客户端错误，表示客户端提交的请求有错误，例如：404 NOT ;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Found，意味着请求中所引用的文档不存在；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;5XX:5开头，服务器错误，表示服务器不能完成对请求的处理：如 500;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;ajax-xmlhttprequest-1&quot;&gt;Ajax-XMLHttpRequest发送请求&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;XMLHttpRequest&lt;/code&gt;对象的方法&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;方法&lt;/th&gt;
+      &lt;th&gt;描述&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;open(&lt;em&gt;method&lt;/em&gt;,&lt;em&gt;url&lt;/em&gt;,&lt;em&gt;async&lt;/em&gt;)&lt;/td&gt;
+      &lt;td&gt;规定请求的类型、URL 以及是否异步处理请求。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;&lt;em&gt;method&lt;/em&gt;：请求的类型；GET 或 POST&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;&lt;em&gt;url&lt;/em&gt;：文件在服务器上的位置&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;&lt;em&gt;async&lt;/em&gt;：true（异步）或 false（同步）&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;send(&lt;em&gt;string&lt;/em&gt;)&lt;/td&gt;
+      &lt;td&gt;将请求发送到服务器。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;&lt;em&gt;string&lt;/em&gt;：仅用于 POST 请求&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;GET 请求：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;request.open(&quot;GET&quot;,&quot;gte.php&quot;,true);
+request.send();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;POST 请求&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;request.open(&quot;POST&quot;,&quot;post.php&quot;,true);
+request.send();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果需要像 HTML 表单那样 POST 数据，请使用 setRequestHeader() 来添加 HTTP 头。然后在 send() 方法中规定您希望发送的数据：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;request.open(&quot;POST&quot;,&quot;create.php&quot;,true);
+request.setRequestHeader(&quot;Content-type&quot;,&quot;application/x-www-form-urlencoded&quot;);
+request.send(&quot;name=黄&amp;amp;sex=男&quot;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;方法&lt;/th&gt;
+      &lt;th&gt;描述&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;setRequestHeader(&lt;em&gt;header&lt;/em&gt;,&lt;em&gt;value&lt;/em&gt;)&lt;/td&gt;
+      &lt;td&gt;向请求添加 HTTP 头。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;&lt;em&gt;header&lt;/em&gt;: 规定头的名称&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;&lt;em&gt;value&lt;/em&gt;: 规定头的值&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;code&gt;request.setRequestHeader(&quot;Content-type&quot;,&quot;application/x-www-form-urlencoded&quot;);&lt;/code&gt;
+这个方法其实要设置HTTP的头信息，告诉web服务器我们要发送一个表单，
+需要注意的是&lt;code&gt;request.setRequestHeader&lt;/code&gt;方法要写在&lt;code&gt;request.open&lt;/code&gt;和&lt;code&gt; request.send&lt;/code&gt;中间，否则将会抛出异常。&lt;/p&gt;
+
+&lt;h4 id=&quot;ajax-xmlhttprequest-2&quot;&gt;Ajax-XMLHttpRequest取得响应&lt;/h4&gt;
+
+&lt;p&gt;获得来自服务器的响应，请使用 XMLHttpRequest 对象的 responseText 或 responseXML 属性。&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;属性&lt;/th&gt;
+      &lt;th&gt;描述&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;responseText&lt;/td&gt;
+      &lt;td&gt;获得字符串形式的响应数据。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;responseXML&lt;/td&gt;
+      &lt;td&gt;获得 XML 形式的响应数据。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;status和statueText&lt;/td&gt;
+      &lt;td&gt;以数字和文本形式返回HTTP状态码。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;gitAllResponseHeader()&lt;/td&gt;
+      &lt;td&gt;获取所有的响应报头。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;gieResponseHeader( parameter )&lt;/td&gt;
+      &lt;td&gt;查询响应的某个字段的值。 parameter 要查询的字段&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;strong&gt;onreadystatechange 事件&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;当请求被发送到服务器时，我们需要执行一些基于响应的任务。&lt;/p&gt;
+
+&lt;p&gt;每当 readyState 改变时，就会触发 onreadystatechange 事件。&lt;/p&gt;
+
+&lt;p&gt;readyState 属性存有 XMLHttpRequest 的状态信息。&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;属性&lt;/th&gt;
+      &lt;th&gt;描述&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;onreadystatechange&lt;/td&gt;
+      &lt;td&gt;存储函数（或函数名），每当 readyState 属性改变时，就会调用该函数。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;readyState&lt;/td&gt;
+      &lt;td&gt;存有 XMLHttpRequest 的状态。从 0 到 4 发生变化。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;0: 请求未初始化&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;1: 服务器连接已建立&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;2: 请求已接收&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;3: 请求处理中&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;4: 请求已完成，且响应已就绪&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;status&lt;/td&gt;
+      &lt;td&gt;200: “OK”&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;404: 未找到页面&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;pre&gt;&lt;code&gt;function but() {
+	var request;
+	if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+		request = new XMLHttpRequest();
+	} else { // code for IE6, IE5
+		request = new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);
+	}
+	request.onreadystatechange = function() {
+		if (request.readyState === 4 &amp;amp;&amp;amp; request.status === 200) {  //响应完成且请求成功
+			//做一些事情  request.responseText;
+		}
+	}
+	request.open(&quot;GET&quot;, &quot;gte.php&quot;, true);
+	request.send();
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;总结下Ajax使用的步骤&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;第一步&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;new一个XHM对象&lt;code&gt;new XMLHttpRequest();&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;兼容写法&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;	var request;
+	if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+		request = new XMLHttpRequest();
+	} else { // code for IE6, IE5
+		request = new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);
+	}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;第二步&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;调用&lt;code&gt;open&lt;/code&gt;方法&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;	request.open(&quot;GET&quot;, &quot;gte.php&quot;, true);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;第三步&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;将请求发送到服务器&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;	request.send();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;第四步&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;对过程进行监听来知道服务器是否正确的做出了响应，接着就可以做一些事情&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;	request.onreadystatechange = function() {
+		if (request.readyState === 4 &amp;amp;&amp;amp; request.status === 200) {  //响应完成且请求成功
+			//做一些事情  request.responseText;
+		}
+	}
+&lt;/code&gt;&lt;/pre&gt;
+
+</description>
+        <pubDate>Tue, 20 Dec 2016 12:59:07 +0800</pubDate>
+        <link>http://www.huanghanlian.com/javascript/2016/12/20/js-ajax.html</link>
+        <guid isPermaLink="true">http://www.huanghanlian.com/javascript/2016/12/20/js-ajax.html</guid>
+        
+        <category>Ajax</category>
+        
+        
+        <category>JavaScript</category>
+        
+      </item>
+    
+      <item>
+        <title>JavaScript 精粹 基础 进阶(9)OOP面向对象编程(下)</title>
+        <description>&lt;p&gt;我们怎么去模拟重载，在javasceipr中我们可以通过参数的类型区别或者数量的区别，来去让同样一个函数名字，可以根据不同的参数列表的情况来去调用相应的函数。&lt;/p&gt;
+
+&lt;p&gt;javascript中函数类型是不确定的，并且参数的个数也是可以任意的，那么我们可以通过判断实际传入的参数的个数，来去做一个模拟的重载，&lt;/p&gt;
+
+&lt;h3 id=&quot;oop&quot;&gt;OOP(模拟重载、链式调用、模块化)&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;模拟重载&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function person() {
+	var args = arguments;
+	if (typeof args[0] === &#39;object&#39; &amp;amp;&amp;amp; args[0]) {
+		if (args[0].name) {
+			this.name = args[0].name;
+		}
+		if (args[0].age) {
+			this.age = args[0].age;
+		}
+	} else {
+		if (args[0]) {
+			this.name = args[0];
+		}
+		if (args[1]) {
+			this.age = args[1];
+		}
+	}
+};
+person.prototype.toString = function() {
+	return &quot;姓名:&quot; + this.name + &quot;年龄:&quot; + this.age
+}
+
+
+var peng = new person({
+	name: &quot;继小鹏&quot;,
+	age: 23
+});
+console.log(peng.toString()); //姓名:继小鹏年龄:23
+
+var peng1 = new person(&quot;是你&quot;, 23);
+console.log(peng1.toString()); //姓名:是你年龄:23
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;调用子类方法&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;例子1&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if (!Object.create) {
+    Object.create = function(proto) {
+        function F() {};
+        F.prototype = proto;
+        return new F();
+    };
+}
+
+function person(name) {//基类
+	this.name=name;
+}
+person.prototype.init=function(){
+	console.log(&quot;你好&quot;+this.name)
+}
+
+function student(name,classname){   //学生类
+	this.classname=classname;
+	person.call(this,name);
+}
+
+student.prototype = Object.create(person.prototype);
+student.prototype.constructor = student;
+
+
+student.prototype.init=function(){
+	console.log(&quot;你好s&quot;+this.name)
+}
+
+
+
+
+var peng=new student(&quot;继小鹏&quot;,&quot;class2&quot;);
+console.log(peng);
+peng.init();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;例子2子类调用基类方法&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function person(name) {//基类
+	this.name=name;
+}
+
+function student(name,classname){   //学生类
+	this.classname=classname;
+	person.call(this,name);
+}
+
+person.prototype.init=function(){
+	console.log(this.name)
+}
+
+student.prototype.init=function(){
+	person.prototype.init.apply(this,arguments);
+}
+
+var peng=new student(&quot;继小鹏&quot;,&quot;class2&quot;);
+console.log(peng);
+peng.init();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;链式调用&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function classman() {}
+classman.prototype.addClass = function(str) {
+	console.log(&#39;calss&#39; + str + &#39;added&#39;);
+	return this;
+}
+var mang = new classman();
+mang.addClass(&#39;classA&#39;).addClass(&#39;classB&#39;).addClass(&#39;classC&#39;)
+
+// calssclassAadded
+// calssclassBadded
+// calssclassCadded
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用jq的时候$(“#id”).addClass(‘df’)
+选择器做些操作后在继续addClass(‘df’)还可以再做动作一层层链式去调用。&lt;/p&gt;
+
+&lt;p&gt;例子解释&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function classman() {}   //现定义一个构造器classman
+classman.prototype.addClass = function(str) {   //给classman构造器prototype添加addClass属性方法
+	console.log(&#39;calss&#39; + str + &#39;added&#39;);   //输出表示添加一个class
+	return this;  //return this表示返回classman的实例因为返回了实例那么紧接着后面不需要加mang.addClass(&#39;classA&#39;)直接后面加.addClass(&#39;classB&#39;).addClass(&#39;classB&#39;)就可以，每次执行完都会返回实例
+}
+var mang = new classman();
+mang.addClass(&#39;classA&#39;).addClass(&#39;classB&#39;).addClass(&#39;classC&#39;)
+
+// calssclassAadded
+// calssclassBadded
+// calssclassCadded
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;抽象类&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function Detectorlse() {
+	throw new Error(&quot;Abstract class can not be invoked directly!&quot;);
+}
+Detectorlse.detect = function() {
+	console.log(&#39;Detcetion starting...&#39;);
+}
+Detectorlse.stop = function() {
+	console.log(&#39;Detector stopped&#39;);
+}
+Detectorlse.init = function() {
+	throw new Error(&quot;Error&quot;);
+}
+
+function linkDetector() {};
+linkDetector.prototype = Object.create(Detectorlse.prototype)
+linkDetector.prototype.constructor = linkDetector;
+
+//...add methods to LinkDetector...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;defineProperty(ES5)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function Person(name) {
+	Object.defineProperty(this, &#39;name&#39;, {
+		value: name,
+		enumerable: true
+	});
+};
+Object.defineProperty(Person, &#39;arms_num&#39;, {
+	value: 2,
+	enumerable: true
+});
+Object.seal(Person.prototype);
+Object.seal(Person);
+
+function student(name, classname) {
+	this.classname = classname;
+	Person.call(this, name);
+};
+student.prototype = Object.create(Person.prototype);
+student.prototype.constructor = student;
+
+var peng = new Person(&#39;继小鹏&#39;);
+console.log(peng);
+
+var han = new student(&quot;汗&quot;, &quot;class2&quot;);
+console.log(han);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;模块化&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;定义简单模块化&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var moduleA;
+moduleA=function(){
+	var prop=1;
+	function func(){};
+	return {
+		func:func,
+		prop:prop
+	}
+}();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;定义简单模块化2&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var moduleA;
+moduleA = new function() {
+	var prop = 1;
+
+	function func() {};
+	this.func = func;
+	this.prop = prop;
+}();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;实践（探测器）&lt;/h3&gt;
+</description>
+        <pubDate>Tue, 20 Dec 2016 11:55:03 +0800</pubDate>
+        <link>http://www.huanghanlian.com/javascript/2016/12/20/javascript-jinjie9.html</link>
+        <guid isPermaLink="true">http://www.huanghanlian.com/javascript/2016/12/20/javascript-jinjie9.html</guid>
+        
+        <category>__proto__</category>
+        
+        
+        <category>JavaScript</category>
+        
+      </item>
+    
+      <item>
+        <title>JavaScript 精粹 基础 进阶(8)OOP面向对象编程(上)</title>
+        <description>&lt;p&gt;面向对象编程，oop并不是针对与javascript，很多语言都实现了oop这样一个编程发法论，比如说java，c++，都是实现了oop的语言。&lt;/p&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;概念与继承&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;概念&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;面向对象程序设计(Object-oriented programming OOP)是一种程序设计范型，同时也是一种程序开发的方法。对象指的是类的实例，它将对象作为程序的基本单元，将程序和数据封装其中，以提高软件的重用性，灵活性和扩展性。       来自于 —-维基百科&lt;/p&gt;
+
+&lt;p&gt;OOP重点的一些特性：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;继承&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;封装&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;多态&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;抽象&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;基于原型的继承&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function Foo() {
+	this.y = 2;
+};
+Foo.prototype.x = 1;
+console.log(Foo.prototype); //object
+var obj1 = new Foo();
+console.log(obj1.y); //2
+console.log(obj1.x); //1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;函数声明创建&lt;code&gt;Foo()&lt;/code&gt;函数，这个函数就会有一个内置的&lt;code&gt;Foo.prototype&lt;/code&gt;，并且这个属性是对象，并且是预设的。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function Foo() {
+	this.y = 2;
+};
+
+console.log(Foo.prototype); //object
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-81f6d095f48ed6dd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function Foo() {
+	this.y = 2;
+};
+Foo.prototype.x = 1;
+console.log(Foo.prototype); //object
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-91e78a44dcce6ce6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;然后我们把&lt;code&gt;Foo.prototype&lt;/code&gt;对象增加一个属性&lt;code&gt;x&lt;/code&gt;并且赋值为1。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function Foo() {
+	this.y = 2;
+};
+Foo.prototype.x = 1;
+console.log(Foo.prototype); //object
+var obj1 = new Foo();
+console.log(obj1.y); //2
+console.log(obj1.x); //1 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后使用&lt;code&gt;new&lt;/code&gt;操作符&lt;code&gt;new Foo();&lt;/code&gt;来创建一个&lt;code&gt;Foo();&lt;/code&gt;的实例，叫obj1，&lt;/p&gt;
+
+&lt;p&gt;当时用&lt;code&gt;new&lt;/code&gt;去调用函数的时候，那么构造器也就是说这样一个函数就会作为一个构造器来使用，并且this会指向一个对象，而对象的原型会指向构造器的&lt;code&gt;Foo.prototype&lt;/code&gt;属性。obj1实际上会成为Foo构造器中的this，最后会作为返回值，并且在构造器里面调用的时候会把y赋值为2，并且obj1的原型，也就是他的proto会指向Foo.prototype内置属性，最后可以看到obj.y会返回2，obj.x会返回1，y是这个对象上的直接量，而x是原型链上的，也就是Foo.prototype的&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function Foo() {
+	this.y = 2;
+};
+Foo.prototype.x = 1;
+console.log(Foo.prototype);
+var obj1 = new Foo();
+
+console.log(obj1);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-568a72e297d75aeb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;prototype属性与原型&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function Foo() {};
+console.log(Foo.prototype);
+Foo.prototype.x=1;
+var obj=new Foo();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-f788c71f7d0e532f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;使用函数声明去中创建一个函数的时候，这个函数就会有一个&lt;code&gt;prototype&lt;/code&gt;属性，并且他默认会有两个属性。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;一个是&lt;code&gt;constructor:Foo&lt;/code&gt;constructor属性会指向它本身Foo。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;另外一个属性是&lt;code&gt;__proto__&lt;/code&gt;，&lt;code&gt;__proto__&lt;/code&gt;是&lt;code&gt;Foo.prototype&lt;/code&gt;的原型，那么他的原型会指向&lt;code&gt;Object.prototype&lt;/code&gt;也就是说一般的对象比如用花括号括起来的对象字面量，他也会有&lt;code&gt;__proto__&lt;/code&gt;他会指向&lt;code&gt;Object.prototype&lt;/code&gt;因此&lt;code&gt;Object.prototype&lt;/code&gt;上面的一些方法比如说&lt;code&gt;toString&lt;/code&gt;，&lt;code&gt;valueOf&lt;/code&gt;才会被每一个一般的对象所使用，&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code&gt;x:1&lt;/code&gt;这个是我通过赋值语句增加的。&lt;/p&gt;
+
+&lt;p&gt;**这句是Foo.prototype的结构  **&lt;/p&gt;
+
+&lt;p&gt;也就是说，这里面有一个&lt;code&gt;Foo&lt;/code&gt;函数，这个&lt;code&gt;Foo&lt;/code&gt;函数呢会有一个&lt;code&gt;prototype&lt;/code&gt;的对象属性，他的作用呢就是在当使用&lt;code&gt;new Foo()&lt;/code&gt;去构造Foo的实例的时候，那么构造器的&lt;code&gt;prototype&lt;/code&gt;的属性，会用作&lt;code&gt;new&lt;/code&gt;出来的这些对象的原型。&lt;/p&gt;
+
+&lt;p&gt;所以要搞清楚&lt;code&gt;prototype&lt;/code&gt;和原型是两回事。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;prototype&lt;/code&gt;是函数对象上的预设的对象属性，而原型呢是我们对象上的一个原型，原型通常都是他的构造器的&lt;code&gt;prototype&lt;/code&gt;属性。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;实现class继承另外一个class&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function Person(name, age) {
+	this.name = name;
+	this.age = age;
+};
+
+Person.prototype.hi = function() {
+	console.log(&#39;Hi my name is&#39; + this.name + &quot;,I&#39;m&quot; + this.age + &quot;years old new&quot;);
+};
+
+Person.prototype.legs_num = 2;
+Person.prototype.arms_num = 2;
+Person.prototype.walk = function() {
+	console.log(this.name + &quot;is walking...&quot;);
+};
+
+function Student(name, age, className) {
+	Person.call(this, name, age);
+	this.className = className;
+};
+Student.prototype = Object.create(Person.prototype);
+Student.prototype.constructor = Student;
+
+
+Student.prototype.hi = function() {
+	console.log(&#39;Hi my name is&#39; + this.name + &quot;,I&#39;m&quot; + this.age + &quot;years old new,and form&quot; + this.className + &quot;.&quot;);
+};
+
+Student.prototype.learn = function(subject) {
+	console.log(this.name + &#39;is learing&#39; + subject + &#39;at&#39; + this.className + &#39;.&#39;);
+};
+
+console.log(Student.prototype);
+
+var t = new Student(&quot;黄继鹏&quot;, 23, &quot;class2&quot;);
+t.hi();
+console.log(t.legs_num);
+t.walk();
+t.learn(&#39;math&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里有一个函数Person，人的意思意思是说只要人类的class。  在这个构造函数里面，通过&lt;code&gt;this.name = name;&lt;/code&gt;和&lt;code&gt;this.age = age;&lt;/code&gt;去做一个赋值，如何Person作为函数直接去调用的话，那么这里的this会指向全局对象，在浏览器里就会指向window，使用new去调用Person函数的时候，this会指向一个原型为Person.prototype的一个空对象，然后通过this.name去给这个空对象赋值，最后这里没有写返回值，使用new会this会作为返回值。&lt;/p&gt;
+
+&lt;p&gt;通过&lt;code&gt;Person.prototype.hi&lt;/code&gt;来创建所有Person实例共享的方法。&lt;/p&gt;
+
+&lt;p&gt;再创建Student函数，学生这样一个class，那么学生是也是人，他是可以继承人的，每一个学生也是人，并且学生会有他的班级名称或者一些其他的功能方法，&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function Student(name, age, className) {
+	Person.call(this, name, age);
+	this.className = className;
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;创建Student函数，这里多传了一个className参数，在Student函数也算是子类里先调用下父类，Person.call(this, name, age);然后把this作为Person里面的this再把name和age传进去，注意这里的this在new被实例的时候会是这个实例的返回值也就是直接量，&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;this.className = className;&lt;/code&gt;并且把Student的实例做好赋值，&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;把Student.prototype能继承Person.prototype的一些方法&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Student.prototype = Object.create(Person.prototype);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用这样一个方法去拿到&lt;code&gt;Person.prototype&lt;/code&gt;对象作为原型的值，这样&lt;code&gt;Student.prototype&lt;/code&gt;原型就会有&lt;code&gt;Person.prototype&lt;/code&gt;的值了。&lt;/p&gt;
+
+&lt;p&gt;如果去掉&lt;code&gt;Object.create()&lt;/code&gt;的话。人有一些方法，但是学生也有自己的一些方法，&lt;code&gt;Student.prototype = Person.prototype;&lt;/code&gt;，&lt;code&gt;Person.prototype;&lt;/code&gt;赋值给&lt;code&gt;Student.prototype&lt;/code&gt;的时候，当我想增加学生自己的方法时，比如说&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Student.prototype.learn = function(subject) {
+	console.log(this.name + &#39;is learing&#39; + subject + &#39;at&#39; + this.className + &#39;.&#39;);
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样的话由于他们指向的是同一个对象，给&lt;code&gt;Student.prototype&lt;/code&gt;增加对象的时候同时也给&lt;code&gt;Person.prototype;&lt;/code&gt;增加了同样的属性，这不是我们想要的。&lt;/p&gt;
+
+&lt;p&gt;所以说通过&lt;code&gt;Student.prototype = Object.create(Person.prototype);&lt;/code&gt;创建了一个空的对象，而这个空对象的原型指向了&lt;code&gt;Person.prototype&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;这样的话我们既可以在访问&lt;code&gt;Student.prototype&lt;/code&gt;的时候，可以向上查找&lt;code&gt;Person.prototype&lt;/code&gt;同时可以在不影响&lt;code&gt;Person.prototype&lt;/code&gt;的前提下创建一些自己的&lt;code&gt;Student.prototype&lt;/code&gt;上的方法。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Student.prototype.constructor = Student;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;每一个&lt;code&gt;prototype&lt;/code&gt;属性对象都会有一个&lt;code&gt;constructor &lt;/code&gt;属性，他的值是指向函数本身，实际上这里面没有太大的用处，因为我们可以任意的去修改，但是为了保证一致性，我们把这个改成&lt;code&gt;Student.prototype.constructor = Student;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;面向对象例子测试&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function Person(name, age) {
+	this.name = name;
+	this.age = age;
+};
+
+Person.prototype.hi = function() {
+	console.log(&#39;Hi my name is&#39; + this.name + &quot;,I&#39;m&quot; + this.age + &quot;years old new&quot;);
+};
+
+Person.prototype.legs_num = 2;
+Person.prototype.arms_num = 2;
+Person.prototype.walk = function() {
+	console.log(this.name + &quot;is walking...&quot;);
+};
+
+function Student(name, age, className) {
+	Person.call(this, name, age);
+	this.className = className;
+};
+Student.prototype = Object.create(Person.prototype);
+Student.prototype.constructor = Student;
+
+
+Student.prototype.hi = function() {
+	console.log(&#39;Hi my name is&#39; + this.name + &quot;,I&#39;m&quot; + this.age + &quot;years old new,and form&quot; + this.className + &quot;.&quot;);
+};
+
+Student.prototype.learn = function(subject) {
+	console.log(this.name + &#39;is learing&#39; + subject + &#39;at&#39; + this.className + &#39;.&#39;);
+};
+
+
+var t = new Student(&quot;黄继鹏&quot;, 23, &quot;class2&quot;);
+var poi=new Person(&quot;李汉&quot;,22);
+console.log(poi);
+console.log(t);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-43c16c3c2dc86632.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;再谈原型链&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;再谈原型链&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function Person(name, age) {
+	this.name = name;
+	this.age = age;
+};
+
+Person.prototype.hi = function() {
+	console.log(&#39;Hi my name is&#39; + this.name + &quot;,I&#39;m&quot; + this.age + &quot;years old new&quot;);
+};
+
+Person.prototype.legs_num = 2;
+Person.prototype.arms_num = 2;
+Person.prototype.walk = function() {
+	console.log(this.name + &quot;is walking...&quot;);
+};
+
+function Student(name, age, className) {
+	Person.call(this, name, age);
+	this.className = className;
+};
+Student.prototype = Object.create(Person.prototype);
+Student.prototype.constructor = Student;
+
+
+Student.prototype.hi = function() {
+	console.log(&#39;Hi my name is&#39; + this.name + &quot;,I&#39;m&quot; + this.age + &quot;years old new,and form&quot; + this.className + &quot;.&quot;);
+};
+
+Student.prototype.learn = function(subject) {
+	console.log(this.name + &#39;is learing&#39; + subject + &#39;at&#39; + this.className + &#39;.&#39;);
+};
+
+console.log(Student.prototype);
+
+var peng = new Student(&quot;黄继鹏&quot;, 23, &quot;class2&quot;);
+peng.hi();
+console.log(peng.legs_num);
+peng.walk();
+peng.learn(&#39;math&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-37d17481b52e9489.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;dfg.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这个图里面说明了上面代码例子的示意图&lt;/p&gt;
+
+&lt;p&gt;通过&lt;code&gt;var peng = new Student(&quot;黄继鹏&quot;, 23, &quot;class2&quot;);&lt;/code&gt;来创建了一个实例&lt;code&gt;peng&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;peng&lt;/code&gt;的实例他的原型我们用&lt;code&gt;__proto__&lt;/code&gt;表示，就会指向构造器&lt;code&gt;Student.prototype&lt;/code&gt;的属性。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Student.prototype&lt;/code&gt;上面有&lt;code&gt;hi&lt;/code&gt;和&lt;code&gt;learn &lt;/code&gt;方法，&lt;code&gt;Student.prototype&lt;/code&gt;是通过&lt;code&gt;Student.prototype = Object.create(Person.prototype);&lt;/code&gt;构造的，所以说&lt;code&gt;Student.prototype&lt;/code&gt;是一个对象，并且的原型指向&lt;code&gt;Person.prototype&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Person.prototype&lt;/code&gt;。也给她设置了很多属性，&lt;code&gt;hi&lt;/code&gt;…等。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Person.prototype.hi = function() {
+	console.log(&#39;Hi my name is&#39; + this.name + &quot;,I&#39;m&quot; + this.age + &quot;years old new&quot;);
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;Person.prototype.hi&lt;/code&gt;其实是内置的普通对象，内置对象他本身也会有他的原型，他的原型就是&lt;code&gt;Object.prototype&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;也就是因为这样所以说随便一个对象才会有&lt;code&gt;hasOwnProperty&lt;/code&gt;，&lt;code&gt;valueOf&lt;/code&gt;，&lt;code&gt;toString&lt;/code&gt;等一些公共的函数，这些函数都是从&lt;code&gt;Object.prototype&lt;/code&gt;而来的。&lt;/p&gt;
+
+&lt;p&gt;当我们去调用&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;peng.hi();&lt;/code&gt;方法的时候，首先看这个对象上本身有没有&lt;code&gt;hi&lt;/code&gt;方法，在本身没有所以会像上查找，差遭到&lt;code&gt;peng&lt;/code&gt;原型也就是&lt;code&gt;Student.prototype&lt;/code&gt;有这样一个函数方法，所以最终调用的是&lt;code&gt;Student.prototype&lt;/code&gt;上面的&lt;code&gt;hi&lt;/code&gt;方法。&lt;/p&gt;
+
+&lt;p&gt;如果&lt;code&gt;Student.prototype&lt;/code&gt;不去写&lt;code&gt;hi&lt;/code&gt;方法的时候&lt;code&gt;peng.hi();&lt;/code&gt;会去调用&lt;code&gt;Person.prototype.hi&lt;/code&gt;这样一个方法，&lt;/p&gt;
+
+&lt;p&gt;当我们调用&lt;code&gt;peng.walk();&lt;/code&gt;的时候，先找&lt;code&gt;peng&lt;/code&gt;上发现没有，然后&lt;code&gt;Student.prototype&lt;/code&gt;上面，也没有，&lt;code&gt;Person.prototype&lt;/code&gt;有&lt;code&gt;walk&lt;/code&gt;所以最终调用结果是&lt;code&gt;Person.prototype&lt;/code&gt;上面的&lt;code&gt;walk&lt;/code&gt;方法。&lt;/p&gt;
+
+&lt;p&gt;那么我想去调用&lt;code&gt;peng.toString&lt;/code&gt;的时候也是一层一层向上查找。找到&lt;code&gt;Object.prototype&lt;/code&gt;那么最后到&lt;code&gt;null&lt;/code&gt;也就是最根源没有了。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;关于一切的一般对象都会指向&lt;code&gt;Object.prototype&lt;/code&gt;做一个实际的实验&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var obj={x:1,y:2}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;比如用&lt;code&gt;obj&lt;/code&gt;等于一个花括号空的字面量，给他属性。&lt;/p&gt;
+
+&lt;p&gt;那么我们知道&lt;code&gt;obj&lt;/code&gt;就是一个普通的对象，&lt;code&gt;obj.x就为1&lt;/code&gt;，&lt;/p&gt;
+
+&lt;p&gt;可以通过&lt;code&gt;obj.__proto__&lt;/code&gt;这样的机制可以让你去访问对象的原型&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-b5d9a4c69be98364.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;除了&lt;code&gt;obj.__proto__&lt;/code&gt;以外，在es5里面提供了一个方法能够返回一个对象的原型，就是&lt;code&gt;Object.getPrototypeOf(obj)&lt;/code&gt;这样一个方法，可以返回对象原型，&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-d719db594dfb0459.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;通过三个等号来判断&lt;code&gt;Object.getPrototypeOf(obj)&lt;/code&gt;是不是等于&lt;code&gt;Object.prototype&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-702aed1426ec6170.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;返回&lt;code&gt;true&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;也就是说我们随便一个对象仔面了也好或者是函数函数内置的&lt;code&gt;prototype&lt;/code&gt;属性然后去判断 他的原型可以看到也是&lt;code&gt;Object.prototype&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-58ffd9189b45da83.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;也正因为如此所以说我们才可以调用&lt;code&gt;obj.toString()&lt;/code&gt;，&lt;code&gt;obj.valueOf()&lt;/code&gt;
+实际上这些方法都是取自&lt;code&gt;Object.prototype&lt;/code&gt;上的，&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-4f6ae91520f49f88.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;并不是所有对象最终原型链上最终都有&lt;code&gt;Object.prototype&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;比如说我们创建obj2对象，然后用&lt;code&gt;var obj2=Object.create(null)&lt;/code&gt;，&lt;code&gt;obj2.create(null)&lt;/code&gt;的作用是创建空对象，并且这个对象的原型指向这样一个参数，但是这里参数是null，obj2这个时候他的原型就是&lt;code&gt;undefined&lt;/code&gt;，&lt;code&gt;obj2.toString&lt;/code&gt;就是&lt;code&gt;undefined&lt;/code&gt;那么通过&lt;code&gt;Object.create(null)&lt;/code&gt;创建出来的对象，就没有&lt;code&gt;Object.prototype&lt;/code&gt;的一些方法。所以说并不是所有的对象都继承&lt;code&gt;Object.prototype&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;只是一般我们对象字面量或者是函数的&lt;code&gt;prototype&lt;/code&gt;预制的一般的对象上都有&lt;code&gt;Object.prototype&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-dea28a1efdb65a25.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;并不是所有的函数对象都有prototype这样一个预制属性的&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function abc() {};
+console.log(abc.prototype);
+var hh = abc.bind(null);
+console.log(hh.prototype);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-622fd9144fe05236.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;使用es5友谊和&lt;code&gt;bind&lt;/code&gt;函数，&lt;code&gt;bind&lt;/code&gt;函数是用来修改函数在运行时的&lt;code&gt;this&lt;/code&gt;的，&lt;code&gt;bind&lt;/code&gt;函数返回的也是一个函数，但是&lt;code&gt;bind&lt;/code&gt;函数就没有&lt;code&gt;prototype&lt;/code&gt;预设属性。&lt;/p&gt;
+
+&lt;h3 id=&quot;prototype&quot;&gt;prototype属性&lt;/h3&gt;
+
+&lt;p&gt;javascript中的&lt;code&gt;prototype&lt;/code&gt;原型，不像java的class，是一旦写好了以后不太容易去动态改变的，但是javascript中原型实际上也是普通的对象，那么意味着在程序运行的阶段我们也可以动态的给&lt;code&gt;prototype&lt;/code&gt;添加或者删除一些属性，&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function Person(name, age) {
+    this.name = name;
+    this.age = age;
+};
+
+Person.prototype.hi = function() {
+    console.log(&#39;Hi my name is&#39; + this.name + &quot;,I&#39;m&quot; + this.age + &quot;years old new&quot;);
+};
+
+Person.prototype.legs_num = 2;
+Person.prototype.arms_num = 2;
+Person.prototype.walk = function() {
+    console.log(this.name + &quot;is walking...&quot;);
+};
+
+function Student(name, age, className) {
+    Person.call(this, name, age);
+    this.className = className;
+};
+Student.prototype = Object.create(Person.prototype);
+Student.prototype.constructor = Student;
+
+
+Student.prototype.hi = function() {
+    console.log(&#39;Hi my name is&#39; + this.name + &quot;,I&#39;m&quot; + this.age + &quot;years old new,and form&quot; + this.className + &quot;.&quot;);
+};
+
+Student.prototype.learn = function(subject) {
+    console.log(this.name + &#39;is learing&#39; + subject + &#39;at&#39; + this.className + &#39;.&#39;);
+};
+
+console.log(Student.prototype);
+
+var peng = new Student(&quot;黄继鹏&quot;, 23, &quot;class2&quot;);
+peng.hi();
+console.log(peng.legs_num);
+peng.walk();
+peng.learn(&#39;math&#39;)
+
+Student.prototype.x=101;
+console.log(peng.x);//101
+
+Student.prototype={y:2};
+console.log(peng.y);//undefined
+console.log(peng.x);//101
+
+var nunnly=new Student(&quot;nunnly&quot;, 23, &quot;class3&quot;);
+
+console.log(nunnly.y);//2
+console.log(nunnly.x);//undefined
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-d78de6b3ef231ccb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Student.prototype.x=101;
+console.log(peng.x);//101
+
+Student.prototype={y:2};
+console.log(peng.y);//undefined
+console.log(peng.x);//101
+
+var nunnly=new Student(&quot;nunnly&quot;, 23, &quot;class3&quot;);
+
+console.log(nunnly.y);//2
+console.log(nunnly.x);//undefined
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;比如说这里的&lt;code&gt;Student.prototype&lt;/code&gt;同过&lt;code&gt;Student.prototype.x=101;&lt;/code&gt;把&lt;code&gt;huang&lt;/code&gt;的原型动态的添加一个属性&lt;code&gt;x&lt;/code&gt;那么我们发现所有的实例都会受到影响，现在去调用&lt;code&gt;console.log(peng.x);&lt;/code&gt;发现他赋值为101了，&lt;/p&gt;
+
+&lt;p&gt;直接修改Student.prototype={y:2};构造器的属性，把他赋值为一个新的对象，&lt;code&gt;y:2&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;有趣的现象&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;console.log(peng.y);//undefined
+console.log(peng.x);//101
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;当我们去修改&lt;code&gt;Student.prototype&lt;/code&gt;的时候并不能修改已经实例化的对象，也就是说已经实例化的&lt;code&gt;peng&lt;/code&gt;他的原型已经指向当时的&lt;code&gt;Student.prototype&lt;/code&gt;如果你修改了&lt;code&gt;Student.prototype&lt;/code&gt;的话，并不会影响已经创建的实例，之所以修改的x没有问题，是因为我们修改的是&lt;code&gt;peng&lt;/code&gt;原型的那个对象，&lt;/p&gt;
+
+&lt;p&gt;但是再去用new重新实例化对象，那么会发现x不见了，并且y是新的y值。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;内置构造器的prototype&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;Object.prototype.x = 1;
+var obj = {
+	y: 3
+};
+console.log(obj.x); //1
+for (var key in obj) {
+	console.log(key + &quot;=&quot; + obj[key]); //y=3 x=1
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;比如说我们想让所有的对象他的原型链上都会有x属性会发现所有对象都会有x属性，这样的设置会在for…in的时候会被枚举出来，那么怎么解决这个问题呢&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Object.defineProperty(Object.prototype, &#39;x&#39;, {writable: true,value: 1});
+var obj = {
+	y: 3
+};
+console.log(obj.x); //1
+for (var key in obj) {
+	console.log(key + &quot;=&quot; + obj[key]); //y=3
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;value:属性的值给属性赋值&lt;/li&gt;
+  &lt;li&gt;writable:如果为false，属性的值就不能被重写。&lt;/li&gt;
+  &lt;li&gt;get: 一旦目标属性被访问就会调回此方法，并将此方法的运算结果返回用户。&lt;/li&gt;
+  &lt;li&gt;set:一旦目标属性被赋值，就会调回此方法。&lt;/li&gt;
+  &lt;li&gt;configurable:如果为false，则任何尝试删除目标属性或修改属性以下特性（writable, configurable, enumerable）的行为将被无效化。&lt;/li&gt;
+  &lt;li&gt;enumerable:是否能在for…in循环中遍历出来或在Object.keys中列举出来。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;创建对象-new/原型链&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function foo(){}    //定义函数对象 foo
+foo.prototype.z = 3;      //函数对象默认带foo.prototype对象属性  这个对象会作为new实例的对象原型  对象添加z属性=3
+
+var obj =new foo();    //用构造器方式构造新的对象
+obj.y = 2;    //通过赋值添加2个属性给obj
+obj.x = 1;   //通过new去构造这样一个对象他的主要特点是，他的原型会指向构造器的foo.prototype属性
+
+//一般foo.prototype对象他的原型又会指向Object.prototype
+//Object.prototype他也会有他的原型最后指向null整个原型链的末端
+
+obj.x; // 1  //访问obj.x发现对象上有x返回1
+obj.y; // 2  //访问obj.y发现对象上有x返回2
+obj.z; // 3  //obj上没有z并不会停止查找，会去查找他的原型foo.prototype.z返回3
+typeof obj.toString; // ‘function&#39;  这是一个函数，toString是Object.prototype上面的每个对象都有
+&#39;z&#39; in obj; // true     obj.z是从foo.prototype继承而来的，所以说obj里面有z
+obj.hasOwnProperty(&#39;z&#39;); // false   表示z并不是obj直接对象上的，而是对象原型链上的。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-a2fcce85ebf5bb1c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;instanceof&quot;&gt;instanceof&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;instanceof&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;code&gt;instanceof&lt;/code&gt;数据类型判断方法&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;console.log([1, 2] instanceof Array); //true
+console.log(new Object() instanceof Array); //false
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;左边要求是一个对象&lt;code&gt;instanceof&lt;/code&gt;右边要求是一个函数或者说构造器
+他会判断右边的构造器的 &lt;code&gt;prototype&lt;/code&gt;的属性是否出现在左边这个对象的原型链上。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;console.log([1, 2] instanceof Array); //true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;[1,2]&lt;/code&gt;这里是数组字面量，数组的字面量他也有他的原型，他的原型就是&lt;code&gt;Array.prototype&lt;/code&gt;所以返回&lt;code&gt;true&lt;/code&gt;。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;console.log(new Object() instanceof Array); //false
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;new Object()&lt;/code&gt;new一个空对象空对象的原型会指向&lt;code&gt;Object.prototype&lt;/code&gt;。&lt;code&gt;new Object()&lt;/code&gt;的原型链不是&lt;code&gt;Array.prototype&lt;/code&gt;所以返回&lt;code&gt;false&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;需要注意的是&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;console.log([1, 2] instanceof Object); //true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;因为数组他的原型是Array.prototype，而Array.prototype的原型就是Object.prototype，所以返回true&lt;/p&gt;
+
+&lt;p&gt;所以说&lt;strong&gt;instanceof&lt;/strong&gt;我们可以判断某一个对象他的原型链上是否有右边这个函数构造器的prototype对象属性。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function per() {};
+
+function sor() {};
+sor.prototype = new per();
+sor.prototype.constructor = sor;
+
+var peng = new sor();
+var han = new per();
+console.log(peng instanceof sor); //true
+console.log(peng instanceof per); //true
+console.log(han instanceof sor); //false
+console.log(han instanceof per); //true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;实现继承的方式&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;实现继承的方式&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;if (!Object.create) {
+	Object.create = function(proto) {
+		function F() {};
+		F.prototype = proto;
+		return new F();
+	};
+}
+
+
+function Person(name, age) {
+	this.name = name;
+	this.age = age;
+};
+
+Person.prototype.hi = function() {
+	console.log(&#39;Hi my name is&#39; + this.name + &quot;,I&#39;m&quot; + this.age + &quot;years old new&quot;);
+};
+
+Person.prototype.legs_num = 2;
+Person.prototype.arms_num = 2;
+Person.prototype.walk = function() {
+	console.log(this.name + &quot;is walking...&quot;);
+};
+
+function Student(name, age, className) {
+	Person.call(this, name, age);
+	this.className = className;
+};
+Student.prototype = Object.create(Person.prototype);
+Student.prototype.constructor = Student;
+
+
+Student.prototype.hi = function() {
+	console.log(&#39;Hi my name is&#39; + this.name + &quot;,I&#39;m&quot; + this.age + &quot;years old new,and form&quot; + this.className + &quot;.&quot;);
+};
+
+Student.prototype.learn = function(subject) {
+	console.log(this.name + &#39;is learing&#39; + subject + &#39;at&#39; + this.className + &#39;.&#39;);
+};
+
+console.log(Student.prototype);
+
+var t = new Student(&quot;黄继鹏&quot;, 23, &quot;class2&quot;);
+t.hi();
+console.log(t.legs_num);
+t.walk();
+t.learn(&#39;math&#39;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;Object.create()&lt;/code&gt;也有他的问题，他是es5之后才支持的，但是没有关系在es5之前我们可以写一个模拟的方法。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if (!Object.create) {
+	Object.create = function(proto) {
+		function F() {};
+		F.prototype = proto;
+		return new F();
+	};
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里面我们可以判断下有没有&lt;code&gt;Object.create&lt;/code&gt;如果没有的话，我们可以把他赋值为一个函数，这里会传进来一个参数，写一个临时的空函数，把空函数的prototype属性赋值给想要作为原型的对象，然后返回new F()，会创建一个对象，这个对象的原型指向构造器的prototype，利用这样的规则返回空对象，并且对象原型指向参数也就是要继承的原型。&lt;/p&gt;
+</description>
+        <pubDate>Tue, 20 Dec 2016 11:54:56 +0800</pubDate>
+        <link>http://www.huanghanlian.com/javascript/2016/12/20/javascript-jinjie8.html</link>
+        <guid isPermaLink="true">http://www.huanghanlian.com/javascript/2016/12/20/javascript-jinjie8.html</guid>
+        
+        <category>__proto__</category>
+        
+        
+        <category>JavaScript</category>
+        
+      </item>
+    
+      <item>
+        <title>JavaScript 精粹 基础 进阶(7)函数和作用域（闭包、作用域）</title>
+        <description>&lt;p&gt;闭包在JavaScript 中是一个非常重要的概念。&lt;/p&gt;
+
+&lt;h4 id=&quot;section&quot;&gt;闭包例子&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;function outer() {
+	var loc = 30;
+	return loc;
+};
+console.log(outer()); //30
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;outer&lt;/code&gt;函数是一个函数声明，有一个局部变量&lt;code&gt;loc &lt;/code&gt;赋值为30，返回&lt;code&gt;loc &lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;当这个函数调用之后，局部变量就会被释放了，&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function outer() {
+	var loc = 30;
+	return function() {
+		return loc;
+	};
+};
+var func = outer();
+console.log(func()); //30
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这个&lt;code&gt;outer&lt;/code&gt;函数有一个&lt;code&gt;loc&lt;/code&gt;的局部变量，返回值是一个匿名函数表达式，在这个函数表达式又返回&lt;code&gt;outer&lt;/code&gt;函数的&lt;code&gt;loc&lt;/code&gt;局部变量，这种情况&lt;code&gt;loc&lt;/code&gt;是不会被释放掉的。&lt;/p&gt;
+
+&lt;p&gt;调用&lt;code&gt;var func = outer();&lt;/code&gt;返回的是一个匿名函数，这个匿名函数里面仍然能够访问到&lt;code&gt;outer()&lt;/code&gt;de 局部变量&lt;code&gt;loc &lt;/code&gt;，当&lt;code&gt;outer()&lt;/code&gt;函数被调用之后，&lt;code&gt;func()&lt;/code&gt;这个函数再次调用的时候任然能访问到它外层&lt;code&gt;outer()&lt;/code&gt;函数的局部变量&lt;code&gt;loc &lt;/code&gt;。
+这种情况就是我们通常所说的&lt;strong&gt;闭包&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;那么闭包的作用是什么呢？在前端编程里，闭包是非常常见的&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;闭包无处不在&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;body&amp;gt;
+&amp;lt;input type=&quot;button&quot; value=&quot;按钮&quot; id=&quot;but&quot;&amp;gt;
+&amp;lt;script type=&quot;text/javascript&quot;&amp;gt;
+var but = document.getElementById(&quot;but&quot;);
+! function() {
+	var loc = 0;
+	but.onclick = function() {
+		console.log(loc++);
+	};
+}();
+&amp;lt;/script&amp;gt;
+&amp;lt;/body&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-d26c006fb9866d89.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;input type=&quot;button&quot; value=&quot;按钮&quot; id=&quot;but&quot;&amp;gt;
+&amp;lt;script type=&quot;text/javascript&quot;&amp;gt;
+var but = document.getElementById(&quot;but&quot;);
+! function() {
+	var loc = &quot;locc&quot;;
+	but.addEventListener(&#39;click&#39;, function() {
+		console.log(loc);
+	}, false);
+}();
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;比如说我们可能有一些自己的局部变量，或者说我们的函数有一些外函数的变量，我们在做点击事件的时候，这个点击事件可能会用到外层的一些局部变量，有了闭包我们可以在数据的传递上更为灵活。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;! function() {
+	var loc = &quot;loc&quot;;
+	var url = &quot;http://www.huanghanlian.com/&quot;;
+	$.ajax({
+		url: url,
+		success: function() {
+			//do sth
+			console.log(loc);
+		}
+	});
+}();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;有一个异步的请求，用jq的&lt;code&gt;$.ajax&lt;/code&gt;方法也可以在&lt;code&gt;success&lt;/code&gt;的回调函数中去用到外层具体的一些变量。&lt;/p&gt;
+
+&lt;p&gt;因为闭包的缘故，在最外层匿名函数调用结束后，&lt;code&gt;success&lt;/code&gt;的回调函数仍然可以访问外层的局部变量。&lt;code&gt;loc &lt;/code&gt;，&lt;code&gt;url&lt;/code&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;闭包-常见错误之循环闭包&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;document.body.innerHTML = &quot;&amp;lt;div id=a1&amp;gt;aa&amp;lt;/div&amp;gt;&quot; + &quot;&amp;lt;div id=a2&amp;gt;bb&amp;lt;/div&amp;gt;&quot; + &quot;&amp;lt;div id=a3&amp;gt;cc&amp;lt;/div&amp;gt;&quot; + &quot;&amp;lt;div id=a4&amp;gt;dd&amp;lt;/div&amp;gt;&quot;;
+for (var i = 1; i &amp;lt; 4; i++) {
+	document.getElementById(&quot;a&quot; + i).addEventListener(&#39;click&#39;, function() {
+		console.log(i);//始终都是4
+	}, false);
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里面在网页上面添加三个元素，通过循环来给这三个元素绑定事件，想当点击第一个元素的时候，输出1点击第二个输出2第三个输出3。实现方式是先循环获取元素，给元素增加点击事件，点击事件里面会输出&lt;code&gt;i&lt;/code&gt;的值。&lt;/p&gt;
+
+&lt;p&gt;但是上面的代码始终只会输出4，这其实是闭包的原因，&lt;code&gt;addEventListener(&#39;click&#39;, function() {这里是回调函数}&lt;/code&gt;是回调函数，也就是说当点击时回调函数去做你想做的事情， 当我点击的湿乎乎回调函数回去动态的拿到  &lt;code&gt;i&lt;/code&gt;的值，这个&lt;code&gt;i&lt;/code&gt;的值在整个初始化过程中完成之后实际上&lt;code&gt;i&lt;/code&gt;的值就已经是4了，所以始终输出4。&lt;/p&gt;
+
+&lt;p&gt;如果想想要实现效果就要用到闭包&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;document.body.innerHTML = &quot;&amp;lt;div id=a1&amp;gt;aa&amp;lt;/div&amp;gt;&quot; + &quot;&amp;lt;div id=a2&amp;gt;bb&amp;lt;/div&amp;gt;&quot; + &quot;&amp;lt;div id=a3&amp;gt;cc&amp;lt;/div&amp;gt;&quot;;
+for (var i = 1; i &amp;lt; 4; i++) {
+	! function(i) {
+		document.getElementById(&quot;a&quot; + i).addEventListener(&#39;click&#39;, function() {
+			console.log(i);//1,2,3
+		}, false);
+	}(i);
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这个例子里面在每一层循环的时候，用一个匿名函数而且是立即执行的匿名函数给他包装起来，然后将每一次遍历的1.2.3分别的值去传到这个匿名函数里，然后匿名函数接到这个参数&lt;code&gt;i&lt;/code&gt;再放到点击事件中去引用&lt;code&gt;i&lt;/code&gt;当我们每次点击事件输出的值&lt;code&gt;i&lt;/code&gt;就会取每一个闭包环境下的&lt;code&gt;i&lt;/code&gt;。所以这样就能达到效果。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;闭包-封装&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;闭包还有个好处就是可以封装一些变量&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(function() {
+	var _userId = 23492;
+	var _typeId = &#39;item&#39;;
+	var expor = {};
+
+	function converter(userId) {
+		return +userId;
+	};
+
+	expor.getUserId = function() {
+		return converter(_userId);
+	};
+
+	expor.getTypeId = function() {
+		return _typeId;
+	};
+	window.expor = expor;
+}());
+console.log(expor.getUserId()); //23492
+console.log(expor.getTypeId()); //item
+console.log(expor._userId); //undefined
+console.log(expor._typeId); //undefined
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;比如说以上代码，有个立即调用函数，他有自己的函数作用域，在里面定义的局部变量外部是不可以访问到的，最后可以通过&lt;code&gt;window.expor = expor;&lt;/code&gt;这样的方式来去把最终想输出的对象输出出去，那么外部就可以通过&lt;code&gt;expor &lt;/code&gt;对象上提供的方法，就可以访问到函数里面的对象或变量。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;闭包的概念&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;在计算机科学中，闭包(也称词法闭包或函数闭包)是指一个函数或函数的引用，与一个引用环境绑在一起。这个引用环境是一个存储该函数每个非局部变量(也叫自由变量)的表。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;闭包，不同于一般函数，它允许一个函数在立即词法作用域外调用时，仍可访问非本地变量&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;section-1&quot;&gt;作用域&lt;/h4&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;全局，函数，eval  [作用域]&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;JavaScript中的作用域，实际上是比较简单的。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;全局作用域&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var a = 10;
+console.log(window.a); //10
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在最外层声明变量a，这样就声明了全局作用域下的变量a。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;for (var i = 0; i &amp;lt; 4; i++) {
+	console.log(i); //0.1.2.3
+}
+console.log(i); //4
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在全局范围内用for循环里面有个&lt;code&gt;vae i=0&lt;/code&gt;定义了一个变量&lt;code&gt;i&lt;/code&gt;，可能会误解为这个&lt;code&gt;i&lt;/code&gt;只能在这个for循环里面可见，对外不可见，实际上这是错误的理解，JavaScript中是没有块级作用域的，也就是说不管是for循环while 循环里面去定义的变量，实际上和在外面定义的变量，也就是for循环所在的外面去定义变量实际上是没有差别的，所以 &lt;code&gt;i&lt;/code&gt;在外面也能访问到。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;函数作用域&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(function() {
+	var b = 20;
+})();
+console.log(b);//test_lt.html:13 Uncaught ReferenceError: b is not defined(…)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上面匿名立即执行函数表达式，在执行的时候声明局部变量b，在函数外面是拿不到的。函数有自己独立的作用域。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;eval  作用域&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;eval(&quot;var a=1;&quot;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;作用域链&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;var le3 = 3;
+
+function out() {
+	var le = 1;
+
+	function out2() {
+		var le2 = 2;
+		console.log(le, le2, le3); //1 2 3
+	}
+	out2()
+}
+out();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;out()&lt;/code&gt;函数中有一个内部函数&lt;code&gt;out2()&lt;/code&gt;它里面有一个局部变量&lt;code&gt;le2&lt;/code&gt;，函数&lt;code&gt;out2()&lt;/code&gt;能访问到自己的内部变量&lt;code&gt;le2&lt;/code&gt;，也可以在向上访问&lt;code&gt;le&lt;/code&gt;变量，也就是所谓的闭包，可以访问外层函数的局部变量，对于函数&lt;code&gt;out2()&lt;/code&gt;来讲也叫作它的自由变量，还可以访问最外层的&lt;code&gt;le3 &lt;/code&gt;变量，也就是全局对象，这个作用域手机从内向外都可以访问的。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function out() {
+	var le = 1;
+	var func = new Function(&quot;var p=0;console.log(p);console.log(le)&quot;);
+	func();
+}
+out();
+//输出
+//0
+//Uncaught ReferenceError: le is not defined(…)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果使用&lt;code&gt;new Function&lt;/code&gt;去构造的一个函数，构造器，去调用构造器定义位置所在的变量&lt;code&gt;le&lt;/code&gt;的。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;利用函数作用域封装&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;(function() {
+	//do sth here
+	var a, b;
+})();
+
+! function() {
+	//do sth here
+	var a, b;
+}();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;利用函数作用域的特性，我们经常看到很多类库，或者代码最外层如果没有模块化的一些工具的话，会在最外层去写一个&lt;code&gt;function&lt;/code&gt;这样一个匿名函数，这样的好处就是可以把函数内部的变量变成函数的局部变量，而不是全局变量，这样防止大量的全局变量和其他的一些类库或者其他代码引发冲突，&lt;code&gt;! function() {}()&lt;/code&gt;这样的作用其实就是把函数变成函数表达式，而不是函数声明，如果省略掉这个&lt;code&gt;!&lt;/code&gt;叹号的话，那么他会理解为函数声明，会被前置处理掉，那么最后留下一个括号或者你省略名字的话，都会报语法错误。&lt;/p&gt;
+</description>
+        <pubDate>Tue, 20 Dec 2016 11:54:48 +0800</pubDate>
+        <link>http://www.huanghanlian.com/javascript/2016/12/20/javascript-jinjie7.html</link>
+        <guid isPermaLink="true">http://www.huanghanlian.com/javascript/2016/12/20/javascript-jinjie7.html</guid>
+        
+        <category>__proto__</category>
+        
+        
+        <category>JavaScript</category>
+        
+      </item>
+    
+      <item>
+        <title>JavaScript 精粹 基础 进阶(6)函数和作用域（函数、this）</title>
+        <description>&lt;p&gt;函数是一块JavaScript代码，被定义一次，但可执行调用多次，js中的函数也是对象，所以js函数可以像其他对象那样操作和传递所以我们也常叫js中的函数为函数对象。&lt;/p&gt;
+
+&lt;h4 id=&quot;section&quot;&gt;函数概述&lt;/h4&gt;
+
+&lt;p&gt;函数的构成主要有几个部分&lt;code&gt;函数名&lt;/code&gt;,&lt;code&gt;参数列表&lt;/code&gt;,&lt;code&gt;函数体&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-1c7cba2619ce442d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function foo(x, y) {
+	if (typeof x === &#39;number&#39; &amp;amp;&amp;amp; typeof y === &#39;number&#39;) {
+		return x + y;
+	} else {
+		return 0;
+	}
+}
+var cdr = foo(1,2);
+console.log(cdr);//3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;需要注意的是函数的返回值是依赖与&lt;code&gt;return &lt;/code&gt;语句的，如果没有&lt;code&gt;return &lt;/code&gt;语句，默认会在所有代码执行以后返回一个&lt;code&gt;undefined&lt;/code&gt;。那么这是一般的函数调用。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function foo(x, y) {
+	if (typeof x === &#39;number&#39; &amp;amp;&amp;amp; typeof y === &#39;number&#39;) {} else {
+
+	}
+}
+var cdr = foo(1, 2);
+console.log(cdr);//undefined
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果是作为构造器，外部使用&lt;code&gt;new&lt;/code&gt;去调用的话，如果没有&lt;code&gt;return &lt;/code&gt;语句，或者&lt;code&gt;return &lt;/code&gt;是基本类型的话，那么会将&lt;code&gt;this&lt;/code&gt;作为返回&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function foo(x, y) {
+	if (typeof x === &#39;number&#39; &amp;amp;&amp;amp; typeof y === &#39;number&#39;) {} else {
+		return x+y;
+	}
+	this.x=x+y;
+}
+var cdr = new foo(1, 2);
+console.log(cdr.x);//3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;重点&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;this&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;函数在不同的调用方式下他的&lt;code&gt;this&lt;/code&gt;指向是不一样的，并且不同的调用方式下也会有一些细微的差别。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;arguments&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;函数里面有一个特殊的对象，叫&lt;code&gt;arguments&lt;/code&gt;他和参数是有一定的连带关系的。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function foo(a,b) {
+	return arguments;
+}
+var cdr=foo(1,2)
+console.log(cdr);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-ffcd8c9d1f9b1758.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;不同的调用方式&lt;/strong&gt;&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;直接调用&lt;/th&gt;
+      &lt;th&gt;对象方法&lt;/th&gt;
+      &lt;th&gt;构造器&lt;/th&gt;
+      &lt;th&gt;call/apply/bind&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;foo()&lt;/td&gt;
+      &lt;td&gt;o.method()&lt;/td&gt;
+      &lt;td&gt;new Foo()&lt;/td&gt;
+      &lt;td&gt;func.call(o);&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&quot;section-1&quot;&gt;函数声明与表达式&lt;/h4&gt;
+
+&lt;p&gt;创建函数有不同的方式，常见的两种就是&lt;strong&gt;函数声明&lt;/strong&gt;和&lt;strong&gt;函数表达式&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;函数声明&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function foo(a, b) {
+    a=+a;
+    b=+b;
+    if (isNaN(a)||isNaN(b)) {   //isNaN() 函数用于检查其参数是否是非数字值。是数字返回true，非数字返回false
+    	return;
+    }
+    return a+b;
+}
+var cdr = foo(1, 2);
+console.log(cdr);//3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;函数表达式&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;把一个匿名函数赋值给一个变量，这种就是函数表达式&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var add = function(a, b) {
+	//do sth
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;需要注意的是函数声明的函数可以在函数前调用&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;add();
+function add() {
+	console.log(1);//1
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;但是函数表达式会报错&lt;code&gt;Uncaught TypeError: add is not a function&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;add();
+var add = function() {
+	alert(1)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;函数表达式-立即执行函数表达式&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;把一个匿名函数用一个括号()括起来，然后再去直接调用，这种函数定义的方式呢，也叫作函数表达式，并且是立即执行函数表达式。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(function() {
+	console.log(1); //1
+})();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;return 函数&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;我们也可以将函数对象，作为一个返回值，因为函数也是对象。这种形式也是函数表达式。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;return function(){
+	//do sth;
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;命名式函数表达式&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;这种并不常见，同样赋值给给一个函数，但是这个函数不是匿名函数，而是有一个名字的函数。这就是命名式函数表达式&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var add = function add() {
+	//do sth
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;除了函数声明和函数表达式创建函数以外，还有一种不常见的一种创建函数对象的方式。就是函数构造器&lt;code&gt;Function构造器&lt;/code&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Function构造器&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;函数构造器就是大写的&lt;code&gt;Function&lt;/code&gt;，&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var add = new Function (&#39;a&#39;,&#39;b&#39;,&#39;console.log(a+b);&#39;);
+add(1,2);//3
+
+var add = Function (&#39;a&#39;,&#39;b&#39;,&#39;console.log(a+b);&#39;);
+add(1,2);//3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以通过&lt;code&gt;new&lt;/code&gt;或者直接调用的方式 运行，他们俩基本没什么区别，&lt;/p&gt;
+
+&lt;p&gt;前面两个参数是函数对象里面的行参，最后一个参数表示函数体里面的代码。&lt;/p&gt;
+
+&lt;p&gt;用参数是字符串会带来安全上的一些隐患。&lt;/p&gt;
+
+&lt;p&gt;Function构造器去创建的函数里面，创建的变量仍然是局部变量，也可以使用立即调用。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Function (&#39;var lop=&quot;local&quot;;console.log(lop);&#39;)();//Function构造器去创建的函数并且立即调用
+console.log(lop);//lop是局部变量外部无法访问会报错
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在立即调用函数中有lo变量，他的内部有一个df函数声明函数这个函数内可以拿到lo变量&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(function() {
+	var lo = &quot;lo&quot;;
+
+	function df() {
+		console.log(lo)
+	}
+	df();
+})();
+//输出lo
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;但是在Function构造器中lo却访问不到。
+在立即调用函数里，lo不可访问，全局变量l可以访问。所以说Function构造器很少使用&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var l=&quot;l&quot;;
+(function(){
+	var lo=&quot;lo&quot;;
+	Function (&#39;console.log(l);console.log(lo);&#39;)();
+})()
+
+//l
+//Uncaught ReferenceError: lo is not defined(…)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;比一比三种创建函数的方式&lt;/strong&gt;&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt; &lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;函数声明&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;函数表达式&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;函数构造器&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;前置&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;√&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;允许匿名&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;√&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;√&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;立即调用&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;√&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;√&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;在定义该函数的作用域通过函数名访问&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;√&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;没有函数名&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;√&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;前置：只有函数声明会被前置，就好像被拉倒了最前面，说以说可以在函数声明的位置之前，去调用这样一个函数。
+但是函数表达式和函数构造器是代码执行阶段，才会去创建对应的函数对象，所以不会被前置。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;允许匿名：函数表达式和函数构造器都是允许匿名的，事实上函数构造器只能是匿名的是不可以有名字的，但是函数声明他的名字是不可以省略的，省略在比较新的浏览器会报错。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;立即调用：函数声明是不能被立即调用的，如果你尝试把函数声明后面写一个括号，那么会报一个异常，因为函数声明被提前解析，并且前置放到最前了，所以会报错。函数表达式和函数构造器因为不会前置，所以表达式计算结果是一个函数对象的时候我们可以加一对括号把他立即去调用。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在定义该函数的作用域通过函数名访问：比如说&lt;code&gt;fuction fd(){}&lt;/code&gt;在function同级作用域下，可以通过&lt;code&gt;fd()&lt;/code&gt;去调用这个函数，但是函数表达式和函数构造器就不可以这样。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;没有函数名：事实上函数构造器只能是匿名的是不可以有名字的&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;javascriptthis&quot;&gt;[JavaScript]this&lt;/h4&gt;
+
+&lt;p&gt;在不同的环境下，同一个函数在不同的调用方式下，这个 &lt;code&gt;this&lt;/code&gt;都有可能是不同的。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;全局作用域下的this&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;全局作用域的 &lt;code&gt;this&lt;/code&gt;一般指向全局对象，那么在浏览器里面这个全局对象就是&lt;code&gt;window&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;console.log(this.document === document); //true
+console.log(this === window); //true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以看到&lt;code&gt;this.document &lt;/code&gt;等价于&lt;code&gt;window.document&lt;/code&gt;
+&lt;code&gt;this&lt;/code&gt;等价于&lt;code&gt;window&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;this.a = 37;
+console.log(window.a); //37
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;给全局对象添加一个属性a，这样就相当于创建了一个全局变量a，并且赋值为37。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;一般函数的this(浏览器)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function f1() {
+	return this;
+}
+console.log(f1() === window); //true
+
+var f1 = function() {
+	return this;
+}
+console.log(f1() === window); //true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;用函数声明或者函数表达式，返回this，这里的this指向全局对象。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var f2 = function() {
+	&quot;use strict&quot;;
+	return this;
+}
+console.log(f2()); //undefined
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;需要注意的是再严格模式下那么默认一般情况下this会指向&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;作为对象方法的函数的this&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;var o = {
+	prop: 37,
+	f: function() {
+		return this.prop;
+	}
+};
+console.log(o.f()); //37
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;创建了一个对象字面量&lt;code&gt;o&lt;/code&gt;，&lt;code&gt;o&lt;/code&gt;里面有一个属性&lt;code&gt;f&lt;/code&gt;值呢是一个函数对象，对于一个把函数作为对象属性值的方式，叫做对象的方法，作为对象的方法去调用&lt;code&gt;o.f()&lt;/code&gt;这种情况下&lt;code&gt;this&lt;/code&gt;会指向对象&lt;code&gt;o&lt;/code&gt;所以&lt;code&gt;o.f()&lt;/code&gt;被调用返回37。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var o = {
+	prop: 37
+};
+
+function indep() {
+	return this.prop;
+}
+o.f = indep;
+console.log(o.f());//37
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;定义对象&lt;code&gt;o&lt;/code&gt;只有一个属性&lt;code&gt;prop&lt;/code&gt;赋值为37
+这里买你有一个独立的&lt;code&gt;indep&lt;/code&gt;函数，函数体&lt;code&gt;return&lt;/code&gt;一个&lt;code&gt;this.prop;&lt;/code&gt;如果直接去调用&lt;code&gt;indep()&lt;/code&gt;那么这个this会指向&lt;code&gt;window&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;如果用赋值方式&lt;code&gt;o.f&lt;/code&gt;给&lt;code&gt;o&lt;/code&gt;对象创建属性&lt;code&gt;f&lt;/code&gt;值为&lt;code&gt;indep&lt;/code&gt;函数对象，那么这样去调用我们任然能够拿到37，&lt;code&gt;console.log(o.f());//37&lt;/code&gt;。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;对象原型链上的this&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;code&gt;Object.create({x:1});&lt;/code&gt;是系统内置的函数，这个函数会接收一个参数，一般是一个对象。他会返回一个新创建的对象，并且让这个对象的原型指向参数，参数一般是个对象。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var o = {
+	f: function() {
+		return this.a + this.b;
+	}
+};
+var p = Object.create(o);
+p.a = 1;
+p.b = 4;
+console.log(p);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-d44fa743806b5fa9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;原型链上有f方法&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var o = {
+	f: function() {
+		return this.a + this.b;
+	}
+};
+var p = Object.create(o);
+p.a = 1;
+p.b = 4;
+console.log(p.f());//5
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;创建o对象属性f值是一个函数对象，&lt;/p&gt;
+
+&lt;p&gt;通过&lt;code&gt;var p = Object.create(o);&lt;/code&gt;创建了一个对象&lt;code&gt;p&lt;/code&gt;,这个对象&lt;code&gt;p&lt;/code&gt;是一个空的对象，并且他的原型会指向&lt;code&gt;o&lt;/code&gt;,使用&lt;code&gt;p.a&lt;/code&gt;给对象p添加属性值为1&lt;code&gt;p.b&lt;/code&gt;值为4，这样就创建在对象上的属性，那么我去调用p原型上的方法的时候，&lt;code&gt;this.a + this.b;&lt;/code&gt;任然能取到对象上的a和b。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;get/set方法与this&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function modulus() {
+	return Math.sqrt(this.re * this.re + this.im * this.im);
+};
+
+var o = {
+	re: 1,
+	im: -1,
+	get phase() {
+		return Math.atan2(this.im, this.re);
+	}
+};
+
+Object.defineProperty(o, &#39;modulus&#39;, {
+	get: modulus,
+	enumerable: true,
+	configurable: true
+});
+
+console.log(o.phase, o.modulus);//-0.7853981633974483 1.4142135623730951
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;构造器中的this&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function MyClass() {
+	this.a = 23;
+};
+var o = new MyClass();
+console.log(o.a); //23
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果正常去调用一个函数的话&lt;code&gt;MyClass()&lt;/code&gt;那么这个函数的&lt;code&gt;this&lt;/code&gt;会指向&lt;code&gt;window&lt;/code&gt;但是如果我用&lt;code&gt;new&lt;/code&gt;实例化构造函数去调用，那么这里面的&lt;code&gt;this&lt;/code&gt;会指向这样一个空的对象，并且这个对象的原型会指向&lt;code&gt;MyClass.prototype&lt;/code&gt;
+最后这个this.a会作为返回值，因为这里没有&lt;code&gt;return&lt;/code&gt;所以默认&lt;code&gt;this&lt;/code&gt;会作为返回值，所以这个对象o就会就会有a属性值23。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function c2() {
+	this.a = 23;
+	return {
+		a: 24
+	};
+}
+var f = new c2();
+console.log(f.a); //24
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;c2函数this等于23，但是这一次&lt;code&gt;return&lt;/code&gt;返回了一个对象，那么这个a就不再是23了，而是返回的这个对象，o.a属性就变成了24。&lt;/p&gt;
+
+&lt;p&gt;如果是作为构造器，外部使用new去调用的话，如果没有return语句，或者return是基本类型的话，那么会将this作为返回&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;call/apply方法与this&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function add(c, d) {
+	return this.a + this.b + c + d;
+};
+
+var o = {
+	a: 1,
+	b: 3
+};
+
+var h=add.call(o, 5, 7);//1+3+5+7
+console.log(h)
+
+add.apply(o, [10, 20]);//1+3+10+20
+
+function bar() {
+	console.log(Object.prototype.toString.call(this));
+};
+
+bar.call(7);//[object Number]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;函数add，这里面返回&lt;code&gt;this.a + this.b + c + d;&lt;/code&gt;把这四个数相加起来，定义o对象有两个属性a和b，通过对象&lt;code&gt;call&lt;/code&gt;方法，&lt;code&gt;.call(o, 5, 7)&lt;/code&gt;第一个参数是你想作为&lt;code&gt;this&lt;/code&gt;的这样一个对象，5和7是想要添加的参数，5赋值给&lt;code&gt;function add(c, d)&lt;/code&gt;的c，7赋值给d；最终的结果就是&lt;code&gt;1+3+5+7&lt;/code&gt;，
+&lt;code&gt;add.call(o, 5, 7)&lt;/code&gt;和&lt;code&gt;add.apply(o, [10, 20])&lt;/code&gt;基本没什么差别，只是&lt;code&gt;apply&lt;/code&gt;是数组作为传参的。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;bind方法与this&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function f() {
+	return this.a;
+};
+
+var g = f.bind({
+	a: &quot;test&quot;
+});
+console.log(g()); //test
+
+var o = {
+	a: 23,
+	f: f,
+	g: g
+};
+console.log(o.f(), o.g()); //23 &quot;test&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在EcmaScript5中扩展了叫bind的方法（IE6,7,8不支持）&lt;/p&gt;
+
+&lt;p&gt;这里有个函数对象&lt;code&gt;f&lt;/code&gt;,通过&lt;code&gt;bind&lt;/code&gt;方法，发现&lt;code&gt;f.bind({	a: &quot;test&quot;});&lt;/code&gt;有一个参数，这个参数是一个对象，这个对象就是你想要将某一个对象作为&lt;code&gt;this&lt;/code&gt;的时候那就把这样一个对象穿进去，那么我们拿到一个新的&lt;code&gt;g&lt;/code&gt;对象，新的&lt;code&gt;g&lt;/code&gt;对象在调用的时候&lt;code&gt;this&lt;/code&gt;已经指向了&lt;code&gt;bind&lt;/code&gt;的参数，这对于我们需要去绑定一次重复调用仍然实现绑定，这样会比&lt;code&gt;call&lt;/code&gt;,&lt;code&gt;apply&lt;/code&gt;会更加高效点。&lt;/p&gt;
+
+&lt;p&gt;还可以看到，这里有一个&lt;code&gt;o&lt;/code&gt;然后把a赋值为23，f属性赋值为f函数，g赋值绑定之后的方法，输出f的时候能拿到23，一般的函数根据调用方式来判断，他是通过对象属性去调用的，那么这里买你的this就会指向&lt;code&gt;o&lt;/code&gt;那么就会拿到a：23。这里面比较特殊的我使用&lt;code&gt;bind&lt;/code&gt;的方法去绑定了之后，即使我们把 新绑定之后的方法作为对象的属性去调用，仍然会按照之前的绑定去走。所以返回”test”&lt;/p&gt;
+
+&lt;h4 id=&quot;javascriptarguments&quot;&gt;[JavaScript]函数属性arguments&lt;/h4&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;函数属性 &amp;amp; arguments&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;接触函数属性和方法&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function foo(a, b, d) {
+	console.log(arguments);
+	console.log(arguments.length); //2
+	console.log(arguments[0]); //1
+	arguments[1] = 10;
+	console.log(b); //change to 10;
+
+	arguments[2] = 100;
+	console.log(d); //即使手动赋值任然是undefined. 没有赋值arguments[2]=100;d等于undefined
+	console.log(arguments.callee === foo);
+}
+foo(1, 2);
+console.log(foo.length);
+console.log(foo.name);
+console.dir(foo);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-327ae46a1e186720.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;定义函数&lt;code&gt;foo&lt;/code&gt;
+通过&lt;code&gt;foo.name&lt;/code&gt;获取函数名
+通过&lt;code&gt;foo.length&lt;/code&gt;获取函数行参个数
+通过&lt;code&gt;arguments.length&lt;/code&gt;获取函数实际传参的个数&lt;/p&gt;
+
+&lt;p&gt;有一个问题。&lt;code&gt;foo(1, 2);&lt;/code&gt;传参只有两个参数，实际上&lt;code&gt;d&lt;/code&gt;是没有传进来的， 这种情况尝试去&lt;code&gt;arguments[2] = 100;&lt;/code&gt;去赋值的时候对应的&lt;code&gt;d&lt;/code&gt;仍然是&lt;code&gt;undefined&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;严格模式下&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function foo(a, b, d) {
+	&#39;use strict&#39;
+	console.log(arguments.length); //2
+	console.log(arguments[0]); //1
+	arguments[1] = 10;
+	console.log(b); //严格模式下仍然是1
+
+	arguments[2] = 100;
+	console.log(d); //即使手动赋值任然是undefined. 没有赋值arguments[2]=100;d等于undefined
+	console.log(arguments.callee === foo);  //严格模式下arguments.callee是禁止使用
+}
+foo(1, 2);
+console.log(foo.length);
+console.log(foo.name);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;apply/call方法&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function foo(x, y) {
+	console.log(x, y, this);
+};
+foo.call(100, 1, 2);					//1 2 Number {[[PrimitiveValue]]: 100}
+foo.apply(true, [3, 4]);				//3 4 Boolean {[[PrimitiveValue]]: true}
+foo.apply(null);						//undefined undefined Window {...}
+foo.apply(undefined);					//undefined undefined Window {...}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;定义&lt;code&gt;foo&lt;/code&gt;函数，有x,y两个属性，输出参数和对应的&lt;code&gt;this&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;对于&lt;code&gt;call()&lt;/code&gt;来讲第一个参数就是想作为&lt;code&gt;this&lt;/code&gt;的对象如果不是对象他会转成对象，所以这里的&lt;code&gt;foo.call(100, 1, 2);	&lt;/code&gt;&lt;strong&gt;100&lt;/strong&gt;会转成对应的包装类&lt;code&gt;Number &lt;/code&gt;值为100。类似的&lt;code&gt;foo.apply(true, [3, 4]);&lt;/code&gt;&lt;strong&gt;true&lt;/strong&gt;会转换成布尔值。
+如果第一个参数是&lt;code&gt;null&lt;/code&gt;,&lt;code&gt;undefined&lt;/code&gt;的话，那么&lt;code&gt;this&lt;/code&gt;会指向全局对象，对于浏览器就是&lt;code&gt;window对象&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;需要注意在严格模式下&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function foo(x, y) {
+	&#39;use strict&#39;;
+	console.log(x, y, this);
+};
+foo.call(100, 1, 2);					//1 2 100
+foo.apply(true, [3, 4]);				//3 4 true
+foo.apply(null);						//undefined undefined null
+foo.apply(undefined);					//undefined undefined undefined
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在严格模式下&lt;code&gt;this&lt;/code&gt;输出直接量&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;bind方法&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;在EcmaScript5中扩展了叫bind的方法（IE6,7,8不支持）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;this.x = 9; //创建了一个全局变量x并赋值为9
+var mod = {
+	x: 81,
+	getX: function() {
+		return this.x;
+	}
+};
+
+console.log(mod.getX()); //81
+
+var gitX = mod.getX;
+console.log(gitX());; //9
+
+var bound = gitX.bind(mod);
+console.log(bound());//81
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;创建了一个全局变量&lt;code&gt;x&lt;/code&gt;并赋值为9，然后有一个变量&lt;code&gt;mod &lt;/code&gt;赋值为一个对象字面量，里面有x属性 值为81，有一个getX属性，值是一个匿名函数，他会返回&lt;code&gt;this.x&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;如果&lt;code&gt;对象(点)属性名  mod.getX()&lt;/code&gt;这样的调用方式。会返回这个对象为&lt;code&gt;this&lt;/code&gt;返回81。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;var gitX = mod.getX;&lt;/code&gt;如果定义一个全局变量gitX赋值为&lt;code&gt;mod&lt;/code&gt;对象的&lt;code&gt;getX&lt;/code&gt;属性，这个时候&lt;code&gt;this&lt;/code&gt;就会指向全局对象，也就是&lt;code&gt;this.x = 9;&lt;/code&gt;所以返回9，&lt;code&gt;console.log(gitX());; //9&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;通过&lt;code&gt;bind&lt;/code&gt;方法改变函数运行时的&lt;code&gt;this&lt;/code&gt;指向，&lt;code&gt;var bound = gitX.bind(mod);&lt;/code&gt;也就是说&lt;code&gt;gitX函数在运行时this&lt;/code&gt;为&lt;code&gt;mod对象&lt;/code&gt;。所以再次输出81。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;bind与currying  科里化功能&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;函数科里化就是把一个函数拆成多个单元。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function add(a,b,c){
+	return a+b+c;
+};
+
+var func=add.bind(undefined,100);
+func(1,2);//103
+
+var func2=func.bind(undefined,200);
+func2(10);//310
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里有一个函数&lt;code&gt;add&lt;/code&gt;他的作用是把参数abc相加然后作为返回值，&lt;/p&gt;
+
+&lt;p&gt;可能有的时候不需要一次把函数都调用完，而是我调用一次把前面两个参数传完了后，得到这样的函数我再去调用，传入第三个值，比如通过add.bind()方法这次不需要改变this，那写个undefined，提高额外参数100，这个我们拿到bind函数以后，相当于这个100就会固定赋值给a第一个参数，在调用&lt;code&gt;func(1,2);&lt;/code&gt;传入1和2的时候，1就会给b，2就会给c，所以最后的答案就是103。&lt;/p&gt;
+
+&lt;p&gt;类似的再去&lt;code&gt;func.bind()&lt;/code&gt;也就是说绑定了两个参数ab，b传入200，再去调用一次&lt;code&gt;func2(10)&lt;/code&gt;传入10，那么就是100+200+10，最终结果就是310。&lt;/p&gt;
+
+&lt;p&gt;实际例子&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-796ebbd5039095bc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;bind与new&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function foo() {
+	this.b = 100;
+	return this.a;
+};
+
+var func = foo.bind({
+	a: 1
+});
+console.log(func()); //1
+
+var func2 = new func();
+console.log(func2); //{b: 100}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;foo函数声明，函数体&lt;code&gt;this.b=100&lt;/code&gt;和&lt;code&gt;return this.a;&lt;/code&gt;那如果我直接调用的话，&lt;code&gt;this.b=100&lt;/code&gt;中的&lt;code&gt;this&lt;/code&gt;是指向全局对象，所以说相当于创建了一个全部变量&lt;code&gt;b&lt;/code&gt;并赋值为100，返回全局对象上的&lt;code&gt;a&lt;/code&gt;属性。&lt;/p&gt;
+
+&lt;p&gt;使用&lt;code&gt;bind()&lt;/code&gt;方法，&lt;code&gt;var func = foo.bind({	a: 1	});&lt;/code&gt;来传入一个参数，一个字面量对象只有一个属性&lt;code&gt;a&lt;/code&gt;，直接调用的话&lt;code&gt;func()&lt;/code&gt;，那么&lt;code&gt;foo&lt;/code&gt;函数中的&lt;code&gt;this&lt;/code&gt;就会指向&lt;code&gt;bind({a:1})&lt;/code&gt;的参数。所以调用&lt;code&gt;func()&lt;/code&gt;返回1。&lt;/p&gt;
+
+&lt;p&gt;如果使用&lt;code&gt;new&lt;/code&gt;的话就特殊些，使用&lt;code&gt;new&lt;/code&gt;除非&lt;code&gt;func()&lt;/code&gt;函数&lt;code&gt;return  除非是对象&lt;/code&gt;如果不是对象将会把&lt;code&gt;this&lt;/code&gt;作为返回值，并且&lt;code&gt;this&lt;/code&gt;会被初始化成一个默认的空对象，这个空对象的原型是&lt;code&gt;foo.prototype&lt;/code&gt;，所以使用&lt;code&gt;new&lt;/code&gt;去调用的时候&lt;code&gt;var func2 = new func();&lt;/code&gt;，即使用了&lt;code&gt;var func = foo.bind({	a: 1	});&lt;/code&gt;bind方法但是这个this任然会指向没有bind的时候的一样，所以返回值会忽略&lt;code&gt;return &lt;/code&gt;，返回&lt;code&gt;this&lt;/code&gt;对象。&lt;/p&gt;
+</description>
+        <pubDate>Tue, 20 Dec 2016 11:54:41 +0800</pubDate>
+        <link>http://www.huanghanlian.com/javascript/2016/12/20/javascript-jinjie6.html</link>
+        <guid isPermaLink="true">http://www.huanghanlian.com/javascript/2016/12/20/javascript-jinjie6.html</guid>
+        
+        <category>__proto__</category>
+        
+        
+        <category>JavaScript</category>
+        
+      </item>
+    
+      <item>
+        <title>JavaScript 精粹 基础 进阶(5)数组</title>
+        <description>&lt;p&gt;数组是值的有序集合。每个值叫做元素，每个元素在数组中都有数字位置编号，也就是索引。JS中的数组是弱类型的，数组中可以含有不同类型的元素。数组元素甚至可以是对象或其它数组。&lt;/p&gt;
+
+&lt;h4 id=&quot;section&quot;&gt;第一节、创建数组、数组操作&lt;/h4&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;数组概述&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;数组是值的有序集合。每个值叫做元素，每个元素在数组中都有数字位置编号，也就是索引。JS中的数组是弱类型的，数组中可以含有不同类型的元素。数组元素甚至可以是对象或其它数组。&lt;/p&gt;
+
+&lt;p&gt;例子：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var arr = [1, true, null, undefined, {x : 1}, [1, 2, 3]];
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-834a57c51324af70.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;创建数组-字面量&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;var BAT = [&#39;Alibaba&#39;, &#39;Tencent&#39;, &#39;Baidu&#39;];
+var students = [{name : &#39;Bosn&#39;, age : 27}, {name : &#39;Nunnly&#39;, age : 3}];
+var arr = [&#39;Nunnly&#39;, &#39;is&#39;, &#39;big&#39;, &#39;keng&#39;, &#39;B&#39;, 123, true, null];
+var arrInArr = [[1, 2], [3, 4, 5]];
+var commasArr1 = [1, , 2]; // 1, undefined, 2
+var commasArr2 = [,,]; // undefined * 2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;数组的大小是有限制的，最小是0，最长是2的23次幂减去1&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;size from 0 to 4,294,967,295(2^23  -1 ) 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-af03cae4807d77d2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;创建数组-new Array&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;除了用字面量创建数组，还可以用&lt;code&gt;Array&lt;/code&gt;构造器创建数组。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var arr = new Array(); //等价于var arr=[];
+var arrWithLength = new Array(100); // undefined * 100  长度为100
+var arrLikesLiteral = new Array(true, false, null, 1, 2, &quot;hi&quot;);
+// 等价于[true, false, null, 1, 2, &quot;hi&quot;];
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;数组元素读写&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;数组元素读写是比较基础，也是非常常见的。&lt;/p&gt;
+
+&lt;p&gt;通过索引来去访问数组，索引从0到它的长度减1，&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var arr = [1, 2, 3, 4, 5];
+arr[1]; // 2
+arr.length; // 5
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以动态添加数组元素&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;arr[5] = 6;
+arr.length; // 6
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;也可以删除第&lt;code&gt;索引&lt;/code&gt;数组&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;delete arr[0];
+arr[0]; // undefined
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;需要注意用&lt;code&gt;delete&lt;/code&gt;删除的方式，最终数组长度任然不会改变。只是把删除的元素改成&lt;code&gt;undefined&lt;/code&gt;。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;数组元素增删&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;动态增加&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;数组元素增删我们需要意识到一点，javascript的数组是动态的，无需指定大小，数组对象的&lt;code&gt;length&lt;/code&gt;属性也会根据数组情况去更新。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var arr = [];
+arr[0] = 1;
+arr[1] = 2;
+arr.push(3);
+arr; // [1, 2, 3]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;比如说这里定义一个&lt;code&gt;arr&lt;/code&gt;空的数组，然后把它第一个元素赋值为1，也可以用数组对象的&lt;code&gt;push&lt;/code&gt;方法在尾部再添加元素3，现在再来看&lt;code&gt;arr&lt;/code&gt;数组发现这里买你有3个元素&lt;code&gt;[1, 2, 3]&lt;/code&gt;。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;arr[arr.length] = 4; // 等价于 arr.push(4);
+arr; // [1, 2, 3, 4]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;arr.length&lt;/code&gt;是数组的长度，用它来做索引，也就是在数组的最后一个来赋值等价于&lt;code&gt;arr.push(4);&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;如果想要在数组的头部去添加赋值怎么办呢?
+这个时候可以用到数组对象&lt;code&gt;unshift&lt;/code&gt;方法。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;arr.(0);
+arr; // [0, 1, 2, 3, 4];
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;删除&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;delete&lt;/code&gt;方法可以删除数组的元素，更准确的说是将数组对应的一个元素变为&lt;code&gt;undefined&lt;/code&gt;位置还是存在的，长度没有变化。用&lt;code&gt;in&lt;/code&gt;操作符来判断索引在这个数组存不存在答案是&lt;code&gt;false&lt;/code&gt;。但是我通过&lt;code&gt;arr[2]=&#39;undefined&#39;&lt;/code&gt;再用&lt;code&gt;in&lt;/code&gt;操作符来判断索引在这个数组存不存在答案是&lt;code&gt;true&lt;/code&gt;。注意这里的区别。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;delete arr[2];
+arr; // [0, 1, undefined, 3, 4]
+arr.length; // 5
+2 in arr; // false
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;用&lt;code&gt;arr.length -= 1;&lt;/code&gt;的方式，意思就是&lt;code&gt;arr.length &lt;/code&gt;等于&lt;code&gt;arr.length&lt;/code&gt;减1。这样可以删除最后一个尾部元素的。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;arr.length -= 1;
+arr; // [0, 1, undefined, 3, 4],  4 is removed
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;数组的&lt;code&gt;arr.pop()&lt;/code&gt;方法，&lt;code&gt;arr.pop()&lt;/code&gt;方法也是删除数组最尾部的元素。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;arr.pop(); // 3 returned by pop
+arr; // [0, 1, undefined], 3 is removed
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;数组的&lt;code&gt;arr.shift(); &lt;/code&gt;方法，&lt;code&gt;arr.shift(); &lt;/code&gt;方法也是删除数组头部  的元素。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;arr.shift(); // 0 returned by shift
+arr; // [1, undefined]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;数组迭代&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;可以通过&lt;code&gt;for&lt;/code&gt;遍历数组中每一个元素&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var i = 0, n = 10;
+var arr = [1, 2, 3, 4, 5];
+for (; i &amp;lt; n; i++) {
+    console.log(arr[i]); // 1, 2, 3, 4, 5
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以通过&lt;code&gt;for...in&lt;/code&gt;遍历数组&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;for(i in arr) {
+    console.log(arr[i]); // 1, 2, 3, 4, 5
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;通过&lt;code&gt;for...in&lt;/code&gt;遍历数组需要注意的是，数组也是对象，他也有原型，比如我们给数组原型增加属性&lt;code&gt;Array.prototype.x = &#39;inherited&#39;;&lt;/code&gt;那么在&lt;code&gt;for...in&lt;/code&gt;的时候&lt;code&gt;x&lt;/code&gt;也会遍历出现。并且顺序不保证。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Array.prototype.x = &#39;inherited&#39;;
+var arr = [1, 2, 3, 4, 5];
+for(i in arr) {
+    console.log(arr[i]); // 1, 2, 3, 4, 5, inherited
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果不想使用&lt;code&gt;for...in&lt;/code&gt;的时候原型也被遍历那么我们需要判断下&lt;code&gt;arr.hasOwnProperty(i)&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Array.prototype.x = &#39;inherited&#39;;
+var arr = [1, 2, 3, 4, 5];
+for (i in arr) {
+	if (arr.hasOwnProperty(i)) {
+		console.log(arr[i]); // 1, 2, 3, 4, 5
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;section-1&quot;&gt;第二节、二维数组、稀疏数组&lt;/h4&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;二维数组&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;var arr = [[0, 1], [2, 3], [4, 5]];
+var i = 0, j = 0;
+var row;
+for (; i &amp;lt; arr.length; i++) {
+     row = arr[i];
+     console.log(&#39;row &#39; + i);
+     for (j = 0; j &amp;lt; row.length; j++) {
+          console.log(row[j]);
+     }
+}
+
+
+// result:
+// row 0
+// 0
+// 1
+// row 1
+// 2
+// 3
+// row 2
+// 4
+// 5
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;稀疏数组&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;稀疏数组并不含有从0开始的连续索引。一般length属性值比实际元素个数大。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var arr1 = [undefined];
+var arr2 = new Array(1);
+0 in arr1; // true
+0 in arr2; // false
+arr1.length = 100;
+arr1[99] = 123;
+99 in arr1; // true
+98 in arr1; // false
+
+
+
+var arr = [,,];
+0 in arr; // false
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;section-2&quot;&gt;第三节、数组方法&lt;/h4&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;数组方法&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;每一个对象都有很多对象的方法，这些方法都是&lt;code&gt;Object.prototype&lt;/code&gt;上面的，我们才可以在对像中去拿到它。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{}   =&amp;gt;  Object.prototype
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-540690fe0c3f88ef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;那么数组呢，也是一样的，我们在用字面量或者是&lt;code&gt;new Array&lt;/code&gt;的方式去创建数组对象的时候。数组对象也会有他的原型。他的原型就是&lt;code&gt;Array.prototype&lt;/code&gt;。&lt;code&gt;Array.prototype&lt;/code&gt;上面提供了大量的方法，可以让我们对数组进行各种各样的操作。&lt;/p&gt;
+
+ 	[]   =&amp;gt;  Array.prototype
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-9adfcd15c248915a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Array.prototype.join&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;将数组转为字符串&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;join()&lt;/code&gt; 方法用于把数组中的所有元素放入一个字符串。&lt;/p&gt;
+
+&lt;p&gt;元素是通过指定的分隔符进行分隔的。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var arr = [1, 2, 3];
+console.log(arr.join()); // &quot;1,2,3&quot;
+console.log(arr.join(&quot;_&quot;)); // &quot;1_2_3&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;通过&lt;code&gt;join()&lt;/code&gt; 方法我们可以写一个函数，来快速创建一个重复某一个字符串&lt;code&gt;n&lt;/code&gt;次。这样一个函数。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function repeatString(str, n) {
+	return new Array(n + 1).(str);
+}
+repeatString(&quot;a&quot;, 3); // &quot;aaa&quot;
+repeatString(&quot;Hi&quot;, 5); // &quot;HiHiHiHiHi&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;repeatString(str, n)&lt;/code&gt;函数第一个参数是要重复的字符串，第二个参数是要重复的次数。     &lt;br /&gt;
+&lt;code&gt;return new Array(n + 1).join(str);&lt;/code&gt;返回一个构造数组，比如说次数传了&lt;code&gt;3&lt;/code&gt;,&lt;code&gt;Array(3 + 1)&lt;/code&gt;这个数组的长度是4，也就是&lt;code&gt;[,,,,]&lt;/code&gt;使用&lt;code&gt;join&lt;/code&gt;方法把重复内容当作分隔符。这样就能达到预期效果。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Array.prototype.reverse&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;reverse() 方法用于颠倒数组中元素的顺序。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;该方法会改变原来的数组，而不会创建新的数组。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var arr = [1, 2, 3];
+console.log(arr.reverse()); // [3, 2, 1]
+console.log(arr); // [3, 2, 1]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;需要注意的是原数组会被修改。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Array.prototype.sort&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;sort() 方法用于对数组的元素进行排序。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;按字母顺序&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var arr = [&quot;a&quot;, &quot;d&quot;, &quot;c&quot;, &quot;b&quot;];
+console.log(arr.sort()); // [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;按数字排序&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var arr = [13, 24, 51, 3];
+console.log(arr.sort()); // [13, 24, 3, 51]
+console.log(arr); // [13, 24, 3, 51]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;很遗憾排序不对。&lt;/p&gt;
+
+&lt;p&gt;需要注意的是原数组会被修改。&lt;/p&gt;
+
+&lt;p&gt;其实是吧数组转换成字符串，然后再去排序，所以开头数字都是从小到大。并没有按照数字实际大小来去做排序。&lt;/p&gt;
+
+&lt;p&gt;那如何进行数字大小进行排序呢？&lt;/p&gt;
+
+&lt;p&gt;如果调用该方法时没有使用参数，将按字母顺序对数组中的元素进行排序，说得更精确点，是按照字符编码的顺序进行排序。要实现这一点，首先应把数组的元素都转换成字符串（如有必要），以便进行比较。&lt;/p&gt;
+
+&lt;p&gt;如果想按照其他标准进行排序，就需要提供比较函数，该函数要比较两个值，然后返回一个用于说明这两个值的相对顺序的数字。比较函数应该具有两个参数 a 和 b，其返回值如下：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;若 a 小于 b，在排序后的数组中 a 应该出现在 b 之前，则返回一个小于 0 的值。&lt;/li&gt;
+  &lt;li&gt;若 a 等于 b，则返回 0。&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;若 a 大于 b，则返回一个大于 0 的值。&lt;/p&gt;
+
+    &lt;p&gt;var arr = [13, 24, 51, 3];
+  var sop=arr.sort(function(a, b) {
+      return a - b;
+  });
+  console.log(sop);// [3, 13, 24, 51]&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;排序从上到下&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var arr = [13, 24, 51, 3];
+var sop = arr.sort(function(a, b) {
+	return b - a;
+});
+console.log(sop); // [51, 24, 13, 3]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;排序对象方法&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var arr = [{
+	age: 25
+}, {
+	age: 39
+}, {
+	age: 99
+}];
+arr.sort(function(a, b) {
+	return a.age - b.age;
+});
+arr.forEach(function(item) {
+	console.log(&#39;age&#39;, item.age);
+});
+// result:
+// age 25
+// age 39
+// age 99
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Array.prototype.concat&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;concat() 方法用于连接两个或多个数组。&lt;/p&gt;
+
+&lt;p&gt;该方法不会改变现有的数组，而仅仅会返回被连接数组的一个副本。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var arr = [1, 2, 3];
+console.log(arr.concat(4, 5)); // [1, 2, 3, 4, 5]
+console.log(arr); // [1, 2, 3]
+
+console.log(arr.concat([10, 11], 13)); // [1, 2, 3, 10, 11, 13]
+
+console.log(arr.concat([1, [2, 3]])); // [1, 2, 3, 1, [2, 3]]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Array.prototype.slice&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;slice() 方法可从已有的数组中返回选定的元素。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var arr = [1, 2, 3, 4, 5];
+arr.slice(1, 3); // [2, 3]   从索引1也就是第2个开始到索引3之前那个元素也就是2，3
+arr.slice(1); // [2, 3, 4, 5]  后面参数省略意思代表从索引开始到最后
+arr.slice(1, -1); // [2, 3, 4]   这里的-1代表最后一个元素
+arr.slice(-4, -3); // [2]  这里的-4代表倒数第4个元素-3代表倒数第3.  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;需要注意的是原数组未被修改。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Array.prototype.splice&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;splice() 方法向/从数组中添加/删除项目，然后返回被删除的项目。&lt;/p&gt;
+
+&lt;p&gt;注释：该方法会改变原始数组。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var arr = [1, 2, 3, 4, 5];
+arr.splice(2); // returns [3, 4, 5]
+arr; // [1, 2];
+
+arr = [1, 2, 3, 4, 5];
+arr.splice(2, 2); // returns [3, 4]
+arr; // [1, 2, 5];
+
+arr = [1, 2, 3, 4, 5];
+arr.splice(1, 1, &#39;a&#39;, &#39;b&#39;); // returns [2]
+arr; // [1, &quot;a&quot;, &quot;b&quot;, 3, 4, 5]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Array.prototype.forEach&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;数组遍历&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var arr = [1, 2, 3, 4, 5];
+arr.forEach(function(x, index, a){
+    console.log(x + &#39;|&#39; + index + &#39;|&#39; + (a === arr));
+});
+// 1|0|true
+// 2|1|true
+// 3|2|true
+// 4|3|true
+// 5|4|true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Array.prototype.map&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;数组映射&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var arr = [1, 2, 3];
+arr.map(function(x) {
+     return x + 10;
+}); // [11, 12, 13]
+arr; // [1, 2, 3]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;注意：原数组未被修改&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Array.prototype.filter&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;数组过滤&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+arr.filter(function(x, index) {
+     return index % 3 === 0 || x &amp;gt;= 8;
+}); // returns [1, 4, 7, 8, 9, 10]
+arr; // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;注意：原数组未被修改&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Array.prototype.every &amp;amp; some&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;数组判断&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var arr = [1, 2, 3, 4, 5];
+arr.every(function(x) {
+     return x &amp;lt; 10;
+}); // true
+
+arr.every(function(x) {
+     return x &amp;lt; 3;
+}); // false
+
+
+var arr = [1, 2, 3, 4, 5];
+arr.some(function(x) {
+     return x === 3;
+}); // true
+
+arr.some(function(x) {
+     return x === 100;
+}); // false
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Array.prototype.reduce&amp;amp;reduceRight&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;var arr = [1, 2, 3];
+var sum = arr.reduce(function(x, y) {
+     return x + y
+}, 0); // 6
+arr; //[1, 2, 3]
+
+arr = [3, 9, 6];
+var max = arr.reduce(function(x, y) {
+     console.log(x + &quot;|&quot; + y);
+     return x &amp;gt; y ? x : y;
+});
+// 3|9
+// 9|6
+max; // 9
+
+
+
+max = arr.reduceRight(function(x, y) {
+     console.log(x + &quot;|&quot; + y);
+     return x &amp;gt; y ? x : y;
+});
+// 6|9
+// 9|3
+max; // 9
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Array.prototype.indexOf&amp;amp;lastIndexOf&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;数组检索&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var arr = [1, 2, 3, 2, 1];
+arr.indexOf(2); // 1
+arr.indexOf(99); // -1
+arr.indexOf(1, 1); // 4
+arr.indexOf(1, -3); // 4
+arr.indexOf(2, -1); // -1
+arr.lastIndexOf(2); // 3
+arr.lastIndexOf(2, -2); // 3
+arr.lastIndexOf(2, -3); // 1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Array.isArray&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;判断是否为数组&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Array.isArray([]); // true
+[] instanceof Array; // true
+({}).toString.apply([]) === &#39;[object Array]&#39;; // true
+[].constructor === Array; // true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;section-3&quot;&gt;第四节、数组小结&lt;/h4&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;数组  VS.  一般对象&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-554a777b805be72d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;字符串和数组&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;var str = &quot;hello world&quot;;
+str.charAt(0); // &quot;h&quot;
+str[1]; // e
+
+Array.prototype.join.call(str, &quot;_&quot;);
+// &quot;h_e_l_l_o_ _w_o_r_l_d&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;小结&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;数组概念&lt;/li&gt;
+  &lt;li&gt;创建数组、数组增删改查操作&lt;/li&gt;
+  &lt;li&gt;二维数组、稀疏数组&lt;/li&gt;
+  &lt;li&gt;数组方法&lt;/li&gt;
+  &lt;li&gt;数组 VS. 一般对象&lt;/li&gt;
+  &lt;li&gt;数组 VS. 字符串&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Tue, 20 Dec 2016 11:54:33 +0800</pubDate>
+        <link>http://www.huanghanlian.com/javascript/2016/12/20/javascript-jinjie5.html</link>
+        <guid isPermaLink="true">http://www.huanghanlian.com/javascript/2016/12/20/javascript-jinjie5.html</guid>
+        
+        <category>__proto__</category>
+        
+        
+        <category>JavaScript</category>
+        
+      </item>
+    
+  </channel>
+</rss>
