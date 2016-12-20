@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>JavaScript 精粹 基础 进阶(2)表达式和运算符</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css">
+	<link rel="shortcut icon" href="/assets/images/logo_ioc.ico" type="images/x-icon"/>
+	<link rel="icon" href="/assets/images/logo_ioc.png" type="images/png"/>
+	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
+	
+	<script type="text/javascript">
+	    (function($) {
+
+	    	var temp = 0;
+	    	$(document).scroll(function() {
+
+	    		if ($(document).scrollTop() > temp) {
+	    			$("#header").addClass("hide-top");
+	    		} else {
+	    			$("#header").removeClass("hide-top");
+	    		}
+	    		temp = $(document).scrollTop();
+	    	});
+	    })(jQuery);
+
+	</script>
+
+</head>
+<body>
+    <header id="header" role="banner">
+	<a id="hgroup" href="/" rel="home">
+		<h1 id="logo"></h1>
+		<i class="slogan" title="返回首页">
+			热爱编程，关注前端开发技术
+		</i>
+	</a>
+	<div class="connect">
+		<a href="" class="rss"></a>
+	</div>
+	<nav id="nav">
+		<ul class="menu">
+			<li class="menu_item">
+				<a href="/">首页</a>
+			</li>
+			<li class="menu_item">
+				<a href="/about/">关于本站</a>
+			</li>
+			<li class="menu_item">
+				<a href="/report/">留言板</a>
+			</li>
+		</ul>
+	</nav>
+	<div id="m-btns">
+		<div class="menu"></div>
+	</div>
+</header>
+	<div id="container" class="clearfix">
+	<main id="main" class="hfeed">
+		<article id="post-157" class="post-157 hentry">
+			<header class="entry-header">
+				<h1 class="entry-title">JavaScript 精粹 基础 进阶(2)表达式和运算符</h1>
+				<div class="entry-meta">2016-12-13 <span class="dot">•</span>JavaScript<span class="dot">•</span>黄继鹏<span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span></div>
+			</header>
+			<article class="post-content">
+              <p>表达式是指能计算出值得任何可用程序单元。——Wiki     <br />
+表达式是一种JS短语，可使JS解释器用来产生一个值。——《JS权威指南》</p>
+
+<h4 id="section">表达式和运算符</h4>
+
+<blockquote>
+  <p>JavaScript 表达式</p>
+</blockquote>
+
+<p><strong>表达式是指能计算出值得任何可用程序单元。——Wiki</strong></p>
+
+<p><strong>表达式是一种JS短语，可使JS解释器用来产生一个值。——《JS权威指南》</strong></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-6919f7e22ae1bb76.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-3ab28e638286a3aa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-e80ce19d6f1a3f10.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-1e624122622bf128.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-72f96222c9135c06.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-cdce00cca295adaa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-766d0f239887b430.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-3f85e4e4f73a4cd1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
+
+<blockquote>
+  <p>JavaScript 运算符</p>
+</blockquote>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-7140a60ac8368ce6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
+
+<p><strong>三元运算符</strong></p>
+
+<pre><code>c ? a : b
+var val = true ? 1 : 2; // val = 1
+//val值为true就会返回冒号前面的值，如果是false就会取冒号右边的值。
+</code></pre>
+
+<p><strong>逗号运算符</strong></p>
+
+<pre><code>a, b
+var val = (1, 2, 3); // val = 3
+//非常少见的，它会从左到右依次去计算表达式的值，最后会取最右边的值。
+</code></pre>
+
+<p><strong>delete 运算符</strong></p>
+
+<pre><code>delete obj.x;
+var obj = {x : 1};
+obj.x;                      // 1
+delete obj.x;
+obj.x;                      // undefined
+//delete 运算符就是删除对象上的属性，变量obj，obj.x被删除了。
+</code></pre>
+
+<p>并不是对象上的所有属性都可以成功的被delete 掉的。</p>
+
+<pre><code>var obj = {};
+Object.defineProperty(obj, 'x', {
+  configurable : false, 
+  value : 1
+});
+delete obj.x; // false
+obj.x;            // 1
+</code></pre>
+
+<p>只有<code>configurable : true</code>, 为true，才可以被删除。</p>
+
+<p><strong><code>in</code>运算符</strong></p>
+
+<pre><code>window.x = 1;  //创建全局变量x为1
+x’ in window; // true   判断是否win下有x
+</code></pre>
+
+<p>**instanceof, typeof运算符 **</p>
+
+<pre><code>{} instanceof Object                // true  判断对象类型，基于原型链去判断的
+typeof 100 === ‘number’ // true  返回字符串，常用语原始类型，或者函数对象。
+</code></pre>
+
+<p><strong>new运算符</strong></p>
+
+<pre><code>function Foo(){}     //创建函数构造器，或者说创建空函数
+Foo.prototype.x = 1;     //prototype属性x
+var obj = new Foo();   //创建一个新的对象obj
+obj.x;  // 1   现在就能在prototype属性x拿到1
+obj.hasOwnProperty('x'); // false     来判断这个属性到底是这个对象上的还是这个对象原型链上，这个x当然不是属于直接对象上的属性，
+obj.__proto__.hasOwnProperty('x'); // true    拿到对象原型。可以发现x是对象原型上的属性，而不是这个对象本身上的属性。
+</code></pre>
+
+<p><strong>this运算符</strong></p>
+
+<pre><code>this;  // window (浏览器)  在全局下this会指向win
+var obj = {
+  func : function(){return this;}
+}; 
+obj.func(); // obj
+//如果在对象值如果是个函数的话那么在这样的函数里，this会指向对象本身。
+</code></pre>
+
+<p><strong>void运算符</strong></p>
+
+<p>void运算符是一元运算符，</p>
+
+<pre><code>void 0  // undefined
+void(0) // undefined
+//不管值是多少都会返回undefined
+</code></pre>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-5e9759be8cdba5d3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-227317d72f8e3d08.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
+
+              <!-- 多说评论框 start -->
+              		<!-- <span class="ds-thread-count" data-thread-key="/javascript/2016/12/13/javascript_jinjie2" data-count-type="comments"></span> -->
+					<div class="ds-thread" data-thread-key="http://yourdomain.com/javascript/2016/12/13/javascript_jinjie2" data-title="JavaScript 精粹 基础 进阶(2)表达式和运算符" data-url="http://yourdomain.com/javascript/2016/12/13/javascript_jinjie2"></div>
+				<!-- 多说评论框 end -->
+				<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+				<script type="text/javascript">
+				var duoshuoQuery = {short_name:"huanghuanlian"};
+					(function() {
+						var ds = document.createElement('script');
+						ds.type = 'text/javascript';ds.async = true;
+						ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+						ds.charset = 'UTF-8';
+						(document.getElementsByTagName('head')[0]
+						 || document.getElementsByTagName('body')[0]).appendChild(ds);
+					})();
+				</script>
+				<!-- 多说公共JS代码 end -->
+
+
+				
+            </article>
+		</article>
+
+	</main>
+	<div class="sidebar" id="sidebar">
+	<div class="sidebar-top">
+		<aside class="widjhuh">
+			<h3 class="widget-title">最新文章</h3>
+			<ul class="minty_thumblist">
+				
+                  <li>
+                    <a href="/javascript/2016/12/15/javascript-jinjie4.html">
+
+                    	<span>JavaScript 精粹 基础 进阶(4)对象</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/14/javascript-jinjie3.html">
+
+                    	<span>JavaScript 精粹 基础 进阶(3)语句</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/12/javascript-jinjie1.html">
+
+                    	<span>JavaScript 精粹 基础 进阶(1)数据类型</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/11/javascript-regexp-shili.html">
+
+                    	<span>JavaScript 正则表达式（实例）</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/11/javascript-wuqu.html">
+
+                    	<span>JavaScript 误区</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/11/settimeout-1.html">
+
+                    	<span>setTimeout()和setInterval() 何时被调用执行</span>
+                    </a>
+                  </li>
+				
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">最近访客</h3>
+			<ul class="minty_thumblist minty_thumblist_a ds-recent-visitors visitorsopi" data-num-items="20" data-avatar-size="38">
+
+			</ul>
+
+		    <!--多说js加载开始，一个页面只需要加载一次 -->
+		    <script type="text/javascript">
+		    var duoshuoQuery = {short_name:"huanghuanlian"};
+		    (function() {
+		        var ds = document.createElement('script');
+		        ds.type = 'text/javascript';ds.async = true;
+		        ds.src = 'http://static.duoshuo.com/embed.js';
+		        ds.charset = 'UTF-8';
+		        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+		    })();
+		    </script>
+		    <!--多说js加载结束，一个页面只需要加载一次 -->
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">分类目录</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+				
+				<li>
+					<a href="/categories/Markdown/" title="view all
+posts">
+						Markdown (2)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Canvas/" title="view all
+posts">
+						Canvas (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Git/" title="view all
+posts">
+						Git (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/JavaScript/" title="view all
+posts">
+						JavaScript (19)
+					</a>
+				</li>
+				
+			</ul>
+		</aside>
+	</div>
+
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">标签目录</h3>
+			<div class="tagcloud" id="tagcloud">
+				
+					<a href="/tag/Markdown/" title="view all
+posts">
+						Markdown
+					</a>
+				
+					<a href="/tag/Canvas/" title="view all
+posts">
+						Canvas
+					</a>
+				
+					<a href="/tag/Git/" title="view all
+posts">
+						Git
+					</a>
+				
+					<a href="/tag/JavaScript/" title="view all
+posts">
+						JavaScript
+					</a>
+				
+					<a href="/tag/RegExp/" title="view all
+posts">
+						RegExp
+					</a>
+				
+					<a href="/tag/DOM/" title="view all
+posts">
+						DOM
+					</a>
+				
+					<a href="/tag/__proto__/" title="view all
+posts">
+						__proto__
+					</a>
+				
+			</div>
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">友情链接</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+
+				<li>
+					<a href="http://blog.csdn.net/u013861109?viewmode=contents" target="blank">
+						csdn博客
+					</a>
+				</li>
+				<li>
+					<a href="http://www.imooc.com/" target="blank">
+						慕课网
+					</a>
+				</li>
+				<li>
+					<a href="http://www.dglives.com/" target="blank">
+						数字生活前端
+					</a>
+				</li>
+				<li>
+					<a href="http://www.jianshu.com/" target="blank">
+						简书
+					</a>
+				</li>
+				<li>
+					<a href="http://www.runoob.com/" target="blank">
+						菜鸟
+					</a>
+				</li>
+				<li>
+					<a href="http://www.qdfuns.com/" target="blank">
+						前端网
+					</a>
+				</li>
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">QQ交流群</h3>
+			<img style="margin-top: 10px; box-shadow: none;" src="/assets/images/ertw.png">
+		</aside>
+	</div>
+
+
+	<script>
+	var box=document.getElementById("tagcloud").getElementsByTagName("a");
+	for(var i=0;i<box.length;i++){
+		var a =Math.round(Math.random()*20)/10;
+		box[i].style.fontSize=a+'em';
+	}
+	</script>
+
+</div>
+</div>
+	<footer id="footer">
+	<nav class="links">
+		<a href="">作品</a>
+		<a href="/about/">关于本站</a>
+		<a href="/report/">留言板</a>
+	</nav>
+	<div class="copyright">
+		© 2016 <a href="">继小鹏的前端博客</a>
+	</div>
+	<a href="javascript:pageScroll();" id="rocket" class=""></a>
+	<span id="busuanzi_container_site_pv">
+	    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+	<span id="busuanzi_container_site_uv">
+	  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+	</span>
+</footer>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+var fhdb = document.getElementById("rocket");
+
+//获取页面可视区高度
+var dqy = document.documentElement.clientHeight;
+
+var main_left=$('#main').offset().left+$('#main').width()+16;
+
+//滚动条滚动时触发   在滚动的时候触发
+window.onscroll = function() {
+	var sTop = document.documentElement.scrollTop || document.body.scrollTop;
+	if (sTop >= dqy) {
+		$("#rocket").addClass('show');
+	} else {
+		$("#rocket").removeClass('show');
+	}
+}
+
+function pageScroll() {
+	//把内容滚动指定的像素数（第一个参数是向右滚动的像素数，第二个参数是向下滚动的像素数）
+	window.scrollBy(0, -100);
+	//延时递归调用，模拟滚动向上效果
+	scrolldelay = setTimeout('pageScroll()', 5);
+	//获取scrollTop值，声明了DTD的标准网页取document.documentElement.scrollTop，否则取document.body.scrollTop；因为二者只有一个会生效，另一个就恒为0，所以取和值可以得到网页的真正的scrollTop值
+	var sTop = document.documentElement.scrollTop + document.body.scrollTop;
+	//判断当页面到达顶部，取消延时代码（否则页面滚动到顶部会无法再向下正常浏览页面）
+	if (sTop == 0) clearTimeout(scrolldelay)
+
+}
+
+
+
+</script>
+</body>
+</html>

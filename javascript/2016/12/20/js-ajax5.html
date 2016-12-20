@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Ajax全接触(五) 处理跨域方式</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css">
+	<link rel="shortcut icon" href="/assets/images/logo_ioc.ico" type="images/x-icon"/>
+	<link rel="icon" href="/assets/images/logo_ioc.png" type="images/png"/>
+	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
+	
+	<script type="text/javascript">
+	    (function($) {
+
+	    	var temp = 0;
+	    	$(document).scroll(function() {
+
+	    		if ($(document).scrollTop() > temp) {
+	    			$("#header").addClass("hide-top");
+	    		} else {
+	    			$("#header").removeClass("hide-top");
+	    		}
+	    		temp = $(document).scrollTop();
+	    	});
+	    })(jQuery);
+
+	</script>
+
+</head>
+<body>
+    <header id="header" role="banner">
+	<a id="hgroup" href="/" rel="home">
+		<h1 id="logo"></h1>
+		<i class="slogan" title="返回首页">
+			热爱编程，关注前端开发技术
+		</i>
+	</a>
+	<div class="connect">
+		<a href="" class="rss"></a>
+	</div>
+	<nav id="nav">
+		<ul class="menu">
+			<li class="menu_item">
+				<a href="/">首页</a>
+			</li>
+			<li class="menu_item">
+				<a href="/about/">关于本站</a>
+			</li>
+			<li class="menu_item">
+				<a href="/report/">留言板</a>
+			</li>
+		</ul>
+	</nav>
+	<div id="m-btns">
+		<div class="menu"></div>
+	</div>
+</header>
+	<div id="container" class="clearfix">
+	<main id="main" class="hfeed">
+		<article id="post-157" class="post-157 hentry">
+			<header class="entry-header">
+				<h1 class="entry-title">Ajax全接触(五) 处理跨域方式</h1>
+				<div class="entry-meta">2016-12-20 <span class="dot">•</span>JavaScript<span class="dot">•</span>黄继鹏<span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span></div>
+			</header>
+			<article class="post-content">
+              <p>那么什么是跨域呢？</p>
+
+<h4 id="section">处理跨域方式-代理</h4>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-3b7e68f4ceee1be1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>我们在前端代码中将ajax访问后台<code>url</code>改成<code>http://127.0.0.1:80/dengtu/serverjsonp.php</code></p>
+
+<pre><code>$(document).ready(function() {
+	$("#search").click(function() {
+		$.ajax({
+			type: "GET",
+			url: "http://127.0.0.1:80/dengtu/serverjsonp.php?number=" + $("#keyword").val(),
+			dataType: "json",
+			success: function(data) {
+				if (data.success) {
+					$("#searchResult").html(data.msg);
+				} else {
+					$("#searchResult").html("出现错误：" + data.msg);
+				}
+			},
+			error: function(jqXHR) {
+				alert("发生错误：" + jqXHR.status);
+			},
+		});
+	});
+
+	$("#save").click(function() {
+		$.ajax({
+			type: "POST",
+			url: "http://127.0.0.1:80/dengtu/serverjsonp.php",
+			data: {
+				name: $("#staffName").val(),
+				number: $("#staffNumber").val(),
+				sex: $("#staffSex").val(),
+				job: $("#staffJob").val()
+			},
+			dataType: "json",
+			success: function(data) {
+				if (data.success) {
+					$("#createResult").html(data.msg);
+				} else {
+					$("#createResult").html("出现错误：" + data.msg);
+				}
+			},
+			error: function(jqXHR) {
+				alert("发生错误：" + jqXHR.status);
+			},
+		});
+	});
+});
+</code></pre>
+
+<p><code>http://127.0.0.1:80/dengtu</code>指向的也是<code>http://localhost/dengtu</code>但是他们不是一个域名，</p>
+
+<p>这样我们能访问到吗？</p>
+
+<p>答案是不能，返回错误告诉你没有权限访问。</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-ff2eed58c0e4bf74.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>这就要用到跨域了</p>
+
+<p><strong>那么什么是跨域呢？</strong></p>
+
+<p>JavaScript出于安全方面的考虑，不允许跨域调用其他页面的对象，什么是跨域呢，简单的理解就是因为JavaScript同源策略的限制，a.com域名下的js无法操作b.com或c.a.com域名下的对象。</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-090891382cc0ad71.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p><strong>子域名不相同都会认为是跨域</strong></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-46750de75c3040aa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p><strong>通过代理跨域</strong></p>
+
+<p>举个例子在上海服务器上，有一个服务</p>
+
+<p><code>www.shanghai.com/service.php</code></p>
+
+<p>在北京服务器上也有个服务</p>
+
+<p><code>www.beijing.com/proxy.php</code></p>
+
+<p>北京这个服务其实是从后端去访问上海的这个服务<code>www.shanghai.com/service.php</code>然后把服务的响应值获取过来，返回给前端，</p>
+
+<p>也就是北京的服务在后台做了个代理，这样前端只需要访问北京的代理的服务也就相当于访问了上海的服务。</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-b72374f8f64ddb0f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<h4 id="jsonp">处理跨域方式–JSONP</h4>
+
+<p>JSONP不支持post方式</p>
+
+<p>在jquery的ajax中使用git方式访问跨域，</p>
+
+<p>前端</p>
+
+<ol>
+  <li>
+    <p>需要改变<code>dataType: "jsonp",</code></p>
+  </li>
+  <li>
+    <p>接着再增加一个属性<code>jsonp:"callback",</code><code>jsonp:"任意值",</code></p>
+  </li>
+</ol>
+
+<p>后端</p>
+
+<ol>
+  <li>
+    <p>在git请求处理中，获取到<code>callback</code>，<code>$jsonp=$_GET["callback"];</code></p>
+  </li>
+  <li>
+    <p>改变返回值，<code>echo $jsonp.'({"success":false,"msg":"参数错误"})';</code></p>
+  </li>
+</ol>
+
+<p>前端代码</p>
+
+<pre><code>$(document).ready(function() {
+	$("#search").click(function() {
+		$.ajax({
+			type: "GET",
+			url: "http://127.0.0.1:80/dengtu/serverjsonp.php?number=" + $("#keyword").val(),
+			dataType: "jsonp",
+			jsonp:"callback",
+			success: function(data) {
+				if (data.success) {
+					$("#searchResult").html(data.msg);
+				} else {
+					$("#searchResult").html("出现错误：" + data.msg);
+				}
+			},
+			error: function(jqXHR) {
+				alert("发生错误：" + jqXHR.status);
+			},
+		});
+	});
+</code></pre>
+
+<p>后端代码</p>
+
+<pre><code>//通过员工编号搜索员工
+function search(){
+	$jsonp=$_GET["callback"];
+	//检查是否有员工编号的参数
+	//isset检测变量是否设置；empty判断值为否为空
+	//超全局变量 $_GET 和 $_POST 用于收集表单数据
+	if (!isset($_GET["number"]) || empty($_GET["number"])) {
+		echo $jsonp.'({"success":false,"msg":"参数错误"})';
+		return;
+	}
+	//函数之外声明的变量拥有 Global 作用域，只能在函数以外进行访问。
+	//global 关键词用于访问函数内的全局变量
+	global $staff;
+	//获取number参数
+	$number = $_GET["number"];
+	$result = $jsonp.'({"success":false,"msg":"没有找到员工。"})';
+	
+	//遍历$staff多维数组，查找key值为number的员工是否存在，如果存在，则修改返回结果
+	foreach ($staff as $value) {
+		if ($value["number"] == $number) {
+			$result = $jsonp.'({"success":true,"msg":"找到员工：员工编号：' . $value["number"] . 
+							'，员工姓名：' . $value["name"] . 
+							'，员工性别：' . $value["sex"] . 
+							'，员工职位：' . $value["job"] . '"})';
+			break;
+		}
+	}
+    echo $result;
+}
+</code></pre>
+
+<p>这样就能通过jsonp来获取跨域信息。</p>
+
+<p><strong>callback和jsonp的作用和原理</strong></p>
+
+<p>1先定义一个”callback123”字段用来映射jquery生成的jQueryxxxxx_xxxxx函数名（这个函数在服务器处理完毕并返回数据时再由jquery调用）；</p>
+
+<ol>
+  <li>
+    <p>然后jsonp协议直接请求<code>http://127.0.0.1:8080/ajaxdemo/service.php?number=111；</code>（个人感觉jsonp协议不受同源策略限制）</p>
+  </li>
+  <li>
+    <p>接着服务器端定义变量$jsonp获取请求中名为”callback123”的值，也就是获取到回调函数名”jQueryxxxxx_xxxxx”；</p>
+  </li>
+  <li>
+    <p>再接着服务器处理完毕后将数据放到回调函数中，也就是视频中老师以jQueryxxxxx_xxxxx(jsondata)这种$jsonp拼接(jsondata)的形式返回给前端；</p>
+  </li>
+  <li>
+    <p>最后前端接收到”jQueryxxxxx_xxxxx(jsondata)”，jquery调用这个jQueryxxxxx_xxxxx函数，将jsondata传入到success中的function中，这样就实现了跨域。</p>
+  </li>
+</ol>
+
+<h4 id="xhr2">处理跨域方式–XHR2</h4>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-4936aeb13b5f82bd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>XMR2方法不支持ie10以下版本。</p>
+
+<p><strong>使用XMR2方法</strong></p>
+
+<p>在服务端改写脚本</p>
+
+<pre><code>header('Access-Control-Allow-Origin:*');   //值设置为*。*意思是所有域都可以访问，当然可以设置特定的域名
+header('Access-Control-Allow-Methods:POST,GET');  //允许post/git
+header('Access-Control-Allow-Credentials:true'); 
+header("Content-Type: application/json;charset=utf-8"); 
+</code></pre>
+
+<p>这样就能做到跨域</p>
+
+
+              <!-- 多说评论框 start -->
+              		<!-- <span class="ds-thread-count" data-thread-key="/javascript/2016/12/20/js_ajax5" data-count-type="comments"></span> -->
+					<div class="ds-thread" data-thread-key="http://yourdomain.com/javascript/2016/12/20/js_ajax5" data-title="Ajax全接触(五) 处理跨域方式" data-url="http://yourdomain.com/javascript/2016/12/20/js_ajax5"></div>
+				<!-- 多说评论框 end -->
+				<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+				<script type="text/javascript">
+				var duoshuoQuery = {short_name:"huanghuanlian"};
+					(function() {
+						var ds = document.createElement('script');
+						ds.type = 'text/javascript';ds.async = true;
+						ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+						ds.charset = 'UTF-8';
+						(document.getElementsByTagName('head')[0]
+						 || document.getElementsByTagName('body')[0]).appendChild(ds);
+					})();
+				</script>
+				<!-- 多说公共JS代码 end -->
+
+
+				
+            </article>
+		</article>
+
+	</main>
+	<div class="sidebar" id="sidebar">
+	<div class="sidebar-top">
+		<aside class="widjhuh">
+			<h3 class="widget-title">最新文章</h3>
+			<ul class="minty_thumblist">
+				
+                  <li>
+                    <a href="/javascript/2016/12/20/js-ajax4.html">
+
+                    	<span>Ajax全接触(四) jQuery中的AJAX</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/20/js-ajax3.html">
+
+                    	<span>Ajax全接触(三)JSON格式</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/20/js-ajax2.html">
+
+                    	<span>Ajax全接触(二)例子ajax+php</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/20/js-ajax.html">
+
+                    	<span>Ajax全接触(一)基础理论</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/20/javascript-jinjie9.html">
+
+                    	<span>JavaScript 精粹 基础 进阶(9)OOP面向对象编程(下)</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/20/javascript-jinjie8.html">
+
+                    	<span>JavaScript 精粹 基础 进阶(8)OOP面向对象编程(上)</span>
+                    </a>
+                  </li>
+				
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">最近访客</h3>
+			<ul class="minty_thumblist minty_thumblist_a ds-recent-visitors visitorsopi" data-num-items="20" data-avatar-size="38">
+
+			</ul>
+
+		    <!--多说js加载开始，一个页面只需要加载一次 -->
+		    <script type="text/javascript">
+		    var duoshuoQuery = {short_name:"huanghuanlian"};
+		    (function() {
+		        var ds = document.createElement('script');
+		        ds.type = 'text/javascript';ds.async = true;
+		        ds.src = 'http://static.duoshuo.com/embed.js';
+		        ds.charset = 'UTF-8';
+		        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+		    })();
+		    </script>
+		    <!--多说js加载结束，一个页面只需要加载一次 -->
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">分类目录</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+				
+				<li>
+					<a href="/categories/Markdown/" title="view all
+posts">
+						Markdown (2)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Canvas/" title="view all
+posts">
+						Canvas (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Git/" title="view all
+posts">
+						Git (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/JavaScript/" title="view all
+posts">
+						JavaScript (30)
+					</a>
+				</li>
+				
+			</ul>
+		</aside>
+	</div>
+
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">标签目录</h3>
+			<div class="tagcloud" id="tagcloud">
+				
+					<a href="/tag/Markdown/" title="view all
+posts">
+						Markdown
+					</a>
+				
+					<a href="/tag/Canvas/" title="view all
+posts">
+						Canvas
+					</a>
+				
+					<a href="/tag/Git/" title="view all
+posts">
+						Git
+					</a>
+				
+					<a href="/tag/JavaScript/" title="view all
+posts">
+						JavaScript
+					</a>
+				
+					<a href="/tag/RegExp/" title="view all
+posts">
+						RegExp
+					</a>
+				
+					<a href="/tag/DOM/" title="view all
+posts">
+						DOM
+					</a>
+				
+					<a href="/tag/BOM/" title="view all
+posts">
+						BOM
+					</a>
+				
+					<a href="/tag/__proto__/" title="view all
+posts">
+						__proto__
+					</a>
+				
+					<a href="/tag/Ajax/" title="view all
+posts">
+						Ajax
+					</a>
+				
+			</div>
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">友情链接</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+
+				<li>
+					<a href="http://blog.csdn.net/u013861109?viewmode=contents" target="blank">
+						csdn博客
+					</a>
+				</li>
+				<li>
+					<a href="http://www.imooc.com/" target="blank">
+						慕课网
+					</a>
+				</li>
+				<li>
+					<a href="http://www.dglives.com/" target="blank">
+						数字生活前端
+					</a>
+				</li>
+				<li>
+					<a href="http://www.jianshu.com/" target="blank">
+						简书
+					</a>
+				</li>
+				<li>
+					<a href="http://www.runoob.com/" target="blank">
+						菜鸟
+					</a>
+				</li>
+				<li>
+					<a href="http://www.qdfuns.com/" target="blank">
+						前端网
+					</a>
+				</li>
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">QQ交流群</h3>
+			<img style="margin-top: 10px; box-shadow: none;" src="/assets/images/ertw.png">
+		</aside>
+	</div>
+
+
+	<script>
+	var box=document.getElementById("tagcloud").getElementsByTagName("a");
+	for(var i=0;i<box.length;i++){
+		var a =Math.round(Math.random()*20)/10;
+		box[i].style.fontSize=a+'em';
+	}
+	</script>
+
+</div>
+</div>
+	<footer id="footer">
+	<nav class="links">
+		<a href="">作品</a>
+		<a href="/about/">关于本站</a>
+		<a href="/report/">留言板</a>
+	</nav>
+	<div class="copyright">
+		© 2016 <a href="">继小鹏的前端博客</a>
+	</div>
+	<a href="javascript:pageScroll();" id="rocket" class=""></a>
+	<span id="busuanzi_container_site_pv">
+	    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+	<span id="busuanzi_container_site_uv">
+	  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+	</span>
+</footer>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+var fhdb = document.getElementById("rocket");
+
+//获取页面可视区高度
+var dqy = document.documentElement.clientHeight;
+
+var main_left=$('#main').offset().left+$('#main').width()+16;
+
+//滚动条滚动时触发   在滚动的时候触发
+window.onscroll = function() {
+	var sTop = document.documentElement.scrollTop || document.body.scrollTop;
+	if (sTop >= dqy) {
+		$("#rocket").addClass('show');
+	} else {
+		$("#rocket").removeClass('show');
+	}
+}
+
+function pageScroll() {
+	//把内容滚动指定的像素数（第一个参数是向右滚动的像素数，第二个参数是向下滚动的像素数）
+	window.scrollBy(0, -100);
+	//延时递归调用，模拟滚动向上效果
+	scrolldelay = setTimeout('pageScroll()', 5);
+	//获取scrollTop值，声明了DTD的标准网页取document.documentElement.scrollTop，否则取document.body.scrollTop；因为二者只有一个会生效，另一个就恒为0，所以取和值可以得到网页的真正的scrollTop值
+	var sTop = document.documentElement.scrollTop + document.body.scrollTop;
+	//判断当页面到达顶部，取消延时代码（否则页面滚动到顶部会无法再向下正常浏览页面）
+	if (sTop == 0) clearTimeout(scrolldelay)
+
+}
+
+
+
+</script>
+</body>
+</html>
