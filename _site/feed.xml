@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Your awesome title</title>
+    <title>继小鹏的博客</title>
     <description>Actually, less is more!</description>
     <link>http://www.huanghanlian.com/</link>
     <atom:link href="http://www.huanghanlian.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 20 Dec 2016 16:50:12 +0800</pubDate>
-    <lastBuildDate>Tue, 20 Dec 2016 16:50:12 +0800</lastBuildDate>
+    <pubDate>Tue, 20 Dec 2016 16:58:55 +0800</pubDate>
+    <lastBuildDate>Tue, 20 Dec 2016 16:58:55 +0800</lastBuildDate>
     <generator>Jekyll v3.0.0</generator>
     
       <item>
