@@ -5,7 +5,7 @@ subtitle: setTimeout()和setInterval() 何时被调用执行
 author: 继小鹏
 date: 2016-12-11 05:53:25 +0800
 category: JavaScript
-tag: JavaScript
+tag: BOM
 ---
 setTimeout()和setInterval()经常被用来处理延时和定时任务。**setTimeout**() 方法用于在指定的毫秒数后调用函数或计算表达式,而**setInterval**()则可以在每隔指定的毫秒数循环调用函数或表达式，直到clearInterval把它清除。
 

@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Ajax全接触(三)JSON格式</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css">
+	<link rel="shortcut icon" href="/assets/images/logo_ioc.ico" type="images/x-icon"/>
+	<link rel="icon" href="/assets/images/logo_ioc.png" type="images/png"/>
+	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
+	
+	<script type="text/javascript">
+	    (function($) {
+
+	    	var temp = 0;
+	    	$(document).scroll(function() {
+
+	    		if ($(document).scrollTop() > temp) {
+	    			$("#header").addClass("hide-top");
+	    		} else {
+	    			$("#header").removeClass("hide-top");
+	    		}
+	    		temp = $(document).scrollTop();
+	    	});
+	    })(jQuery);
+
+	</script>
+
+</head>
+<body>
+    <header id="header" role="banner">
+	<a id="hgroup" href="/" rel="home">
+		<h1 id="logo"></h1>
+		<i class="slogan" title="返回首页">
+			热爱编程，关注前端开发技术
+		</i>
+	</a>
+	<div class="connect">
+		<a href="" class="rss"></a>
+	</div>
+	<nav id="nav">
+		<ul class="menu">
+			<li class="menu_item">
+				<a href="/">首页</a>
+			</li>
+			<li class="menu_item">
+				<a href="/about/">关于本站</a>
+			</li>
+			<li class="menu_item">
+				<a href="/report/">留言板</a>
+			</li>
+		</ul>
+	</nav>
+	<div id="m-btns">
+		<div class="menu"></div>
+	</div>
+</header>
+	<div id="container" class="clearfix">
+	<main id="main" class="hfeed">
+		<article id="post-157" class="post-157 hentry">
+			<header class="entry-header">
+				<h1 class="entry-title">Ajax全接触(三)JSON格式</h1>
+				<div class="entry-meta">2016-12-20 <span class="dot">•</span>JavaScript<span class="dot">•</span>黄继鹏<span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span></div>
+			</header>
+			<article class="post-content">
+              <p>JSON是存储和交换文本信息的语法，类似与XML。它采用键值的方式来组织，易于人们阅读和编写，同时也易于解析和生成</p>
+
+<h4 id="json">json基本概念</h4>
+
+<ul>
+  <li>
+    <p>JSON:JavaScript对象表示法，(JavaScript Object Notation)</p>
+  </li>
+  <li>
+    <p>JSON是存储和交换文本信息的语法，类似与XML。它采用键值的方式来组织，易于人们阅读和编写，同时也易于解析和生成</p>
+  </li>
+  <li>
+    <p>JSON是独立于语言的，也就是说不管什么语言，都可以解析JSON，只需要按照JSON的规则来就行</p>
+  </li>
+</ul>
+
+<h4 id="jsonxml">json与XML比较</h4>
+
+<ul>
+  <li>
+    <p>json的长度和xml格式比起来很短小</p>
+  </li>
+  <li>
+    <p>json读写的速度更快</p>
+  </li>
+  <li>
+    <p>json可以使用javascript内建方法直接进行解析，转成javascript对象，非常方便。</p>
+  </li>
+</ul>
+
+<h4 id="json-1">JSON语法规则</h4>
+
+<ul>
+  <li>
+    <p><strong>JSON 数据的书写格式是：名称/值对。</strong>  <br />
+名称/值对组合中的名称写在前面(在双引号中)，值对写在后面(同样在双引号中)，中间用冒号隔开：比如<code>"name":"郭靖"</code></p>
+  </li>
+  <li>
+    <p><strong>json的值可以是下面这些类型：</strong>  <br />
+数字(整数或浮点数)，比如123，1.23
+字符串(在双引号中)
+逻辑值(true或false)
+数组(在方括号中)
+对象(在花括号中)
+null</p>
+
+    <p>{
+      “staff”:[
+          {“name”:”洪七”,”age”:”70”},
+          {“name”:”郭靖”,”age”:”35”},
+          {“name”:”黄蓉”,”age”:”30”},
+      ]
+  }</p>
+  </li>
+</ul>
+
+<p>这是一个典型的json。他首先用花括号括起来，表示这是一个json对象，对象里面有一个值对，这个值对名称叫staff，他的值是一个数组，这个数组是由很多晓得json对象组成，对象里面又有两个属性。</p>
+
+<h4 id="json-2">json解析、格式化和校验工具</h4>
+
+<p><strong>json解析javascript</strong></p>
+
+<blockquote>
+  <p>在js中解析json有两种方式eval和JSON.parse</p>
+</blockquote>
+
+<p><em>eval方法</em></p>
+
+<pre><code>var jsonobj = '{"staff":[{"name":"洪七","age":"70"},{"name":"郭靖","age":"35"},{"name":"黄蓉","age":"30"},]}'
+var jsonop = eval('(' + jsonobj + ')');
+alert(jsonop.staff[0].name);
+</code></pre>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-483a285fec5215a1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p><em>JSON.parse方法</em></p>
+
+<pre><code>var jsonobj = '{"staff":[{"name":"洪七","age":"70"},{"name":"郭靖","age":"35"},{"name":"黄蓉","age":"30"}]}'
+var jsonop = JSON.parse(jsonobj);
+alert(jsonop.staff[0].name);
+</code></pre>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-ed7a6331fe80e4a5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>注意：用eval方法执行他不会去看你的json字符串是否合法，而且json中一些js方法会直接的执行，这是非常的危险。 所以尽量使用JSON.parse方法，来去解析json字符串，能返回一些语法错误，又安全又方便。</p>
+
+<p>json在书写的时候非常容易出错，所以把json字符串进行校验是必不可少的。</p>
+
+<p>推荐json校验在线工具<a href="http://jsonlint.com/">jsonlint.com</a></p>
+
+<h4 id="ajaxjson">AJAX使用json方式</h4>
+
+<pre><code>&lt;?php
+//设置页面内容是html编码格式是utf-8
+header("Content-Type: text/plain;charset=utf-8"); 
+//header("Content-Type: application/json;charset=utf-8"); 
+//header("Content-Type: text/xml;charset=utf-8"); 
+//header("Content-Type: text/html;charset=utf-8"); 
+//header("Content-Type: application/javascript;charset=utf-8"); 
+</code></pre>
+
+<p>服务器端返回json对象</p>
+
+<pre><code>//通过员工编号搜索员工
+function search(){
+	//检查是否有员工编号的参数
+	//isset检测变量是否设置；empty判断值为否为空
+	//超全局变量 $_GET 和 $_POST 用于收集表单数据
+	if (!isset($_GET["number"]) || empty($_GET["number"])) {
+		echo '{"success":false,"msg":"参数错误"}';
+		return;
+	}
+	//函数之外声明的变量拥有 Global 作用域，只能在函数以外进行访问。
+	//global 关键词用于访问函数内的全局变量
+	global $staff;
+	//获取number参数
+	$number = $_GET["number"];
+	$result = '{"success":false,"msg":"没有找到员工。"}';
+	
+	//遍历$staff多维数组，查找key值为number的员工是否存在，如果存在，则修改返回结果
+	foreach ($staff as $value) {
+		if ($value["number"] == $number) {
+			$result = '{"success":true,"msg":"找到员工：员工编号：' . $value["number"] . 
+							'，员工姓名：' . $value["name"] . 
+							'，员工性别：' . $value["sex"] . 
+							'，员工职位：' . $value["job"] . '"}';
+			break;
+		}
+	}
+    echo $result;
+}
+</code></pre>
+
+<p>返回json格式信息</p>
+
+<p>查询错误是返回<code>{"success":false,"msg":"参数错误"}</code>json格式对象</p>
+
+<p>没有找到员工时返回<code>{"success":false,"msg":"没有找到员工。"}</code>json格式对象</p>
+
+<pre><code>//创建员工
+function create(){
+	//判断信息是否填写完全
+	if (!isset($_POST["name"]) || empty($_POST["name"])
+		|| !isset($_POST["number"]) || empty($_POST["number"])
+		|| !isset($_POST["sex"]) || empty($_POST["sex"])
+		|| !isset($_POST["job"]) || empty($_POST["job"])) {
+		echo '{"success":false,"msg":"参数错误，员工信息填写不全"}';
+		return;
+	}
+	//TODO: 获取POST表单数据并保存到数据库
+	
+	//提示保存成功
+	echo '{"success":true,"msg":"员工：' . $_POST["name"] . ' 信息保存成功！"}';
+}
+</code></pre>
+
+<p>新建员工时错误时也返回json对象</p>
+
+<p>客户端修改</p>
+
+<p>客户端要把服务端传来的json格式对象进行解析</p>
+
+<p>查询修改</p>
+
+<pre><code>document.getElementById("search").onclick = function() { 
+	var request = new XMLHttpRequest();
+	request.open("GET", "serverjson.php?number=" + document.getElementById("keyword").value);
+	request.send();
+	request.onreadystatechange = function() {
+		if (request.readyState===4) {
+			if (request.status===200) { 
+				var data = JSON.parse(request.responseText);
+				if (data.success) { 
+					document.getElementById("searchResult").innerHTML = data.msg;
+				} else {
+					document.getElementById("searchResult").innerHTML = "出现错误：" + data.msg;
+				}
+			} else {
+				alert("发生错误：" + request.status);
+			}
+		} 
+	}
+}
+</code></pre>
+
+<p><code>var data = JSON.parse(request.responseText);</code>定义变量data使用JSON.parse解析获取的json数据。再进行判断显示在页面</p>
+
+<pre><code>document.getElementById("save").onclick = function() { 
+	var request = new XMLHttpRequest();
+	request.open("POST", "serverjson.php");
+	var data = "name=" + document.getElementById("staffName").value 
+	                  + "&amp;number=" + document.getElementById("staffNumber").value 
+	                  + "&amp;sex=" + document.getElementById("staffSex").value 
+	                  + "&amp;job=" + document.getElementById("staffJob").value;
+	request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	request.send(data);
+	request.onreadystatechange = function() {
+		if (request.readyState===4) {
+			if (request.status===200) { 
+				var data = JSON.parse(request.responseText);
+				if (data.success) { 
+					document.getElementById("createResult").innerHTML = data.msg;
+				} else {
+					document.getElementById("createResult").innerHTML = "出现错误：" + data.msg;
+				}
+			} else {
+				alert("发生错误：" + request.status);
+			}
+		} 
+	}
+}
+</code></pre>
+
+<blockquote>
+  <p>wei</p>
+</blockquote>
+
+              <!-- 多说评论框 start -->
+              		<!-- <span class="ds-thread-count" data-thread-key="/javascript/2016/12/20/js_ajax3" data-count-type="comments"></span> -->
+					<div class="ds-thread" data-thread-key="http://yourdomain.com/javascript/2016/12/20/js_ajax3" data-title="Ajax全接触(三)JSON格式" data-url="http://yourdomain.com/javascript/2016/12/20/js_ajax3"></div>
+				<!-- 多说评论框 end -->
+				<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+				<script type="text/javascript">
+				var duoshuoQuery = {short_name:"huanghuanlian"};
+					(function() {
+						var ds = document.createElement('script');
+						ds.type = 'text/javascript';ds.async = true;
+						ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+						ds.charset = 'UTF-8';
+						(document.getElementsByTagName('head')[0]
+						 || document.getElementsByTagName('body')[0]).appendChild(ds);
+					})();
+				</script>
+				<!-- 多说公共JS代码 end -->
+
+
+				
+            </article>
+		</article>
+
+	</main>
+	<div class="sidebar" id="sidebar">
+	<div class="sidebar-top">
+		<aside class="widjhuh">
+			<h3 class="widget-title">最新文章</h3>
+			<ul class="minty_thumblist">
+				
+                  <li>
+                    <a href="/javascript/2016/12/20/js-ajax5.html">
+
+                    	<span>Ajax全接触(五) 处理跨域方式</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/20/js-ajax4.html">
+
+                    	<span>Ajax全接触(四) jQuery中的AJAX</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/20/js-ajax2.html">
+
+                    	<span>Ajax全接触(二)例子ajax+php</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/20/js-ajax.html">
+
+                    	<span>Ajax全接触(一)基础理论</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/20/javascript-jinjie9.html">
+
+                    	<span>JavaScript 精粹 基础 进阶(9)OOP面向对象编程(下)</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/20/javascript-jinjie8.html">
+
+                    	<span>JavaScript 精粹 基础 进阶(8)OOP面向对象编程(上)</span>
+                    </a>
+                  </li>
+				
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">最近访客</h3>
+			<ul class="minty_thumblist minty_thumblist_a ds-recent-visitors visitorsopi" data-num-items="20" data-avatar-size="38">
+
+			</ul>
+
+		    <!--多说js加载开始，一个页面只需要加载一次 -->
+		    <script type="text/javascript">
+		    var duoshuoQuery = {short_name:"huanghuanlian"};
+		    (function() {
+		        var ds = document.createElement('script');
+		        ds.type = 'text/javascript';ds.async = true;
+		        ds.src = 'http://static.duoshuo.com/embed.js';
+		        ds.charset = 'UTF-8';
+		        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+		    })();
+		    </script>
+		    <!--多说js加载结束，一个页面只需要加载一次 -->
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">分类目录</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+				
+				<li>
+					<a href="/categories/Markdown/" title="view all
+posts">
+						Markdown (2)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Canvas/" title="view all
+posts">
+						Canvas (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Git/" title="view all
+posts">
+						Git (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/JavaScript/" title="view all
+posts">
+						JavaScript (30)
+					</a>
+				</li>
+				
+			</ul>
+		</aside>
+	</div>
+
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">标签目录</h3>
+			<div class="tagcloud" id="tagcloud">
+				
+					<a href="/tag/Markdown/" title="view all
+posts">
+						Markdown
+					</a>
+				
+					<a href="/tag/Canvas/" title="view all
+posts">
+						Canvas
+					</a>
+				
+					<a href="/tag/Git/" title="view all
+posts">
+						Git
+					</a>
+				
+					<a href="/tag/JavaScript/" title="view all
+posts">
+						JavaScript
+					</a>
+				
+					<a href="/tag/RegExp/" title="view all
+posts">
+						RegExp
+					</a>
+				
+					<a href="/tag/DOM/" title="view all
+posts">
+						DOM
+					</a>
+				
+					<a href="/tag/BOM/" title="view all
+posts">
+						BOM
+					</a>
+				
+					<a href="/tag/__proto__/" title="view all
+posts">
+						__proto__
+					</a>
+				
+					<a href="/tag/Ajax/" title="view all
+posts">
+						Ajax
+					</a>
+				
+			</div>
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">友情链接</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+
+				<li>
+					<a href="http://blog.csdn.net/u013861109?viewmode=contents" target="blank">
+						csdn博客
+					</a>
+				</li>
+				<li>
+					<a href="http://www.imooc.com/" target="blank">
+						慕课网
+					</a>
+				</li>
+				<li>
+					<a href="http://www.dglives.com/" target="blank">
+						数字生活前端
+					</a>
+				</li>
+				<li>
+					<a href="http://www.jianshu.com/" target="blank">
+						简书
+					</a>
+				</li>
+				<li>
+					<a href="http://www.runoob.com/" target="blank">
+						菜鸟
+					</a>
+				</li>
+				<li>
+					<a href="http://www.qdfuns.com/" target="blank">
+						前端网
+					</a>
+				</li>
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">QQ交流群</h3>
+			<img style="margin-top: 10px; box-shadow: none;" src="/assets/images/ertw.png">
+		</aside>
+	</div>
+
+
+	<script>
+	var box=document.getElementById("tagcloud").getElementsByTagName("a");
+	for(var i=0;i<box.length;i++){
+		var a =Math.round(Math.random()*20)/10;
+		box[i].style.fontSize=a+'em';
+	}
+	</script>
+
+</div>
+</div>
+	<footer id="footer">
+	<nav class="links">
+		<a href="">作品</a>
+		<a href="/about/">关于本站</a>
+		<a href="/report/">留言板</a>
+	</nav>
+	<div class="copyright">
+		© 2016 <a href="">继小鹏的前端博客</a>
+	</div>
+	<a href="javascript:pageScroll();" id="rocket" class=""></a>
+	<span id="busuanzi_container_site_pv">
+	    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+	<span id="busuanzi_container_site_uv">
+	  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+	</span>
+</footer>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+var fhdb = document.getElementById("rocket");
+
+//获取页面可视区高度
+var dqy = document.documentElement.clientHeight;
+
+var main_left=$('#main').offset().left+$('#main').width()+16;
+
+//滚动条滚动时触发   在滚动的时候触发
+window.onscroll = function() {
+	var sTop = document.documentElement.scrollTop || document.body.scrollTop;
+	if (sTop >= dqy) {
+		$("#rocket").addClass('show');
+	} else {
+		$("#rocket").removeClass('show');
+	}
+}
+
+function pageScroll() {
+	//把内容滚动指定的像素数（第一个参数是向右滚动的像素数，第二个参数是向下滚动的像素数）
+	window.scrollBy(0, -100);
+	//延时递归调用，模拟滚动向上效果
+	scrolldelay = setTimeout('pageScroll()', 5);
+	//获取scrollTop值，声明了DTD的标准网页取document.documentElement.scrollTop，否则取document.body.scrollTop；因为二者只有一个会生效，另一个就恒为0，所以取和值可以得到网页的真正的scrollTop值
+	var sTop = document.documentElement.scrollTop + document.body.scrollTop;
+	//判断当页面到达顶部，取消延时代码（否则页面滚动到顶部会无法再向下正常浏览页面）
+	if (sTop == 0) clearTimeout(scrolldelay)
+
+}
+
+
+
+</script>
+</body>
+</html>

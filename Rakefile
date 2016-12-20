@@ -20,12 +20,12 @@ task :new do
 	open(@post_name, 'a') do |file|
 			file.puts "---"
 			file.puts "layout: post"
-			file.puts "title: 请输入 post 标题"
-			file.puts "subtitle: 请输入 post 子标题"
+			file.puts "title: JavaScript 精粹 基础 进阶(1)数据类型"
+			file.puts "subtitle: JavaScript 精粹 基础 进阶(1)数据类型"
 			file.puts "author: 继小鹏"
 			file.puts "date: #{Time.now}"
 			file.puts "category: JavaScript"
-			file.puts "tag: JavaScript"
+			file.puts "tag: __proto__"
 			file.puts "---"
 	end
 	exec "vi #{@post_name}"

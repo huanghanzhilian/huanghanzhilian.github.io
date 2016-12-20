@@ -3,9 +3,9 @@ layout: post
 title: JavaScript 精粹 基础 进阶(1)数据类型
 subtitle: JavaScript 精粹 基础 进阶(1)数据类型
 author: 继小鹏
-date: 2016-12-01 21:13:58 +0800
+date: 2016-12-20 11:53:14 +0800
 category: JavaScript
-tag: JavaScript
+tag: __proto__
 ---
 ![图片.png](http://upload-images.jianshu.io/upload_images/3877962-a5cb0943cd4c3e52.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
@@ -137,63 +137,3 @@ object == number | string 尝试对象转为基本类型  new String('hi') == �
 
 `instanceof`
 适合自定义对象，也可以用来检测原生对象，在不同iframe和window间检测时失效。
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

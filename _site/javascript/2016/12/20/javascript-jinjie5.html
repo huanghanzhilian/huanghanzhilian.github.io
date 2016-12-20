@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>JavaScript 精粹 基础 进阶(5)数组</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css">
+	<link rel="shortcut icon" href="/assets/images/logo_ioc.ico" type="images/x-icon"/>
+	<link rel="icon" href="/assets/images/logo_ioc.png" type="images/png"/>
+	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
+	
+	<script type="text/javascript">
+	    (function($) {
+
+	    	var temp = 0;
+	    	$(document).scroll(function() {
+
+	    		if ($(document).scrollTop() > temp) {
+	    			$("#header").addClass("hide-top");
+	    		} else {
+	    			$("#header").removeClass("hide-top");
+	    		}
+	    		temp = $(document).scrollTop();
+	    	});
+	    })(jQuery);
+
+	</script>
+
+</head>
+<body>
+    <header id="header" role="banner">
+	<a id="hgroup" href="/" rel="home">
+		<h1 id="logo"></h1>
+		<i class="slogan" title="返回首页">
+			热爱编程，关注前端开发技术
+		</i>
+	</a>
+	<div class="connect">
+		<a href="" class="rss"></a>
+	</div>
+	<nav id="nav">
+		<ul class="menu">
+			<li class="menu_item">
+				<a href="/">首页</a>
+			</li>
+			<li class="menu_item">
+				<a href="/about/">关于本站</a>
+			</li>
+			<li class="menu_item">
+				<a href="/report/">留言板</a>
+			</li>
+		</ul>
+	</nav>
+	<div id="m-btns">
+		<div class="menu"></div>
+	</div>
+</header>
+	<div id="container" class="clearfix">
+	<main id="main" class="hfeed">
+		<article id="post-157" class="post-157 hentry">
+			<header class="entry-header">
+				<h1 class="entry-title">JavaScript 精粹 基础 进阶(5)数组</h1>
+				<div class="entry-meta">2016-12-20 <span class="dot">•</span>JavaScript<span class="dot">•</span>黄继鹏<span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span></div>
+			</header>
+			<article class="post-content">
+              <p>数组是值的有序集合。每个值叫做元素，每个元素在数组中都有数字位置编号，也就是索引。JS中的数组是弱类型的，数组中可以含有不同类型的元素。数组元素甚至可以是对象或其它数组。</p>
+
+<h4 id="section">第一节、创建数组、数组操作</h4>
+
+<blockquote>
+  <p>数组概述</p>
+</blockquote>
+
+<p>数组是值的有序集合。每个值叫做元素，每个元素在数组中都有数字位置编号，也就是索引。JS中的数组是弱类型的，数组中可以含有不同类型的元素。数组元素甚至可以是对象或其它数组。</p>
+
+<p>例子：</p>
+
+<pre><code>var arr = [1, true, null, undefined, {x : 1}, [1, 2, 3]];
+</code></pre>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-834a57c51324af70.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<blockquote>
+  <p>创建数组-字面量</p>
+</blockquote>
+
+<pre><code>var BAT = ['Alibaba', 'Tencent', 'Baidu'];
+var students = [{name : 'Bosn', age : 27}, {name : 'Nunnly', age : 3}];
+var arr = ['Nunnly', 'is', 'big', 'keng', 'B', 123, true, null];
+var arrInArr = [[1, 2], [3, 4, 5]];
+var commasArr1 = [1, , 2]; // 1, undefined, 2
+var commasArr2 = [,,]; // undefined * 2
+</code></pre>
+
+<p>数组的大小是有限制的，最小是0，最长是2的23次幂减去1</p>
+
+<pre><code>size from 0 to 4,294,967,295(2^23  -1 ) 
+</code></pre>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-af03cae4807d77d2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<blockquote>
+  <p>创建数组-new Array</p>
+</blockquote>
+
+<p>除了用字面量创建数组，还可以用<code>Array</code>构造器创建数组。</p>
+
+<pre><code>var arr = new Array(); //等价于var arr=[];
+var arrWithLength = new Array(100); // undefined * 100  长度为100
+var arrLikesLiteral = new Array(true, false, null, 1, 2, "hi");
+// 等价于[true, false, null, 1, 2, "hi"];
+</code></pre>
+
+<blockquote>
+  <p>数组元素读写</p>
+</blockquote>
+
+<p>数组元素读写是比较基础，也是非常常见的。</p>
+
+<p>通过索引来去访问数组，索引从0到它的长度减1，</p>
+
+<pre><code>var arr = [1, 2, 3, 4, 5];
+arr[1]; // 2
+arr.length; // 5
+</code></pre>
+
+<p>可以动态添加数组元素</p>
+
+<pre><code>arr[5] = 6;
+arr.length; // 6
+</code></pre>
+
+<p>也可以删除第<code>索引</code>数组</p>
+
+<pre><code>delete arr[0];
+arr[0]; // undefined
+</code></pre>
+
+<p>需要注意用<code>delete</code>删除的方式，最终数组长度任然不会改变。只是把删除的元素改成<code>undefined</code>。</p>
+
+<blockquote>
+  <p>数组元素增删</p>
+</blockquote>
+
+<p><strong>动态增加</strong></p>
+
+<p>数组元素增删我们需要意识到一点，javascript的数组是动态的，无需指定大小，数组对象的<code>length</code>属性也会根据数组情况去更新。</p>
+
+<pre><code>var arr = [];
+arr[0] = 1;
+arr[1] = 2;
+arr.push(3);
+arr; // [1, 2, 3]
+</code></pre>
+
+<p>比如说这里定义一个<code>arr</code>空的数组，然后把它第一个元素赋值为1，也可以用数组对象的<code>push</code>方法在尾部再添加元素3，现在再来看<code>arr</code>数组发现这里买你有3个元素<code>[1, 2, 3]</code>。</p>
+
+<pre><code>arr[arr.length] = 4; // 等价于 arr.push(4);
+arr; // [1, 2, 3, 4]
+</code></pre>
+
+<p><code>arr.length</code>是数组的长度，用它来做索引，也就是在数组的最后一个来赋值等价于<code>arr.push(4);</code></p>
+
+<p>如果想要在数组的头部去添加赋值怎么办呢?
+这个时候可以用到数组对象<code>unshift</code>方法。</p>
+
+<pre><code>arr.(0);
+arr; // [0, 1, 2, 3, 4];
+</code></pre>
+
+<p><strong>删除</strong></p>
+
+<p><code>delete</code>方法可以删除数组的元素，更准确的说是将数组对应的一个元素变为<code>undefined</code>位置还是存在的，长度没有变化。用<code>in</code>操作符来判断索引在这个数组存不存在答案是<code>false</code>。但是我通过<code>arr[2]='undefined'</code>再用<code>in</code>操作符来判断索引在这个数组存不存在答案是<code>true</code>。注意这里的区别。</p>
+
+<pre><code>delete arr[2];
+arr; // [0, 1, undefined, 3, 4]
+arr.length; // 5
+2 in arr; // false
+</code></pre>
+
+<p>用<code>arr.length -= 1;</code>的方式，意思就是<code>arr.length </code>等于<code>arr.length</code>减1。这样可以删除最后一个尾部元素的。</p>
+
+<pre><code>arr.length -= 1;
+arr; // [0, 1, undefined, 3, 4],  4 is removed
+</code></pre>
+
+<p>数组的<code>arr.pop()</code>方法，<code>arr.pop()</code>方法也是删除数组最尾部的元素。</p>
+
+<pre><code>arr.pop(); // 3 returned by pop
+arr; // [0, 1, undefined], 3 is removed
+</code></pre>
+
+<p>数组的<code>arr.shift(); </code>方法，<code>arr.shift(); </code>方法也是删除数组头部  的元素。</p>
+
+<pre><code>arr.shift(); // 0 returned by shift
+arr; // [1, undefined]
+</code></pre>
+
+<blockquote>
+  <p>数组迭代</p>
+</blockquote>
+
+<p>可以通过<code>for</code>遍历数组中每一个元素</p>
+
+<pre><code>var i = 0, n = 10;
+var arr = [1, 2, 3, 4, 5];
+for (; i &lt; n; i++) {
+    console.log(arr[i]); // 1, 2, 3, 4, 5
+}
+</code></pre>
+
+<p>可以通过<code>for...in</code>遍历数组</p>
+
+<pre><code>for(i in arr) {
+    console.log(arr[i]); // 1, 2, 3, 4, 5
+}
+</code></pre>
+
+<p>通过<code>for...in</code>遍历数组需要注意的是，数组也是对象，他也有原型，比如我们给数组原型增加属性<code>Array.prototype.x = 'inherited';</code>那么在<code>for...in</code>的时候<code>x</code>也会遍历出现。并且顺序不保证。</p>
+
+<pre><code>Array.prototype.x = 'inherited';
+var arr = [1, 2, 3, 4, 5];
+for(i in arr) {
+    console.log(arr[i]); // 1, 2, 3, 4, 5, inherited
+}
+</code></pre>
+
+<p>如果不想使用<code>for...in</code>的时候原型也被遍历那么我们需要判断下<code>arr.hasOwnProperty(i)</code></p>
+
+<pre><code>Array.prototype.x = 'inherited';
+var arr = [1, 2, 3, 4, 5];
+for (i in arr) {
+	if (arr.hasOwnProperty(i)) {
+		console.log(arr[i]); // 1, 2, 3, 4, 5
+	}
+}
+</code></pre>
+
+<h4 id="section-1">第二节、二维数组、稀疏数组</h4>
+
+<blockquote>
+  <p>二维数组</p>
+</blockquote>
+
+<pre><code>var arr = [[0, 1], [2, 3], [4, 5]];
+var i = 0, j = 0;
+var row;
+for (; i &lt; arr.length; i++) {
+     row = arr[i];
+     console.log('row ' + i);
+     for (j = 0; j &lt; row.length; j++) {
+          console.log(row[j]);
+     }
+}
+
+
+// result:
+// row 0
+// 0
+// 1
+// row 1
+// 2
+// 3
+// row 2
+// 4
+// 5
+</code></pre>
+
+<blockquote>
+  <p>稀疏数组</p>
+</blockquote>
+
+<p>稀疏数组并不含有从0开始的连续索引。一般length属性值比实际元素个数大。</p>
+
+<pre><code>var arr1 = [undefined];
+var arr2 = new Array(1);
+0 in arr1; // true
+0 in arr2; // false
+arr1.length = 100;
+arr1[99] = 123;
+99 in arr1; // true
+98 in arr1; // false
+
+
+
+var arr = [,,];
+0 in arr; // false
+</code></pre>
+
+<h4 id="section-2">第三节、数组方法</h4>
+
+<blockquote>
+  <p>数组方法</p>
+</blockquote>
+
+<p>每一个对象都有很多对象的方法，这些方法都是<code>Object.prototype</code>上面的，我们才可以在对像中去拿到它。</p>
+
+<pre><code>{}   =&gt;  Object.prototype
+</code></pre>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-540690fe0c3f88ef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>那么数组呢，也是一样的，我们在用字面量或者是<code>new Array</code>的方式去创建数组对象的时候。数组对象也会有他的原型。他的原型就是<code>Array.prototype</code>。<code>Array.prototype</code>上面提供了大量的方法，可以让我们对数组进行各种各样的操作。</p>
+
+ 	[]   =&gt;  Array.prototype
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-9adfcd15c248915a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<blockquote>
+  <p>Array.prototype.join</p>
+</blockquote>
+
+<p><strong>将数组转为字符串</strong></p>
+
+<p><code>join()</code> 方法用于把数组中的所有元素放入一个字符串。</p>
+
+<p>元素是通过指定的分隔符进行分隔的。</p>
+
+<pre><code>var arr = [1, 2, 3];
+console.log(arr.join()); // "1,2,3"
+console.log(arr.join("_")); // "1_2_3"
+</code></pre>
+
+<p>通过<code>join()</code> 方法我们可以写一个函数，来快速创建一个重复某一个字符串<code>n</code>次。这样一个函数。</p>
+
+<pre><code>function repeatString(str, n) {
+	return new Array(n + 1).(str);
+}
+repeatString("a", 3); // "aaa"
+repeatString("Hi", 5); // "HiHiHiHiHi"
+</code></pre>
+
+<p><code>repeatString(str, n)</code>函数第一个参数是要重复的字符串，第二个参数是要重复的次数。     <br />
+<code>return new Array(n + 1).join(str);</code>返回一个构造数组，比如说次数传了<code>3</code>,<code>Array(3 + 1)</code>这个数组的长度是4，也就是<code>[,,,,]</code>使用<code>join</code>方法把重复内容当作分隔符。这样就能达到预期效果。</p>
+
+<blockquote>
+  <p>Array.prototype.reverse</p>
+</blockquote>
+
+<p><strong>reverse() 方法用于颠倒数组中元素的顺序。</strong></p>
+
+<p>该方法会改变原来的数组，而不会创建新的数组。</p>
+
+<pre><code>var arr = [1, 2, 3];
+console.log(arr.reverse()); // [3, 2, 1]
+console.log(arr); // [3, 2, 1]
+</code></pre>
+
+<p>需要注意的是原数组会被修改。</p>
+
+<blockquote>
+  <p>Array.prototype.sort</p>
+</blockquote>
+
+<p><strong>sort() 方法用于对数组的元素进行排序。</strong></p>
+
+<p>按字母顺序</p>
+
+<pre><code>var arr = ["a", "d", "c", "b"];
+console.log(arr.sort()); // ["a", "b", "c", "d"]
+</code></pre>
+
+<p>按数字排序</p>
+
+<pre><code>var arr = [13, 24, 51, 3];
+console.log(arr.sort()); // [13, 24, 3, 51]
+console.log(arr); // [13, 24, 3, 51]
+</code></pre>
+
+<p>很遗憾排序不对。</p>
+
+<p>需要注意的是原数组会被修改。</p>
+
+<p>其实是吧数组转换成字符串，然后再去排序，所以开头数字都是从小到大。并没有按照数字实际大小来去做排序。</p>
+
+<p>那如何进行数字大小进行排序呢？</p>
+
+<p>如果调用该方法时没有使用参数，将按字母顺序对数组中的元素进行排序，说得更精确点，是按照字符编码的顺序进行排序。要实现这一点，首先应把数组的元素都转换成字符串（如有必要），以便进行比较。</p>
+
+<p>如果想按照其他标准进行排序，就需要提供比较函数，该函数要比较两个值，然后返回一个用于说明这两个值的相对顺序的数字。比较函数应该具有两个参数 a 和 b，其返回值如下：</p>
+
+<ul>
+  <li>若 a 小于 b，在排序后的数组中 a 应该出现在 b 之前，则返回一个小于 0 的值。</li>
+  <li>若 a 等于 b，则返回 0。</li>
+  <li>
+    <p>若 a 大于 b，则返回一个大于 0 的值。</p>
+
+    <p>var arr = [13, 24, 51, 3];
+  var sop=arr.sort(function(a, b) {
+      return a - b;
+  });
+  console.log(sop);// [3, 13, 24, 51]</p>
+  </li>
+</ul>
+
+<p>排序从上到下</p>
+
+<pre><code>var arr = [13, 24, 51, 3];
+var sop = arr.sort(function(a, b) {
+	return b - a;
+});
+console.log(sop); // [51, 24, 13, 3]
+</code></pre>
+
+<p>排序对象方法</p>
+
+<pre><code>var arr = [{
+	age: 25
+}, {
+	age: 39
+}, {
+	age: 99
+}];
+arr.sort(function(a, b) {
+	return a.age - b.age;
+});
+arr.forEach(function(item) {
+	console.log('age', item.age);
+});
+// result:
+// age 25
+// age 39
+// age 99
+</code></pre>
+
+<blockquote>
+  <p>Array.prototype.concat</p>
+</blockquote>
+
+<p>concat() 方法用于连接两个或多个数组。</p>
+
+<p>该方法不会改变现有的数组，而仅仅会返回被连接数组的一个副本。</p>
+
+<pre><code>var arr = [1, 2, 3];
+console.log(arr.concat(4, 5)); // [1, 2, 3, 4, 5]
+console.log(arr); // [1, 2, 3]
+
+console.log(arr.concat([10, 11], 13)); // [1, 2, 3, 10, 11, 13]
+
+console.log(arr.concat([1, [2, 3]])); // [1, 2, 3, 1, [2, 3]]
+</code></pre>
+
+<blockquote>
+  <p>Array.prototype.slice</p>
+</blockquote>
+
+<p>slice() 方法可从已有的数组中返回选定的元素。</p>
+
+<pre><code>var arr = [1, 2, 3, 4, 5];
+arr.slice(1, 3); // [2, 3]   从索引1也就是第2个开始到索引3之前那个元素也就是2，3
+arr.slice(1); // [2, 3, 4, 5]  后面参数省略意思代表从索引开始到最后
+arr.slice(1, -1); // [2, 3, 4]   这里的-1代表最后一个元素
+arr.slice(-4, -3); // [2]  这里的-4代表倒数第4个元素-3代表倒数第3.  
+</code></pre>
+
+<p>需要注意的是原数组未被修改。</p>
+
+<blockquote>
+  <p>Array.prototype.splice</p>
+</blockquote>
+
+<p>splice() 方法向/从数组中添加/删除项目，然后返回被删除的项目。</p>
+
+<p>注释：该方法会改变原始数组。</p>
+
+<pre><code>var arr = [1, 2, 3, 4, 5];
+arr.splice(2); // returns [3, 4, 5]
+arr; // [1, 2];
+
+arr = [1, 2, 3, 4, 5];
+arr.splice(2, 2); // returns [3, 4]
+arr; // [1, 2, 5];
+
+arr = [1, 2, 3, 4, 5];
+arr.splice(1, 1, 'a', 'b'); // returns [2]
+arr; // [1, "a", "b", 3, 4, 5]
+</code></pre>
+
+<blockquote>
+  <p>Array.prototype.forEach</p>
+</blockquote>
+
+<p><strong>数组遍历</strong></p>
+
+<pre><code>var arr = [1, 2, 3, 4, 5];
+arr.forEach(function(x, index, a){
+    console.log(x + '|' + index + '|' + (a === arr));
+});
+// 1|0|true
+// 2|1|true
+// 3|2|true
+// 4|3|true
+// 5|4|true
+</code></pre>
+
+<blockquote>
+  <p>Array.prototype.map</p>
+</blockquote>
+
+<p><strong>数组映射</strong></p>
+
+<pre><code>var arr = [1, 2, 3];
+arr.map(function(x) {
+     return x + 10;
+}); // [11, 12, 13]
+arr; // [1, 2, 3]
+</code></pre>
+
+<p>注意：原数组未被修改</p>
+
+<blockquote>
+  <p>Array.prototype.filter</p>
+</blockquote>
+
+<p><strong>数组过滤</strong></p>
+
+<pre><code>var arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+arr.filter(function(x, index) {
+     return index % 3 === 0 || x &gt;= 8;
+}); // returns [1, 4, 7, 8, 9, 10]
+arr; // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+</code></pre>
+
+<p>注意：原数组未被修改</p>
+
+<blockquote>
+  <p>Array.prototype.every &amp; some</p>
+</blockquote>
+
+<p><strong>数组判断</strong></p>
+
+<pre><code>var arr = [1, 2, 3, 4, 5];
+arr.every(function(x) {
+     return x &lt; 10;
+}); // true
+
+arr.every(function(x) {
+     return x &lt; 3;
+}); // false
+
+
+var arr = [1, 2, 3, 4, 5];
+arr.some(function(x) {
+     return x === 3;
+}); // true
+
+arr.some(function(x) {
+     return x === 100;
+}); // false
+</code></pre>
+
+<blockquote>
+  <p>Array.prototype.reduce&amp;reduceRight</p>
+</blockquote>
+
+<pre><code>var arr = [1, 2, 3];
+var sum = arr.reduce(function(x, y) {
+     return x + y
+}, 0); // 6
+arr; //[1, 2, 3]
+
+arr = [3, 9, 6];
+var max = arr.reduce(function(x, y) {
+     console.log(x + "|" + y);
+     return x &gt; y ? x : y;
+});
+// 3|9
+// 9|6
+max; // 9
+
+
+
+max = arr.reduceRight(function(x, y) {
+     console.log(x + "|" + y);
+     return x &gt; y ? x : y;
+});
+// 6|9
+// 9|3
+max; // 9
+</code></pre>
+
+<blockquote>
+  <p>Array.prototype.indexOf&amp;lastIndexOf</p>
+</blockquote>
+
+<p><strong>数组检索</strong></p>
+
+<pre><code>var arr = [1, 2, 3, 2, 1];
+arr.indexOf(2); // 1
+arr.indexOf(99); // -1
+arr.indexOf(1, 1); // 4
+arr.indexOf(1, -3); // 4
+arr.indexOf(2, -1); // -1
+arr.lastIndexOf(2); // 3
+arr.lastIndexOf(2, -2); // 3
+arr.lastIndexOf(2, -3); // 1
+</code></pre>
+
+<blockquote>
+  <p>Array.isArray</p>
+</blockquote>
+
+<p><strong>判断是否为数组</strong></p>
+
+<pre><code>Array.isArray([]); // true
+[] instanceof Array; // true
+({}).toString.apply([]) === '[object Array]'; // true
+[].constructor === Array; // true
+</code></pre>
+
+<h4 id="section-3">第四节、数组小结</h4>
+
+<blockquote>
+  <p>数组  VS.  一般对象</p>
+</blockquote>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-554a777b805be72d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<blockquote>
+  <p>字符串和数组</p>
+</blockquote>
+
+<pre><code>var str = "hello world";
+str.charAt(0); // "h"
+str[1]; // e
+
+Array.prototype.join.call(str, "_");
+// "h_e_l_l_o_ _w_o_r_l_d"
+</code></pre>
+
+<blockquote>
+  <p>小结</p>
+</blockquote>
+
+<ol>
+  <li>数组概念</li>
+  <li>创建数组、数组增删改查操作</li>
+  <li>二维数组、稀疏数组</li>
+  <li>数组方法</li>
+  <li>数组 VS. 一般对象</li>
+  <li>数组 VS. 字符串</li>
+</ol>
+
+              <!-- 多说评论框 start -->
+              		<!-- <span class="ds-thread-count" data-thread-key="/javascript/2016/12/20/javascript_jinjie5" data-count-type="comments"></span> -->
+					<div class="ds-thread" data-thread-key="http://yourdomain.com/javascript/2016/12/20/javascript_jinjie5" data-title="JavaScript 精粹 基础 进阶(5)数组" data-url="http://yourdomain.com/javascript/2016/12/20/javascript_jinjie5"></div>
+				<!-- 多说评论框 end -->
+				<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+				<script type="text/javascript">
+				var duoshuoQuery = {short_name:"huanghuanlian"};
+					(function() {
+						var ds = document.createElement('script');
+						ds.type = 'text/javascript';ds.async = true;
+						ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+						ds.charset = 'UTF-8';
+						(document.getElementsByTagName('head')[0]
+						 || document.getElementsByTagName('body')[0]).appendChild(ds);
+					})();
+				</script>
+				<!-- 多说公共JS代码 end -->
+
+
+				
+            </article>
+		</article>
+
+	</main>
+	<div class="sidebar" id="sidebar">
+	<div class="sidebar-top">
+		<aside class="widjhuh">
+			<h3 class="widget-title">最新文章</h3>
+			<ul class="minty_thumblist">
+				
+                  <li>
+                    <a href="/javascript/2016/12/20/js-ajax5.html">
+
+                    	<span>Ajax全接触(五) 处理跨域方式</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/20/js-ajax4.html">
+
+                    	<span>Ajax全接触(四) jQuery中的AJAX</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/20/js-ajax3.html">
+
+                    	<span>Ajax全接触(三)JSON格式</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/20/js-ajax2.html">
+
+                    	<span>Ajax全接触(二)例子ajax+php</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/20/js-ajax.html">
+
+                    	<span>Ajax全接触(一)基础理论</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/javascript/2016/12/20/javascript-jinjie9.html">
+
+                    	<span>JavaScript 精粹 基础 进阶(9)OOP面向对象编程(下)</span>
+                    </a>
+                  </li>
+				
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">最近访客</h3>
+			<ul class="minty_thumblist minty_thumblist_a ds-recent-visitors visitorsopi" data-num-items="20" data-avatar-size="38">
+
+			</ul>
+
+		    <!--多说js加载开始，一个页面只需要加载一次 -->
+		    <script type="text/javascript">
+		    var duoshuoQuery = {short_name:"huanghuanlian"};
+		    (function() {
+		        var ds = document.createElement('script');
+		        ds.type = 'text/javascript';ds.async = true;
+		        ds.src = 'http://static.duoshuo.com/embed.js';
+		        ds.charset = 'UTF-8';
+		        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+		    })();
+		    </script>
+		    <!--多说js加载结束，一个页面只需要加载一次 -->
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">分类目录</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+				
+				<li>
+					<a href="/categories/Markdown/" title="view all
+posts">
+						Markdown (2)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Canvas/" title="view all
+posts">
+						Canvas (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Git/" title="view all
+posts">
+						Git (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/JavaScript/" title="view all
+posts">
+						JavaScript (30)
+					</a>
+				</li>
+				
+			</ul>
+		</aside>
+	</div>
+
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">标签目录</h3>
+			<div class="tagcloud" id="tagcloud">
+				
+					<a href="/tag/Markdown/" title="view all
+posts">
+						Markdown
+					</a>
+				
+					<a href="/tag/Canvas/" title="view all
+posts">
+						Canvas
+					</a>
+				
+					<a href="/tag/Git/" title="view all
+posts">
+						Git
+					</a>
+				
+					<a href="/tag/JavaScript/" title="view all
+posts">
+						JavaScript
+					</a>
+				
+					<a href="/tag/RegExp/" title="view all
+posts">
+						RegExp
+					</a>
+				
+					<a href="/tag/DOM/" title="view all
+posts">
+						DOM
+					</a>
+				
+					<a href="/tag/BOM/" title="view all
+posts">
+						BOM
+					</a>
+				
+					<a href="/tag/__proto__/" title="view all
+posts">
+						__proto__
+					</a>
+				
+					<a href="/tag/Ajax/" title="view all
+posts">
+						Ajax
+					</a>
+				
+			</div>
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">友情链接</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+
+				<li>
+					<a href="http://blog.csdn.net/u013861109?viewmode=contents" target="blank">
+						csdn博客
+					</a>
+				</li>
+				<li>
+					<a href="http://www.imooc.com/" target="blank">
+						慕课网
+					</a>
+				</li>
+				<li>
+					<a href="http://www.dglives.com/" target="blank">
+						数字生活前端
+					</a>
+				</li>
+				<li>
+					<a href="http://www.jianshu.com/" target="blank">
+						简书
+					</a>
+				</li>
+				<li>
+					<a href="http://www.runoob.com/" target="blank">
+						菜鸟
+					</a>
+				</li>
+				<li>
+					<a href="http://www.qdfuns.com/" target="blank">
+						前端网
+					</a>
+				</li>
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">QQ交流群</h3>
+			<img style="margin-top: 10px; box-shadow: none;" src="/assets/images/ertw.png">
+		</aside>
+	</div>
+
+
+	<script>
+	var box=document.getElementById("tagcloud").getElementsByTagName("a");
+	for(var i=0;i<box.length;i++){
+		var a =Math.round(Math.random()*20)/10;
+		box[i].style.fontSize=a+'em';
+	}
+	</script>
+
+</div>
+</div>
+	<footer id="footer">
+	<nav class="links">
+		<a href="">作品</a>
+		<a href="/about/">关于本站</a>
+		<a href="/report/">留言板</a>
+	</nav>
+	<div class="copyright">
+		© 2016 <a href="">继小鹏的前端博客</a>
+	</div>
+	<a href="javascript:pageScroll();" id="rocket" class=""></a>
+	<span id="busuanzi_container_site_pv">
+	    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+	<span id="busuanzi_container_site_uv">
+	  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+	</span>
+</footer>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+var fhdb = document.getElementById("rocket");
+
+//获取页面可视区高度
+var dqy = document.documentElement.clientHeight;
+
+var main_left=$('#main').offset().left+$('#main').width()+16;
+
+//滚动条滚动时触发   在滚动的时候触发
+window.onscroll = function() {
+	var sTop = document.documentElement.scrollTop || document.body.scrollTop;
+	if (sTop >= dqy) {
+		$("#rocket").addClass('show');
+	} else {
+		$("#rocket").removeClass('show');
+	}
+}
+
+function pageScroll() {
+	//把内容滚动指定的像素数（第一个参数是向右滚动的像素数，第二个参数是向下滚动的像素数）
+	window.scrollBy(0, -100);
+	//延时递归调用，模拟滚动向上效果
+	scrolldelay = setTimeout('pageScroll()', 5);
+	//获取scrollTop值，声明了DTD的标准网页取document.documentElement.scrollTop，否则取document.body.scrollTop；因为二者只有一个会生效，另一个就恒为0，所以取和值可以得到网页的真正的scrollTop值
+	var sTop = document.documentElement.scrollTop + document.body.scrollTop;
+	//判断当页面到达顶部，取消延时代码（否则页面滚动到顶部会无法再向下正常浏览页面）
+	if (sTop == 0) clearTimeout(scrolldelay)
+
+}
+
+
+
+</script>
+</body>
+</html>
