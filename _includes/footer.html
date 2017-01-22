@@ -17,6 +17,16 @@
 </footer>
 <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <script>
+
+$(function(){
+	$("#m-btns").click(function(){
+		if($("body").hasClass('nav-is-open')){
+			$("body").removeClass('nav-is-open')
+		}else{
+			$("body").addClass('nav-is-open')
+		};
+	})
+})
 var fhdb = document.getElementById("rocket");
 
 //获取页面可视区高度

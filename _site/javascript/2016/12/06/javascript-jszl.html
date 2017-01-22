@@ -25,6 +25,8 @@
 	    		}
 	    		temp = $(document).scrollTop();
 	    	});
+	    	
+	    	//console.log($(".menu"))
 	    })(jQuery);
 
 	</script>
@@ -39,12 +41,16 @@
 		</i>
 	</a>
 	<div class="connect">
+		<a href="https://github.com/huanghanzhilian" class="git" target="_blank"></a>
 		<a href="http://www.huanghanlian.com/feed.xml" class="rss"></a>
 	</div>
 	<nav id="nav">
 		<ul class="menu">
 			<li class="menu_item">
 				<a href="/">首页</a>
+			</li>
+			<li class="menu_item">
+				<a href="http://www.huanghanlian.com/widget/">Web组件库</a>
 			</li>
 			<li class="menu_item">
 				<a href="/about/">关于本站</a>
@@ -54,9 +60,26 @@
 			</li>
 		</ul>
 	</nav>
+
 	<div id="m-btns">
 		<div class="menu"></div>
 	</div>
+	<nav class="nav-bar-tabs ">
+		<ul>
+            <li>
+              	<a href="/">首页</a>
+            </li>
+            <li>
+              	<a href="http://www.huanghanlian.com/widget/">Web组件库</a>
+            </li>
+            <li>
+              	<a href="/about/">关于本站</a>
+            </li>
+            <li>
+              	<a href="/report/">留言板</a>
+            </li>
+        </ul>
+	</nav>
 </header>
 	<div id="container" class="clearfix">
 	<main id="main" class="hfeed">
@@ -1003,6 +1026,16 @@ posts">
 </footer>
 <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <script>
+
+$(function(){
+	$("#m-btns").click(function(){
+		if($("body").hasClass('nav-is-open')){
+			$("body").removeClass('nav-is-open')
+		}else{
+			$("body").addClass('nav-is-open')
+		};
+	})
+})
 var fhdb = document.getElementById("rocket");
 
 //获取页面可视区高度
