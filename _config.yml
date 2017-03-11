@@ -27,6 +27,14 @@ github_username:  jekyll
 
 # Build settings
 markdown: kramdown
+kramdown:
+  input:  GFM
+  enable_coderay: true
+
+
+# use_coderay: true
+
+
 
 paginate: 10
 paginate_path: "page:num"

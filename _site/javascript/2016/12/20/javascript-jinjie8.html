@@ -97,7 +97,7 @@
 			<article class="post-content">
               <p>面向对象编程，oop并不是针对与javascript，很多语言都实现了oop这样一个编程发法论，比如说java，c++，都是实现了oop的语言。</p>
 
-<h3 id="section">概念与继承</h3>
+<p>###概念与继承</p>
 
 <blockquote>
   <p>概念</p>
@@ -342,7 +342,7 @@ console.log(t);
 
 <p><img src="http://upload-images.jianshu.io/upload_images/3877962-43c16c3c2dc86632.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
 
-<h3 id="section-1">再谈原型链</h3>
+<p>###再谈原型链</p>
 
 <blockquote>
   <p>再谈原型链</p>
@@ -446,7 +446,7 @@ peng.learn('math')
 
 <p><img src="http://upload-images.jianshu.io/upload_images/3877962-58ffd9189b45da83.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
 
-<p>也正因为如此所以说我们才可以调用<code>obj.toString()</code>，<code>obj.valueOf()</code>
+<p>也正因为如此所以说我们才可以调用<code>obj.toString()</code>，<code>obj.valueOf()</code><br />
 实际上这些方法都是取自<code>Object.prototype</code>上的，</p>
 
 <p><img src="http://upload-images.jianshu.io/upload_images/3877962-4f6ae91520f49f88.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
@@ -471,7 +471,7 @@ console.log(hh.prototype);
 
 <p>使用es5友谊和<code>bind</code>函数，<code>bind</code>函数是用来修改函数在运行时的<code>this</code>的，<code>bind</code>函数返回的也是一个函数，但是<code>bind</code>函数就没有<code>prototype</code>预设属性。</p>
 
-<h3 id="prototype">prototype属性</h3>
+<p>###prototype属性</p>
 
 <p>javascript中的<code>prototype</code>原型，不像java的class，是一旦写好了以后不太容易去动态改变的，但是javascript中原型实际上也是普通的对象，那么意味着在程序运行的阶段我们也可以动态的给<code>prototype</code>添加或者删除一些属性，</p>
 
@@ -615,7 +615,7 @@ obj.hasOwnProperty('z'); // false   表示z并不是obj直接对象上的，而�
 
 <p><img src="http://upload-images.jianshu.io/upload_images/3877962-a2fcce85ebf5bb1c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
 
-<h3 id="instanceof">instanceof</h3>
+<p>###instanceof</p>
 
 <blockquote>
   <p>instanceof</p>
@@ -627,7 +627,7 @@ obj.hasOwnProperty('z'); // false   表示z并不是obj直接对象上的，而�
 console.log(new Object() instanceof Array); //false
 </code></pre>
 
-<p>左边要求是一个对象<code>instanceof</code>右边要求是一个函数或者说构造器
+<p>左边要求是一个对象<code>instanceof</code>右边要求是一个函数或者说构造器<br />
 他会判断右边的构造器的 <code>prototype</code>的属性是否出现在左边这个对象的原型链上。</p>
 
 <pre><code>console.log([1, 2] instanceof Array); //true
@@ -663,7 +663,7 @@ console.log(han instanceof sor); //false
 console.log(han instanceof per); //true
 </code></pre>
 
-<h3 id="section-2">实现继承的方式</h3>
+<p>###实现继承的方式</p>
 
 <blockquote>
   <p>实现继承的方式</p>
@@ -762,44 +762,44 @@ t.learn('math');
 			<ul class="minty_thumblist">
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics10.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-综合应用BookStore  2-8</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics1.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics9.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-Service与Peovider  2-7</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax5.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics8.html">
 
-                    	<span>Ajax全接触(五) 处理跨域方式</span>
+                    	<span>基本概念和用法-指令 2-6</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax4.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics7.html">
 
-                    	<span>Ajax全接触(四) jQuery中的AJAX</span>
+                    	<span>基本概念和用法-路由 2-5</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax3.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics6.html">
 
-                    	<span>Ajax全接触(三)JSON格式</span>
+                    	<span>基本概念和用法-双向数据绑定 2-4</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics5.html">
 
-                    	<span>Ajax全接触(二)例子ajax+php</span>
+                    	<span>基本概念和用法-路由，模块，依赖注入 2-3</span>
                     </a>
                   </li>
 				
@@ -866,7 +866,7 @@ posts">
 				<li>
 					<a href="/categories/AngularJS/" title="view all
 posts">
-						AngularJS (2)
+						AngularJS (10)
 					</a>
 				</li>
 				

@@ -97,13 +97,13 @@
 			<article class="post-content">
               <p>setTimeout()和setInterval()经常被用来处理延时和定时任务。<strong>setTimeout</strong>() 方法用于在指定的毫秒数后调用函数或计算表达式,而<strong>setInterval</strong>()则可以在每隔指定的毫秒数循环调用函数或表达式，直到clearInterval把它清除。</p>
 
-<h4 id="section">定义</h4>
+<p>####定义</p>
 
 <p>从定义上我们可以看到两个函数十分类似，只不过前者执行一次，而后者可以执行多次，两个函数的参数也相同，第一个参数是要执行的code或句柄，第二个是延迟的毫秒数。</p>
 
 <p>很简单的定义，使用起来也很简单，但有时候我们的代码并不是按照我们的想象精确时间被调用的，很让人困惑</p>
 
-<h4 id="section-1">简单示例</h4>
+<p>####简单示例</p>
 
 <p>看个简单的例子,简单页面在加载完两秒后，写下Delayed alert!</p>
 
@@ -137,7 +137,7 @@ var i = setInterval(function() {
 43: 48: 256
 </code></pre>
 
-<h4 id="section-2">为什么</h4>
+<p>####为什么</p>
 
 <p>时间间隔几乎是1000毫秒，但不精确，这是为什么呢？原因在于我们对JavaScript定时器存在一个误解，<strong>JavaScript其实是运行在单线程的环境中的</strong>，这就意味着定时器仅仅是<strong>计划</strong>代码在未来的某个时间执行，而具体执行时机是不能保证的，因为页面的生命周期中，不同时间可能有其他代码在控制JavaScript进程。在页面下载完成后代码的运行、事件处理程序、Ajax回调函数都是使用同样的线程，实际上浏览器负责进行排序，指派某段程序在某个时间点运行的<strong>优先级</strong>。</p>
 
@@ -185,7 +185,7 @@ var i = setInterval(function() {
 
 <p>知道了这些后，我们就能明白，如果想要精确的时间控制，是不能依赖于JavaScript的setTimeout函数的。</p>
 
-<h4 id="section-3">重复的定时器</h4>
+<p>####重复的定时器</p>
 
 <p>使用 setInterval() 创建的定时器可以使代码循环执行，到有指定效果的时候，清除interval就可以，如下例</p>
 
@@ -260,44 +260,44 @@ var i = setInterval(function() {
 			<ul class="minty_thumblist">
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics10.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-综合应用BookStore  2-8</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics1.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics9.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-Service与Peovider  2-7</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax5.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics8.html">
 
-                    	<span>Ajax全接触(五) 处理跨域方式</span>
+                    	<span>基本概念和用法-指令 2-6</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax4.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics7.html">
 
-                    	<span>Ajax全接触(四) jQuery中的AJAX</span>
+                    	<span>基本概念和用法-路由 2-5</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax3.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics6.html">
 
-                    	<span>Ajax全接触(三)JSON格式</span>
+                    	<span>基本概念和用法-双向数据绑定 2-4</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics5.html">
 
-                    	<span>Ajax全接触(二)例子ajax+php</span>
+                    	<span>基本概念和用法-路由，模块，依赖注入 2-3</span>
                     </a>
                   </li>
 				
@@ -364,7 +364,7 @@ posts">
 				<li>
 					<a href="/categories/AngularJS/" title="view all
 posts">
-						AngularJS (2)
+						AngularJS (10)
 					</a>
 				</li>
 				

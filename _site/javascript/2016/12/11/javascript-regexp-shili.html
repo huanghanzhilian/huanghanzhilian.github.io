@@ -110,7 +110,7 @@
 //"He IS a boy .This is a dog.Where is she?"
 </code></pre>
 
-<p>发现就匹配了第一个单纯<code>is</code>。  <br />
+<p>发现就匹配了第一个单纯<code>is</code>。    <br />
 我们使用<code>g</code>，也就是代表全文搜索匹配。<code>var reg=/\bis\b/g;</code></p>
 
 <pre><code>var reg=/\bis\b/g;
@@ -202,8 +202,8 @@ G76 "
 
 <p>我们工作时希望并不是匹配某个字符，而是希望匹配符合一系列特征<code>abc</code>。</p>
 
-<p>我们可以使用元字符<code>[]</code>来构建一个简单的类。  <br />
-类就是符合某些特征的对象，是指一个泛指，而不是特指某个字符。           <br />
+<p>我们可以使用元字符<code>[]</code>来构建一个简单的类。    <br />
+类就是符合某些特征的对象，是指一个泛指，而不是特指某个字符。             <br />
 比如我们使用表达式<code>[abc]</code>就把a或者b或者c自定义成为一类，表达式就可以匹配这类的字符。他的意思是有它们一个就行。</p>
 
 <pre><code>"a1b2c3".replace(/[abc]/g,'x')
@@ -214,8 +214,8 @@ G76 "
 
 <p><strong>字符来取反</strong></p>
 
-<p>使用元字符<code>^</code>创建反向类/负向类           <br />
-反向类的意思是不属于某类的内容          <br />
+<p>使用元字符<code>^</code>创建反向类/负向类             <br />
+反向类的意思是不属于某类的内容            <br />
 表达式<code>[^abc]</code>表示不是字符a或b或c的内容</p>
 
 <pre><code>"a1b2c3".replace(/[^abc]/g,'x')
@@ -230,7 +230,7 @@ G76 "
 
 <p>正则表达式提供了范围类</p>
 
-<p>我们可以使用<code>[a-z]</code>来链接两个字符表示从a到z的任意字符   <br />
+<p>我们可以使用<code>[a-z]</code>来链接两个字符表示从a到z的任意字符     <br />
 这是一个闭区间，也就是包含a和z本身</p>
 
 <pre><code>"a1b2c3x4z9".replace(/[a-z]/g,'Q');
@@ -618,7 +618,7 @@ G76 "
 
 <ol>
   <li>正则表达式从文本头部向尾部开始解析，文本尾部方向，成为“前”</li>
-  <li>前瞻 就是在正则表达式匹配到规则的时候，向前检查是否符合断言。比如找到儿子为张三，还得看看他的父亲是否是李四
+  <li>前瞻 就是在正则表达式匹配到规则的时候，向前检查是否符合断言。比如找到儿子为张三，还得看看他的父亲是否是李四<br />
 后顾/后瞻方向相反</li>
 </ol>
 
@@ -697,32 +697,34 @@ G76 "
   <p>test 和 exec方法</p>
 </blockquote>
 
-<p>正则表达式本身的两个方法
-<strong>1.test</strong>
+<p>正则表达式本身的两个方法<br />
+<strong>1.test</strong><br />
 RegExp.prototype.test(str)</p>
 
 <p>用于测试字符串参数中是否存在匹配正则表达式模式的字符串</p>
 
 <p>如果存在则返回true，否则返回false</p>
 
-<p>lastIndex 记录当前匹配结果的、最后一个字符的、下一个字符的位置
-  注意:test()方法在匹配的时候当匹配到一个结果时，会从lastIndex位置开始匹配下一个结果，直到不存在的时候才置为0。因此，当使用全局g属性标识时，当匹配到最后一个结果时，lastIndex值指向不存在的位置，此时再执行test()会返回false。
-  例子：多次执行test（）方法，会在true、false之间循环
-  （/\w/g）.test(‘a’)每次执行都是正确的，但是通过实例化对象，需要很大的开销
+<p>lastIndex 记录当前匹配结果的、最后一个字符的、下一个字符的位置<br />
+  注意:test()方法在匹配的时候当匹配到一个结果时，会从lastIndex位置开始匹配下一个结果，直到不存在的时候才置为0。因此，当使用全局g属性标识时，当匹配到最后一个结果时，lastIndex值指向不存在的位置，此时再执行test()会返回false。<br />
+  例子：多次执行test（）方法，会在true、false之间循环<br />
+  （/\w/g）.test(‘a’)每次执行都是正确的，但是通过实例化对象，需要很大的开销<br />
   test()方法：原意就是测试有没有、能不能匹配上，当使用test原意时，没必要加g</p>
 
 <p><strong>2.exec</strong></p>
 
-<p>RegExp.prototype.exec(str)
-   使用正则表达式模式对字符串执行搜索，并将更新全局RegExp对象的属性一反映匹配结果
-   如果没有匹配的文本则返回 null，否则返回一个结果数组：
-- index 声明匹配文本的第一个字符位置
-- input 存放被检索的字符串 string</p>
+<p>RegExp.prototype.exec(str)<br />
+   使用正则表达式模式对字符串执行搜索，并将更新全局RegExp对象的属性一反映匹配结果<br />
+   如果没有匹配的文本则返回 null，否则返回一个结果数组：</p>
+<ul>
+  <li>index 声明匹配文本的第一个字符位置</li>
+  <li>input 存放被检索的字符串 string</li>
+</ul>
 
-<p>非全局调用
-  调用非全局的RegExp对象的 exec()时，返回数组
-   第一个元素是与正则表达式相匹配的文本
-   第二个元素是与RegExpObject的第一个子表达式相匹配的文本（如果有的话）
+<p>非全局调用<br />
+  调用非全局的RegExp对象的 exec()时，返回数组<br />
+   第一个元素是与正则表达式相匹配的文本<br />
+   第二个元素是与RegExpObject的第一个子表达式相匹配的文本（如果有的话）<br />
    第三个元素是与RegExp对象的第二个子表达式相匹配的文本（如果有的话），以此类推</p>
 
 <blockquote>
@@ -806,15 +808,15 @@ RegExp.prototype.test(str)</p>
 
 <p>match() 方法将检索字符串 stringObject，以找到一个或多个与 regexp 匹配的文本。这个方法的行为在很大程度上有赖于 regexp 是否具有标志 g。</p>
 
-<p>如果 regexp 没有标志 g，那么 match() 方法就只能在 stringObject 
-中执行一次匹配。如果没有找到任何匹配的文本， match() 将返回 
-null。否则，它将返回一个数组，其中存放了与它找到的匹配文本有关的信息。该数组的第 0 
-个元素存放的是匹配文本，而其余的元素存放的是与正则表达式的子表达式匹配的文本。除了这些常规的数组元素之外，返回的数组还含有两个对象属性。index
+<p>如果 regexp 没有标志 g，那么 match() 方法就只能在 stringObject <br />
+中执行一次匹配。如果没有找到任何匹配的文本， match() 将返回 <br />
+null。否则，它将返回一个数组，其中存放了与它找到的匹配文本有关的信息。该数组的第 0 <br />
+个元素存放的是匹配文本，而其余的元素存放的是与正则表达式的子表达式匹配的文本。除了这些常规的数组元素之外，返回的数组还含有两个对象属性。index<br />
  属性声明的是匹配文本的起始字符在 stringObject 中的位置，input 属性声明的是对 stringObject 的引用。</p>
 
-<p>如果 regexp 具有标志 g，则 match() 方法将执行全局检索，找到 stringObject 
-中的所有匹配子字符串。若没有找到任何匹配的子串，则返回 
-null。如果找到了一个或多个匹配子串，则返回一个数组。不过全局匹配返回的数组的内容与前者大不相同，它的数组元素中存放的是 
+<p>如果 regexp 具有标志 g，则 match() 方法将执行全局检索，找到 stringObject <br />
+中的所有匹配子字符串。若没有找到任何匹配的子串，则返回 <br />
+null。如果找到了一个或多个匹配子串，则返回一个数组。不过全局匹配返回的数组的内容与前者大不相同，它的数组元素中存放的是 <br />
 stringObject 中所有的匹配子串，而且也没有 index 属性或 input 属性。</p>
 
 <p><strong>注意</strong>：在全局检索模式下，match() 即不提供与子表达式匹配的文本的信息，也不声明每个匹配子串的位置。如果您需要这些全局检索的信息，可以使用 RegExp.exec()。</p>
@@ -947,44 +949,44 @@ console.log(h);//a12c34e5
 			<ul class="minty_thumblist">
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics10.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-综合应用BookStore  2-8</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics1.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics9.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-Service与Peovider  2-7</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax5.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics8.html">
 
-                    	<span>Ajax全接触(五) 处理跨域方式</span>
+                    	<span>基本概念和用法-指令 2-6</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax4.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics7.html">
 
-                    	<span>Ajax全接触(四) jQuery中的AJAX</span>
+                    	<span>基本概念和用法-路由 2-5</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax3.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics6.html">
 
-                    	<span>Ajax全接触(三)JSON格式</span>
+                    	<span>基本概念和用法-双向数据绑定 2-4</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics5.html">
 
-                    	<span>Ajax全接触(二)例子ajax+php</span>
+                    	<span>基本概念和用法-路由，模块，依赖注入 2-3</span>
                     </a>
                   </li>
 				
@@ -1051,7 +1053,7 @@ posts">
 				<li>
 					<a href="/categories/AngularJS/" title="view all
 posts">
-						AngularJS (2)
+						AngularJS (10)
 					</a>
 				</li>
 				

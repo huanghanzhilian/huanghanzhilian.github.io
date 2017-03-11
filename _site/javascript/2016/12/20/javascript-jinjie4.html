@@ -97,7 +97,7 @@
 			<article class="post-content">
               <p>对象中包含一系列属性，这些属性是无序的。每个属性都有一个字符串key和对应的value。</p>
 
-<h3 id="javascript-">JavaScript 对象概述</h3>
+<p>###JavaScript 对象概述</p>
 
 <blockquote>
   <p>概述</p>
@@ -155,7 +155,7 @@ console.log(foo.prototype);
 
 <p><img src="http://upload-images.jianshu.io/upload_images/3877962-0927720a486ccd98.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
 
-<p>创建一个函数声明    <br />
+<p>创建一个函数声明      <br />
 每一个函数都会有一个<code>foo.prototype</code>对象属性</p>
 
 <pre><code>function foo(){};
@@ -179,7 +179,7 @@ console.log(obj);
 
 <p>通过<code>new</code>去实例化<code>foo()</code>函数<code>var obj =new foo();</code>那么这个<code>obj</code>原型就会指向构造器的<code>prototype</code>属性也就是<code>foo.prototype</code>，可以通过上图看出打印输出是一样的。</p>
 
-<h3 id="javascript--1">JavaScript 创建对象，原型链</h3>
+<p>###JavaScript 创建对象，原型链</p>
 
 <blockquote>
   <p>对象创建-字面量</p>
@@ -267,7 +267,7 @@ console.dir(obj)
 
 <p><img src="http://upload-images.jianshu.io/upload_images/3877962-dff2f50d6c39b7c5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
 
-<h3 id="javascript--2">JavaScript 属性操作</h3>
+<p>###JavaScript 属性操作</p>
 
 <blockquote>
   <p>读写对象属性</p>
@@ -311,7 +311,7 @@ for (p in obj) {
 }
 </code></pre>
 
-<p>用for…in遍历所有属性         <br />
+<p>用for…in遍历所有属性           <br />
 需要注意的是<code>用for...in</code>去遍历的话，有可能把原型链上的属性也遍历出来，并且他的顺序是不确定的。</p>
 
 <blockquote>
@@ -461,7 +461,7 @@ for (key in obj) {
 }
 </code></pre>
 
-<p>创建<code>obj</code>对象以<code>o</code>对象作为原型
+<p>创建<code>obj</code>对象以<code>o</code>对象作为原型<br />
 所有对象上的属性，和原型上的属性都会遍历中显示出来</p>
 
 <p><strong>那有时候我只想处理对象上的属性，不想遍历我对象原型链上的属性。</strong></p>
@@ -674,7 +674,7 @@ obj.x=500;   //直接量属性可以赋值
 console.log(obj.x);//500   //修改成功
 </code></pre>
 
-<h3 id="javascropt">JavaScropt属性标签</h3>
+<p>###JavaScropt属性标签</p>
 
 <blockquote>
   <p>属性标签</p>
@@ -773,7 +773,7 @@ console.log(Object.keys(person));
 
 <p><img src="http://upload-images.jianshu.io/upload_images/3877962-8f3025f5cc6a3d15.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
 
-<p>新创建的属性<code>enumerable: false,</code>不可枚举，可以通过<code>Object.keys(person)</code>的方法来去获取对象上所有的<code>key</code>
+<p>新创建的属性<code>enumerable: false,</code>不可枚举，可以通过<code>Object.keys(person)</code>的方法来去获取对象上所有的<code>key</code><br />
 因为新创建的属性<code>enumerable: false,</code>不可枚举所有不可见。</p>
 
 <p><strong>使用Object.defineProperties()定义多个对象属性标签</strong></p>
@@ -845,7 +845,7 @@ console.log(person.luck);
 
 <p><img src="http://upload-images.jianshu.io/upload_images/3877962-8fe3925d20d034aa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
 
-<h3 id="javascropt-1">JavaScropt对象标签、对象序列化</h3>
+<p>###JavaScropt对象标签、对象序列化</p>
 
 <blockquote>
   <p>对象标签</p>
@@ -1064,44 +1064,44 @@ obj.valueOf = function() {
 			<ul class="minty_thumblist">
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics10.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-综合应用BookStore  2-8</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics1.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics9.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-Service与Peovider  2-7</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax5.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics8.html">
 
-                    	<span>Ajax全接触(五) 处理跨域方式</span>
+                    	<span>基本概念和用法-指令 2-6</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax4.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics7.html">
 
-                    	<span>Ajax全接触(四) jQuery中的AJAX</span>
+                    	<span>基本概念和用法-路由 2-5</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax3.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics6.html">
 
-                    	<span>Ajax全接触(三)JSON格式</span>
+                    	<span>基本概念和用法-双向数据绑定 2-4</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics5.html">
 
-                    	<span>Ajax全接触(二)例子ajax+php</span>
+                    	<span>基本概念和用法-路由，模块，依赖注入 2-3</span>
                     </a>
                   </li>
 				
@@ -1168,7 +1168,7 @@ posts">
 				<li>
 					<a href="/categories/AngularJS/" title="view all
 posts">
-						AngularJS (2)
+						AngularJS (10)
 					</a>
 				</li>
 				

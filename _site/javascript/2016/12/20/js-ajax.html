@@ -97,7 +97,7 @@
 			<article class="post-content">
               <p>什么是同步? 客户端要发起请求，服务器端要去处理，而且去响应，这时候客户端完全是等待，等待服务器端的处理和响应，当服务器端处理响应后客户端会重新载入页面。这时候如果你有错误，那么只能再次发起请求，再次等待。同步的事件会让人疯狂。</p>
 
-<h4 id="section">同步和异步</h4>
+<p>####同步和异步</p>
 
 <p><strong>什么是同步</strong></p>
 
@@ -119,7 +119,7 @@
   <li>运用JavaScript操作DOM，实现动态局部刷新；</li>
 </ol>
 
-<h4 id="ajax-xmlhttprequest">Ajax-XMLHttpRequest对象创建</h4>
+<p>####Ajax-XMLHttpRequest对象创建</p>
 
 <p>目前浏览器都支持标准的XHR对象，也支持标准的构造函数。</p>
 
@@ -137,7 +137,7 @@ if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
 
 <p>只需要判断下，如果有XHR定义，我们就使用标准的构造函数，我们直接  <code>new ActiveXObject("Microsoft.XMLHTTP");</code>就可以了。</p>
 
-<h4 id="ajax-http">Ajax-HTTP请求</h4>
+<p>####Ajax-HTTP请求</p>
 
 <p><strong>什么是HTTP</strong></p>
 
@@ -210,12 +210,12 @@ if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
 
 <ul>
   <li>
-    <p>GIT：一般用于信息获取
-使用URL传递参数
+    <p>GIT：一般用于信息获取<br />
+使用URL传递参数<br />
 对所发送信息的数量也有限制，一般在2000个字符</p>
   </li>
   <li>
-    <p>POST：一般用于修改服务器上的资源。
+    <p>POST：一般用于修改服务器上的资源。<br />
 对所发送信息的数量无限制</p>
   </li>
 </ul>
@@ -267,7 +267,7 @@ if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
   </li>
 </ul>
 
-<h4 id="ajax-xmlhttprequest-1">Ajax-XMLHttpRequest发送请求</h4>
+<p>####Ajax-XMLHttpRequest发送请求</p>
 
 <p><code>XMLHttpRequest</code>对象的方法</p>
 
@@ -348,11 +348,11 @@ request.send("name=黄&amp;sex=男");
   </tbody>
 </table>
 
-<p><code>request.setRequestHeader("Content-type","application/x-www-form-urlencoded");</code>
-这个方法其实要设置HTTP的头信息，告诉web服务器我们要发送一个表单，
+<p><code>request.setRequestHeader("Content-type","application/x-www-form-urlencoded");</code><br />
+这个方法其实要设置HTTP的头信息，告诉web服务器我们要发送一个表单，<br />
 需要注意的是<code>request.setRequestHeader</code>方法要写在<code>request.open</code>和<code> request.send</code>中间，否则将会抛出异常。</p>
 
-<h4 id="ajax-xmlhttprequest-2">Ajax-XMLHttpRequest取得响应</h4>
+<p>####Ajax-XMLHttpRequest取得响应</p>
 
 <p>获得来自服务器的响应，请使用 XMLHttpRequest 对象的 responseText 或 responseXML 属性。</p>
 
@@ -540,44 +540,44 @@ request.send("name=黄&amp;sex=男");
 			<ul class="minty_thumblist">
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics10.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-综合应用BookStore  2-8</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics1.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics9.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-Service与Peovider  2-7</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax5.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics8.html">
 
-                    	<span>Ajax全接触(五) 处理跨域方式</span>
+                    	<span>基本概念和用法-指令 2-6</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax4.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics7.html">
 
-                    	<span>Ajax全接触(四) jQuery中的AJAX</span>
+                    	<span>基本概念和用法-路由 2-5</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax3.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics6.html">
 
-                    	<span>Ajax全接触(三)JSON格式</span>
+                    	<span>基本概念和用法-双向数据绑定 2-4</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics5.html">
 
-                    	<span>Ajax全接触(二)例子ajax+php</span>
+                    	<span>基本概念和用法-路由，模块，依赖注入 2-3</span>
                     </a>
                   </li>
 				
@@ -644,7 +644,7 @@ posts">
 				<li>
 					<a href="/categories/AngularJS/" title="view all
 posts">
-						AngularJS (2)
+						AngularJS (10)
 					</a>
 				</li>
 				

@@ -97,7 +97,7 @@
 			<article class="post-content">
               <p>闭包在JavaScript 中是一个非常重要的概念。</p>
 
-<h4 id="section">闭包例子</h4>
+<p>####闭包例子</p>
 
 <pre><code>function outer() {
 	var loc = 30;
@@ -122,7 +122,7 @@ console.log(func()); //30
 
 <p>这个<code>outer</code>函数有一个<code>loc</code>的局部变量，返回值是一个匿名函数表达式，在这个函数表达式又返回<code>outer</code>函数的<code>loc</code>局部变量，这种情况<code>loc</code>是不会被释放掉的。</p>
 
-<p>调用<code>var func = outer();</code>返回的是一个匿名函数，这个匿名函数里面仍然能够访问到<code>outer()</code>de 局部变量<code>loc </code>，当<code>outer()</code>函数被调用之后，<code>func()</code>这个函数再次调用的时候任然能访问到它外层<code>outer()</code>函数的局部变量<code>loc </code>。
+<p>调用<code>var func = outer();</code>返回的是一个匿名函数，这个匿名函数里面仍然能够访问到<code>outer()</code>de 局部变量<code>loc </code>，当<code>outer()</code>函数被调用之后，<code>func()</code>这个函数再次调用的时候任然能访问到它外层<code>outer()</code>函数的局部变量<code>loc </code>。<br />
 这种情况就是我们通常所说的<strong>闭包</strong>。</p>
 
 <p><strong>那么闭包的作用是什么呢？在前端编程里，闭包是非常常见的</strong></p>
@@ -250,7 +250,7 @@ console.log(expor._typeId); //undefined
   <p>闭包，不同于一般函数，它允许一个函数在立即词法作用域外调用时，仍可访问非本地变量</p>
 </blockquote>
 
-<h4 id="section-1">作用域</h4>
+<p>####作用域</p>
 
 <blockquote>
   <p>全局，函数，eval  [作用域]</p>
@@ -370,44 +370,44 @@ out();
 			<ul class="minty_thumblist">
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics10.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-综合应用BookStore  2-8</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics1.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics9.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-Service与Peovider  2-7</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax5.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics8.html">
 
-                    	<span>Ajax全接触(五) 处理跨域方式</span>
+                    	<span>基本概念和用法-指令 2-6</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax4.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics7.html">
 
-                    	<span>Ajax全接触(四) jQuery中的AJAX</span>
+                    	<span>基本概念和用法-路由 2-5</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax3.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics6.html">
 
-                    	<span>Ajax全接触(三)JSON格式</span>
+                    	<span>基本概念和用法-双向数据绑定 2-4</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics5.html">
 
-                    	<span>Ajax全接触(二)例子ajax+php</span>
+                    	<span>基本概念和用法-路由，模块，依赖注入 2-3</span>
                     </a>
                   </li>
 				
@@ -474,7 +474,7 @@ posts">
 				<li>
 					<a href="/categories/AngularJS/" title="view all
 posts">
-						AngularJS (2)
+						AngularJS (10)
 					</a>
 				</li>
 				

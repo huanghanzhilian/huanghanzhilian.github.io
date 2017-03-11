@@ -97,7 +97,7 @@
 			<article class="post-content">
               <p><img src="http://upload-images.jianshu.io/upload_images/3877962-a5cb0943cd4c3e52.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
 
-<h4 id="section">数据类型</h4>
+<p>####数据类型</p>
 
 <blockquote>
   <p>JavaScript六种数据类型</p>
@@ -134,20 +134,20 @@ var d=[1,2]==[1,2];//false
 
 <p><strong>类型不同，尝试类型转换和比较</strong></p>
 
-<p>类型不同，尝试类型转换和比较:  <br />
-null == undefined 相等  <br />
-number == string 转number     1 == “1.0” // true  <br />
-boolean == ?  转number       1 == true  // true  <br />
-object == number | string 尝试对象转为基本类型  new String(‘hi’) == ‘hi’ // true  <br />
+<p>类型不同，尝试类型转换和比较:    <br />
+null == undefined 相等    <br />
+number == string 转number     1 == “1.0” // true    <br />
+boolean == ?  转number       1 == true  // true    <br />
+object == number | string 尝试对象转为基本类型  new String(‘hi’) == ‘hi’ // true    <br />
 其它：false</p>
 
 <blockquote>
   <p>严格等于</p>
 </blockquote>
 
-<p><strong>a===b</strong>
-顾名思义，它首先会判断等号两边的类型，如果两边类型不同，返回<code>false</code>  <br />
-如果类型相同，  <br />
+<p><strong>a===b</strong><br />
+顾名思义，它首先会判断等号两边的类型，如果两边类型不同，返回<code>false</code>    <br />
+如果类型相同，    <br />
 类型相同，同===</p>
 
 <pre><code>var h=null===null;//true   
@@ -216,7 +216,7 @@ console.log(bosn instanceof person)//true
 
 <p><strong>Object.prototype.toString</strong></p>
 
-<p>**IE6/7/8 Object.prototype.toString.apply(null) 返回”[object Object]”
+<p>**IE6/7/8 Object.prototype.toString.apply(null) 返回”[object Object]”<br />
 **</p>
 
 <pre><code>Object.prototype.toString.apply([]); === “[object Array]”;
@@ -225,13 +225,13 @@ Object.prototype.toString.apply(null); === “[object Null]”
 Object.prototype.toString.apply(undefined); === “[object Undefined]”
 </code></pre>
 
-<p><code>typeof</code>
+<p><code>typeof</code><br />
 适合基本类型及function检测，遇到null失效。</p>
 
-<p><code>[[Class]]</code>
+<p><code>[[Class]]</code><br />
 通过{}.toString拿到，适合内置对象和基元类型，遇到null和undefined失效(IE678等返回[object Object])。</p>
 
-<p><code>instanceof</code>
+<p><code>instanceof</code><br />
 适合自定义对象，也可以用来检测原生对象，在不同iframe和window间检测时失效。</p>
 
               <!-- 多说评论框 start -->
@@ -265,44 +265,44 @@ Object.prototype.toString.apply(undefined); === “[object Undefined]”
 			<ul class="minty_thumblist">
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics10.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-综合应用BookStore  2-8</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics1.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics9.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-Service与Peovider  2-7</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax5.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics8.html">
 
-                    	<span>Ajax全接触(五) 处理跨域方式</span>
+                    	<span>基本概念和用法-指令 2-6</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax4.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics7.html">
 
-                    	<span>Ajax全接触(四) jQuery中的AJAX</span>
+                    	<span>基本概念和用法-路由 2-5</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax3.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics6.html">
 
-                    	<span>Ajax全接触(三)JSON格式</span>
+                    	<span>基本概念和用法-双向数据绑定 2-4</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics5.html">
 
-                    	<span>Ajax全接触(二)例子ajax+php</span>
+                    	<span>基本概念和用法-路由，模块，依赖注入 2-3</span>
                     </a>
                   </li>
 				
@@ -369,7 +369,7 @@ posts">
 				<li>
 					<a href="/categories/AngularJS/" title="view all
 posts">
-						AngularJS (2)
+						AngularJS (10)
 					</a>
 				</li>
 				

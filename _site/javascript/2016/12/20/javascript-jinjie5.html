@@ -97,7 +97,7 @@
 			<article class="post-content">
               <p>数组是值的有序集合。每个值叫做元素，每个元素在数组中都有数字位置编号，也就是索引。JS中的数组是弱类型的，数组中可以含有不同类型的元素。数组元素甚至可以是对象或其它数组。</p>
 
-<h4 id="section">第一节、创建数组、数组操作</h4>
+<p>####第一节、创建数组、数组操作</p>
 
 <blockquote>
   <p>数组概述</p>
@@ -193,7 +193,7 @@ arr; // [1, 2, 3, 4]
 
 <p><code>arr.length</code>是数组的长度，用它来做索引，也就是在数组的最后一个来赋值等价于<code>arr.push(4);</code></p>
 
-<p>如果想要在数组的头部去添加赋值怎么办呢?
+<p>如果想要在数组的头部去添加赋值怎么办呢?<br />
 这个时候可以用到数组对象<code>unshift</code>方法。</p>
 
 <pre><code>arr.(0);
@@ -268,7 +268,7 @@ for (i in arr) {
 }
 </code></pre>
 
-<h4 id="section-1">第二节、二维数组、稀疏数组</h4>
+<p>####第二节、二维数组、稀疏数组</p>
 
 <blockquote>
   <p>二维数组</p>
@@ -319,7 +319,7 @@ var arr = [,,];
 0 in arr; // false
 </code></pre>
 
-<h4 id="section-2">第三节、数组方法</h4>
+<p>####第三节、数组方法</p>
 
 <blockquote>
   <p>数组方法</p>
@@ -334,7 +334,7 @@ var arr = [,,];
 
 <p>那么数组呢，也是一样的，我们在用字面量或者是<code>new Array</code>的方式去创建数组对象的时候。数组对象也会有他的原型。他的原型就是<code>Array.prototype</code>。<code>Array.prototype</code>上面提供了大量的方法，可以让我们对数组进行各种各样的操作。</p>
 
- 	[]   =&gt;  Array.prototype
+ 	[]   =&gt;  Array.prototype<br />
 
 <p><img src="http://upload-images.jianshu.io/upload_images/3877962-9adfcd15c248915a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
 
@@ -362,7 +362,7 @@ repeatString("a", 3); // "aaa"
 repeatString("Hi", 5); // "HiHiHiHiHi"
 </code></pre>
 
-<p><code>repeatString(str, n)</code>函数第一个参数是要重复的字符串，第二个参数是要重复的次数。     <br />
+<p><code>repeatString(str, n)</code>函数第一个参数是要重复的字符串，第二个参数是要重复的次数。       <br />
 <code>return new Array(n + 1).join(str);</code>返回一个构造数组，比如说次数传了<code>3</code>,<code>Array(3 + 1)</code>这个数组的长度是4，也就是<code>[,,,,]</code>使用<code>join</code>方法把重复内容当作分隔符。这样就能达到预期效果。</p>
 
 <blockquote>
@@ -417,10 +417,10 @@ console.log(arr); // [13, 24, 3, 51]
   <li>
     <p>若 a 大于 b，则返回一个大于 0 的值。</p>
 
-    <p>var arr = [13, 24, 51, 3];
-  var sop=arr.sort(function(a, b) {
-      return a - b;
-  });
+    <p>var arr = [13, 24, 51, 3];<br />
+  var sop=arr.sort(function(a, b) {<br />
+      return a - b;<br />
+  });<br />
   console.log(sop);// [3, 13, 24, 51]</p>
   </li>
 </ul>
@@ -640,7 +640,7 @@ arr.lastIndexOf(2, -3); // 1
 [].constructor === Array; // true
 </code></pre>
 
-<h4 id="section-3">第四节、数组小结</h4>
+<p>####第四节、数组小结</p>
 
 <blockquote>
   <p>数组  VS.  一般对象</p>
@@ -704,44 +704,44 @@ Array.prototype.join.call(str, "_");
 			<ul class="minty_thumblist">
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics10.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-综合应用BookStore  2-8</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics1.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics9.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-Service与Peovider  2-7</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax5.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics8.html">
 
-                    	<span>Ajax全接触(五) 处理跨域方式</span>
+                    	<span>基本概念和用法-指令 2-6</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax4.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics7.html">
 
-                    	<span>Ajax全接触(四) jQuery中的AJAX</span>
+                    	<span>基本概念和用法-路由 2-5</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax3.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics6.html">
 
-                    	<span>Ajax全接触(三)JSON格式</span>
+                    	<span>基本概念和用法-双向数据绑定 2-4</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics5.html">
 
-                    	<span>Ajax全接触(二)例子ajax+php</span>
+                    	<span>基本概念和用法-路由，模块，依赖注入 2-3</span>
                     </a>
                   </li>
 				
@@ -808,7 +808,7 @@ posts">
 				<li>
 					<a href="/categories/AngularJS/" title="view all
 posts">
-						AngularJS (2)
+						AngularJS (10)
 					</a>
 				</li>
 				

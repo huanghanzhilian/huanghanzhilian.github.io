@@ -97,13 +97,13 @@
 			<article class="post-content">
               <p>JavaScript和HTML的交互是通过事件实现的。JavaScript采用异步事件驱动编程模型，当文档、浏览器、元素或与之相关对象发生特定事情时，浏览器会产生事件。如果JavaScript关注特定类型事件，那么它可以注册当这类事件发生时要调用的句柄。</p>
 
-<h4 id="section">理解事件流</h4>
+<p>####理解事件流</p>
 
 <blockquote>
   <p>事件流</p>
 </blockquote>
 
-<p>比如有一个<code>div</code>元素，<code>div</code>里面有一个<code>按钮</code>。点击按钮的同时，也触发了div，甚至触发了div所在的整个页面。   <br />
+<p>比如有一个<code>div</code>元素，<code>div</code>里面有一个<code>按钮</code>。点击按钮的同时，也触发了div，甚至触发了div所在的整个页面。     <br />
 这个过程就是一个<strong>事件流</strong>。</p>
 
 <p><strong>事件流描述的是从页面中接收事件的顺序，比如有两个嵌套的div，点击了内层的div，这时候是内层的div先出发click事件还是外层先触发？目前主要有三种模型</strong></p>
@@ -158,7 +158,7 @@
   </tbody>
 </table>
 
-<h4 id="handler">事件处理程序（handler）</h4>
+<p>####事件处理程序（handler）</p>
 
 <p>我们也称之为事件侦听器（listener），事件就是用户或浏览器自身执行的某种动作。比如click、load、moseover等，都是事件类型（俗称事件名称），而响应某个事件的方法就叫做事件处理程序或者事件监听器或者事件句柄，事件处理程序名字是：on+事件类型。</p>
 
@@ -185,7 +185,7 @@
 &lt;/script&gt;
 </code></pre>
 
-<p>我们把这种直接把事件加在<code>HTML</code>结构里的元素上，这种添加事件的方法叫做<code>HTML事件</code>。   <br />
+<p>我们把这种直接把事件加在<code>HTML</code>结构里的元素上，这种添加事件的方法叫做<code>HTML事件</code>。     <br />
 在HTML中指定事件处理程序书写很方便，但是有两个缺点。</p>
 
 <p>首先，存在加载顺序问题，如果事件处理程序在html代码之后加载，用户可能在事件处理程序还未加载完成时就点击按钮之类的触发事件，存在时间差问题。</p>
@@ -390,7 +390,7 @@
 
 <p>如何进行跨浏览器的事件处理呢？</p>
 
-<p>恰当的使用能力检测，什么叫能力检测呢？        <br />
+<p>恰当的使用能力检测，什么叫能力检测呢？          <br />
 就是说你有这个能力，你就用这个，你没有这个能力你有别的能力那你就去用你别的能力。</p>
 
 <p>也就是说你要是支持<code>addEventListener</code>那你就用它。你要是支持<code>attachEvent</code>那你就用它呗。</p>
@@ -433,7 +433,7 @@ eventutil.addhandler(btn,'click',showelen);
 //eventutil.removehandler(btn,'click',showelen)
 </code></pre>
 
-<p>连接属性的时候,所有用到’<code>.</code>‘的地方都可以用<code>[]中括号 </code>              <br />
+<p>连接属性的时候,所有用到’<code>.</code>‘的地方都可以用<code>[]中括号 </code>                <br />
 <code>element.onclick===element['onclick']</code></p>
 
 <p>还可以这样写</p>
@@ -575,7 +575,7 @@ removeEvent(btn,'click',showelen);
 &lt;/script&gt;
 </code></pre>
 
-<h4 id="section-1">事件对象</h4>
+<p>####事件对象</p>
 
 <p>什么是事件对象？在触发DOM上的事件时都会产生一个对象。</p>
 
@@ -984,44 +984,44 @@ var eventutil={
 			<ul class="minty_thumblist">
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics10.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-综合应用BookStore  2-8</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics1.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics9.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-Service与Peovider  2-7</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax5.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics8.html">
 
-                    	<span>Ajax全接触(五) 处理跨域方式</span>
+                    	<span>基本概念和用法-指令 2-6</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax4.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics7.html">
 
-                    	<span>Ajax全接触(四) jQuery中的AJAX</span>
+                    	<span>基本概念和用法-路由 2-5</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax3.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics6.html">
 
-                    	<span>Ajax全接触(三)JSON格式</span>
+                    	<span>基本概念和用法-双向数据绑定 2-4</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics5.html">
 
-                    	<span>Ajax全接触(二)例子ajax+php</span>
+                    	<span>基本概念和用法-路由，模块，依赖注入 2-3</span>
                     </a>
                   </li>
 				
@@ -1088,7 +1088,7 @@ posts">
 				<li>
 					<a href="/categories/AngularJS/" title="view all
 posts">
-						AngularJS (2)
+						AngularJS (10)
 					</a>
 				</li>
 				

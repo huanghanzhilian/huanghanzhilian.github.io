@@ -97,7 +97,7 @@
 			<article class="post-content">
               <p>JavaScript程序由语句组成，语句遵守特定的语法规则。例如：if语句, while语句, with语句等等。</p>
 
-<h4 id="section">语句</h4>
+<p>####语句</p>
 
 <blockquote>
   <p>语句、严格模式</p>
@@ -299,7 +299,7 @@ for (p in obj) {
 
 <p><strong>switch语句</strong></p>
 
-<p><em>例子1</em>
+<p><em>例子1</em><br />
     var val = 2;</p>
 
 <pre><code>switch(val) {
@@ -459,7 +459,7 @@ with(people)
   <p>JavaScript 严格模式</p>
 </blockquote>
 
-<p><em>严格模式是一种特殊的执行模式，
+<p><em>严格模式是一种特殊的执行模式，<br />
 它修复了部分语言上的不足，提供更强的错误检查，并增强安全性。</em></p>
 
 <pre><code>function func() {
@@ -509,7 +509,7 @@ SyntaxError报错
 
 <p><strong>arguments变为参数的静态副本</strong></p>
 
-<p>arguments.length 属性返回函数调用过程接收到的参数个数：
+<p>arguments.length 属性返回函数调用过程接收到的参数个数：<br />
 arguments属性返回函数调用过程接收到的值</p>
 
 <p><em>一般模式下</em></p>
@@ -670,23 +670,25 @@ SyntaxError报错语法错误
 //所以输出undefined
 </code></pre>
 
-<h4 id="section-1">严格模式总结</h4>
+<p>####严格模式总结</p>
 
 <blockquote>
-  <p>不允许用with
-所有变量必须声明, 赋值给为声明的变量报错，而不是隐式创建全局变量。
-eval中的代码不能创建eval所在作用域下的变量、函数。而是为eval单独创建一个作用域，并在eval返回时丢弃。
-函数中得特殊对象arguments是静态副本，而不像非严格模式那样，修改arguments或修改参数变量会相互影响。
-删除configurable=false的属性时报错，而不是忽略
-禁止八进制字面量，如010 (八进制的8)
-eval, arguments变为关键字，不可作为变量名、函数名等
-&gt;一般函数调用时(不是对象的方法调用，也不使用apply/call/bind等修改this)this指向null，而不是全局对象。
-若使用apply/call，当传入null或undefined时，this将指向null或undefined，而不是全局对象。
-试图修改不可写属性(writable=false)，在不可扩展的对象上添加属性时报TypeError，而不是忽略。
+  <p>不允许用with<br />
+所有变量必须声明, 赋值给为声明的变量报错，而不是隐式创建全局变量。<br />
+eval中的代码不能创建eval所在作用域下的变量、函数。而是为eval单独创建一个作用域，并在eval返回时丢弃。<br />
+函数中得特殊对象arguments是静态副本，而不像非严格模式那样，修改arguments或修改参数变量会相互影响。<br />
+删除configurable=false的属性时报错，而不是忽略<br />
+禁止八进制字面量，如010 (八进制的8)<br />
+eval, arguments变为关键字，不可作为变量名、函数名等</p>
+  <blockquote>
+    <p>一般函数调用时(不是对象的方法调用，也不使用apply/call/bind等修改this)this指向null，而不是全局对象。<br />
+若使用apply/call，当传入null或undefined时，this将指向null或undefined，而不是全局对象。<br />
+试图修改不可写属性(writable=false)，在不可扩展的对象上添加属性时报TypeError，而不是忽略。<br />
 arguments.caller, arguments.callee被禁用</p>
+  </blockquote>
 </blockquote>
 
-<p><strong>严格模式是一种特殊的运行模式，
+<p><strong>严格模式是一种特殊的运行模式，<br />
 它修复了部分语言上的不足，提供更强的错误检查，并增强安全性。</strong></p>
 
               <!-- 多说评论框 start -->
@@ -720,44 +722,44 @@ arguments.caller, arguments.callee被禁用</p>
 			<ul class="minty_thumblist">
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics10.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-综合应用BookStore  2-8</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics1.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics9.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-Service与Peovider  2-7</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax5.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics8.html">
 
-                    	<span>Ajax全接触(五) 处理跨域方式</span>
+                    	<span>基本概念和用法-指令 2-6</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax4.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics7.html">
 
-                    	<span>Ajax全接触(四) jQuery中的AJAX</span>
+                    	<span>基本概念和用法-路由 2-5</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax3.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics6.html">
 
-                    	<span>Ajax全接触(三)JSON格式</span>
+                    	<span>基本概念和用法-双向数据绑定 2-4</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics5.html">
 
-                    	<span>Ajax全接触(二)例子ajax+php</span>
+                    	<span>基本概念和用法-路由，模块，依赖注入 2-3</span>
                     </a>
                   </li>
 				
@@ -824,7 +826,7 @@ posts">
 				<li>
 					<a href="/categories/AngularJS/" title="view all
 posts">
-						AngularJS (2)
+						AngularJS (10)
 					</a>
 				</li>
 				

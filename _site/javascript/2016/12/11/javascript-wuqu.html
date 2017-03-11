@@ -97,7 +97,7 @@
 			<article class="post-content">
               <p>接触JavaScript两年多遇到过各种错误，其中有一些让人防不胜防，原来对JavaScript的误会如此之深，仅以此文总结一下常见的各种想当然的误区</p>
 
-<h4 id="string-replace">String replace</h4>
+<p>####String replace</p>
 
 <p>string的replace方法我们经常用，替换string中的某些字符，语法像这样子</p>
 
@@ -121,7 +121,7 @@
 
 <p>这样才可以达到我们目的，关于string replace方法详细使用可以看看<a href="">JavaScript string 的replace</a></p>
 
-<h4 id="typeof">typeof</h4>
+<p>####typeof</p>
 
 <p>关于typeof最容易让人误会的就是typeof是操作符，并不是函数，也就是说我们在判断一变量类型时没必要加括号，直接使用即可</p>
 
@@ -173,7 +173,7 @@ typeof a; //undefined
   </li>
 </ol>
 
-<h4 id="if">if和==</h4>
+<p>####if和==</p>
 
 <p>在javascript中if并不仅仅判断boolean决定真假，0、NaN、””、undefined、null、false都会被认为是假</p>
 
@@ -233,7 +233,7 @@ null == undefined //true
 
 <p>除了不进行类型转换，并且类型必须相同以外，这些运算符与相等运算符的作用是一样的，这下就搞定了。</p>
 
-<h4 id="date-">Date 对象</h4>
+<p>####Date 对象</p>
 
 <p>我们可以这样构造一个Date对象</p>
 
@@ -254,7 +254,7 @@ new Date(year, month, day, hours, minutes, seconds, ms)
 alert(d.getMonth()); // 结果为4
 </code></pre>
 
-<h4 id="dateparse">Date.parse</h4>
+<p>####Date.parse</p>
 
 <p>Date.parse方法可以识别两种格式的字符串参数<em>（标准的长日期格式，比如带星期的那种，也可以识别，不过不常用）</em>：</p>
 
@@ -274,7 +274,7 @@ new Date(Date.parse("2012-08-02")); // 正确识别为2012年8月2日
 new Date(Date.parse("2012-8-2")); // 不能识别
 </code></pre>
 
-<h4 id="forin-">for…in 遍历数组</h4>
+<p>####for…in 遍历数组</p>
 
 <p>for…in用来遍历一个对象中的成员（属性，方法），如果用来遍历数组的到的结果并不是预期中数组每项的值，方法神马的会被遍历出来</p>
 
@@ -298,7 +298,7 @@ for (var singleStaff in staff) {
 
 <p>事实上很多时候我们都会给数组加上其他属性。比如 jQuery 对象就是一个数组对象加上一些扩展方法；再比如 String.prototype.match 方法返回值就是一个数组（正则表达式及其子表达式的匹配项）加上 index 和 input 两个属性。</p>
 
-<h4 id="parseint">parseInt</h4>
+<p>####parseInt</p>
 
 <table>
   <thead>
@@ -339,7 +339,7 @@ parseInt("1f",16);        //返回 31 (16+15)
 parseInt("010");        //未定：返回 10 或 8
 </code></pre>
 
-<h4 id="settimeoutsetinterval">setTimeout/setInterval执行时机</h4>
+<p>####setTimeout/setInterval执行时机</p>
 
 <p>setTimeout()和setInterval()经常被用来处理延时和定时任务。<strong>setTimeout</strong>() 方法用于在指定的毫秒数后调用函数或计算表达式,而<strong>setInterval</strong>()则可以在每隔指定的毫秒数循环调用函数或表达式，直到clearInterval把它清除。</p>
 
@@ -351,7 +351,7 @@ parseInt("010");        //未定：返回 10 或 8
 
 <p>关于setTimeout/setInterval执行时机详细说明可以看看 <a href="http://www.huanghanlian.com/javascript/2016/12/11/settimeout-1.html">setTimeout()和setInterval() 何时被调用执行</a></p>
 
-<h4 id="section">预解析</h4>
+<p>####预解析</p>
 
 <pre><code>console.log(a); //Error:a is not defined ,直接报错，下面语句没法执行，一下结果为注释该句后结果
 console.log(b) //undefined
@@ -361,7 +361,7 @@ console.log(b); //Test
 
 <p>很奇怪前两句变量a,b都没有声明，第一句却报错，第二句能够输出undefined？这是因为<strong>JavaScript是解释型语言，但它并不是直接逐步执行的，JavaScript解析过程分为先后两个阶段，一个是预处理阶段，另外一个就是执行阶段。在预处理阶段JavaScript解释器将完成把JavaScript脚本代码转换到字节码，然后第二阶段JavaScript解释器借助执行环境把字节码生成机械码，并顺序执行。</strong></p>
 
-<p>也就说JavaScript值执行第一句语句之前就已经将函数/变量声明预处理了，var b=”Test” 相当于两个语句，var 
+<p>也就说JavaScript值执行第一句语句之前就已经将函数/变量声明预处理了，var b=”Test” 相当于两个语句，var <br />
 b;（undefined结果的来源，在执行第一句语句之前已经解析），b=”Test”（这句是顺序执行的，在第二句之后执行）。这也是为什么我们可以在方法声明语句之前就调用方法的原因。</p>
 
 <pre><code>showMsg(); // This is message
@@ -370,7 +370,7 @@ function showMsg() {
 }
 </code></pre>
 
-<h4 id="section-1">块级作用域</h4>
+<p>####块级作用域</p>
 
 <p><strong>JavaScript没有块级作用域，只有函数级作用域，这就意味着{}在JavaScript中只能起到语法块的作用，而不能起到作用域块作用</strong></p>
 
@@ -383,7 +383,7 @@ console.log(a); //3
 
 <p>上面例子可以清楚看到属于window的console.log方法依然可以访问貌似是局部变量的a</p>
 
-<h4 id="section-2">闭包</h4>
+<p>####闭包</p>
 
 <p>首先从一个经典错误谈起，页面上有若干个div， 我们想给它们绑定一个onclick方法，于是有了下面的代码</p>
 
@@ -454,44 +454,44 @@ $(document).ready(function() {
 			<ul class="minty_thumblist">
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics10.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-综合应用BookStore  2-8</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics1.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics9.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-Service与Peovider  2-7</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax5.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics8.html">
 
-                    	<span>Ajax全接触(五) 处理跨域方式</span>
+                    	<span>基本概念和用法-指令 2-6</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax4.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics7.html">
 
-                    	<span>Ajax全接触(四) jQuery中的AJAX</span>
+                    	<span>基本概念和用法-路由 2-5</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax3.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics6.html">
 
-                    	<span>Ajax全接触(三)JSON格式</span>
+                    	<span>基本概念和用法-双向数据绑定 2-4</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics5.html">
 
-                    	<span>Ajax全接触(二)例子ajax+php</span>
+                    	<span>基本概念和用法-路由，模块，依赖注入 2-3</span>
                     </a>
                   </li>
 				
@@ -558,7 +558,7 @@ posts">
 				<li>
 					<a href="/categories/AngularJS/" title="view all
 posts">
-						AngularJS (2)
+						AngularJS (10)
 					</a>
 				</li>
 				

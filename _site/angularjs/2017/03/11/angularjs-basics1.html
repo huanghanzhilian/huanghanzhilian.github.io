@@ -95,7 +95,7 @@
 				<div class="entry-meta">2017-03-11 <span class="dot">•</span>AngularJS<span class="dot">•</span>黄继鹏<span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span></div>
 			</header>
 			<article class="post-content">
-              <h3 id="angularjs">AngularJS简介</h3>
+              <p>###AngularJS简介</p>
 
 <p>目前最新版本1.3.0</p>
 
@@ -105,38 +105,37 @@
 
 <p>删掉了一些过时的api (据说是为了AngularJS2.0做准备)</p>
 
-<h3 id="angularjs-4">AngularJS-实例演示4大核心特性</h3>
+<p>###AngularJS-实例演示4大核心特性</p>
 
 <p><strong>1 .MVC</strong></p>
 
 <p><img src="http://upload-images.jianshu.io/upload_images/3877962-7706890b00d0fa54.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
 
-<p>```html
-&lt;!doctype html&gt;</p>
-<html ng-app="">
-    <head>
-        <meta charset="utf-8" />
-    </head>
-    <body>
-        <!-- ng-controller我们的控制器  ng-controller赋值成HelloAngular -->
-        <div ng-controller="HelloAngular">
-            <!-- p标签充当了视图的功能 -->
-            <!-- 取值这个地方就是充当数据模型 -->
-            <p>,Angular</p>
-        </div>
-    </body>
-    <!-- 导入了angular-1.3.0.js文件 -->
-    <script src="js/angular-1.3.0.js"></script>
-    <script type="text/javascript">
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app&gt;
+    &lt;head&gt;
+        &lt;meta charset="utf-8"&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;!-- ng-controller我们的控制器  ng-controller赋值成HelloAngular --&gt;
+        &lt;div ng-controller="HelloAngular"&gt;
+            &lt;!-- p标签充当了视图的功能 --&gt;
+            &lt;!-- 取值这个地方就是充当数据模型 --&gt;
+            &lt;p&gt;,Angular&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+    &lt;!-- 导入了angular-1.3.0.js文件 --&gt;
+    &lt;script src="js/angular-1.3.0.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript"&gt;
         //HelloAngular这个函数充当了控制器
         function HelloAngular($scope) {
             $scope.greeting = {
                 text: 'Hello'
             };
         }
-    </script>
-</html>
-<p>```</p>
+    &lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
 
 <p>运行效果</p>
 
@@ -146,36 +145,34 @@
 
 <p>html</p>
 
-<p>```html
-&lt;!doctype html&gt;</p>
-<html ng-app="HelloAngular">
-    <head>
-        <meta charset="utf-8" />
-    </head>
-    <body>
-        <div ng-controller="helloAngular">
-            <p>,Angular</p>
-        </div>
-    </body>
-    <script src="js/angular-1.3.0.js"></script>
-    <script src="HelloAngular_Module.js"></script>
-</html>
-<p>```</p>
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app="HelloAngular"&gt;
+    &lt;head&gt;
+        &lt;meta charset="utf-8"&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div ng-controller="helloAngular"&gt;
+            &lt;p&gt;,Angular&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+    &lt;script src="js/angular-1.3.0.js"&gt;&lt;/script&gt;
+    &lt;script src="HelloAngular_Module.js"&gt;&lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
 
 <p>javascript</p>
 
-<p>``` javascript
-//这里调用了angular.module方法
-var myModule = angular.module(“HelloAngular”, []);</p>
+<pre><code class="language-javascript">//这里调用了angular.module方法
+var myModule = angular.module("HelloAngular", []);
 
-<p>myModule.controller(“helloAngular”, [‘$scope’,
+myModule.controller("helloAngular", ['$scope',
     function HelloAngular($scope) {
         $scope.greeting = {
-            text: ‘Hello’
+            text: 'Hello'
         };
     }
 ]);
-```</p>
+</code></pre>
 
 <p>运行效果</p>
 
@@ -191,24 +188,22 @@ var myModule = angular.module(“HelloAngular”, []);</p>
 
 <p>html</p>
 
-<p>```html
-&lt;!doctype html&gt;</p>
-<html ng-app="MyModule">
-	<head>
-		<meta charset="utf-8" />
-	</head>
-	<body>
-		<hello></hello>
-	</body>
-	<script src="js/angular-1.3.0.js"></script>
-	<script src="HelloAngular_Directive.js"></script>
-</html>
-<p>```</p>
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app="MyModule"&gt;
+	&lt;head&gt;
+		&lt;meta charset="utf-8"&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;hello&gt;&lt;/hello&gt;
+	&lt;/body&gt;
+	&lt;script src="js/angular-1.3.0.js"&gt;&lt;/script&gt;
+	&lt;script src="HelloAngular_Directive.js"&gt;&lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
 
 <p>javascript</p>
 
-<p><code>javascript
-var myModule = angular.module("MyModule", []);
+<pre><code class="language-javascript">var myModule = angular.module("MyModule", []);
 myModule.directive("hello", function() {
     return {
         restrict: 'E',
@@ -216,7 +211,7 @@ myModule.directive("hello", function() {
         replace: true
     }
 });
-</code></p>
+</code></pre>
 
 <p>运行效果</p>
 
@@ -226,13 +221,11 @@ myModule.directive("hello", function() {
 
 <p>一切都是从模块开始的，所以我们需要创建模块</p>
 
-<p>``` javascript
-var myModule = angular.module(“MyModule”, []);</p>
+<pre><code class="language-javascript">var myModule = angular.module("MyModule", []);
 
-<p>```</p>
+</code></pre>
 
-<p><code>javascript
-var myModule = angular.module("MyModule", []);
+<pre><code class="language-javascript">var myModule = angular.module("MyModule", []);
 myModule.directive("hello", function() {
     return {
         restrict: 'E',
@@ -240,7 +233,7 @@ myModule.directive("hello", function() {
         replace: true
     }
 });
-</code></p>
+</code></pre>
 
 <p>模块创建好再调用模块上面directive方法，这个方法也有两个参数<code>"hello"</code>是指令的名称，也就是对应的标签名，后面是一个函数，这个函数就是生成标签的， template: ‘&lt;div&gt;Hi everyone!&lt;/div&gt;’,</p>
 
@@ -248,22 +241,21 @@ myModule.directive("hello", function() {
 
 <p>最终hello是被替换成模板template，</p>
 
-<p>这个就是angular的指令
+<p>这个就是angular的指令<br />
 我们可以自定义一大堆的指令然后做一些封装我们在调用的时候会非常方便，当然指令不只是定义标签这么简单，还有很多其他功能，比如说</p>
 
-<p>```html
-&lt;!doctype html&gt;</p>
-<html ng-app="MyModule">
-	<head>
-		<meta charset="utf-8" />
-	</head>
-	<body>
-		<hello></hello>
-	</body>
-	<script src="js/angular-1.3.0.js"></script>
-	<script src="HelloAngular_Directive.js"></script>
-</html>
-<p>```</p>
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app="MyModule"&gt;
+	&lt;head&gt;
+		&lt;meta charset="utf-8"&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;hello&gt;&lt;/hello&gt;
+	&lt;/body&gt;
+	&lt;script src="js/angular-1.3.0.js"&gt;&lt;/script&gt;
+	&lt;script src="HelloAngular_Directive.js"&gt;&lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
 
 <p>我们在html里面ng-app=”MyModule”,这个实际上就是一个指令，这里复制ng-app等于”MyModule”</p>
 
@@ -297,21 +289,20 @@ myModule.directive("hello", function() {
 
 <p>html</p>
 
-<p>```html
-&lt;!doctype html&gt;</p>
-<html ng-app="">
-    <head>
-        <meta charset="utf-8" />
-    </head>
-    <body>
-        <div>
-            <input ng-model="greeting.text" />
-            <p>,AngularJS</p>
-        </div>
-    </body>
-    <script src="js/angular-1.3.0.js"></script>
-</html>
-<p>```</p>
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app&gt;
+    &lt;head&gt;
+        &lt;meta charset="utf-8"&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div&gt;
+            &lt;input ng-model="greeting.text"/&gt;
+            &lt;p&gt;,AngularJS&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+    &lt;script src="js/angular-1.3.0.js"&gt;&lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
 
 <p>运行效果</p>
 
@@ -321,15 +312,14 @@ myModule.directive("hello", function() {
 
 <p>这是什么原理呢</p>
 
-<p>```html
-<input ng-model="greeting.text" /></p>
-<p>,AngularJS</p>
-<p>```</p>
+<pre><code class="language-html">&lt;input ng-model="greeting.text"/&gt;
+&lt;p&gt;,AngularJS&lt;/p&gt;
+</code></pre>
 
-<p>首先有一个输入框
-然后绑定了一个ng-model=”greeting.text”,
-这个是时候底下有个p标签有个双花括号来获取greeting.text的值。
-双花括号是什么意思呢？
+<p>首先有一个输入框<br />
+然后绑定了一个ng-model=”greeting.text”,<br />
+这个是时候底下有个p标签有个双花括号来获取greeting.text的值。<br />
+双花括号是什么意思呢？<br />
 在Angular js里面是取值的意思，是一个取值表达式。</p>
 
               <!-- 多说评论框 start -->
@@ -363,44 +353,44 @@ myModule.directive("hello", function() {
 			<ul class="minty_thumblist">
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics10.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-综合应用BookStore  2-8</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax5.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics9.html">
 
-                    	<span>Ajax全接触(五) 处理跨域方式</span>
+                    	<span>基本概念和用法-Service与Peovider  2-7</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax4.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics8.html">
 
-                    	<span>Ajax全接触(四) jQuery中的AJAX</span>
+                    	<span>基本概念和用法-指令 2-6</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax3.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics7.html">
 
-                    	<span>Ajax全接触(三)JSON格式</span>
+                    	<span>基本概念和用法-路由 2-5</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics6.html">
 
-                    	<span>Ajax全接触(二)例子ajax+php</span>
+                    	<span>基本概念和用法-双向数据绑定 2-4</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics5.html">
 
-                    	<span>Ajax全接触(一)基础理论</span>
+                    	<span>基本概念和用法-路由，模块，依赖注入 2-3</span>
                     </a>
                   </li>
 				
@@ -467,7 +457,7 @@ posts">
 				<li>
 					<a href="/categories/AngularJS/" title="view all
 posts">
-						AngularJS (2)
+						AngularJS (10)
 					</a>
 				</li>
 				

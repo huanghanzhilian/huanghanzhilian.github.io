@@ -99,7 +99,7 @@
 
 <p>这时候JavaScript作为嵌入式的脚本语言的定位动摇了，JavaScript却没有为组织代码提供任何明显帮助，甚至没有类的概念，更不用说模块（module）了，JavaScript极其简单的代码组织规范不足以驾驭如此庞大规模的代码</p>
 
-<h4 id="section">模块</h4>
+<p>####模块</p>
 
 <p>既然JavaScript不能handle如此大规模的代码，我们可以借鉴一下其它语言是怎么处理大规模程序设计的，在Java中有一个重要带概念——<code>package</code>，逻辑上相关的代码组织到同一个包内，包内是一个相对独立的王国，不用担心命名冲突什么的，那么外部如果使用呢？直接<code>import</code>对应的<code>package</code>即可</p>
 
@@ -187,7 +187,7 @@ function fn2() {
 
 <p>这样在模块外部无法修改我们没有暴露出来的变量、函数</p>
 
-<p>上述做法就是我们模块化的基础，目前，通行的JavaScript模块规范主要有两种：CommonJS
+<p>上述做法就是我们模块化的基础，目前，通行的JavaScript模块规范主要有两种：CommonJS<br />
 和AMD</p>
 
 <p><strong>CommonJS</strong></p>
@@ -196,18 +196,18 @@ function fn2() {
 
 <ol>
   <li>
-    <p>定义模块
+    <p>定义模块<br />
 根据CommonJS规范，一个单独的文件就是一个模块。每一个模块都是一个单独的作用域，也就是说，在该模块内部定义的变量，无法被其他模块读取，除非定义为global对象的属性</p>
   </li>
   <li>
-    <p>模块输出：
-模块只有一个出口，module.exports
+    <p>模块输出：<br />
+模块只有一个出口，module.exports<br />
 对象，我们需要把模块希望输出的内容放入该对象</p>
   </li>
   <li>
-    <p>加载模块：
-加载模块使用require
-方法，该方法读取一个文件并执行，返回文件内部的module.exports
+    <p>加载模块：<br />
+加载模块使用require<br />
+方法，该方法读取一个文件并执行，返回文件内部的module.exports<br />
 对象</p>
   </li>
 </ol>
@@ -240,7 +240,7 @@ nameModule.printName();
 
 <p>不同的实现对require时的路径有不同要求，一般情况可以省略<code>js</code>拓展名，可以使用相对路径，也可以使用绝对路径，甚至可以省略路径直接使用模块名（前提是该模块是系统内置模块）</p>
 
-<h4 id="section-1">尴尬的浏览器</h4>
+<p>####尴尬的浏览器</p>
 
 <p>仔细看上面的代码，会发现<code>require</code>是同步的。模块系统需要同步读取模块文件内容，并编译执行以得到模块接口。</p>
 
@@ -252,12 +252,12 @@ nameModule.printName();
 
 <p>另一种解决思路是，用一套标准模板来封装模块定义，但是对于模块应该怎么定义和怎么加载，又产生的分歧：</p>
 
-<h4 id="amd">AMD</h4>
+<p>####AMD</p>
 
-<p>AMD 即<code>Asynchronous Module Definition</code>
+<p>AMD 即<code>Asynchronous Module Definition</code><br />
 ，中文名是<strong>异步模块定义</strong>的意思。它是一个在浏览器端模块化开发的规范</p>
 
-<p>由于不是JavaScript原生支持，使用AMD规范进行页面开发需要用到对应的库函数，也就是大名鼎鼎<code>RequireJS</code>
+<p>由于不是JavaScript原生支持，使用AMD规范进行页面开发需要用到对应的库函数，也就是大名鼎鼎<code>RequireJS</code><br />
 ，实际上AMD 是 RequireJS 在推广过程中对模块定义的规范化的产出</p>
 
 <p>requireJS主要解决两个问题</p>
@@ -321,7 +321,7 @@ require(['myModule'], function(my) {
 
 <p>require()函数在加载依赖的函数的时候是异步加载的，这样浏览器不会失去响应，它指定的回调函数，只有前面的模块都加载成功后，才会运行，解决了依赖性的问题。</p>
 
-<h4 id="cmd">CMD</h4>
+<p>####CMD</p>
 
 <p>CMD 即<code>Common Module Definition</code>通用模块定义，CMD规范是国内发展出来的，就像AMD有个requireJS，CMD有个浏览器的实现SeaJS，SeaJS要解决的问题和requireJS一样，只不过在模块定义方式和模块加载（可以说运行、解析）时机上有所不同</p>
 
@@ -353,10 +353,10 @@ require(['myModule'], function(my) {
 <pre><code>require(id)
 </code></pre>
 
-<p>require 是一个方法，接受 模块标识 作为唯一参数，用来获取其他模块提供的接口
+<p>require 是一个方法，接受 模块标识 作为唯一参数，用来获取其他模块提供的接口<br />
 <strong>exports</strong></p>
 
-<p>exports 是一个对象，用来向外提供模块接口
+<p>exports 是一个对象，用来向外提供模块接口<br />
 <strong>module</strong></p>
 
 <p>module 是一个对象，上面存储了与当前模块相关联的一些属性和方法</p>
@@ -375,7 +375,7 @@ seajs.use(['myModule.js'], function(my) {
 });
 </code></pre>
 
-<h4 id="amdcmd">AMD与CMD区别</h4>
+<p>####AMD与CMD区别</p>
 
 <p>关于这两个的区别网上可以搜出一堆文章，简单总结一下</p>
 
@@ -432,44 +432,44 @@ seajs.use(['myModule.js'], function(my) {
 			<ul class="minty_thumblist">
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics10.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-综合应用BookStore  2-8</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics1.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics9.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-Service与Peovider  2-7</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax5.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics8.html">
 
-                    	<span>Ajax全接触(五) 处理跨域方式</span>
+                    	<span>基本概念和用法-指令 2-6</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax4.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics7.html">
 
-                    	<span>Ajax全接触(四) jQuery中的AJAX</span>
+                    	<span>基本概念和用法-路由 2-5</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax3.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics6.html">
 
-                    	<span>Ajax全接触(三)JSON格式</span>
+                    	<span>基本概念和用法-双向数据绑定 2-4</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics5.html">
 
-                    	<span>Ajax全接触(二)例子ajax+php</span>
+                    	<span>基本概念和用法-路由，模块，依赖注入 2-3</span>
                     </a>
                   </li>
 				
@@ -536,7 +536,7 @@ posts">
 				<li>
 					<a href="/categories/AngularJS/" title="view all
 posts">
-						AngularJS (2)
+						AngularJS (10)
 					</a>
 				</li>
 				

@@ -97,7 +97,7 @@
 			<article class="post-content">
               <p>函数是一块JavaScript代码，被定义一次，但可执行调用多次，js中的函数也是对象，所以js函数可以像其他对象那样操作和传递所以我们也常叫js中的函数为函数对象。</p>
 
-<h4 id="section">函数概述</h4>
+<p>####函数概述</p>
 
 <p>函数的构成主要有几个部分<code>函数名</code>,<code>参数列表</code>,<code>函数体</code></p>
 
@@ -179,7 +179,7 @@ console.log(cdr);
   </tbody>
 </table>
 
-<h4 id="section-1">函数声明与表达式</h4>
+<p>####函数声明与表达式</p>
 
 <p>创建函数有不同的方式，常见的两种就是<strong>函数声明</strong>和<strong>函数表达式</strong></p>
 
@@ -299,7 +299,7 @@ console.log(lop);//lop是局部变量外部无法访问会报错
 //输出lo
 </code></pre>
 
-<p>但是在Function构造器中lo却访问不到。
+<p>但是在Function构造器中lo却访问不到。<br />
 在立即调用函数里，lo不可访问，全局变量l可以访问。所以说Function构造器很少使用</p>
 
 <pre><code>var l="l";
@@ -359,7 +359,7 @@ console.log(lop);//lop是局部变量外部无法访问会报错
 
 <ul>
   <li>
-    <p>前置：只有函数声明会被前置，就好像被拉倒了最前面，说以说可以在函数声明的位置之前，去调用这样一个函数。
+    <p>前置：只有函数声明会被前置，就好像被拉倒了最前面，说以说可以在函数声明的位置之前，去调用这样一个函数。<br />
 但是函数表达式和函数构造器是代码执行阶段，才会去创建对应的函数对象，所以不会被前置。</p>
   </li>
   <li>
@@ -376,7 +376,7 @@ console.log(lop);//lop是局部变量外部无法访问会报错
   </li>
 </ul>
 
-<h4 id="javascriptthis">[JavaScript]this</h4>
+<p>####[JavaScript]this</p>
 
 <p>在不同的环境下，同一个函数在不同的调用方式下，这个 <code>this</code>都有可能是不同的。</p>
 
@@ -390,7 +390,7 @@ console.log(lop);//lop是局部变量外部无法访问会报错
 console.log(this === window); //true
 </code></pre>
 
-<p>可以看到<code>this.document </code>等价于<code>window.document</code>
+<p>可以看到<code>this.document </code>等价于<code>window.document</code><br />
 <code>this</code>等价于<code>window</code></p>
 
 <pre><code>this.a = 37;
@@ -451,7 +451,7 @@ o.f = indep;
 console.log(o.f());//37
 </code></pre>
 
-<p>定义对象<code>o</code>只有一个属性<code>prop</code>赋值为37
+<p>定义对象<code>o</code>只有一个属性<code>prop</code>赋值为37<br />
 这里买你有一个独立的<code>indep</code>函数，函数体<code>return</code>一个<code>this.prop;</code>如果直接去调用<code>indep()</code>那么这个this会指向<code>window</code>。</p>
 
 <p>如果用赋值方式<code>o.f</code>给<code>o</code>对象创建属性<code>f</code>值为<code>indep</code>函数对象，那么这样去调用我们任然能够拿到37，<code>console.log(o.f());//37</code>。</p>
@@ -528,7 +528,7 @@ var o = new MyClass();
 console.log(o.a); //23
 </code></pre>
 
-<p>如果正常去调用一个函数的话<code>MyClass()</code>那么这个函数的<code>this</code>会指向<code>window</code>但是如果我用<code>new</code>实例化构造函数去调用，那么这里面的<code>this</code>会指向这样一个空的对象，并且这个对象的原型会指向<code>MyClass.prototype</code>
+<p>如果正常去调用一个函数的话<code>MyClass()</code>那么这个函数的<code>this</code>会指向<code>window</code>但是如果我用<code>new</code>实例化构造函数去调用，那么这里面的<code>this</code>会指向这样一个空的对象，并且这个对象的原型会指向<code>MyClass.prototype</code><br />
 最后这个this.a会作为返回值，因为这里没有<code>return</code>所以默认<code>this</code>会作为返回值，所以这个对象o就会就会有a属性值23。</p>
 
 <pre><code>function c2() {
@@ -570,7 +570,7 @@ function bar() {
 bar.call(7);//[object Number]
 </code></pre>
 
-<p>函数add，这里面返回<code>this.a + this.b + c + d;</code>把这四个数相加起来，定义o对象有两个属性a和b，通过对象<code>call</code>方法，<code>.call(o, 5, 7)</code>第一个参数是你想作为<code>this</code>的这样一个对象，5和7是想要添加的参数，5赋值给<code>function add(c, d)</code>的c，7赋值给d；最终的结果就是<code>1+3+5+7</code>，
+<p>函数add，这里面返回<code>this.a + this.b + c + d;</code>把这四个数相加起来，定义o对象有两个属性a和b，通过对象<code>call</code>方法，<code>.call(o, 5, 7)</code>第一个参数是你想作为<code>this</code>的这样一个对象，5和7是想要添加的参数，5赋值给<code>function add(c, d)</code>的c，7赋值给d；最终的结果就是<code>1+3+5+7</code>，<br />
 <code>add.call(o, 5, 7)</code>和<code>add.apply(o, [10, 20])</code>基本没什么差别，只是<code>apply</code>是数组作为传参的。</p>
 
 <blockquote>
@@ -600,7 +600,7 @@ console.log(o.f(), o.g()); //23 "test"
 
 <p>还可以看到，这里有一个<code>o</code>然后把a赋值为23，f属性赋值为f函数，g赋值绑定之后的方法，输出f的时候能拿到23，一般的函数根据调用方式来判断，他是通过对象属性去调用的，那么这里买你的this就会指向<code>o</code>那么就会拿到a：23。这里面比较特殊的我使用<code>bind</code>的方法去绑定了之后，即使我们把 新绑定之后的方法作为对象的属性去调用，仍然会按照之前的绑定去走。所以返回”test”</p>
 
-<h4 id="javascriptarguments">[JavaScript]函数属性arguments</h4>
+<p>####[JavaScript]函数属性arguments</p>
 
 <blockquote>
   <p>函数属性 &amp; arguments</p>
@@ -627,9 +627,9 @@ console.dir(foo);
 
 <p><img src="http://upload-images.jianshu.io/upload_images/3877962-327ae46a1e186720.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
 
-<p>定义函数<code>foo</code>
-通过<code>foo.name</code>获取函数名
-通过<code>foo.length</code>获取函数行参个数
+<p>定义函数<code>foo</code><br />
+通过<code>foo.name</code>获取函数名<br />
+通过<code>foo.length</code>获取函数行参个数<br />
 通过<code>arguments.length</code>获取函数实际传参的个数</p>
 
 <p>有一个问题。<code>foo(1, 2);</code>传参只有两个参数，实际上<code>d</code>是没有传进来的， 这种情况尝试去<code>arguments[2] = 100;</code>去赋值的时候对应的<code>d</code>仍然是<code>undefined</code></p>
@@ -667,7 +667,7 @@ foo.apply(undefined);					//undefined undefined Window {...}
 
 <p>定义<code>foo</code>函数，有x,y两个属性，输出参数和对应的<code>this</code></p>
 
-<p>对于<code>call()</code>来讲第一个参数就是想作为<code>this</code>的对象如果不是对象他会转成对象，所以这里的<code>foo.call(100, 1, 2);	</code><strong>100</strong>会转成对应的包装类<code>Number </code>值为100。类似的<code>foo.apply(true, [3, 4]);</code><strong>true</strong>会转换成布尔值。
+<p>对于<code>call()</code>来讲第一个参数就是想作为<code>this</code>的对象如果不是对象他会转成对象，所以这里的<code>foo.call(100, 1, 2);	</code><strong>100</strong>会转成对应的包装类<code>Number </code>值为100。类似的<code>foo.apply(true, [3, 4]);</code><strong>true</strong>会转换成布尔值。<br />
 如果第一个参数是<code>null</code>,<code>undefined</code>的话，那么<code>this</code>会指向全局对象，对于浏览器就是<code>window对象</code></p>
 
 <p><strong>需要注意在严格模式下</strong></p>
@@ -797,44 +797,44 @@ console.log(func2); //{b: 100}
 			<ul class="minty_thumblist">
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics10.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-综合应用BookStore  2-8</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics1.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics9.html">
 
-                    	<span>AngularJS快速入手1-1</span>
+                    	<span>基本概念和用法-Service与Peovider  2-7</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax5.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics8.html">
 
-                    	<span>Ajax全接触(五) 处理跨域方式</span>
+                    	<span>基本概念和用法-指令 2-6</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax4.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics7.html">
 
-                    	<span>Ajax全接触(四) jQuery中的AJAX</span>
+                    	<span>基本概念和用法-路由 2-5</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax3.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics6.html">
 
-                    	<span>Ajax全接触(三)JSON格式</span>
+                    	<span>基本概念和用法-双向数据绑定 2-4</span>
                     </a>
                   </li>
 				
                   <li>
-                    <a href="/javascript/2016/12/20/js-ajax2.html">
+                    <a href="/angularjs/2017/03/11/angularjs-basics5.html">
 
-                    	<span>Ajax全接触(二)例子ajax+php</span>
+                    	<span>基本概念和用法-路由，模块，依赖注入 2-3</span>
                     </a>
                   </li>
 				
@@ -901,7 +901,7 @@ posts">
 				<li>
 					<a href="/categories/AngularJS/" title="view all
 posts">
-						AngularJS (2)
+						AngularJS (10)
 					</a>
 				</li>
 				
