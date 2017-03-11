@@ -391,3 +391,34 @@ padding: 8px;
     line-height: 3;}
 
 .post-content blockquote{ font-style: normal; }
+
+#error404 {
+    text-align: center;
+}
+#error404 .code {
+    font-size: 180px;
+    text-align: center;
+    color: #999;
+}
+#error404 h1 {
+    margin-bottom: 0;
+    font-weight: 400;
+    font-size: 31px;
+}
+#error404 h3 {
+    margin: .5em 0;
+    color: #ccc;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+#error404 ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    line-height: 2;
+}
+#error404 li {
+    display: inline;
+    margin: 0 .5em;
+}

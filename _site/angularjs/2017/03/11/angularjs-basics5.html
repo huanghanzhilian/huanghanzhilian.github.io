@@ -7,7 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
 	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
 	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
-	<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css">
+	<!-- <link rel="stylesheet" type="text/css" href="/assets/css/pygments.css"> -->
 	<link rel="shortcut icon" href="/assets/images/logo_ioc.ico" type="images/x-icon"/>
 	<link rel="icon" href="/assets/images/logo_ioc.png" type="images/png"/>
 	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
@@ -95,147 +95,133 @@
 				<div class="entry-meta">2017-03-11 <span class="dot">•</span>AngularJS<span class="dot">•</span>黄继鹏<span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span></div>
 			</header>
 			<article class="post-content">
-              <p>###AngularJS的模块化实现</p>
+              <h3>AngularJS的模块化实现</h3>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!doctype html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">ng-app</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;head&gt;</span>
+        <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/head&gt;</span>
+    <span class="nt">&lt;body&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">ng-controller=</span><span class="s">"HelloAngular"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;p&gt;</span>,Angular<span class="nt">&lt;/p&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/body&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"js/angular-1.3.0.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"HelloAngular_MVC.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
 
-<pre><code class="language-html">&lt;!doctype html&gt;
-&lt;html ng-app&gt;
-    &lt;head&gt;
-        &lt;meta charset="utf-8"&gt;
-    &lt;/head&gt;
-    &lt;body&gt;
-        &lt;div ng-controller="HelloAngular"&gt;
-            &lt;p&gt;,Angular&lt;/p&gt;
-        &lt;/div&gt;
-    &lt;/body&gt;
-    &lt;script src="js/angular-1.3.0.js"&gt;&lt;/script&gt;
-    &lt;script src="HelloAngular_MVC.js"&gt;&lt;/script&gt;
-&lt;/html&gt;
+</code></pre></div><div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">HelloAngular</span><span class="p">(</span><span class="nx">$scope</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">$scope</span><span class="p">.</span><span class="nx">greeting</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="na">text</span><span class="p">:</span> <span class="s1">'Hello'</span>
+    <span class="p">};</span>
+<span class="p">}</span>
 
-</code></pre>
-
-<pre><code class="language-javascript">function HelloAngular($scope) {
-    $scope.greeting = {
-        text: 'Hello'
-    };
-}
-
-</code></pre>
-
+</code></pre></div>
 <p>上面代码有一个p标签里面有一个双花括号的取值表达式，</p>
 
 <p>js代码是一个很简单的函数这个函数里面有一个$scope的参数，在他上面去赋值，AngularJS就可以取到对应的值。</p>
 
 <p>其实上面的代码是不够模块化的，因为写了一个全局的函数，这不符合模块化，会污染全局空间，可以这样写。</p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!doctype html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">ng-app=</span><span class="s">"HelloAngular"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;head&gt;</span>
+        <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/head&gt;</span>
+    <span class="nt">&lt;body&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">ng-controller=</span><span class="s">"helloNgCtrl"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;p&gt;</span>,Angular<span class="nt">&lt;/p&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/body&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"js/angular-1.3.0.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"NgModule1.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
 
-<pre><code class="language-html">&lt;!doctype html&gt;
-&lt;html ng-app="HelloAngular"&gt;
-    &lt;head&gt;
-        &lt;meta charset="utf-8"&gt;
-    &lt;/head&gt;
-    &lt;body&gt;
-        &lt;div ng-controller="helloNgCtrl"&gt;
-            &lt;p&gt;,Angular&lt;/p&gt;
-        &lt;/div&gt;
-    &lt;/body&gt;
-    &lt;script src="js/angular-1.3.0.js"&gt;&lt;/script&gt;
-    &lt;script src="NgModule1.js"&gt;&lt;/script&gt;
-&lt;/html&gt;
+</code></pre></div><div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">helloModule</span><span class="o">=</span><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">'HelloAngular'</span><span class="p">,</span> <span class="p">[]);</span>
+<span class="nx">helloModule</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s1">'helloNgCtrl'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'$scope'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">){</span>
+    <span class="nx">$scope</span><span class="p">.</span><span class="nx">greeting</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="na">text</span><span class="p">:</span> <span class="s1">'Hello'</span>
+    <span class="p">};</span>
+<span class="p">}]);</span>
 
-</code></pre>
+</code></pre></div>
+<p>上面的js利用angular的module方法去定义一个模块，定义一个名为HelloAngular的模块，定义完之后在模块的实例上面去调用controller方法，来创建一个名为helloNgCtrl的控制器，后面是一个方括号，是一个数组，第一个参数是一个字符串&#39;$scope&#39;，第二个参数是一个函数，这个函数实际上和之前写的HelloAngular函数内容是一模一样的，只不过这个函数是一个匿名函数，以上代码就是AngularJS实现模块化的一个方法。</p>
 
-<pre><code class="language-javascript">var helloModule=angular.module('HelloAngular', []);
-helloModule.controller('helloNgCtrl', ['$scope', function($scope){
-	$scope.greeting = {
-        text: 'Hello'
-    };
-}]);
-
-</code></pre>
-
-<p>上面的js利用angular的module方法去定义一个模块，定义一个名为HelloAngular的模块，定义完之后在模块的实例上面去调用controller方法，来创建一个名为helloNgCtrl的控制器，后面是一个方括号，是一个数组，第一个参数是一个字符串’$scope’，第二个参数是一个函数，这个函数实际上和之前写的HelloAngular函数内容是一模一样的，只不过这个函数是一个匿名函数，以上代码就是AngularJS实现模块化的一个方法。</p>
-
-<p>###一个完整的项目结构是什么样子的？—实例演示</p>
+<h3>一个完整的项目结构是什么样子的？---实例演示</h3>
 
 <p>使用模块化有什么好处呢？AngularJS里面的模块又是什么东西呢，更具官方的定义，AngularJS里面的模块实际上他是一个集合，就相当于一个框子，他是由模型，视图，控制器，过滤器，服务，等等。。。把他组合到一起实现某一个功能那么他就叫一个模块。</p>
 
 <p>有了AngularJS模块化工具之后一个真实的项目他的目录结构是什么样子的。</p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-61b011c81442379d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-61b011c81442379d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
 <p>假设有一个叫BookStore这样一个应用app，</p>
 
 <p>先来看一级的结构</p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-bf48adc3d68a87c5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-bf48adc3d68a87c5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
 <p>package.json其实是给mpm，node.js工具去用的，如果不想用是可以不要的，</p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-75010b346a5c9c5b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-75010b346a5c9c5b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
 <p>node_modules这个东西是我们用npm也就是说node的模块管理器，去装一些插件的时候他自动生成的，所有的插件都会装入这个目录下面，一般来说在开发一个项目的时候会把nodejs下面的工具都直接安装在项目的目录下面同时会把这东西直接提交到版本控制工具中，这样做是为了大家版本一直，避免版本冲突。</p>
 
 <p>其他代码都房子app目录下面</p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-544272cfa01c20c7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-544272cfa01c20c7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
 <p>这个目录下面分成几个小目录，</p>
 
 <p><strong>framework</strong>目录    这个目录下面我们不止放AngularJS，可能还有Bootstrap获取还有其他的ui控件，都可以放在这个下面，便于管理和组织，</p>
 
 <p><strong>tpls</strong>目录用来放模板，就是是说一些html片段，把他抽成一个小片段，什么叫html片段呢？实际上就是一段不完整的html的结构，他是没有html根标签，也没有body和其他的东西，就是其中的一小块，</p>
-
-<pre><code class="language-html">&lt;ul&gt;
-    &lt;li ng-repeat="book in books"&gt;
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">ng-repeat=</span><span class="s">"book in books"</span><span class="nt">&gt;</span>
         书名:   作者:
-    &lt;/li&gt;
-&lt;/ul&gt;
+    <span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
 
-</code></pre>
-
+</code></pre></div>
 <p>实际上就像晓得零件这个片段会被我们的控制器加载进来，然后控制器把数据传递给他，形成一些真实的html标签，就会插入到问道流中去。</p>
 
 <p>一个应为会有一个主文件，叫做index，</p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!doctype html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">ng-app=</span><span class="s">"bookStoreApp"</span><span class="nt">&gt;</span>
 
-<pre><code class="language-html">&lt;!doctype html&gt;
-&lt;html ng-app="bookStoreApp"&gt;
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span>BookStore<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"framework/1.3.0.14/angular.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"framework/1.3.0.14/angular-route.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"framework/1.3.0.14/angular-animate.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"js/app.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"js/controllers.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"js/filters.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"js/services.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"js/directives.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
 
-&lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;BookStore&lt;/title&gt;
-    &lt;script src="framework/1.3.0.14/angular.js"&gt;&lt;/script&gt;
-    &lt;script src="framework/1.3.0.14/angular-route.js"&gt;&lt;/script&gt;
-    &lt;script src="framework/1.3.0.14/angular-animate.js"&gt;&lt;/script&gt;
-    &lt;script src="js/app.js"&gt;&lt;/script&gt;
-    &lt;script src="js/controllers.js"&gt;&lt;/script&gt;
-    &lt;script src="js/filters.js"&gt;&lt;/script&gt;
-    &lt;script src="js/services.js"&gt;&lt;/script&gt;
-    &lt;script src="js/directives.js"&gt;&lt;/script&gt;
-&lt;/head&gt;
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">ng-view</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
 
-&lt;body&gt;
-    &lt;div ng-view&gt;
-    &lt;/div&gt;
-&lt;/body&gt;
+<span class="nt">&lt;/html&gt;</span>
 
-&lt;/html&gt;
-
-</code></pre>
-
+</code></pre></div>
 <p>这个index来加载一些js文件，</p>
 
 <p>放一个根的视图叫做<strong>ng-view</strong></p>
-
-<pre><code class="language-html">&lt;body&gt;
-    &lt;div ng-view&gt;
-    &lt;/div&gt;
-&lt;/body&gt;
-</code></pre>
-
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">ng-view</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</code></pre></div>
 <p>也就是说充当视图最根的一个容器，通过这个根容器可以实现跟多的功能，</p>
 
 <p>所有的js代码是放在js目录下，</p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-6379adcd581c1eaf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-6379adcd581c1eaf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
 <p>一般来说这些js名称是预定熟成的，</p>
 
@@ -245,27 +231,27 @@ helloModule.controller('helloNgCtrl', ['$scope', function($scope){
 
 <p>directives.js 指令js</p>
 
-<p>filters.js  过滤器</p>
+<p>filters.js  过滤器 </p>
 
 <p>services.js  服务</p>
 
 <p>还可以有route路由获取其他</p>
 
-<p>###使用ng-Route进行视图之间的路由</p>
+<h3>使用ng-Route进行视图之间的路由</h3>
 
 <p>通过不同的url来访问不同的viel</p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-1739525f4c619432.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-1739525f4c619432.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-6f6f8e2b302980ea.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-6f6f8e2b302980ea.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-8e01f7564aaad999.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-8e01f7564aaad999.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
 <p>通过路由$routeProvider来实现不同url访问不同的viel,一个应用里面有很多的视图，那么怎么判断哪个url对应哪个视图呢？AngularJS提供了叫$routeProvider，从字面意义上知道这是路由，他会根据访问的路径不同展示不同的viel，这是$routeProvider基本的功能，</p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-42a29fe2f9b66aad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-42a29fe2f9b66aad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
-<p>当我们访问hello的时候他就会就是使用templateUrl模板url去找到模板片段tpls下面的hello.html片段，作为他的模板controller: ‘HelloCtrl’意识是使用HelloCtrl控制器去处理整个视图的生成，</p>
+<p>当我们访问hello的时候他就会就是使用templateUrl模板url去找到模板片段tpls下面的hello.html片段，作为他的模板controller: &#39;HelloCtrl&#39;意识是使用HelloCtrl控制器去处理整个视图的生成，</p>
 
 <p>Angular路由的意思就是根据地址栏里面的url不同他去帮我们展现不同的视图，这个视图是由控制器去负责生成出来的，</p>
 
@@ -275,120 +261,106 @@ helloModule.controller('helloNgCtrl', ['$scope', function($scope){
 
 <p>有了这个东西就可以把不同的视图交给不同的控制器去处理这样就能把视图之间的职能分的很清楚，可以用很多的控制器来处理不同的视图不同的内容。</p>
 
-<p>###一切都是从模块开始的</p>
+<h3>一切都是从模块开始的</h3>
 
 <p>再来看看<strong>controllers.js</strong></p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">bookStoreCtrls</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">'bookStoreCtrls'</span><span class="p">,</span> <span class="p">[]);</span>
 
-<pre><code class="language-javascript">var bookStoreCtrls = angular.module('bookStoreCtrls', []);
+<span class="nx">bookStoreCtrls</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s1">'HelloCtrl'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'$scope'</span><span class="p">,</span>
+    <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">$scope</span><span class="p">.</span><span class="nx">greeting</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="na">text</span><span class="p">:</span> <span class="s1">'Hello'</span>
+        <span class="p">};</span>
+    <span class="p">}</span>
+<span class="p">]);</span>
 
-bookStoreCtrls.controller('HelloCtrl', ['$scope',
-    function($scope) {
-        $scope.greeting = {
-            text: 'Hello'
-        };
-    }
-]);
+<span class="nx">bookStoreCtrls</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s1">'BookListCtrl'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'$scope'</span><span class="p">,</span>
+    <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">$scope</span><span class="p">.</span><span class="nx">books</span> <span class="o">=</span><span class="p">[</span>
+            <span class="p">{</span><span class="na">title</span><span class="p">:</span><span class="s2">"《Ext江湖》"</span><span class="p">,</span><span class="na">author</span><span class="p">:</span><span class="s2">"大漠穷秋"</span><span class="p">},</span>
+            <span class="p">{</span><span class="na">title</span><span class="p">:</span><span class="s2">"《ActionScript游戏设计基础（第二版）》"</span><span class="p">,</span><span class="na">author</span><span class="p">:</span><span class="s2">"大漠穷秋"</span><span class="p">},</span>
+            <span class="p">{</span><span class="na">title</span><span class="p">:</span><span class="s2">"《用AngularJS开发下一代WEB应用》"</span><span class="p">,</span><span class="na">author</span><span class="p">:</span><span class="s2">"大漠穷秋"</span><span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">]);</span>
 
-bookStoreCtrls.controller('BookListCtrl', ['$scope',
-    function($scope) {
-        $scope.books =[
-        	{title:"《Ext江湖》",author:"大漠穷秋"},
-        	{title:"《ActionScript游戏设计基础（第二版）》",author:"大漠穷秋"},
-        	{title:"《用AngularJS开发下一代WEB应用》",author:"大漠穷秋"}
-        ]
-    }
-]);
-
-/**
+<span class="cm">/**
  * 这里接着往下写，如果控制器的数量非常多，需要分给多个开发者，可以借助于grunt来合并代码
- */
-</code></pre>
-
+ */</span>
+</code></pre></div>
 <p>先来看hello</p>
 
 <p>首先要定义一个模块</p>
 
-<p><code>var bookStoreCtrls = angular.module('bookStoreCtrls', []);</code></p>
+<p><code>var bookStoreCtrls = angular.module(&#39;bookStoreCtrls&#39;, []);</code></p>
 
 <p>bookStoreCtrls 模块有一个HelloCtrl名称的controller，也就是HelloCtrl名称的控制器，</p>
 
 <p>打开根目录浏览器预览如果什么都不输会自动跳入app/index.html#/hello</p>
 
 <p>这是因为</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">bookStoreApp</span><span class="p">.</span><span class="nx">config</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">$routeProvider</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'/hello'</span><span class="p">,</span> <span class="p">{</span>
+        <span class="na">templateUrl</span><span class="p">:</span> <span class="s1">'tpls/hello.html'</span><span class="p">,</span>
+        <span class="na">controller</span><span class="p">:</span> <span class="s1">'HelloCtrl'</span>
+    <span class="p">}).</span><span class="nx">when</span><span class="p">(</span><span class="s1">'/list'</span><span class="p">,{</span>
+        <span class="na">templateUrl</span><span class="p">:</span><span class="s1">'tpls/bookList.html'</span><span class="p">,</span>
+        <span class="na">controller</span><span class="p">:</span><span class="s1">'BookListCtrl'</span>
+    <span class="p">}).</span><span class="nx">otherwise</span><span class="p">({</span>
+        <span class="na">redirectTo</span><span class="p">:</span> <span class="s1">'/hello'</span>
+    <span class="p">})</span>
+<span class="p">});</span>
 
-<pre><code class="language-javascript">bookStoreApp.config(function($routeProvider) {
-    $routeProvider.when('/hello', {
-        templateUrl: 'tpls/hello.html',
-        controller: 'HelloCtrl'
-    }).when('/list',{
-    	templateUrl:'tpls/bookList.html',
-    	controller:'BookListCtrl'
-    }).otherwise({
-        redirectTo: '/hello'
-    })
-});
+</code></pre></div>
+<p>因为otherwise意思就是说如果不满足上面所有的情况，就会跳到 redirectTo: &#39;/hello&#39;这样一个路径上去，跳到这个路径上就会归controller: &#39;HelloCtrl&#39;来管理了，</p>
 
-</code></pre>
+<p>controller: &#39;HelloCtrl&#39;它什么都没做，只是往$scope.greeting上面赋了一个对象</p>
 
-<p>因为otherwise意思就是说如果不满足上面所有的情况，就会跳到 redirectTo: ‘/hello’这样一个路径上去，跳到这个路径上就会归controller: ‘HelloCtrl’来管理了，</p>
-
-<p>controller: ‘HelloCtrl’它什么都没做，只是往$scope.greeting上面赋了一个对象</p>
-
-<p>templateUrl: ‘tpls/hello.html’,使用模板的路径加载一个hello.html片段</p>
-
-<pre><code class="language-html">&lt;p&gt;,Angular&lt;/p&gt;
-</code></pre>
-
+<p>templateUrl: &#39;tpls/hello.html&#39;,使用模板的路径加载一个hello.html片段</p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;p&gt;</span>,Angular<span class="nt">&lt;/p&gt;</span>
+</code></pre></div>
 <p>模板加载进来之后就会获得控制器上所赋的对象的值，获得值以后会拼接成一个完整的html然后把他插入到index里面，</p>
-
-<pre><code class="language-html">&lt;body&gt;
-    &lt;div ng-view&gt;
-    &lt;/div&gt;
-&lt;/body&gt;
-</code></pre>
-
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">ng-view</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</code></pre></div>
 <p>插入到index里面写的ng-view里面去，显示结果。</p>
 
 <p>再来看BookListCtrl控制器</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">bookStoreCtrls</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s1">'BookListCtrl'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'$scope'</span><span class="p">,</span>
+    <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">$scope</span><span class="p">.</span><span class="nx">books</span> <span class="o">=</span><span class="p">[</span>
+            <span class="p">{</span><span class="na">title</span><span class="p">:</span><span class="s2">"《Ext江湖》"</span><span class="p">,</span><span class="na">author</span><span class="p">:</span><span class="s2">"大漠穷秋"</span><span class="p">},</span>
+            <span class="p">{</span><span class="na">title</span><span class="p">:</span><span class="s2">"《ActionScript游戏设计基础（第二版）》"</span><span class="p">,</span><span class="na">author</span><span class="p">:</span><span class="s2">"大漠穷秋"</span><span class="p">},</span>
+            <span class="p">{</span><span class="na">title</span><span class="p">:</span><span class="s2">"《用AngularJS开发下一代WEB应用》"</span><span class="p">,</span><span class="na">author</span><span class="p">:</span><span class="s2">"大漠穷秋"</span><span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">]);</span>
 
-<pre><code class="language-javascript">bookStoreCtrls.controller('BookListCtrl', ['$scope',
-    function($scope) {
-        $scope.books =[
-        	{title:"《Ext江湖》",author:"大漠穷秋"},
-        	{title:"《ActionScript游戏设计基础（第二版）》",author:"大漠穷秋"},
-        	{title:"《用AngularJS开发下一代WEB应用》",author:"大漠穷秋"}
-        ]
-    }
-]);
-
-</code></pre>
-
+</code></pre></div>
 <p>这个控制器在$scope.books上赋值了一个数组这个数组包含这对象，</p>
-
-<pre><code class="language-javascript">.when('/list',{
-        templateUrl:'tpls/bookList.html',
-        controller:'BookListCtrl'
-    }).
-</code></pre>
-
-<p>在路由中的<code>/list</code>使用<code>'tpls/bookList.html'</code>来作为模板</p>
-
-<pre><code class="language-html">&lt;ul&gt;
-    &lt;li ng-repeat="book in books"&gt;
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'/list'</span><span class="p">,{</span>
+        <span class="na">templateUrl</span><span class="p">:</span><span class="s1">'tpls/bookList.html'</span><span class="p">,</span>
+        <span class="na">controller</span><span class="p">:</span><span class="s1">'BookListCtrl'</span>
+    <span class="p">}).</span>
+</code></pre></div>
+<p>在路由中的<code>/list</code>使用<code>&#39;tpls/bookList.html&#39;</code>来作为模板</p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">ng-repeat=</span><span class="s">"book in books"</span><span class="nt">&gt;</span>
         书名:   作者:
-    &lt;/li&gt;
-&lt;/ul&gt;
-</code></pre>
-
-<p>这个模板使用<code> ng-repeat</code>迭代数组的指令来迭代books数组，从而生成列表，</p>
+    <span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
+</code></pre></div>
+<p>这个模板使用<code>ng-repeat</code>迭代数组的指令来迭代books数组，从而生成列表，</p>
 
 <p>当访问<code>list</code>的时候也就说明<code>BookListCtrl</code>控制器去管理了，从而成了列表结构现在在视图</p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-b4cbab482dfd5654.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-b4cbab482dfd5654.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
 <p>如果应用里面还有其他的控制器，可以继续在<code>controllers.js</code>里继续往下写，</p>
 
-<p>###ng官方推荐的模块切分方式是什么？</p>
+<h3>ng官方推荐的模块切分方式是什么？</h3>
 
 <p>在项目开发时，可能有很多人来共同完成这个项目，这个时候不可能大家一起来改一个文件，改一个文件很容易冲突，这个时候有两种方式，</p>
 
@@ -398,46 +370,42 @@ bookStoreCtrls.controller('BookListCtrl', ['$scope',
 
 <p>多个模块如何实现加载呢？</p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-d8582da9c1253cb8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
-
-<pre><code class="language-javascript">var bookStoreApp = angular.module('bookStoreApp', [
-    'ngRoute', 'ngAnimate', 'bookStoreCtrls', 'bookStoreFilters',
-    'bookStoreServices', 'bookStoreDirectives'
-]);
-</code></pre>
-
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-d8582da9c1253cb8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">bookStoreApp</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">'bookStoreApp'</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s1">'ngRoute'</span><span class="p">,</span> <span class="s1">'ngAnimate'</span><span class="p">,</span> <span class="s1">'bookStoreCtrls'</span><span class="p">,</span> <span class="s1">'bookStoreFilters'</span><span class="p">,</span>
+    <span class="s1">'bookStoreServices'</span><span class="p">,</span> <span class="s1">'bookStoreDirectives'</span>
+<span class="p">]);</span>
+</code></pre></div>
 <p>以上代码使用了官方推荐的模块切分的方式，也就是说把控制器，指令，过滤器，服务等。。。分别定义成一个或者多个js文件，这个时候提供一个入口点<code>app.js</code>，这个<code>app.js</code>定义一个模块module，这个模块module作为启动点，他实际上没有太多的功能，只是说告诉AngularJS我依赖哪一些模块，然后加一个路由的配置的功能</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">bookStoreApp</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">'bookStoreApp'</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s1">'ngRoute'</span><span class="p">,</span> <span class="s1">'ngAnimate'</span><span class="p">,</span> <span class="s1">'bookStoreCtrls'</span><span class="p">,</span> <span class="s1">'bookStoreFilters'</span><span class="p">,</span>
+    <span class="s1">'bookStoreServices'</span><span class="p">,</span> <span class="s1">'bookStoreDirectives'</span>
+<span class="p">]);</span>
 
-<pre><code class="language-javascript">var bookStoreApp = angular.module('bookStoreApp', [
-    'ngRoute', 'ngAnimate', 'bookStoreCtrls', 'bookStoreFilters',
-    'bookStoreServices', 'bookStoreDirectives'
-]);
+<span class="nx">bookStoreApp</span><span class="p">.</span><span class="nx">config</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">$routeProvider</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'/hello'</span><span class="p">,</span> <span class="p">{</span>
+        <span class="na">templateUrl</span><span class="p">:</span> <span class="s1">'tpls/hello.html'</span><span class="p">,</span>
+        <span class="na">controller</span><span class="p">:</span> <span class="s1">'HelloCtrl'</span>
+    <span class="p">}).</span><span class="nx">when</span><span class="p">(</span><span class="s1">'/list'</span><span class="p">,{</span>
+        <span class="na">templateUrl</span><span class="p">:</span><span class="s1">'tpls/bookList.html'</span><span class="p">,</span>
+        <span class="na">controller</span><span class="p">:</span><span class="s1">'BookListCtrl'</span>
+    <span class="p">}).</span><span class="nx">otherwise</span><span class="p">({</span>
+        <span class="na">redirectTo</span><span class="p">:</span> <span class="s1">'/hello'</span>
+    <span class="p">})</span>
+<span class="p">});</span>
 
-bookStoreApp.config(function($routeProvider) {
-    $routeProvider.when('/hello', {
-        templateUrl: 'tpls/hello.html',
-        controller: 'HelloCtrl'
-    }).when('/list',{
-    	templateUrl:'tpls/bookList.html',
-    	controller:'BookListCtrl'
-    }).otherwise({
-        redirectTo: '/hello'
-    })
-});
-
-</code></pre>
-
+</code></pre></div>
 <p>这种方式是AngularJS官方所推荐的方式。</p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-12a3aa683a7570f9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-12a3aa683a7570f9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
 <p>AngularJS官方所推荐的方式就是说我用一个总的<code>app</code>的模块作为总的入口点，这个模块他依赖于<code>controllers</code>,<code>directives</code>,<code>filters</code>,<code>services</code>,<code>routes</code></p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-5985ae08587319be.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-5985ae08587319be.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
 <p>上图可见<code>bookStoreApp</code>模块是作为项目的启动点的</p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-57e6d4510cf10dc0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-57e6d4510cf10dc0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
 <p>可以在index里面看到ng-app作为启动点</p>
 
@@ -447,41 +415,37 @@ bookStoreApp.config(function($routeProvider) {
 
 <p>AngularJS找到了这个指令以后呢就会尝试执行这个启动点的模块<code>bookStoreApp</code>。</p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-1d6094a93e3b1639.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-1d6094a93e3b1639.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
 <p>然后他就会发现这个启动点的模块还依赖这么多东西，他就会等待这些东西加载完成。</p>
 
 <p>如果使用到更多的模块要在起点模块中注册依赖。</p>
 
-<p>###模块之间的互相依赖怎么做？—依赖注入</p>
-
-<pre><code class="language-javascript">var bookStoreApp = angular.module('bookStoreApp', [
-    'ngRoute', 'ngAnimate', 'bookStoreCtrls', 'bookStoreFilters',
-    'bookStoreServices', 'bookStoreDirectives'
-]);
-</code></pre>
-
-<p><code>bookStoreApp </code>模块之间这种依赖的方式写的是一个字符串，那么AngularJS是怎么知道你是这样一个依赖关系呢？</p>
+<h3>模块之间的互相依赖怎么做？---依赖注入</h3>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">bookStoreApp</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">'bookStoreApp'</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s1">'ngRoute'</span><span class="p">,</span> <span class="s1">'ngAnimate'</span><span class="p">,</span> <span class="s1">'bookStoreCtrls'</span><span class="p">,</span> <span class="s1">'bookStoreFilters'</span><span class="p">,</span>
+    <span class="s1">'bookStoreServices'</span><span class="p">,</span> <span class="s1">'bookStoreDirectives'</span>
+<span class="p">]);</span>
+</code></pre></div>
+<p><code>bookStoreApp</code>模块之间这种依赖的方式写的是一个字符串，那么AngularJS是怎么知道你是这样一个依赖关系呢？</p>
 
 <p>这个就要借助于AngularJS叫做依赖注入的一个机制，</p>
-
-<pre><code class="language-javascript">var bookStoreApp = angular.module('bookStoreApp', [
-    'ngRoute', 'ngAnimate', 'bookStoreCtrls', 'bookStoreFilters',
-    'bookStoreServices', 'bookStoreDirectives'
-]);
-</code></pre>
-
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">bookStoreApp</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">'bookStoreApp'</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s1">'ngRoute'</span><span class="p">,</span> <span class="s1">'ngAnimate'</span><span class="p">,</span> <span class="s1">'bookStoreCtrls'</span><span class="p">,</span> <span class="s1">'bookStoreFilters'</span><span class="p">,</span>
+    <span class="s1">'bookStoreServices'</span><span class="p">,</span> <span class="s1">'bookStoreDirectives'</span>
+<span class="p">]);</span>
+</code></pre></div>
 <p>虽然注入写的是字符串，但是AngularJS在启动的时候她回去检测，检测字符串和对于的模块到底有没有注册或者说有没有被加载进来，如果你写一个模块没有的话AngularJS是会报错的，AngularJS内部的依赖注入是这样去做的。</p>
 
 <p>需要知道如果你需要依赖一些模块，你只要在后面的方括号数组里面</p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-69867d5d9f418e9a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-69867d5d9f418e9a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
-<p>以ng开头的是AngularJS自身所提供的模块，’ngRoute’ru’路由, ‘ngAnimate动画’,</p>
+<p>以ng开头的是AngularJS自身所提供的模块，&#39;ngRoute&#39;ru&#39;路由, &#39;ngAnimate动画&#39;,</p>
 
 <p>AngularJS自身都提供了哪些模块呢？</p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-767c23454b933eb5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-767c23454b933eb5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
 <p>angular-animate.js动画</p>
 
@@ -756,7 +720,8 @@ posts">
 
 </div>
 </div>
-	<footer id="footer">
+	
+<footer id="footer">
 	<nav class="links">
 		<a href="">作品</a>
 		<a href="/about/">关于本站</a>

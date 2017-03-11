@@ -1,16 +1,12 @@
 # Welcome to Jekyll!
-#
-# This config file is meant for settings that affect your whole blog, values
-# which you are expected to set up once and rarely need to edit after that.
-# For technical reasons, this file is *NOT* reloaded automatically when you use
-# 'jekyll serve'. If you change this file, please restart the server process.
+
 
 # Site settings
 title: 继小鹏的博客
 email: 1319639755@qq.com
 author: Jipeng Huang
 url: "http://www.huanghanlian.com"
-description: Actually, less is more!
+description: 没有所谓失败，除非你不再尝试。!
 baseurl: "" # the subpath of your site, e.g. /blog
 
 safe: false
@@ -21,26 +17,31 @@ safe: false
 twitter_username: jekyllrb
 github_username:  jekyll
 
+#redcarpet解析包||markdown解析包
+markdown: redcarpet
+#设置Pygments代码高亮
+#highlighter: true
+
+#设置Pygments代码高亮正确
+highlight:
+  enable: true
+  line_number: true
+  auto_detect: false
+  tab_replace:
 
 
 
-
-# Build settings
-markdown: kramdown
-kramdown:
-  input:  GFM
-  enable_coderay: true
-
-
-# use_coderay: true
-
-
-
+#分页第一行定义了每页的文章数量，而第二行则定义了在分页的结果，比如在/index.html中使用分页，定义为page:num，则第二页的路径将是/page2/index.html，第三页的路径将是/page3/index.html，以此类推
 paginate: 10
 paginate_path: "page:num"
+
+#在运行 jekyll serve 的时候，出现该问题：
+#Deprecation: You appear to have pagination turned on, but you haven’t included the jekyll-paginate gem. Ensure you have gems: [jekyll-paginate] in your configuration file.
 gems: [jekyll-paginate]
 
-# Comment setting
+
+
+# Comment setting 评论设置
 comments :
   provider : duoshuo
   duoshuo :
