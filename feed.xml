@@ -5,9 +5,274 @@
     <description>Actually, less is more!</description>
     <link>http://www.huanghanlian.com/</link>
     <atom:link href="http://www.huanghanlian.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 29 Jan 2017 14:26:24 +0800</pubDate>
-    <lastBuildDate>Sun, 29 Jan 2017 14:26:24 +0800</lastBuildDate>
+    <pubDate>Sat, 11 Mar 2017 23:51:37 +0800</pubDate>
+    <lastBuildDate>Sat, 11 Mar 2017 23:51:37 +0800</lastBuildDate>
     <generator>Jekyll v3.0.0</generator>
+    
+      <item>
+        <title>AngularJS快速入手1-1</title>
+        <description>
+</description>
+        <pubDate>Sat, 11 Mar 2017 23:46:13 +0800</pubDate>
+        <link>http://www.huanghanlian.com/angularjs/2017/03/11/angularjs-basics2.html</link>
+        <guid isPermaLink="true">http://www.huanghanlian.com/angularjs/2017/03/11/angularjs-basics2.html</guid>
+        
+        <category>AngularJS</category>
+        
+        
+        <category>AngularJS</category>
+        
+      </item>
+    
+      <item>
+        <title>AngularJS快速入手1-1</title>
+        <description>&lt;h3 id=&quot;angularjs&quot;&gt;AngularJS简介&lt;/h3&gt;
+
+&lt;p&gt;目前最新版本1.3.0&lt;/p&gt;
+
+&lt;p&gt;放弃了ie8&lt;/p&gt;
+
+&lt;p&gt;引入了单向数据绑定&lt;/p&gt;
+
+&lt;p&gt;删掉了一些过时的api (据说是为了AngularJS2.0做准备)&lt;/p&gt;
+
+&lt;h3 id=&quot;angularjs-4&quot;&gt;AngularJS-实例演示4大核心特性&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;1 .MVC&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-7706890b00d0fa54.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;```html
+&amp;lt;!doctype html&amp;gt;&lt;/p&gt;
+&lt;html ng-app=&quot;&quot;&gt;
+    &lt;head&gt;
+        &lt;meta charset=&quot;utf-8&quot; /&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;!-- ng-controller我们的控制器  ng-controller赋值成HelloAngular --&gt;
+        &lt;div ng-controller=&quot;HelloAngular&quot;&gt;
+            &lt;!-- p标签充当了视图的功能 --&gt;
+            &lt;!-- 取值这个地方就是充当数据模型 --&gt;
+            &lt;p&gt;,Angular&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+    &lt;!-- 导入了angular-1.3.0.js文件 --&gt;
+    &lt;script src=&quot;js/angular-1.3.0.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
+        //HelloAngular这个函数充当了控制器
+        function HelloAngular($scope) {
+            $scope.greeting = {
+                text: &#39;Hello&#39;
+            };
+        }
+    &lt;/script&gt;
+&lt;/html&gt;
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;p&gt;运行效果&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-65e2b7e3decbbd7f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;2. 模块化&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;html&lt;/p&gt;
+
+&lt;p&gt;```html
+&amp;lt;!doctype html&amp;gt;&lt;/p&gt;
+&lt;html ng-app=&quot;HelloAngular&quot;&gt;
+    &lt;head&gt;
+        &lt;meta charset=&quot;utf-8&quot; /&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div ng-controller=&quot;helloAngular&quot;&gt;
+            &lt;p&gt;,Angular&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+    &lt;script src=&quot;js/angular-1.3.0.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;HelloAngular_Module.js&quot;&gt;&lt;/script&gt;
+&lt;/html&gt;
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;p&gt;javascript&lt;/p&gt;
+
+&lt;p&gt;``` javascript
+//这里调用了angular.module方法
+var myModule = angular.module(“HelloAngular”, []);&lt;/p&gt;
+
+&lt;p&gt;myModule.controller(“helloAngular”, [‘$scope’,
+    function HelloAngular($scope) {
+        $scope.greeting = {
+            text: ‘Hello’
+        };
+    }
+]);
+```&lt;/p&gt;
+
+&lt;p&gt;运行效果&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-275f189bedad7699.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在HelloAngular_Module.js文件中调用了angular.module方法，然后给他一个字符串“HelloAngular”，后面还传了方括号空数组，通过字面量看出这是在定义一个模块，var myModule是一个模块，定义完模块后在模块上面调用了一个controller方法很显然这是告诉angular要生成一个控制器”helloAngular”是控制器的名称，后面方括号里面第一个参数’$scope’是告诉angularjs帮我注入’$scope’。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-011b390978faa7f1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;AngularJS概念有Module，有Directive，有Filter，其实一点要抓住一个点，一切都是从模块开始的，在AngularJS开发中首先想到的是模块也就是&lt;strong&gt;Module&lt;/strong&gt;，其他所有的东西其实都是挂在&lt;strong&gt;Module&lt;/strong&gt;下面的，因为只有把模块创建后你才能在模块上去调用Service,controller等方法，所以首先想到的是模块，&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;3. 指令系统&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;html&lt;/p&gt;
+
+&lt;p&gt;```html
+&amp;lt;!doctype html&amp;gt;&lt;/p&gt;
+&lt;html ng-app=&quot;MyModule&quot;&gt;
+	&lt;head&gt;
+		&lt;meta charset=&quot;utf-8&quot; /&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;hello&gt;&lt;/hello&gt;
+	&lt;/body&gt;
+	&lt;script src=&quot;js/angular-1.3.0.js&quot;&gt;&lt;/script&gt;
+	&lt;script src=&quot;HelloAngular_Directive.js&quot;&gt;&lt;/script&gt;
+&lt;/html&gt;
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;p&gt;javascript&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;javascript
+var myModule = angular.module(&quot;MyModule&quot;, []);
+myModule.directive(&quot;hello&quot;, function() {
+    return {
+        restrict: &#39;E&#39;,
+        template: &#39;&amp;lt;div&amp;gt;Hi everyone!&amp;lt;/div&amp;gt;&#39;,
+        replace: true
+    }
+});
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;运行效果&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-d688b09b01e01ac8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;看看body表情内的&lt;hello&gt;&lt;/hello&gt;标签，很显然浏览器是不认识这个标签的，不认识他在默认情况下浏览器会忽略他，Angular js就会想一下怎样能让浏览器认识这个标签呢，这就需要借助Angular js的Directive这个特性，&lt;/p&gt;
+
+&lt;p&gt;一切都是从模块开始的，所以我们需要创建模块&lt;/p&gt;
+
+&lt;p&gt;``` javascript
+var myModule = angular.module(“MyModule”, []);&lt;/p&gt;
+
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;javascript
+var myModule = angular.module(&quot;MyModule&quot;, []);
+myModule.directive(&quot;hello&quot;, function() {
+    return {
+        restrict: &#39;E&#39;,
+        template: &#39;&amp;lt;div&amp;gt;Hi everyone!&amp;lt;/div&amp;gt;&#39;,
+        replace: true
+    }
+});
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;模块创建好再调用模块上面directive方法，这个方法也有两个参数&lt;code&gt;&quot;hello&quot;&lt;/code&gt;是指令的名称，也就是对应的标签名，后面是一个函数，这个函数就是生成标签的， template: ‘&amp;lt;div&amp;gt;Hi everyone!&amp;lt;/div&amp;gt;’,&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-15bff53254dc9fec.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;最终hello是被替换成模板template，&lt;/p&gt;
+
+&lt;p&gt;这个就是angular的指令
+我们可以自定义一大堆的指令然后做一些封装我们在调用的时候会非常方便，当然指令不只是定义标签这么简单，还有很多其他功能，比如说&lt;/p&gt;
+
+&lt;p&gt;```html
+&amp;lt;!doctype html&amp;gt;&lt;/p&gt;
+&lt;html ng-app=&quot;MyModule&quot;&gt;
+	&lt;head&gt;
+		&lt;meta charset=&quot;utf-8&quot; /&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;hello&gt;&lt;/hello&gt;
+	&lt;/body&gt;
+	&lt;script src=&quot;js/angular-1.3.0.js&quot;&gt;&lt;/script&gt;
+	&lt;script src=&quot;HelloAngular_Directive.js&quot;&gt;&lt;/script&gt;
+&lt;/html&gt;
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;p&gt;我们在html里面ng-app=”MyModule”,这个实际上就是一个指令，这里复制ng-app等于”MyModule”&lt;/p&gt;
+
+&lt;p&gt;“MyModule”在var myModule = angular.module(“MyModule”, []);js里，很显然是告诉Angular js要去使用我们这个模块，ng-app意思和C语言里的main或者是java里面的main方法。&lt;/p&gt;
+
+&lt;p&gt;Angular js检测到ng-app这个指令的时候就知道我从ng-app这个指令开始内部的标签内容就归我Angular js来管了，也就是说Angular js从ng-app这个地方启动的，可以想象既然是main函数main方法，一个应用里面显然只能有一个，所以在任意一个单页Angular js应用里面ng-app这个指令只能出现一次。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-2969be9fb6c72e5a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;4. 双向数据绑定&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Angular js 是实现了双向数据绑定，其他的前端框架都没有实现这样一个特性，目前大多数前端框架都是实现单向数据绑定。&lt;/p&gt;
+
+&lt;p&gt;来看看单向数据绑定的流程&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-4f67727e7c975367.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;首先是我们把模板写好，再加上数据，数据可能是从后台服务端读进来的，模板和数据结合在一起，通过数据绑定机制生成一段html标签然后把这段标签插入到文档流里面，这是经典单向数据绑定的处理流程。&lt;/p&gt;
+
+&lt;p&gt;html一旦生成完以后就没法再变了，当有新的数据的时候我们只能重新再来一遍。&lt;/p&gt;
+
+&lt;p&gt;Angular js认为单向数据绑定的过程实在是不怎么优雅，所以他觉得我应该实现双向数据绑定。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-ee3f8ae4464562b3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;他的核心想法是这样的，&lt;/p&gt;
+
+&lt;p&gt;视图，数据是对应的当视图上的内容发生变化的时候他希望数据模型里面立刻发生变化，当数据模型发生变化的时候视图自己自动会去更新，很显然这里需要  借助一个事件机制。&lt;/p&gt;
+
+&lt;p&gt;在html里有什么样的视图会发生变化？表单。在很多的页面中会出现很多的表单，表单是来收集用户的输入的，这些数据是非常容易变化的，在数据发生变化就会通过Angular js机制同步到数据模型上面。&lt;/p&gt;
+
+&lt;p&gt;html&lt;/p&gt;
+
+&lt;p&gt;```html
+&amp;lt;!doctype html&amp;gt;&lt;/p&gt;
+&lt;html ng-app=&quot;&quot;&gt;
+    &lt;head&gt;
+        &lt;meta charset=&quot;utf-8&quot; /&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div&gt;
+            &lt;input ng-model=&quot;greeting.text&quot; /&gt;
+            &lt;p&gt;,AngularJS&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+    &lt;script src=&quot;js/angular-1.3.0.js&quot;&gt;&lt;/script&gt;
+&lt;/html&gt;
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;p&gt;运行效果&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-8df2bddb9e767ce3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;上面代码实现效果在input输入框输入任何东西底下的显示框都会立刻显示，&lt;/p&gt;
+
+&lt;p&gt;这是什么原理呢&lt;/p&gt;
+
+&lt;p&gt;```html
+&lt;input ng-model=&quot;greeting.text&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;,AngularJS&lt;/p&gt;
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;p&gt;首先有一个输入框
+然后绑定了一个ng-model=”greeting.text”,
+这个是时候底下有个p标签有个双花括号来获取greeting.text的值。
+双花括号是什么意思呢？
+在Angular js里面是取值的意思，是一个取值表达式。&lt;/p&gt;
+</description>
+        <pubDate>Sat, 11 Mar 2017 23:45:13 +0800</pubDate>
+        <link>http://www.huanghanlian.com/angularjs/2017/03/11/angularjs-basics1.html</link>
+        <guid isPermaLink="true">http://www.huanghanlian.com/angularjs/2017/03/11/angularjs-basics1.html</guid>
+        
+        <category>AngularJS</category>
+        
+        
+        <category>AngularJS</category>
+        
+      </item>
     
       <item>
         <title>Ajax全接触(五) 处理跨域方式</title>
@@ -2434,1281 +2699,6 @@ out();
         <pubDate>Tue, 20 Dec 2016 11:54:48 +0800</pubDate>
         <link>http://www.huanghanlian.com/javascript/2016/12/20/javascript-jinjie7.html</link>
         <guid isPermaLink="true">http://www.huanghanlian.com/javascript/2016/12/20/javascript-jinjie7.html</guid>
-        
-        <category>__proto__</category>
-        
-        
-        <category>JavaScript</category>
-        
-      </item>
-    
-      <item>
-        <title>JavaScript 精粹 基础 进阶(6)函数和作用域（函数、this）</title>
-        <description>&lt;p&gt;函数是一块JavaScript代码，被定义一次，但可执行调用多次，js中的函数也是对象，所以js函数可以像其他对象那样操作和传递所以我们也常叫js中的函数为函数对象。&lt;/p&gt;
-
-&lt;h4 id=&quot;section&quot;&gt;函数概述&lt;/h4&gt;
-
-&lt;p&gt;函数的构成主要有几个部分&lt;code&gt;函数名&lt;/code&gt;,&lt;code&gt;参数列表&lt;/code&gt;,&lt;code&gt;函数体&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-1c7cba2619ce442d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;function foo(x, y) {
-	if (typeof x === &#39;number&#39; &amp;amp;&amp;amp; typeof y === &#39;number&#39;) {
-		return x + y;
-	} else {
-		return 0;
-	}
-}
-var cdr = foo(1,2);
-console.log(cdr);//3
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;需要注意的是函数的返回值是依赖与&lt;code&gt;return &lt;/code&gt;语句的，如果没有&lt;code&gt;return &lt;/code&gt;语句，默认会在所有代码执行以后返回一个&lt;code&gt;undefined&lt;/code&gt;。那么这是一般的函数调用。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;function foo(x, y) {
-	if (typeof x === &#39;number&#39; &amp;amp;&amp;amp; typeof y === &#39;number&#39;) {} else {
-
-	}
-}
-var cdr = foo(1, 2);
-console.log(cdr);//undefined
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;如果是作为构造器，外部使用&lt;code&gt;new&lt;/code&gt;去调用的话，如果没有&lt;code&gt;return &lt;/code&gt;语句，或者&lt;code&gt;return &lt;/code&gt;是基本类型的话，那么会将&lt;code&gt;this&lt;/code&gt;作为返回&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;function foo(x, y) {
-	if (typeof x === &#39;number&#39; &amp;amp;&amp;amp; typeof y === &#39;number&#39;) {} else {
-		return x+y;
-	}
-	this.x=x+y;
-}
-var cdr = new foo(1, 2);
-console.log(cdr.x);//3
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;重点&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;strong&gt;this&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;函数在不同的调用方式下他的&lt;code&gt;this&lt;/code&gt;指向是不一样的，并且不同的调用方式下也会有一些细微的差别。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;arguments&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;函数里面有一个特殊的对象，叫&lt;code&gt;arguments&lt;/code&gt;他和参数是有一定的连带关系的。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;function foo(a,b) {
-	return arguments;
-}
-var cdr=foo(1,2)
-console.log(cdr);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-ffcd8c9d1f9b1758.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;不同的调用方式&lt;/strong&gt;&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;直接调用&lt;/th&gt;
-      &lt;th&gt;对象方法&lt;/th&gt;
-      &lt;th&gt;构造器&lt;/th&gt;
-      &lt;th&gt;call/apply/bind&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;foo()&lt;/td&gt;
-      &lt;td&gt;o.method()&lt;/td&gt;
-      &lt;td&gt;new Foo()&lt;/td&gt;
-      &lt;td&gt;func.call(o);&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h4 id=&quot;section-1&quot;&gt;函数声明与表达式&lt;/h4&gt;
-
-&lt;p&gt;创建函数有不同的方式，常见的两种就是&lt;strong&gt;函数声明&lt;/strong&gt;和&lt;strong&gt;函数表达式&lt;/strong&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;函数声明&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code&gt;function foo(a, b) {
-    a=+a;
-    b=+b;
-    if (isNaN(a)||isNaN(b)) {   //isNaN() 函数用于检查其参数是否是非数字值。是数字返回true，非数字返回false
-    	return;
-    }
-    return a+b;
-}
-var cdr = foo(1, 2);
-console.log(cdr);//3
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;函数表达式&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;把一个匿名函数赋值给一个变量，这种就是函数表达式&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var add = function(a, b) {
-	//do sth
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;需要注意的是函数声明的函数可以在函数前调用&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;add();
-function add() {
-	console.log(1);//1
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;但是函数表达式会报错&lt;code&gt;Uncaught TypeError: add is not a function&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;add();
-var add = function() {
-	alert(1)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;函数表达式-立即执行函数表达式&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;把一个匿名函数用一个括号()括起来，然后再去直接调用，这种函数定义的方式呢，也叫作函数表达式，并且是立即执行函数表达式。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;(function() {
-	console.log(1); //1
-})();
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;return 函数&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;我们也可以将函数对象，作为一个返回值，因为函数也是对象。这种形式也是函数表达式。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;return function(){
-	//do sth;
-};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;命名式函数表达式&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;这种并不常见，同样赋值给给一个函数，但是这个函数不是匿名函数，而是有一个名字的函数。这就是命名式函数表达式&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var add = function add() {
-	//do sth
-};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;除了函数声明和函数表达式创建函数以外，还有一种不常见的一种创建函数对象的方式。就是函数构造器&lt;code&gt;Function构造器&lt;/code&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Function构造器&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;函数构造器就是大写的&lt;code&gt;Function&lt;/code&gt;，&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var add = new Function (&#39;a&#39;,&#39;b&#39;,&#39;console.log(a+b);&#39;);
-add(1,2);//3
-
-var add = Function (&#39;a&#39;,&#39;b&#39;,&#39;console.log(a+b);&#39;);
-add(1,2);//3
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;可以通过&lt;code&gt;new&lt;/code&gt;或者直接调用的方式 运行，他们俩基本没什么区别，&lt;/p&gt;
-
-&lt;p&gt;前面两个参数是函数对象里面的行参，最后一个参数表示函数体里面的代码。&lt;/p&gt;
-
-&lt;p&gt;用参数是字符串会带来安全上的一些隐患。&lt;/p&gt;
-
-&lt;p&gt;Function构造器去创建的函数里面，创建的变量仍然是局部变量，也可以使用立即调用。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Function (&#39;var lop=&quot;local&quot;;console.log(lop);&#39;)();//Function构造器去创建的函数并且立即调用
-console.log(lop);//lop是局部变量外部无法访问会报错
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在立即调用函数中有lo变量，他的内部有一个df函数声明函数这个函数内可以拿到lo变量&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;(function() {
-	var lo = &quot;lo&quot;;
-
-	function df() {
-		console.log(lo)
-	}
-	df();
-})();
-//输出lo
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;但是在Function构造器中lo却访问不到。
-在立即调用函数里，lo不可访问，全局变量l可以访问。所以说Function构造器很少使用&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var l=&quot;l&quot;;
-(function(){
-	var lo=&quot;lo&quot;;
-	Function (&#39;console.log(l);console.log(lo);&#39;)();
-})()
-
-//l
-//Uncaught ReferenceError: lo is not defined(…)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;strong&gt;比一比三种创建函数的方式&lt;/strong&gt;&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th style=&quot;text-align: left&quot;&gt; &lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;函数声明&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;函数表达式&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;函数构造器&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;前置&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;√&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;允许匿名&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;√&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;√&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;立即调用&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;√&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;√&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;在定义该函数的作用域通过函数名访问&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;√&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;没有函数名&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;√&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;前置：只有函数声明会被前置，就好像被拉倒了最前面，说以说可以在函数声明的位置之前，去调用这样一个函数。
-但是函数表达式和函数构造器是代码执行阶段，才会去创建对应的函数对象，所以不会被前置。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;允许匿名：函数表达式和函数构造器都是允许匿名的，事实上函数构造器只能是匿名的是不可以有名字的，但是函数声明他的名字是不可以省略的，省略在比较新的浏览器会报错。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;立即调用：函数声明是不能被立即调用的，如果你尝试把函数声明后面写一个括号，那么会报一个异常，因为函数声明被提前解析，并且前置放到最前了，所以会报错。函数表达式和函数构造器因为不会前置，所以表达式计算结果是一个函数对象的时候我们可以加一对括号把他立即去调用。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;在定义该函数的作用域通过函数名访问：比如说&lt;code&gt;fuction fd(){}&lt;/code&gt;在function同级作用域下，可以通过&lt;code&gt;fd()&lt;/code&gt;去调用这个函数，但是函数表达式和函数构造器就不可以这样。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;没有函数名：事实上函数构造器只能是匿名的是不可以有名字的&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;javascriptthis&quot;&gt;[JavaScript]this&lt;/h4&gt;
-
-&lt;p&gt;在不同的环境下，同一个函数在不同的调用方式下，这个 &lt;code&gt;this&lt;/code&gt;都有可能是不同的。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;全局作用域下的this&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;全局作用域的 &lt;code&gt;this&lt;/code&gt;一般指向全局对象，那么在浏览器里面这个全局对象就是&lt;code&gt;window&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;console.log(this.document === document); //true
-console.log(this === window); //true
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;可以看到&lt;code&gt;this.document &lt;/code&gt;等价于&lt;code&gt;window.document&lt;/code&gt;
-&lt;code&gt;this&lt;/code&gt;等价于&lt;code&gt;window&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;this.a = 37;
-console.log(window.a); //37
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;给全局对象添加一个属性a，这样就相当于创建了一个全局变量a，并且赋值为37。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;一般函数的this(浏览器)&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code&gt;function f1() {
-	return this;
-}
-console.log(f1() === window); //true
-
-var f1 = function() {
-	return this;
-}
-console.log(f1() === window); //true
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;用函数声明或者函数表达式，返回this，这里的this指向全局对象。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var f2 = function() {
-	&quot;use strict&quot;;
-	return this;
-}
-console.log(f2()); //undefined
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;需要注意的是再严格模式下那么默认一般情况下this会指向&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;作为对象方法的函数的this&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code&gt;var o = {
-	prop: 37,
-	f: function() {
-		return this.prop;
-	}
-};
-console.log(o.f()); //37
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;创建了一个对象字面量&lt;code&gt;o&lt;/code&gt;，&lt;code&gt;o&lt;/code&gt;里面有一个属性&lt;code&gt;f&lt;/code&gt;值呢是一个函数对象，对于一个把函数作为对象属性值的方式，叫做对象的方法，作为对象的方法去调用&lt;code&gt;o.f()&lt;/code&gt;这种情况下&lt;code&gt;this&lt;/code&gt;会指向对象&lt;code&gt;o&lt;/code&gt;所以&lt;code&gt;o.f()&lt;/code&gt;被调用返回37。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var o = {
-	prop: 37
-};
-
-function indep() {
-	return this.prop;
-}
-o.f = indep;
-console.log(o.f());//37
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;定义对象&lt;code&gt;o&lt;/code&gt;只有一个属性&lt;code&gt;prop&lt;/code&gt;赋值为37
-这里买你有一个独立的&lt;code&gt;indep&lt;/code&gt;函数，函数体&lt;code&gt;return&lt;/code&gt;一个&lt;code&gt;this.prop;&lt;/code&gt;如果直接去调用&lt;code&gt;indep()&lt;/code&gt;那么这个this会指向&lt;code&gt;window&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;如果用赋值方式&lt;code&gt;o.f&lt;/code&gt;给&lt;code&gt;o&lt;/code&gt;对象创建属性&lt;code&gt;f&lt;/code&gt;值为&lt;code&gt;indep&lt;/code&gt;函数对象，那么这样去调用我们任然能够拿到37，&lt;code&gt;console.log(o.f());//37&lt;/code&gt;。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;对象原型链上的this&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;code&gt;Object.create({x:1});&lt;/code&gt;是系统内置的函数，这个函数会接收一个参数，一般是一个对象。他会返回一个新创建的对象，并且让这个对象的原型指向参数，参数一般是个对象。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var o = {
-	f: function() {
-		return this.a + this.b;
-	}
-};
-var p = Object.create(o);
-p.a = 1;
-p.b = 4;
-console.log(p);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-d44fa743806b5fa9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;原型链上有f方法&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var o = {
-	f: function() {
-		return this.a + this.b;
-	}
-};
-var p = Object.create(o);
-p.a = 1;
-p.b = 4;
-console.log(p.f());//5
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;创建o对象属性f值是一个函数对象，&lt;/p&gt;
-
-&lt;p&gt;通过&lt;code&gt;var p = Object.create(o);&lt;/code&gt;创建了一个对象&lt;code&gt;p&lt;/code&gt;,这个对象&lt;code&gt;p&lt;/code&gt;是一个空的对象，并且他的原型会指向&lt;code&gt;o&lt;/code&gt;,使用&lt;code&gt;p.a&lt;/code&gt;给对象p添加属性值为1&lt;code&gt;p.b&lt;/code&gt;值为4，这样就创建在对象上的属性，那么我去调用p原型上的方法的时候，&lt;code&gt;this.a + this.b;&lt;/code&gt;任然能取到对象上的a和b。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;get/set方法与this&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code&gt;function modulus() {
-	return Math.sqrt(this.re * this.re + this.im * this.im);
-};
-
-var o = {
-	re: 1,
-	im: -1,
-	get phase() {
-		return Math.atan2(this.im, this.re);
-	}
-};
-
-Object.defineProperty(o, &#39;modulus&#39;, {
-	get: modulus,
-	enumerable: true,
-	configurable: true
-});
-
-console.log(o.phase, o.modulus);//-0.7853981633974483 1.4142135623730951
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;构造器中的this&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code&gt;function MyClass() {
-	this.a = 23;
-};
-var o = new MyClass();
-console.log(o.a); //23
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;如果正常去调用一个函数的话&lt;code&gt;MyClass()&lt;/code&gt;那么这个函数的&lt;code&gt;this&lt;/code&gt;会指向&lt;code&gt;window&lt;/code&gt;但是如果我用&lt;code&gt;new&lt;/code&gt;实例化构造函数去调用，那么这里面的&lt;code&gt;this&lt;/code&gt;会指向这样一个空的对象，并且这个对象的原型会指向&lt;code&gt;MyClass.prototype&lt;/code&gt;
-最后这个this.a会作为返回值，因为这里没有&lt;code&gt;return&lt;/code&gt;所以默认&lt;code&gt;this&lt;/code&gt;会作为返回值，所以这个对象o就会就会有a属性值23。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;function c2() {
-	this.a = 23;
-	return {
-		a: 24
-	};
-}
-var f = new c2();
-console.log(f.a); //24
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;c2函数this等于23，但是这一次&lt;code&gt;return&lt;/code&gt;返回了一个对象，那么这个a就不再是23了，而是返回的这个对象，o.a属性就变成了24。&lt;/p&gt;
-
-&lt;p&gt;如果是作为构造器，外部使用new去调用的话，如果没有return语句，或者return是基本类型的话，那么会将this作为返回&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;call/apply方法与this&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code&gt;function add(c, d) {
-	return this.a + this.b + c + d;
-};
-
-var o = {
-	a: 1,
-	b: 3
-};
-
-var h=add.call(o, 5, 7);//1+3+5+7
-console.log(h)
-
-add.apply(o, [10, 20]);//1+3+10+20
-
-function bar() {
-	console.log(Object.prototype.toString.call(this));
-};
-
-bar.call(7);//[object Number]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;函数add，这里面返回&lt;code&gt;this.a + this.b + c + d;&lt;/code&gt;把这四个数相加起来，定义o对象有两个属性a和b，通过对象&lt;code&gt;call&lt;/code&gt;方法，&lt;code&gt;.call(o, 5, 7)&lt;/code&gt;第一个参数是你想作为&lt;code&gt;this&lt;/code&gt;的这样一个对象，5和7是想要添加的参数，5赋值给&lt;code&gt;function add(c, d)&lt;/code&gt;的c，7赋值给d；最终的结果就是&lt;code&gt;1+3+5+7&lt;/code&gt;，
-&lt;code&gt;add.call(o, 5, 7)&lt;/code&gt;和&lt;code&gt;add.apply(o, [10, 20])&lt;/code&gt;基本没什么差别，只是&lt;code&gt;apply&lt;/code&gt;是数组作为传参的。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;bind方法与this&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code&gt;function f() {
-	return this.a;
-};
-
-var g = f.bind({
-	a: &quot;test&quot;
-});
-console.log(g()); //test
-
-var o = {
-	a: 23,
-	f: f,
-	g: g
-};
-console.log(o.f(), o.g()); //23 &quot;test&quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在EcmaScript5中扩展了叫bind的方法（IE6,7,8不支持）&lt;/p&gt;
-
-&lt;p&gt;这里有个函数对象&lt;code&gt;f&lt;/code&gt;,通过&lt;code&gt;bind&lt;/code&gt;方法，发现&lt;code&gt;f.bind({	a: &quot;test&quot;});&lt;/code&gt;有一个参数，这个参数是一个对象，这个对象就是你想要将某一个对象作为&lt;code&gt;this&lt;/code&gt;的时候那就把这样一个对象穿进去，那么我们拿到一个新的&lt;code&gt;g&lt;/code&gt;对象，新的&lt;code&gt;g&lt;/code&gt;对象在调用的时候&lt;code&gt;this&lt;/code&gt;已经指向了&lt;code&gt;bind&lt;/code&gt;的参数，这对于我们需要去绑定一次重复调用仍然实现绑定，这样会比&lt;code&gt;call&lt;/code&gt;,&lt;code&gt;apply&lt;/code&gt;会更加高效点。&lt;/p&gt;
-
-&lt;p&gt;还可以看到，这里有一个&lt;code&gt;o&lt;/code&gt;然后把a赋值为23，f属性赋值为f函数，g赋值绑定之后的方法，输出f的时候能拿到23，一般的函数根据调用方式来判断，他是通过对象属性去调用的，那么这里买你的this就会指向&lt;code&gt;o&lt;/code&gt;那么就会拿到a：23。这里面比较特殊的我使用&lt;code&gt;bind&lt;/code&gt;的方法去绑定了之后，即使我们把 新绑定之后的方法作为对象的属性去调用，仍然会按照之前的绑定去走。所以返回”test”&lt;/p&gt;
-
-&lt;h4 id=&quot;javascriptarguments&quot;&gt;[JavaScript]函数属性arguments&lt;/h4&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;函数属性 &amp;amp; arguments&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;接触函数属性和方法&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;function foo(a, b, d) {
-	console.log(arguments);
-	console.log(arguments.length); //2
-	console.log(arguments[0]); //1
-	arguments[1] = 10;
-	console.log(b); //change to 10;
-
-	arguments[2] = 100;
-	console.log(d); //即使手动赋值任然是undefined. 没有赋值arguments[2]=100;d等于undefined
-	console.log(arguments.callee === foo);
-}
-foo(1, 2);
-console.log(foo.length);
-console.log(foo.name);
-console.dir(foo);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-327ae46a1e186720.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;定义函数&lt;code&gt;foo&lt;/code&gt;
-通过&lt;code&gt;foo.name&lt;/code&gt;获取函数名
-通过&lt;code&gt;foo.length&lt;/code&gt;获取函数行参个数
-通过&lt;code&gt;arguments.length&lt;/code&gt;获取函数实际传参的个数&lt;/p&gt;
-
-&lt;p&gt;有一个问题。&lt;code&gt;foo(1, 2);&lt;/code&gt;传参只有两个参数，实际上&lt;code&gt;d&lt;/code&gt;是没有传进来的， 这种情况尝试去&lt;code&gt;arguments[2] = 100;&lt;/code&gt;去赋值的时候对应的&lt;code&gt;d&lt;/code&gt;仍然是&lt;code&gt;undefined&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;严格模式下&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;function foo(a, b, d) {
-	&#39;use strict&#39;
-	console.log(arguments.length); //2
-	console.log(arguments[0]); //1
-	arguments[1] = 10;
-	console.log(b); //严格模式下仍然是1
-
-	arguments[2] = 100;
-	console.log(d); //即使手动赋值任然是undefined. 没有赋值arguments[2]=100;d等于undefined
-	console.log(arguments.callee === foo);  //严格模式下arguments.callee是禁止使用
-}
-foo(1, 2);
-console.log(foo.length);
-console.log(foo.name);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;apply/call方法&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code&gt;function foo(x, y) {
-	console.log(x, y, this);
-};
-foo.call(100, 1, 2);					//1 2 Number {[[PrimitiveValue]]: 100}
-foo.apply(true, [3, 4]);				//3 4 Boolean {[[PrimitiveValue]]: true}
-foo.apply(null);						//undefined undefined Window {...}
-foo.apply(undefined);					//undefined undefined Window {...}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;定义&lt;code&gt;foo&lt;/code&gt;函数，有x,y两个属性，输出参数和对应的&lt;code&gt;this&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;对于&lt;code&gt;call()&lt;/code&gt;来讲第一个参数就是想作为&lt;code&gt;this&lt;/code&gt;的对象如果不是对象他会转成对象，所以这里的&lt;code&gt;foo.call(100, 1, 2);	&lt;/code&gt;&lt;strong&gt;100&lt;/strong&gt;会转成对应的包装类&lt;code&gt;Number &lt;/code&gt;值为100。类似的&lt;code&gt;foo.apply(true, [3, 4]);&lt;/code&gt;&lt;strong&gt;true&lt;/strong&gt;会转换成布尔值。
-如果第一个参数是&lt;code&gt;null&lt;/code&gt;,&lt;code&gt;undefined&lt;/code&gt;的话，那么&lt;code&gt;this&lt;/code&gt;会指向全局对象，对于浏览器就是&lt;code&gt;window对象&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;需要注意在严格模式下&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;function foo(x, y) {
-	&#39;use strict&#39;;
-	console.log(x, y, this);
-};
-foo.call(100, 1, 2);					//1 2 100
-foo.apply(true, [3, 4]);				//3 4 true
-foo.apply(null);						//undefined undefined null
-foo.apply(undefined);					//undefined undefined undefined
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在严格模式下&lt;code&gt;this&lt;/code&gt;输出直接量&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;bind方法&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;在EcmaScript5中扩展了叫bind的方法（IE6,7,8不支持）&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;this.x = 9; //创建了一个全局变量x并赋值为9
-var mod = {
-	x: 81,
-	getX: function() {
-		return this.x;
-	}
-};
-
-console.log(mod.getX()); //81
-
-var gitX = mod.getX;
-console.log(gitX());; //9
-
-var bound = gitX.bind(mod);
-console.log(bound());//81
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;创建了一个全局变量&lt;code&gt;x&lt;/code&gt;并赋值为9，然后有一个变量&lt;code&gt;mod &lt;/code&gt;赋值为一个对象字面量，里面有x属性 值为81，有一个getX属性，值是一个匿名函数，他会返回&lt;code&gt;this.x&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;如果&lt;code&gt;对象(点)属性名  mod.getX()&lt;/code&gt;这样的调用方式。会返回这个对象为&lt;code&gt;this&lt;/code&gt;返回81。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;var gitX = mod.getX;&lt;/code&gt;如果定义一个全局变量gitX赋值为&lt;code&gt;mod&lt;/code&gt;对象的&lt;code&gt;getX&lt;/code&gt;属性，这个时候&lt;code&gt;this&lt;/code&gt;就会指向全局对象，也就是&lt;code&gt;this.x = 9;&lt;/code&gt;所以返回9，&lt;code&gt;console.log(gitX());; //9&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;通过&lt;code&gt;bind&lt;/code&gt;方法改变函数运行时的&lt;code&gt;this&lt;/code&gt;指向，&lt;code&gt;var bound = gitX.bind(mod);&lt;/code&gt;也就是说&lt;code&gt;gitX函数在运行时this&lt;/code&gt;为&lt;code&gt;mod对象&lt;/code&gt;。所以再次输出81。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;bind与currying  科里化功能&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;函数科里化就是把一个函数拆成多个单元。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;function add(a,b,c){
-	return a+b+c;
-};
-
-var func=add.bind(undefined,100);
-func(1,2);//103
-
-var func2=func.bind(undefined,200);
-func2(10);//310
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这里有一个函数&lt;code&gt;add&lt;/code&gt;他的作用是把参数abc相加然后作为返回值，&lt;/p&gt;
-
-&lt;p&gt;可能有的时候不需要一次把函数都调用完，而是我调用一次把前面两个参数传完了后，得到这样的函数我再去调用，传入第三个值，比如通过add.bind()方法这次不需要改变this，那写个undefined，提高额外参数100，这个我们拿到bind函数以后，相当于这个100就会固定赋值给a第一个参数，在调用&lt;code&gt;func(1,2);&lt;/code&gt;传入1和2的时候，1就会给b，2就会给c，所以最后的答案就是103。&lt;/p&gt;
-
-&lt;p&gt;类似的再去&lt;code&gt;func.bind()&lt;/code&gt;也就是说绑定了两个参数ab，b传入200，再去调用一次&lt;code&gt;func2(10)&lt;/code&gt;传入10，那么就是100+200+10，最终结果就是310。&lt;/p&gt;
-
-&lt;p&gt;实际例子&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-796ebbd5039095bc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;bind与new&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code&gt;function foo() {
-	this.b = 100;
-	return this.a;
-};
-
-var func = foo.bind({
-	a: 1
-});
-console.log(func()); //1
-
-var func2 = new func();
-console.log(func2); //{b: 100}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;foo函数声明，函数体&lt;code&gt;this.b=100&lt;/code&gt;和&lt;code&gt;return this.a;&lt;/code&gt;那如果我直接调用的话，&lt;code&gt;this.b=100&lt;/code&gt;中的&lt;code&gt;this&lt;/code&gt;是指向全局对象，所以说相当于创建了一个全部变量&lt;code&gt;b&lt;/code&gt;并赋值为100，返回全局对象上的&lt;code&gt;a&lt;/code&gt;属性。&lt;/p&gt;
-
-&lt;p&gt;使用&lt;code&gt;bind()&lt;/code&gt;方法，&lt;code&gt;var func = foo.bind({	a: 1	});&lt;/code&gt;来传入一个参数，一个字面量对象只有一个属性&lt;code&gt;a&lt;/code&gt;，直接调用的话&lt;code&gt;func()&lt;/code&gt;，那么&lt;code&gt;foo&lt;/code&gt;函数中的&lt;code&gt;this&lt;/code&gt;就会指向&lt;code&gt;bind({a:1})&lt;/code&gt;的参数。所以调用&lt;code&gt;func()&lt;/code&gt;返回1。&lt;/p&gt;
-
-&lt;p&gt;如果使用&lt;code&gt;new&lt;/code&gt;的话就特殊些，使用&lt;code&gt;new&lt;/code&gt;除非&lt;code&gt;func()&lt;/code&gt;函数&lt;code&gt;return  除非是对象&lt;/code&gt;如果不是对象将会把&lt;code&gt;this&lt;/code&gt;作为返回值，并且&lt;code&gt;this&lt;/code&gt;会被初始化成一个默认的空对象，这个空对象的原型是&lt;code&gt;foo.prototype&lt;/code&gt;，所以使用&lt;code&gt;new&lt;/code&gt;去调用的时候&lt;code&gt;var func2 = new func();&lt;/code&gt;，即使用了&lt;code&gt;var func = foo.bind({	a: 1	});&lt;/code&gt;bind方法但是这个this任然会指向没有bind的时候的一样，所以返回值会忽略&lt;code&gt;return &lt;/code&gt;，返回&lt;code&gt;this&lt;/code&gt;对象。&lt;/p&gt;
-</description>
-        <pubDate>Tue, 20 Dec 2016 11:54:41 +0800</pubDate>
-        <link>http://www.huanghanlian.com/javascript/2016/12/20/javascript-jinjie6.html</link>
-        <guid isPermaLink="true">http://www.huanghanlian.com/javascript/2016/12/20/javascript-jinjie6.html</guid>
-        
-        <category>__proto__</category>
-        
-        
-        <category>JavaScript</category>
-        
-      </item>
-    
-      <item>
-        <title>JavaScript 精粹 基础 进阶(5)数组</title>
-        <description>&lt;p&gt;数组是值的有序集合。每个值叫做元素，每个元素在数组中都有数字位置编号，也就是索引。JS中的数组是弱类型的，数组中可以含有不同类型的元素。数组元素甚至可以是对象或其它数组。&lt;/p&gt;
-
-&lt;h4 id=&quot;section&quot;&gt;第一节、创建数组、数组操作&lt;/h4&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;数组概述&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;数组是值的有序集合。每个值叫做元素，每个元素在数组中都有数字位置编号，也就是索引。JS中的数组是弱类型的，数组中可以含有不同类型的元素。数组元素甚至可以是对象或其它数组。&lt;/p&gt;
-
-&lt;p&gt;例子：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var arr = [1, true, null, undefined, {x : 1}, [1, 2, 3]];
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-834a57c51324af70.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;创建数组-字面量&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code&gt;var BAT = [&#39;Alibaba&#39;, &#39;Tencent&#39;, &#39;Baidu&#39;];
-var students = [{name : &#39;Bosn&#39;, age : 27}, {name : &#39;Nunnly&#39;, age : 3}];
-var arr = [&#39;Nunnly&#39;, &#39;is&#39;, &#39;big&#39;, &#39;keng&#39;, &#39;B&#39;, 123, true, null];
-var arrInArr = [[1, 2], [3, 4, 5]];
-var commasArr1 = [1, , 2]; // 1, undefined, 2
-var commasArr2 = [,,]; // undefined * 2
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;数组的大小是有限制的，最小是0，最长是2的23次幂减去1&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;size from 0 to 4,294,967,295(2^23  -1 ) 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-af03cae4807d77d2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;创建数组-new Array&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;除了用字面量创建数组，还可以用&lt;code&gt;Array&lt;/code&gt;构造器创建数组。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var arr = new Array(); //等价于var arr=[];
-var arrWithLength = new Array(100); // undefined * 100  长度为100
-var arrLikesLiteral = new Array(true, false, null, 1, 2, &quot;hi&quot;);
-// 等价于[true, false, null, 1, 2, &quot;hi&quot;];
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;数组元素读写&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;数组元素读写是比较基础，也是非常常见的。&lt;/p&gt;
-
-&lt;p&gt;通过索引来去访问数组，索引从0到它的长度减1，&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var arr = [1, 2, 3, 4, 5];
-arr[1]; // 2
-arr.length; // 5
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;可以动态添加数组元素&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;arr[5] = 6;
-arr.length; // 6
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;也可以删除第&lt;code&gt;索引&lt;/code&gt;数组&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;delete arr[0];
-arr[0]; // undefined
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;需要注意用&lt;code&gt;delete&lt;/code&gt;删除的方式，最终数组长度任然不会改变。只是把删除的元素改成&lt;code&gt;undefined&lt;/code&gt;。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;数组元素增删&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;strong&gt;动态增加&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;数组元素增删我们需要意识到一点，javascript的数组是动态的，无需指定大小，数组对象的&lt;code&gt;length&lt;/code&gt;属性也会根据数组情况去更新。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var arr = [];
-arr[0] = 1;
-arr[1] = 2;
-arr.push(3);
-arr; // [1, 2, 3]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;比如说这里定义一个&lt;code&gt;arr&lt;/code&gt;空的数组，然后把它第一个元素赋值为1，也可以用数组对象的&lt;code&gt;push&lt;/code&gt;方法在尾部再添加元素3，现在再来看&lt;code&gt;arr&lt;/code&gt;数组发现这里买你有3个元素&lt;code&gt;[1, 2, 3]&lt;/code&gt;。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;arr[arr.length] = 4; // 等价于 arr.push(4);
-arr; // [1, 2, 3, 4]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;arr.length&lt;/code&gt;是数组的长度，用它来做索引，也就是在数组的最后一个来赋值等价于&lt;code&gt;arr.push(4);&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;如果想要在数组的头部去添加赋值怎么办呢?
-这个时候可以用到数组对象&lt;code&gt;unshift&lt;/code&gt;方法。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;arr.(0);
-arr; // [0, 1, 2, 3, 4];
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;strong&gt;删除&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;delete&lt;/code&gt;方法可以删除数组的元素，更准确的说是将数组对应的一个元素变为&lt;code&gt;undefined&lt;/code&gt;位置还是存在的，长度没有变化。用&lt;code&gt;in&lt;/code&gt;操作符来判断索引在这个数组存不存在答案是&lt;code&gt;false&lt;/code&gt;。但是我通过&lt;code&gt;arr[2]=&#39;undefined&#39;&lt;/code&gt;再用&lt;code&gt;in&lt;/code&gt;操作符来判断索引在这个数组存不存在答案是&lt;code&gt;true&lt;/code&gt;。注意这里的区别。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;delete arr[2];
-arr; // [0, 1, undefined, 3, 4]
-arr.length; // 5
-2 in arr; // false
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;用&lt;code&gt;arr.length -= 1;&lt;/code&gt;的方式，意思就是&lt;code&gt;arr.length &lt;/code&gt;等于&lt;code&gt;arr.length&lt;/code&gt;减1。这样可以删除最后一个尾部元素的。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;arr.length -= 1;
-arr; // [0, 1, undefined, 3, 4],  4 is removed
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;数组的&lt;code&gt;arr.pop()&lt;/code&gt;方法，&lt;code&gt;arr.pop()&lt;/code&gt;方法也是删除数组最尾部的元素。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;arr.pop(); // 3 returned by pop
-arr; // [0, 1, undefined], 3 is removed
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;数组的&lt;code&gt;arr.shift(); &lt;/code&gt;方法，&lt;code&gt;arr.shift(); &lt;/code&gt;方法也是删除数组头部  的元素。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;arr.shift(); // 0 returned by shift
-arr; // [1, undefined]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;数组迭代&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;可以通过&lt;code&gt;for&lt;/code&gt;遍历数组中每一个元素&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var i = 0, n = 10;
-var arr = [1, 2, 3, 4, 5];
-for (; i &amp;lt; n; i++) {
-    console.log(arr[i]); // 1, 2, 3, 4, 5
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;可以通过&lt;code&gt;for...in&lt;/code&gt;遍历数组&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;for(i in arr) {
-    console.log(arr[i]); // 1, 2, 3, 4, 5
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;通过&lt;code&gt;for...in&lt;/code&gt;遍历数组需要注意的是，数组也是对象，他也有原型，比如我们给数组原型增加属性&lt;code&gt;Array.prototype.x = &#39;inherited&#39;;&lt;/code&gt;那么在&lt;code&gt;for...in&lt;/code&gt;的时候&lt;code&gt;x&lt;/code&gt;也会遍历出现。并且顺序不保证。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Array.prototype.x = &#39;inherited&#39;;
-var arr = [1, 2, 3, 4, 5];
-for(i in arr) {
-    console.log(arr[i]); // 1, 2, 3, 4, 5, inherited
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;如果不想使用&lt;code&gt;for...in&lt;/code&gt;的时候原型也被遍历那么我们需要判断下&lt;code&gt;arr.hasOwnProperty(i)&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Array.prototype.x = &#39;inherited&#39;;
-var arr = [1, 2, 3, 4, 5];
-for (i in arr) {
-	if (arr.hasOwnProperty(i)) {
-		console.log(arr[i]); // 1, 2, 3, 4, 5
-	}
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4 id=&quot;section-1&quot;&gt;第二节、二维数组、稀疏数组&lt;/h4&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;二维数组&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code&gt;var arr = [[0, 1], [2, 3], [4, 5]];
-var i = 0, j = 0;
-var row;
-for (; i &amp;lt; arr.length; i++) {
-     row = arr[i];
-     console.log(&#39;row &#39; + i);
-     for (j = 0; j &amp;lt; row.length; j++) {
-          console.log(row[j]);
-     }
-}
-
-
-// result:
-// row 0
-// 0
-// 1
-// row 1
-// 2
-// 3
-// row 2
-// 4
-// 5
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;稀疏数组&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;稀疏数组并不含有从0开始的连续索引。一般length属性值比实际元素个数大。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var arr1 = [undefined];
-var arr2 = new Array(1);
-0 in arr1; // true
-0 in arr2; // false
-arr1.length = 100;
-arr1[99] = 123;
-99 in arr1; // true
-98 in arr1; // false
-
-
-
-var arr = [,,];
-0 in arr; // false
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4 id=&quot;section-2&quot;&gt;第三节、数组方法&lt;/h4&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;数组方法&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;每一个对象都有很多对象的方法，这些方法都是&lt;code&gt;Object.prototype&lt;/code&gt;上面的，我们才可以在对像中去拿到它。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;{}   =&amp;gt;  Object.prototype
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-540690fe0c3f88ef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;那么数组呢，也是一样的，我们在用字面量或者是&lt;code&gt;new Array&lt;/code&gt;的方式去创建数组对象的时候。数组对象也会有他的原型。他的原型就是&lt;code&gt;Array.prototype&lt;/code&gt;。&lt;code&gt;Array.prototype&lt;/code&gt;上面提供了大量的方法，可以让我们对数组进行各种各样的操作。&lt;/p&gt;
-
- 	[]   =&amp;gt;  Array.prototype
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-9adfcd15c248915a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Array.prototype.join&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;strong&gt;将数组转为字符串&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;join()&lt;/code&gt; 方法用于把数组中的所有元素放入一个字符串。&lt;/p&gt;
-
-&lt;p&gt;元素是通过指定的分隔符进行分隔的。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var arr = [1, 2, 3];
-console.log(arr.join()); // &quot;1,2,3&quot;
-console.log(arr.join(&quot;_&quot;)); // &quot;1_2_3&quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;通过&lt;code&gt;join()&lt;/code&gt; 方法我们可以写一个函数，来快速创建一个重复某一个字符串&lt;code&gt;n&lt;/code&gt;次。这样一个函数。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;function repeatString(str, n) {
-	return new Array(n + 1).(str);
-}
-repeatString(&quot;a&quot;, 3); // &quot;aaa&quot;
-repeatString(&quot;Hi&quot;, 5); // &quot;HiHiHiHiHi&quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;repeatString(str, n)&lt;/code&gt;函数第一个参数是要重复的字符串，第二个参数是要重复的次数。     &lt;br /&gt;
-&lt;code&gt;return new Array(n + 1).join(str);&lt;/code&gt;返回一个构造数组，比如说次数传了&lt;code&gt;3&lt;/code&gt;,&lt;code&gt;Array(3 + 1)&lt;/code&gt;这个数组的长度是4，也就是&lt;code&gt;[,,,,]&lt;/code&gt;使用&lt;code&gt;join&lt;/code&gt;方法把重复内容当作分隔符。这样就能达到预期效果。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Array.prototype.reverse&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;strong&gt;reverse() 方法用于颠倒数组中元素的顺序。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;该方法会改变原来的数组，而不会创建新的数组。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var arr = [1, 2, 3];
-console.log(arr.reverse()); // [3, 2, 1]
-console.log(arr); // [3, 2, 1]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;需要注意的是原数组会被修改。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Array.prototype.sort&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;strong&gt;sort() 方法用于对数组的元素进行排序。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;按字母顺序&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var arr = [&quot;a&quot;, &quot;d&quot;, &quot;c&quot;, &quot;b&quot;];
-console.log(arr.sort()); // [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;按数字排序&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var arr = [13, 24, 51, 3];
-console.log(arr.sort()); // [13, 24, 3, 51]
-console.log(arr); // [13, 24, 3, 51]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;很遗憾排序不对。&lt;/p&gt;
-
-&lt;p&gt;需要注意的是原数组会被修改。&lt;/p&gt;
-
-&lt;p&gt;其实是吧数组转换成字符串，然后再去排序，所以开头数字都是从小到大。并没有按照数字实际大小来去做排序。&lt;/p&gt;
-
-&lt;p&gt;那如何进行数字大小进行排序呢？&lt;/p&gt;
-
-&lt;p&gt;如果调用该方法时没有使用参数，将按字母顺序对数组中的元素进行排序，说得更精确点，是按照字符编码的顺序进行排序。要实现这一点，首先应把数组的元素都转换成字符串（如有必要），以便进行比较。&lt;/p&gt;
-
-&lt;p&gt;如果想按照其他标准进行排序，就需要提供比较函数，该函数要比较两个值，然后返回一个用于说明这两个值的相对顺序的数字。比较函数应该具有两个参数 a 和 b，其返回值如下：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;若 a 小于 b，在排序后的数组中 a 应该出现在 b 之前，则返回一个小于 0 的值。&lt;/li&gt;
-  &lt;li&gt;若 a 等于 b，则返回 0。&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;若 a 大于 b，则返回一个大于 0 的值。&lt;/p&gt;
-
-    &lt;p&gt;var arr = [13, 24, 51, 3];
-  var sop=arr.sort(function(a, b) {
-      return a - b;
-  });
-  console.log(sop);// [3, 13, 24, 51]&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;排序从上到下&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var arr = [13, 24, 51, 3];
-var sop = arr.sort(function(a, b) {
-	return b - a;
-});
-console.log(sop); // [51, 24, 13, 3]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;排序对象方法&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var arr = [{
-	age: 25
-}, {
-	age: 39
-}, {
-	age: 99
-}];
-arr.sort(function(a, b) {
-	return a.age - b.age;
-});
-arr.forEach(function(item) {
-	console.log(&#39;age&#39;, item.age);
-});
-// result:
-// age 25
-// age 39
-// age 99
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Array.prototype.concat&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;concat() 方法用于连接两个或多个数组。&lt;/p&gt;
-
-&lt;p&gt;该方法不会改变现有的数组，而仅仅会返回被连接数组的一个副本。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var arr = [1, 2, 3];
-console.log(arr.concat(4, 5)); // [1, 2, 3, 4, 5]
-console.log(arr); // [1, 2, 3]
-
-console.log(arr.concat([10, 11], 13)); // [1, 2, 3, 10, 11, 13]
-
-console.log(arr.concat([1, [2, 3]])); // [1, 2, 3, 1, [2, 3]]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Array.prototype.slice&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;slice() 方法可从已有的数组中返回选定的元素。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var arr = [1, 2, 3, 4, 5];
-arr.slice(1, 3); // [2, 3]   从索引1也就是第2个开始到索引3之前那个元素也就是2，3
-arr.slice(1); // [2, 3, 4, 5]  后面参数省略意思代表从索引开始到最后
-arr.slice(1, -1); // [2, 3, 4]   这里的-1代表最后一个元素
-arr.slice(-4, -3); // [2]  这里的-4代表倒数第4个元素-3代表倒数第3.  
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;需要注意的是原数组未被修改。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Array.prototype.splice&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;splice() 方法向/从数组中添加/删除项目，然后返回被删除的项目。&lt;/p&gt;
-
-&lt;p&gt;注释：该方法会改变原始数组。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var arr = [1, 2, 3, 4, 5];
-arr.splice(2); // returns [3, 4, 5]
-arr; // [1, 2];
-
-arr = [1, 2, 3, 4, 5];
-arr.splice(2, 2); // returns [3, 4]
-arr; // [1, 2, 5];
-
-arr = [1, 2, 3, 4, 5];
-arr.splice(1, 1, &#39;a&#39;, &#39;b&#39;); // returns [2]
-arr; // [1, &quot;a&quot;, &quot;b&quot;, 3, 4, 5]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Array.prototype.forEach&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;strong&gt;数组遍历&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var arr = [1, 2, 3, 4, 5];
-arr.forEach(function(x, index, a){
-    console.log(x + &#39;|&#39; + index + &#39;|&#39; + (a === arr));
-});
-// 1|0|true
-// 2|1|true
-// 3|2|true
-// 4|3|true
-// 5|4|true
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Array.prototype.map&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;strong&gt;数组映射&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var arr = [1, 2, 3];
-arr.map(function(x) {
-     return x + 10;
-}); // [11, 12, 13]
-arr; // [1, 2, 3]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;注意：原数组未被修改&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Array.prototype.filter&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;strong&gt;数组过滤&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-arr.filter(function(x, index) {
-     return index % 3 === 0 || x &amp;gt;= 8;
-}); // returns [1, 4, 7, 8, 9, 10]
-arr; // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;注意：原数组未被修改&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Array.prototype.every &amp;amp; some&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;strong&gt;数组判断&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var arr = [1, 2, 3, 4, 5];
-arr.every(function(x) {
-     return x &amp;lt; 10;
-}); // true
-
-arr.every(function(x) {
-     return x &amp;lt; 3;
-}); // false
-
-
-var arr = [1, 2, 3, 4, 5];
-arr.some(function(x) {
-     return x === 3;
-}); // true
-
-arr.some(function(x) {
-     return x === 100;
-}); // false
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Array.prototype.reduce&amp;amp;reduceRight&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code&gt;var arr = [1, 2, 3];
-var sum = arr.reduce(function(x, y) {
-     return x + y
-}, 0); // 6
-arr; //[1, 2, 3]
-
-arr = [3, 9, 6];
-var max = arr.reduce(function(x, y) {
-     console.log(x + &quot;|&quot; + y);
-     return x &amp;gt; y ? x : y;
-});
-// 3|9
-// 9|6
-max; // 9
-
-
-
-max = arr.reduceRight(function(x, y) {
-     console.log(x + &quot;|&quot; + y);
-     return x &amp;gt; y ? x : y;
-});
-// 6|9
-// 9|3
-max; // 9
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Array.prototype.indexOf&amp;amp;lastIndexOf&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;strong&gt;数组检索&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var arr = [1, 2, 3, 2, 1];
-arr.indexOf(2); // 1
-arr.indexOf(99); // -1
-arr.indexOf(1, 1); // 4
-arr.indexOf(1, -3); // 4
-arr.indexOf(2, -1); // -1
-arr.lastIndexOf(2); // 3
-arr.lastIndexOf(2, -2); // 3
-arr.lastIndexOf(2, -3); // 1
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Array.isArray&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;strong&gt;判断是否为数组&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Array.isArray([]); // true
-[] instanceof Array; // true
-({}).toString.apply([]) === &#39;[object Array]&#39;; // true
-[].constructor === Array; // true
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4 id=&quot;section-3&quot;&gt;第四节、数组小结&lt;/h4&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;数组  VS.  一般对象&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-554a777b805be72d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot; /&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;字符串和数组&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code&gt;var str = &quot;hello world&quot;;
-str.charAt(0); // &quot;h&quot;
-str[1]; // e
-
-Array.prototype.join.call(str, &quot;_&quot;);
-// &quot;h_e_l_l_o_ _w_o_r_l_d&quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;小结&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;数组概念&lt;/li&gt;
-  &lt;li&gt;创建数组、数组增删改查操作&lt;/li&gt;
-  &lt;li&gt;二维数组、稀疏数组&lt;/li&gt;
-  &lt;li&gt;数组方法&lt;/li&gt;
-  &lt;li&gt;数组 VS. 一般对象&lt;/li&gt;
-  &lt;li&gt;数组 VS. 字符串&lt;/li&gt;
-&lt;/ol&gt;
-</description>
-        <pubDate>Tue, 20 Dec 2016 11:54:33 +0800</pubDate>
-        <link>http://www.huanghanlian.com/javascript/2016/12/20/javascript-jinjie5.html</link>
-        <guid isPermaLink="true">http://www.huanghanlian.com/javascript/2016/12/20/javascript-jinjie5.html</guid>
         
         <category>__proto__</category>
         
