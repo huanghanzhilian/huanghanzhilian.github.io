@@ -5,7 +5,7 @@ subtitle: JavaScript 精粹 基础 进阶(3)语句
 author: 继小鹏
 date: 2016-12-20 11:54:14 +0800
 category: JavaScript
-tag: __proto__
+tag: proto
 ---
 
 JavaScript程序由语句组成，语句遵守特定的语法规则。例如：if语句, while语句, with语句等等。

@@ -5,7 +5,7 @@ subtitle: JavaScript 精粹 基础 进阶(8)OOP面向对象编程(上)
 author: 继小鹏
 date: 2016-12-20 11:54:56 +0800
 category: JavaScript
-tag: __proto__
+tag: proto
 ---
 面向对象编程，oop并不是针对与javascript，很多语言都实现了oop这样一个编程发法论，比如说java，c++，都是实现了oop的语言。
 

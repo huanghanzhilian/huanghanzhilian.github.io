@@ -5,7 +5,7 @@ subtitle: JavaScript 精粹 基础 进阶(6)函数和作用域（函数、this�
 author: 继小鹏
 date: 2016-12-20 11:54:41 +0800
 category: JavaScript
-tag: __proto__
+tag: proto
 ---
 函数是一块JavaScript代码，被定义一次，但可执行调用多次，js中的函数也是对象，所以js函数可以像其他对象那样操作和传递所以我们也常叫js中的函数为函数对象。
 

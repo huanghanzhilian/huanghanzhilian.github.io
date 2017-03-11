@@ -5,7 +5,7 @@ subtitle: JavaScript 精粹 基础 进阶(7)函数和作用域（闭包、作用
 author: 继小鹏
 date: 2016-12-20 11:54:48 +0800
 category: JavaScript
-tag: __proto__
+tag: proto
 ---
 闭包在JavaScript 中是一个非常重要的概念。
 

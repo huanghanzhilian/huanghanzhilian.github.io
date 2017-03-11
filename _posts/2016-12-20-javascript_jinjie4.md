@@ -5,7 +5,7 @@ subtitle: JavaScript 精粹 基础 进阶(4)对象
 author: 继小鹏
 date: 2016-12-20 11:54:24 +0800
 category: JavaScript
-tag: __proto__
+tag: proto
 ---
 对象中包含一系列属性，这些属性是无序的。每个属性都有一个字符串key和对应的value。
 

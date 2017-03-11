@@ -5,7 +5,7 @@ subtitle: JavaScript 精粹 基础 进阶(1)数据类型
 author: 继小鹏
 date: 2016-12-20 11:53:14 +0800
 category: JavaScript
-tag: __proto__
+tag: proto
 ---
 ![图片.png](http://upload-images.jianshu.io/upload_images/3877962-a5cb0943cd4c3e52.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 

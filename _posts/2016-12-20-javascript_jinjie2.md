@@ -5,7 +5,7 @@ subtitle: JavaScript 精粹 基础 进阶(2)表达式和运算符
 author: 继小鹏
 date: 2016-12-20 11:54:05 +0800
 category: JavaScript
-tag: __proto__
+tag: proto
 ---
 
 表达式是指能计算出值得任何可用程序单元。——Wiki

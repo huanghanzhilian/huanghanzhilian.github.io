@@ -5,7 +5,7 @@ subtitle: JavaScript 精粹 基础 进阶(5)数组
 author: 继小鹏
 date: 2016-12-20 11:54:33 +0800
 category: JavaScript
-tag: __proto__
+tag: proto
 ---
 数组是值的有序集合。每个值叫做元素，每个元素在数组中都有数字位置编号，也就是索引。JS中的数组是弱类型的，数组中可以含有不同类型的元素。数组元素甚至可以是对象或其它数组。
 

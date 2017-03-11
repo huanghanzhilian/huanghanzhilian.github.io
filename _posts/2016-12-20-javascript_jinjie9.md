@@ -5,7 +5,7 @@ subtitle: JavaScript 精粹 基础 进阶(9)OOP面向对象编程(下)
 author: 继小鹏
 date: 2016-12-20 11:55:03 +0800
 category: JavaScript
-tag: __proto__
+tag: proto
 ---
 我们怎么去模拟重载，在javasceipr中我们可以通过参数的类型区别或者数量的区别，来去让同样一个函数名字，可以根据不同的参数列表的情况来去调用相应的函数。
 
