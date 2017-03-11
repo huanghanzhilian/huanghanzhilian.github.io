@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Ajax全接触(一)基础理论</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+	<!-- <link rel="stylesheet" type="text/css" href="/assets/css/pygments.css"> -->
+	<link rel="shortcut icon" href="/assets/images/logo_ioc.ico" type="images/x-icon"/>
+	<link rel="icon" href="/assets/images/logo_ioc.png" type="images/png"/>
+	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
+	
+	<script type="text/javascript">
+	    (function($) {
+
+	    	var temp = 0;
+	    	$(document).scroll(function() {
+
+	    		if ($(document).scrollTop() > temp) {
+	    			$("#header").addClass("hide-top");
+	    		} else {
+	    			$("#header").removeClass("hide-top");
+	    		}
+	    		temp = $(document).scrollTop();
+	    	});
+	    	
+	    	//console.log($(".menu"))
+	    })(jQuery);
+
+	</script>
+
+</head>
+<body>
+    <header id="header" role="banner">
+	<a id="hgroup" href="/" rel="home">
+		<h1 id="logo"></h1>
+		<i class="slogan" title="返回首页">
+			热爱编程，关注前端开发技术
+		</i>
+	</a>
+	<div class="connect">
+		<a href="https://github.com/huanghanzhilian" class="git" target="_blank"></a>
+		<a href="http://www.huanghanlian.com/feed.xml" class="rss"></a>
+	</div>
+	<nav id="nav">
+		<ul class="menu">
+			<li class="menu_item">
+				<a href="/">首页</a>
+			</li>
+			<li class="menu_item">
+				<a href="http://www.huanghanlian.com/widget/">Web组件库</a>
+			</li>
+			<li class="menu_item">
+				<a href="http://www.huanghanlian.com/front-end-note/">前端笔记</a>
+			</li>
+			<li class="menu_item">
+				<a href="/about/">关于本站</a>
+			</li>
+			<li class="menu_item">
+				<a href="/report/">留言板</a>
+			</li>
+		</ul>
+	</nav>
+
+	<div id="m-btns">
+		<div class="menu"></div>
+	</div>
+	<nav class="nav-bar-tabs ">
+		<ul>
+            <li>
+              	<a href="/">首页</a>
+            </li>
+            <li>
+              	<a href="http://www.huanghanlian.com/widget/">Web组件库</a>
+            </li>
+            <li>
+              	<a href="http://www.huanghanlian.com/front-end-note/">前端笔记</a>
+            </li>
+            <li>
+              	<a href="/about/">关于本站</a>
+            </li>
+            <li>
+              	<a href="/report/">留言板</a>
+            </li>
+        </ul>
+	</nav>
+</header>
+	<div id="container" class="clearfix">
+	<main id="main" class="hfeed">
+		<article id="post-157" class="post-157 hentry">
+			<header class="entry-header">
+				<h1 class="entry-title">Ajax全接触(一)基础理论</h1>
+				<div class="entry-meta">2016-12-20 <span class="dot">•</span>JavaScript<span class="dot">•</span>黄继鹏<span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span></div>
+			</header>
+			<article class="post-content">
+              <p>什么是同步? 客户端要发起请求，服务器端要去处理，而且去响应，这时候客户端完全是等待，等待服务器端的处理和响应，当服务器端处理响应后客户端会重新载入页面。这时候如果你有错误，那么只能再次发起请求，再次等待。同步的事件会让人疯狂。</p>
+
+<h4>同步和异步</h4>
+
+<p><strong>什么是同步</strong></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-b6b3af70fc67c9a2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+
+<p>客户端要发起请求，服务器端要去处理，而且去响应，这时候客户端完全是等待，等待服务器端的处理和响应，当服务器端处理响应后客户端会重新载入页面。这时候如果你有错误，那么只能再次发起请求，再次等待。同步的事件会让人疯狂。</p>
+
+<p><strong>什么是异步</strong></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-0cae80f727d40a6f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+
+<p>当你填写表单数据时，页面当时就把数据发送到服务器，也就是页面发送了个请求，服务器去做处理和响应，得到你的数据不符合要求，他会把响应结果，发给页面，但是在这个过程中，你还是可以依旧去填写，表单其他内容，这时候服务器告诉你有填写错误的地方，在页面上的表现，只是把你填写错误的旁边标上一行字，并没有刷新你的页面，这样在填写表单时，所有的错误信息都会显示在页面，你可以实时的更正，这个过程中你不会有整个页面的刷新，也不会有整个页面的提交和等待，当你最后点击提交一切都可以搞定了。</p>
+
+<p><strong>怎么实现Ajax技术呢？</strong></p>
+
+<ol>
+<li>运用HTML和CSS来实现页面，表达信息；</li>
+<li>运用XMLHttpRequest对象和web服务器进行数据的异步交换；</li>
+<li>运用JavaScript操作DOM，实现动态局部刷新；</li>
+</ol>
+
+<h4>Ajax-XMLHttpRequest对象创建</h4>
+
+<p>目前浏览器都支持标准的XHR对象，也支持标准的构造函数。</p>
+
+<p>但是在IE5和IE6浏览器中，是不支持<code>var request=new XMLHttpRequest();</code>因为那时候<code>XHR</code>还未定义。</p>
+
+<p><strong>如何兼容IE5和IE6甚至更早的版本？</strong></p>
+<div class="highlight"><pre><code class="language-" data-lang="">var request;
+if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+    request = new XMLHttpRequest();
+} else { // code for IE6, IE5
+    request = new ActiveXObject("Microsoft.XMLHTTP");
+}
+</code></pre></div>
+<p>只需要判断下，如果有XHR定义，我们就使用标准的构造函数，我们直接  <code>new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);</code>就可以了。</p>
+
+<h4>Ajax-HTTP请求</h4>
+
+<p><strong>什么是HTTP</strong></p>
+
+<p>HTTP是计算机，通过网络进行通信的规则。</p>
+
+<p>它主要使我们客户，也就是常说的浏览器能够从服务器也就是常说的web服务器，去请求信息和服务。</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-57f1baa5da1bef94.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+
+<p>HTTP是一种无状态的协议</p>
+
+<p>无状态指的是不建立持久的连接，也就是说服务端不保留连接的一些相关信息。</p>
+
+<p>一个客户端，想服务器发送请求，然后web服务器返回响应，接着连接就被关闭了，这个处理过程是没有记忆的。如果后续的处理需要之前传递的一些信息，那么就要重新的传递。这就是经常说HTTP是一种无状态的协议。</p>
+
+<p><strong>概念介绍--HTTP请求</strong></p>
+
+<blockquote>
+<p>一个完整的HTTP请求过程，通常有下面7个步骤。</p>
+</blockquote>
+
+<ol>
+<li><p>建立TCP连接；</p></li>
+<li><p>Web浏览器向Web服务器发送请求命令；</p></li>
+<li><p>Web浏览器发送请求头信息；</p></li>
+<li><p>Web服务器做出应答；</p></li>
+<li><p>Web服务器发送应答头信息；</p></li>
+<li><p>Web服务器向浏览器发送数据；</p></li>
+<li><p>Web服务器关闭TCP连接；</p></li>
+</ol>
+
+<blockquote>
+<p>一个HTTP请求一般由四部分组成</p>
+</blockquote>
+
+<ol>
+<li><p>HTTP请求的方法或动作，比如是GIT还是POST请求；</p></li>
+<li><p>正在请求的URL，总得知道请求的地址是什么吧；</p></li>
+<li><p>请求头，包含一些客户端环境信息，身份验证信息等；</p></li>
+<li><p>请求体，也就是请求正文，请求正文中可以包含客户提交的查询字符串信息，表单信息等等。</p></li>
+</ol>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-e3b24aa4ea98a261.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+
+<blockquote>
+<p>GIT请求和POST请求</p>
+</blockquote>
+
+<ul>
+<li><p>GIT：一般用于信息获取
+使用URL传递参数
+对所发送信息的数量也有限制，一般在2000个字符</p></li>
+<li><p>POST：一般用于修改服务器上的资源。
+对所发送信息的数量无限制</p></li>
+</ul>
+
+<blockquote>
+<p>HTTP响应</p>
+</blockquote>
+
+<p>一个HTTP响应一般由三部分组成</p>
+
+<ol>
+<li><p>一个数字和文字组成的状态码，用来显示请求是否成功还是失败；</p></li>
+<li><p>响应头，响应头也和请求头一样包含许多有用的信息，例如服务类型，日期时间，内容类型和长度等；</p></li>
+<li><p>响应体，也就是响应正文；</p></li>
+</ol>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-9b1fc81d3595d15b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+
+<blockquote>
+<p>HTTP响应状态码介绍</p>
+</blockquote>
+
+<p>HTTP响应状态码由3位数字构成，其中首位数字定义了状态码的类型：</p>
+
+<ul>
+<li><p>1XX:1开头，信息类，表示收到web浏览器请求，正在进一步的处理中；</p></li>
+<li><p>2XX:2开头，成功，表示用户请求被正确接收，理解和处理例如：200 OK；</p></li>
+<li><p>3XX:3开头，重定向，表示请求没有成功，客户必须采取进一步的动作；</p></li>
+<li><p>4XX:4开头，客户端错误，表示客户端提交的请求有错误，例如：404 NOT ;</p></li>
+<li><p>Found，意味着请求中所引用的文档不存在；</p></li>
+<li><p>5XX:5开头，服务器错误，表示服务器不能完成对请求的处理：如 500;</p></li>
+</ul>
+
+<h4>Ajax-XMLHttpRequest发送请求</h4>
+
+<p><code>XMLHttpRequest</code>对象的方法</p>
+
+<p>方法|描述
+---|---
+open(<em>method</em>,<em>url</em>,<em>async</em>)|规定请求的类型、URL 以及是否异步处理请求。 
+|<em>method</em>：请求的类型；GET 或 POST<br>
+|<em>url</em>：文件在服务器上的位置<br>
+|<em>async</em>：true（异步）或 false（同步）
+send(<em>string</em>)|将请求发送到服务器。<br>
+|<em>string</em>：仅用于 POST 请求</p>
+
+<p>GET 请求：</p>
+<div class="highlight"><pre><code class="language-" data-lang="">request.open("GET","gte.php",true);
+request.send();
+</code></pre></div>
+<p>POST 请求</p>
+<div class="highlight"><pre><code class="language-" data-lang="">request.open("POST","post.php",true);
+request.send();
+</code></pre></div>
+<p>如果需要像 HTML 表单那样 POST 数据，请使用 setRequestHeader() 来添加 HTTP 头。然后在 send() 方法中规定您希望发送的数据：</p>
+<div class="highlight"><pre><code class="language-" data-lang="">request.open("POST","create.php",true);
+request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+request.send("name=黄&amp;sex=男");
+</code></pre></div>
+<p>方法|描述
+---|---
+setRequestHeader(<em>header</em>,<em>value</em>)|向请求添加 HTTP 头。 
+|<em>header</em>: 规定头的名称<br>
+|<em>value</em>: 规定头的值</p>
+
+<p><code>request.setRequestHeader(&quot;Content-type&quot;,&quot;application/x-www-form-urlencoded&quot;);</code>
+这个方法其实要设置HTTP的头信息，告诉web服务器我们要发送一个表单，
+需要注意的是<code>request.setRequestHeader</code>方法要写在<code>request.open</code>和<code>request.send</code>中间，否则将会抛出异常。</p>
+
+<h4>Ajax-XMLHttpRequest取得响应</h4>
+
+<p>获得来自服务器的响应，请使用 XMLHttpRequest 对象的 responseText 或 responseXML 属性。</p>
+
+<p>属性|描述
+---|---
+responseText|获得字符串形式的响应数据。
+responseXML|获得 XML 形式的响应数据。
+status和statueText|以数字和文本形式返回HTTP状态码。
+gitAllResponseHeader()|获取所有的响应报头。
+gieResponseHeader( parameter )|查询响应的某个字段的值。 parameter 要查询的字段</p>
+
+<p><strong>onreadystatechange 事件</strong></p>
+
+<p>当请求被发送到服务器时，我们需要执行一些基于响应的任务。</p>
+
+<p>每当 readyState 改变时，就会触发 onreadystatechange 事件。</p>
+
+<p>readyState 属性存有 XMLHttpRequest 的状态信息。</p>
+
+<p>属性|描述
+--|--
+onreadystatechange|存储函数（或函数名），每当 readyState 属性改变时，就会调用该函数。
+readyState|存有 XMLHttpRequest 的状态。从 0 到 4 发生变化。
+|0: 请求未初始化
+|1: 服务器连接已建立
+|2: 请求已接收
+|3: 请求处理中
+|4: 请求已完成，且响应已就绪
+status |200: &quot;OK&quot;
+|404: 未找到页面</p>
+<div class="highlight"><pre><code class="language-" data-lang="">function but() {
+    var request;
+    if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+        request = new XMLHttpRequest();
+    } else { // code for IE6, IE5
+        request = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    request.onreadystatechange = function() {
+        if (request.readyState === 4 &amp;&amp; request.status === 200) {  //响应完成且请求成功
+            //做一些事情  request.responseText;
+        }
+    }
+    request.open("GET", "gte.php", true);
+    request.send();
+}
+</code></pre></div>
+<p><strong>总结下Ajax使用的步骤</strong></p>
+
+<blockquote>
+<p>第一步</p>
+</blockquote>
+
+<p>new一个XHM对象<code>new XMLHttpRequest();</code></p>
+
+<p>兼容写法</p>
+<div class="highlight"><pre><code class="language-" data-lang="">    var request;
+    if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+        request = new XMLHttpRequest();
+    } else { // code for IE6, IE5
+        request = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+</code></pre></div>
+<blockquote>
+<p>第二步</p>
+</blockquote>
+
+<p>调用<code>open</code>方法</p>
+<div class="highlight"><pre><code class="language-" data-lang="">    request.open("GET", "gte.php", true);
+</code></pre></div>
+<blockquote>
+<p>第三步</p>
+</blockquote>
+
+<p>将请求发送到服务器</p>
+<div class="highlight"><pre><code class="language-" data-lang="">    request.send();
+</code></pre></div>
+<blockquote>
+<p>第四步</p>
+</blockquote>
+
+<p>对过程进行监听来知道服务器是否正确的做出了响应，接着就可以做一些事情</p>
+<div class="highlight"><pre><code class="language-" data-lang="">    request.onreadystatechange = function() {
+        if (request.readyState === 4 &amp;&amp; request.status === 200) {  //响应完成且请求成功
+            //做一些事情  request.responseText;
+        }
+    }
+</code></pre></div>
+              <!-- 多说评论框 start -->
+              		<!-- <span class="ds-thread-count" data-thread-key="/javascript/2016/12/20/js_ajax" data-count-type="comments"></span> -->
+					<div class="ds-thread" data-thread-key="http://www.huanghanlian.com/javascript/2016/12/20/js_ajax" data-title="Ajax全接触(一)基础理论" data-url="http://www.huanghanlian.com/javascript/2016/12/20/js_ajax"></div>
+				<!-- 多说评论框 end -->
+				<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+				<script type="text/javascript">
+				var duoshuoQuery = {short_name:"huanghuanlian"};
+					(function() {
+						var ds = document.createElement('script');
+						ds.type = 'text/javascript';ds.async = true;
+						ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+						ds.charset = 'UTF-8';
+						(document.getElementsByTagName('head')[0]
+						 || document.getElementsByTagName('body')[0]).appendChild(ds);
+					})();
+				</script>
+				<!-- 多说公共JS代码 end -->
+
+
+				
+            </article>
+		</article>
+
+	</main>
+	<div class="sidebar" id="sidebar">
+	<div class="sidebar-top">
+		<aside class="widjhuh">
+			<h3 class="widget-title">最新文章</h3>
+			<ul class="minty_thumblist">
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics10.html">
+
+                    	<span>基本概念和用法-综合应用BookStore  2-8</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics9.html">
+
+                    	<span>基本概念和用法-Service与Peovider  2-7</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics8.html">
+
+                    	<span>基本概念和用法-指令 2-6</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics7.html">
+
+                    	<span>基本概念和用法-路由 2-5</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics6.html">
+
+                    	<span>基本概念和用法-双向数据绑定 2-4</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics5.html">
+
+                    	<span>基本概念和用法-路由，模块，依赖注入 2-3</span>
+                    </a>
+                  </li>
+				
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">最近访客</h3>
+			<ul class="minty_thumblist minty_thumblist_a ds-recent-visitors visitorsopi" data-num-items="20" data-avatar-size="38">
+
+			</ul>
+
+		    <!--多说js加载开始，一个页面只需要加载一次 -->
+		    <script type="text/javascript">
+		    var duoshuoQuery = {short_name:"huanghuanlian"};
+		    (function() {
+		        var ds = document.createElement('script');
+		        ds.type = 'text/javascript';ds.async = true;
+		        ds.src = 'http://static.duoshuo.com/embed.js';
+		        ds.charset = 'UTF-8';
+		        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+		    })();
+		    </script>
+		    <!--多说js加载结束，一个页面只需要加载一次 -->
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">分类目录</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+				
+				<li>
+					<a href="/categories/Markdown/" title="view all
+posts">
+						Markdown (2)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Canvas/" title="view all
+posts">
+						Canvas (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Git/" title="view all
+posts">
+						Git (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/JavaScript/" title="view all
+posts">
+						JavaScript (30)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/AngularJS/" title="view all
+posts">
+						AngularJS (10)
+					</a>
+				</li>
+				
+			</ul>
+		</aside>
+	</div>
+
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">标签目录</h3>
+			<div class="tagcloud" id="tagcloud">
+				
+					<a href="/tag/Markdown/" title="view all
+posts">
+						Markdown
+					</a>
+				
+					<a href="/tag/Canvas/" title="view all
+posts">
+						Canvas
+					</a>
+				
+					<a href="/tag/Git/" title="view all
+posts">
+						Git
+					</a>
+				
+					<a href="/tag/JavaScript/" title="view all
+posts">
+						JavaScript
+					</a>
+				
+					<a href="/tag/RegExp/" title="view all
+posts">
+						RegExp
+					</a>
+				
+					<a href="/tag/DOM/" title="view all
+posts">
+						DOM
+					</a>
+				
+					<a href="/tag/BOM/" title="view all
+posts">
+						BOM
+					</a>
+				
+					<a href="/tag/__proto__/" title="view all
+posts">
+						__proto__
+					</a>
+				
+					<a href="/tag/Ajax/" title="view all
+posts">
+						Ajax
+					</a>
+				
+					<a href="/tag/AngularJS/" title="view all
+posts">
+						AngularJS
+					</a>
+				
+			</div>
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">友情链接</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+
+				<li>
+					<a href="http://blog.csdn.net/u013861109?viewmode=contents" target="blank">
+						csdn博客
+					</a>
+				</li>
+				<li>
+					<a href="http://www.imooc.com/" target="blank">
+						慕课网
+					</a>
+				</li>
+				<li>
+					<a href="http://www.dglives.com/" target="blank">
+						数字生活前端
+					</a>
+				</li>
+				<li>
+					<a href="http://www.jianshu.com/" target="blank">
+						简书
+					</a>
+				</li>
+				<li>
+					<a href="http://www.runoob.com/" target="blank">
+						菜鸟
+					</a>
+				</li>
+				<li>
+					<a href="http://www.qdfuns.com/" target="blank">
+						前端网
+					</a>
+				</li>
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">QQ交流群</h3>
+			<img style="margin-top: 10px; box-shadow: none;" src="/assets/images/ertw.png">
+		</aside>
+	</div>
+
+
+	<script>
+	var box=document.getElementById("tagcloud").getElementsByTagName("a");
+	for(var i=0;i<box.length;i++){
+		var a =Math.round(Math.random()*20)/10;
+		box[i].style.fontSize=a+'em';
+	}
+	</script>
+
+</div>
+</div>
+	
+<footer id="footer">
+	<nav class="links">
+		<a href="">作品</a>
+		<a href="/about/">关于本站</a>
+		<a href="/report/">留言板</a>
+	</nav>
+	<div class="copyright">
+		© 2016 <a href="">继小鹏的前端博客</a>
+	</div>
+	<a href="javascript:pageScroll();" id="rocket" class=""></a>
+	<span id="busuanzi_container_site_pv">
+	    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+	<span id="busuanzi_container_site_uv">
+	  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+	</span>
+</footer>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+
+$(function(){
+	$("#m-btns").click(function(){
+		if($("body").hasClass('nav-is-open')){
+			$("body").removeClass('nav-is-open')
+		}else{
+			$("body").addClass('nav-is-open')
+		};
+	})
+})
+var fhdb = document.getElementById("rocket");
+
+//获取页面可视区高度
+var dqy = document.documentElement.clientHeight;
+
+var main_left=$('#main').offset().left+$('#main').width()+16;
+
+//滚动条滚动时触发   在滚动的时候触发
+window.onscroll = function() {
+	var sTop = document.documentElement.scrollTop || document.body.scrollTop;
+	if (sTop >= dqy) {
+		$("#rocket").addClass('show');
+	} else {
+		$("#rocket").removeClass('show');
+	}
+}
+
+function pageScroll() {
+	//把内容滚动指定的像素数（第一个参数是向右滚动的像素数，第二个参数是向下滚动的像素数）
+	window.scrollBy(0, -100);
+	//延时递归调用，模拟滚动向上效果
+	scrolldelay = setTimeout('pageScroll()', 5);
+	//获取scrollTop值，声明了DTD的标准网页取document.documentElement.scrollTop，否则取document.body.scrollTop；因为二者只有一个会生效，另一个就恒为0，所以取和值可以得到网页的真正的scrollTop值
+	var sTop = document.documentElement.scrollTop + document.body.scrollTop;
+	//判断当页面到达顶部，取消延时代码（否则页面滚动到顶部会无法再向下正常浏览页面）
+	if (sTop == 0) clearTimeout(scrolldelay)
+
+}
+
+
+
+</script>
+</body>
+</html>
