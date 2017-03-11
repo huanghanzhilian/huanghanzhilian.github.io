@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>基本概念和用法-路由 2-5</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css">
+	<link rel="shortcut icon" href="/assets/images/logo_ioc.ico" type="images/x-icon"/>
+	<link rel="icon" href="/assets/images/logo_ioc.png" type="images/png"/>
+	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
+	
+	<script type="text/javascript">
+	    (function($) {
+
+	    	var temp = 0;
+	    	$(document).scroll(function() {
+
+	    		if ($(document).scrollTop() > temp) {
+	    			$("#header").addClass("hide-top");
+	    		} else {
+	    			$("#header").removeClass("hide-top");
+	    		}
+	    		temp = $(document).scrollTop();
+	    	});
+	    	
+	    	//console.log($(".menu"))
+	    })(jQuery);
+
+	</script>
+
+</head>
+<body>
+    <header id="header" role="banner">
+	<a id="hgroup" href="/" rel="home">
+		<h1 id="logo"></h1>
+		<i class="slogan" title="返回首页">
+			热爱编程，关注前端开发技术
+		</i>
+	</a>
+	<div class="connect">
+		<a href="https://github.com/huanghanzhilian" class="git" target="_blank"></a>
+		<a href="http://www.huanghanlian.com/feed.xml" class="rss"></a>
+	</div>
+	<nav id="nav">
+		<ul class="menu">
+			<li class="menu_item">
+				<a href="/">首页</a>
+			</li>
+			<li class="menu_item">
+				<a href="http://www.huanghanlian.com/widget/">Web组件库</a>
+			</li>
+			<li class="menu_item">
+				<a href="http://www.huanghanlian.com/front-end-note/">前端笔记</a>
+			</li>
+			<li class="menu_item">
+				<a href="/about/">关于本站</a>
+			</li>
+			<li class="menu_item">
+				<a href="/report/">留言板</a>
+			</li>
+		</ul>
+	</nav>
+
+	<div id="m-btns">
+		<div class="menu"></div>
+	</div>
+	<nav class="nav-bar-tabs ">
+		<ul>
+            <li>
+              	<a href="/">首页</a>
+            </li>
+            <li>
+              	<a href="http://www.huanghanlian.com/widget/">Web组件库</a>
+            </li>
+            <li>
+              	<a href="http://www.huanghanlian.com/front-end-note/">前端笔记</a>
+            </li>
+            <li>
+              	<a href="/about/">关于本站</a>
+            </li>
+            <li>
+              	<a href="/report/">留言板</a>
+            </li>
+        </ul>
+	</nav>
+</header>
+	<div id="container" class="clearfix">
+	<main id="main" class="hfeed">
+		<article id="post-157" class="post-157 hentry">
+			<header class="entry-header">
+				<h1 class="entry-title">基本概念和用法-路由 2-5</h1>
+				<div class="entry-meta">2017-03-11 <span class="dot">•</span>AngularJS<span class="dot">•</span>黄继鹏<span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span></div>
+			</header>
+			<article class="post-content">
+              <p>###AJAX请求不会留下History历史记录</p>
+
+<p>在2005年左右，兴起了叫ajax的技术，有了ajax像后台提交数据的时候就不在需要用form表单去提交了，用form表达去提交会导致页面之间的切换，也就是说没法实现单页应用，ajax也有些缺陷，他第一个问题就是不会在浏览器留下历史记录，在一些应用中不留下历史纪录是没有问题的，在一些网络型或许门户型应用没有历史记录用户没有办法保存书签，下次再来访问通过url来访问，发送给别人可能不是想要的状态，</p>
+
+<p>ajax对SEO是个灾难，</p>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app="bookStoreApp"&gt;
+
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;BookStore&lt;/title&gt;
+    &lt;script src="framework/1.3.0.14/angular.js"&gt;&lt;/script&gt;
+    &lt;script src="framework/1.3.0.14/angular-route.js"&gt;&lt;/script&gt;
+    &lt;script src="framework/1.3.0.14/angular-animate.js"&gt;&lt;/script&gt;
+    &lt;script src="js/app.js"&gt;&lt;/script&gt;
+    &lt;script src="js/controllers.js"&gt;&lt;/script&gt;
+    &lt;script src="js/filters.js"&gt;&lt;/script&gt;
+    &lt;script src="js/services.js"&gt;&lt;/script&gt;
+    &lt;script src="js/directives.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div ng-view&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+
+</code></pre>
+
+<pre><code class="language-javascript">var bookStoreApp = angular.module('bookStoreApp', [
+    'ngRoute', 'ngAnimate', 'bookStoreCtrls', 'bookStoreFilters',
+    'bookStoreServices', 'bookStoreDirectives'
+]);
+
+bookStoreApp.config(function($routeProvider) {
+    $routeProvider.when('/hello', {
+        templateUrl: 'tpls/hello.html',
+        controller: 'HelloCtrl'
+    }).when('/list',{
+    	templateUrl:'tpls/bookList.html',
+    	controller:'BookListCtrl'
+    }).otherwise({
+        redirectTo: '/hello'
+    })
+});
+</code></pre>
+
+<p>定义了一个模块，叫做bookStoreApp这个app调用config方法，在方法匿名函数的参数中有一个<code>$routeProvider</code>这个东西是AngularJS自身所提供的路由机制，通过 <code>$routeProvider</code>这个东西可以来进行路由的配置，当AngularJS发现浏览器地址栏是hello，就会使用<code>tpls/hello.html</code>这样一个模板，由  <code>HelloCtrl</code>控制器来处理模板和 数据之间的绑定。当他url是list的时候就会调用另一个模板和控制器。其他别的所有清况都会直接跳到hello，</p>
+
+<p><code>$routeProvider</code>是AngularJS自身提供的机制，需要注意的事AngularJS1.2以后，他把这些机制之间做了一个模块化的处理，也就是说<code>route</code>没有包含在<code>angular.js</code>里面，也就是说不在他的核心文件里面，是把他独立出来，成了一个模块，</p>
+
+<p>所以需要注意的是如果需要使用路由的时候一定要在页面导入这个js</p>
+
+<p><code>&lt;script src="framework/1.3.0.14/angular-route.js"&gt;&lt;/script&gt;</code></p>
+
+<p>这个路由机制也有毛病，他不能进行深层次嵌套路由的。</p>
+
+<p>看个例子，这是常见页面的布局方式</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-36f8444ac02d4ad4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>顶部放导航条，这里面是一级模块的菜单，下面是具体的内容，点击首页的时候是一个比较大的展现，当点击用户管理的时候，</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-af6cb82449d86bf6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-0680ef1d67262e64.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>他会切分成左右两块区域，</p>
+
+<p>当点击左边的链接的时候右边的内容会相应发生变化，</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-0d9183928b953bbc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-d2f896e9bda93d79.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>这是一种非常常见的布局方式，用AngularJS本身提供的路由来实现这样的效果是比较麻烦的，有第三方的人开发了一个<code>UIRoute</code>这样一个东西，</p>
+
+<p>在github上去收搜https://angular-ui.github.io/</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-745c6ffb453263d6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p><code>UIRoute</code>提供了一套很好的机制，实现深层次的嵌套，</p>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app="routerApp"&gt;
+
+&lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;link rel="stylesheet" href="css/bootstrap-3.0.0/css/bootstrap.css"&gt;
+    &lt;link rel="stylesheet" href="css/index.css"&gt;
+    &lt;script src="js/angular-1.3.0.js"&gt;&lt;/script&gt;
+    &lt;script src="js/angular-animate.js"&gt;&lt;/script&gt;
+    &lt;script src="js/angular-ui-router.js"&gt;&lt;/script&gt;
+    &lt;script src="UIRoute3.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div ui-view&gt;&lt;/div&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+
+</code></pre>
+
+<p>首先需要把<code> &lt;script src="js/angular-ui-router.js"&gt;&lt;/script&gt;</code>下载下来，导入到页面里面去，导入了<code>ui-router</code>以后就不需要AngularJS原生的<code>router</code>。</p>
+
+<p>在写法上也会发生些变化</p>
+
+<p>在页面上</p>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+
+
+&lt;body&gt;
+    &lt;div ui-view&gt;&lt;/div&gt;
+&lt;/body&gt;
+
+
+
+</code></pre>
+
+<p>使用<code>ui-view</code>这个指令，这个表示是一个视图，</p>
+
+<p>来看js代码</p>
+
+<pre><code class="language-javascript">var routerApp = angular.module('routerApp', ['ui.router']);
+routerApp.config(function($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise('/index');
+    $stateProvider
+        .state('index', {
+            url: '/index',
+            views: {
+                '': {
+                    templateUrl: 'tpls3/index.html'
+                },
+                'topbar@index': {
+                    templateUrl: 'tpls3/topbar.html'
+                },
+                'main@index': {
+                    templateUrl: 'tpls3/home.html'
+                }
+            }
+        })
+        .state('index.usermng', {
+            url: '/usermng',
+            views: {
+                'main@index': {
+                    templateUrl: 'tpls3/usermng.html',
+                    controller: function($scope, $state) {
+                        $scope.addUserType = function() {
+                            $state.go("index.usermng.addusertype");
+                        }
+                    }
+                }
+            }
+        })
+        .state('index.usermng.highendusers', {
+            url: '/highendusers',
+            templateUrl: 'tpls3/highendusers.html'
+        })
+        .state('index.usermng.normalusers', {
+            url: '/normalusers',
+            templateUrl: 'tpls3/normalusers.html'
+        })
+        .state('index.usermng.lowusers', {
+            url: '/lowusers',
+            templateUrl: 'tpls3/lowusers.html'
+        })
+        .state('index.usermng.addusertype', {
+            url: '/addusertype',
+            templateUrl: 'tpls3/addusertypeform.html',
+            controller: function($scope, $state) {
+                $scope.backToPrevious = function() {
+                    window.history.back();
+                }
+            }
+        })
+        .state('index.permission', {
+            url: '/permission',
+            views: {
+                'main@index': {
+                    template: '这里是权限管理'
+                }
+            }
+        })
+        .state('index.report', {
+            url: '/report',
+            views: {
+                'main@index': {
+                    template: '这里是报表管理'
+                }
+            }
+        })
+        .state('index.settings', {
+            url: '/settings',
+            views: {
+                'main@index': {
+                    template: '这里是系统设置'
+                }
+            }
+        })
+});
+
+</code></pre>
+
+<p>和之前AngularJS的route是大同小异的，</p>
+
+<p>只是说不再去使用<code>$routeProvider</code>了</p>
+
+<p>换成<code>$stateProvider, $urlRouterProvider</code></p>
+
+<p>和之前AngularJS的route<code>$routeProvider</code>写法非常相似，但是他定义的方法名叫<code>state</code></p>
+
+<p>首先调用<code>$stateProvider</code>上面的<code>state</code>方法，来配置当地址栏里面发生什么样的变化的时候，就去使用哪一个模板，这里有很多比较快捷的语法，比如说<code>index</code>页面实现逻辑</p>
+
+<pre><code class="language-javascript">.state('index', {
+            url: '/index',
+            views: {
+                '': {
+                    templateUrl: 'tpls3/index.html'
+                },
+                'topbar@index': {
+                    templateUrl: 'tpls3/topbar.html'
+                },
+                'main@index': {
+                    templateUrl: 'tpls3/home.html'
+                }
+            }
+        })
+</code></pre>
+
+<p>上面代码，state状态是index时候就去执行，url参数是/index，找index代码片段，</p>
+
+<p>定义了几个<code>views</code>其实有三个view，我们把页面分成了两个部分顶部是一个导航条，然后下面的内容是会跟着去切换的，</p>
+
+<pre><code class="language-javascript">                '': {
+                    templateUrl: 'tpls3/index.html'
+                },
+</code></pre>
+
+<p>顶部写一个空的字符串，然后用tpls3下面的index.html来作为我们主页的html模板，</p>
+
+<p>index.html文件</p>
+
+<pre><code class="language-html">&lt;div class="container"&gt;
+    &lt;div ui-view="topbar"&gt;&lt;/div&gt;
+    &lt;div ui-view="main"&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+</code></pre>
+
+<p>在这个html文件里面，又把路由分成了两块，一个topbar一个main，这是主区域，</p>
+
+<pre><code class="language-javascript">.state('index', {
+            url: '/index',
+            views: {
+                '': {
+                    templateUrl: 'tpls3/index.html'
+                },
+                'topbar@index': {
+                    templateUrl: 'tpls3/topbar.html'
+                },
+                'main@index': {
+                    templateUrl: 'tpls3/home.html'
+                }
+            }
+        })
+</code></pre>
+
+<p><code> 'topbar@index': </code>,<code>'main@index': </code>这两个的意思就是index模块中分的两个ui-view，还给他命名了叫做topbar，main</p>
+
+<p>通过@这种语法就会自动去知道每一个小的小块去加载对应的模板，</p>
+
+<p>其他的切分方式，和上面都大同小异，当然他还有一些比较方便的语法，比如说用点号<code>.</code>来分隔这种子模块，子区域，有了ui-router就可以做深层次路由的嵌套，包括一个页面上面分成多个区域，多个区域都可以定义匿名的ui-router，这样可以只切换一小块区域，而不是整个都去切换，</p>
+
+<p>###前端路由的基本原理</p>
+
+<p>###哈希#</p>
+
+<p>以前通过a标签有一个叫锚点的机制，锚点是点一个链接他不会页面与页面之间进行跳转，他会在页内导航，后来就有人发现我们可以通过这样一个机制让浏览器不刷新页面而实现url地址的变化，url地址变了以后浏览器不会去刷洗页面，通过锚点这种方式进行了封装，这是比较老的浏览器都可以支持的。</p>
+
+<p>###html5中新的history API</p>
+
+<p>可以通过js代码去修改浏览器地址栏地址，这样浏览器会留下历史纪录，但是页面不会跳转，这是新的html5提供的。一般来说通过这种小的工具库都会封装这种方式从而实现向下兼容，</p>
+
+<p>###路由的核心是给应用定义状态</p>
+
+<p>###使用路由机制会影响整个应用编码的方式。</p>
+
+<p>这种概念和传统开发的方式会有一些思路上的不同，也就是说你用路由的时候实际上你一定要为你的应用先把这些状态都定义好，通过哪一个地址进入哪一种状态都预先定义好，会影响整个应用编码的方式。</p>
+
+<p>###考虑兼容性问题与“优雅降级”</p>
+
+<p>一般比较完善的路由库，都会提供兼容性的处理，会帮你去检测浏览器的版本如果发现使用比较低版本浏览器ie这些，会自动帮你使用哈希这种方式，如果发下是新的浏览器就会使用html5  history API去操作。</p>
+
+              <!-- 多说评论框 start -->
+              		<!-- <span class="ds-thread-count" data-thread-key="/angularjs/2017/03/11/angularjs_basics7" data-count-type="comments"></span> -->
+					<div class="ds-thread" data-thread-key="http://www.huanghanlian.com/angularjs/2017/03/11/angularjs_basics7" data-title="基本概念和用法-路由 2-5" data-url="http://www.huanghanlian.com/angularjs/2017/03/11/angularjs_basics7"></div>
+				<!-- 多说评论框 end -->
+				<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+				<script type="text/javascript">
+				var duoshuoQuery = {short_name:"huanghuanlian"};
+					(function() {
+						var ds = document.createElement('script');
+						ds.type = 'text/javascript';ds.async = true;
+						ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+						ds.charset = 'UTF-8';
+						(document.getElementsByTagName('head')[0]
+						 || document.getElementsByTagName('body')[0]).appendChild(ds);
+					})();
+				</script>
+				<!-- 多说公共JS代码 end -->
+
+
+				
+            </article>
+		</article>
+
+	</main>
+	<div class="sidebar" id="sidebar">
+	<div class="sidebar-top">
+		<aside class="widjhuh">
+			<h3 class="widget-title">最新文章</h3>
+			<ul class="minty_thumblist">
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics10.html">
+
+                    	<span>基本概念和用法-综合应用BookStore  2-8</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics9.html">
+
+                    	<span>基本概念和用法-Service与Peovider  2-7</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics8.html">
+
+                    	<span>基本概念和用法-指令 2-6</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics6.html">
+
+                    	<span>基本概念和用法-双向数据绑定 2-4</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics5.html">
+
+                    	<span>基本概念和用法-路由，模块，依赖注入 2-3</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics4.html">
+
+                    	<span>基本概念和用法-MVC 2-2</span>
+                    </a>
+                  </li>
+				
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">最近访客</h3>
+			<ul class="minty_thumblist minty_thumblist_a ds-recent-visitors visitorsopi" data-num-items="20" data-avatar-size="38">
+
+			</ul>
+
+		    <!--多说js加载开始，一个页面只需要加载一次 -->
+		    <script type="text/javascript">
+		    var duoshuoQuery = {short_name:"huanghuanlian"};
+		    (function() {
+		        var ds = document.createElement('script');
+		        ds.type = 'text/javascript';ds.async = true;
+		        ds.src = 'http://static.duoshuo.com/embed.js';
+		        ds.charset = 'UTF-8';
+		        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+		    })();
+		    </script>
+		    <!--多说js加载结束，一个页面只需要加载一次 -->
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">分类目录</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+				
+				<li>
+					<a href="/categories/Markdown/" title="view all
+posts">
+						Markdown (2)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Canvas/" title="view all
+posts">
+						Canvas (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Git/" title="view all
+posts">
+						Git (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/JavaScript/" title="view all
+posts">
+						JavaScript (30)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/AngularJS/" title="view all
+posts">
+						AngularJS (10)
+					</a>
+				</li>
+				
+			</ul>
+		</aside>
+	</div>
+
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">标签目录</h3>
+			<div class="tagcloud" id="tagcloud">
+				
+					<a href="/tag/Markdown/" title="view all
+posts">
+						Markdown
+					</a>
+				
+					<a href="/tag/Canvas/" title="view all
+posts">
+						Canvas
+					</a>
+				
+					<a href="/tag/Git/" title="view all
+posts">
+						Git
+					</a>
+				
+					<a href="/tag/JavaScript/" title="view all
+posts">
+						JavaScript
+					</a>
+				
+					<a href="/tag/RegExp/" title="view all
+posts">
+						RegExp
+					</a>
+				
+					<a href="/tag/DOM/" title="view all
+posts">
+						DOM
+					</a>
+				
+					<a href="/tag/BOM/" title="view all
+posts">
+						BOM
+					</a>
+				
+					<a href="/tag/__proto__/" title="view all
+posts">
+						__proto__
+					</a>
+				
+					<a href="/tag/Ajax/" title="view all
+posts">
+						Ajax
+					</a>
+				
+					<a href="/tag/AngularJS/" title="view all
+posts">
+						AngularJS
+					</a>
+				
+			</div>
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">友情链接</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+
+				<li>
+					<a href="http://blog.csdn.net/u013861109?viewmode=contents" target="blank">
+						csdn博客
+					</a>
+				</li>
+				<li>
+					<a href="http://www.imooc.com/" target="blank">
+						慕课网
+					</a>
+				</li>
+				<li>
+					<a href="http://www.dglives.com/" target="blank">
+						数字生活前端
+					</a>
+				</li>
+				<li>
+					<a href="http://www.jianshu.com/" target="blank">
+						简书
+					</a>
+				</li>
+				<li>
+					<a href="http://www.runoob.com/" target="blank">
+						菜鸟
+					</a>
+				</li>
+				<li>
+					<a href="http://www.qdfuns.com/" target="blank">
+						前端网
+					</a>
+				</li>
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">QQ交流群</h3>
+			<img style="margin-top: 10px; box-shadow: none;" src="/assets/images/ertw.png">
+		</aside>
+	</div>
+
+
+	<script>
+	var box=document.getElementById("tagcloud").getElementsByTagName("a");
+	for(var i=0;i<box.length;i++){
+		var a =Math.round(Math.random()*20)/10;
+		box[i].style.fontSize=a+'em';
+	}
+	</script>
+
+</div>
+</div>
+	<footer id="footer">
+	<nav class="links">
+		<a href="">作品</a>
+		<a href="/about/">关于本站</a>
+		<a href="/report/">留言板</a>
+	</nav>
+	<div class="copyright">
+		© 2016 <a href="">继小鹏的前端博客</a>
+	</div>
+	<a href="javascript:pageScroll();" id="rocket" class=""></a>
+	<span id="busuanzi_container_site_pv">
+	    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+	<span id="busuanzi_container_site_uv">
+	  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+	</span>
+</footer>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+
+$(function(){
+	$("#m-btns").click(function(){
+		if($("body").hasClass('nav-is-open')){
+			$("body").removeClass('nav-is-open')
+		}else{
+			$("body").addClass('nav-is-open')
+		};
+	})
+})
+var fhdb = document.getElementById("rocket");
+
+//获取页面可视区高度
+var dqy = document.documentElement.clientHeight;
+
+var main_left=$('#main').offset().left+$('#main').width()+16;
+
+//滚动条滚动时触发   在滚动的时候触发
+window.onscroll = function() {
+	var sTop = document.documentElement.scrollTop || document.body.scrollTop;
+	if (sTop >= dqy) {
+		$("#rocket").addClass('show');
+	} else {
+		$("#rocket").removeClass('show');
+	}
+}
+
+function pageScroll() {
+	//把内容滚动指定的像素数（第一个参数是向右滚动的像素数，第二个参数是向下滚动的像素数）
+	window.scrollBy(0, -100);
+	//延时递归调用，模拟滚动向上效果
+	scrolldelay = setTimeout('pageScroll()', 5);
+	//获取scrollTop值，声明了DTD的标准网页取document.documentElement.scrollTop，否则取document.body.scrollTop；因为二者只有一个会生效，另一个就恒为0，所以取和值可以得到网页的真正的scrollTop值
+	var sTop = document.documentElement.scrollTop + document.body.scrollTop;
+	//判断当页面到达顶部，取消延时代码（否则页面滚动到顶部会无法再向下正常浏览页面）
+	if (sTop == 0) clearTimeout(scrolldelay)
+
+}
+
+
+
+</script>
+</body>
+</html>

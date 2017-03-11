@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>基本概念和用法-指令 2-6</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css">
+	<link rel="shortcut icon" href="/assets/images/logo_ioc.ico" type="images/x-icon"/>
+	<link rel="icon" href="/assets/images/logo_ioc.png" type="images/png"/>
+	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
+	
+	<script type="text/javascript">
+	    (function($) {
+
+	    	var temp = 0;
+	    	$(document).scroll(function() {
+
+	    		if ($(document).scrollTop() > temp) {
+	    			$("#header").addClass("hide-top");
+	    		} else {
+	    			$("#header").removeClass("hide-top");
+	    		}
+	    		temp = $(document).scrollTop();
+	    	});
+	    	
+	    	//console.log($(".menu"))
+	    })(jQuery);
+
+	</script>
+
+</head>
+<body>
+    <header id="header" role="banner">
+	<a id="hgroup" href="/" rel="home">
+		<h1 id="logo"></h1>
+		<i class="slogan" title="返回首页">
+			热爱编程，关注前端开发技术
+		</i>
+	</a>
+	<div class="connect">
+		<a href="https://github.com/huanghanzhilian" class="git" target="_blank"></a>
+		<a href="http://www.huanghanlian.com/feed.xml" class="rss"></a>
+	</div>
+	<nav id="nav">
+		<ul class="menu">
+			<li class="menu_item">
+				<a href="/">首页</a>
+			</li>
+			<li class="menu_item">
+				<a href="http://www.huanghanlian.com/widget/">Web组件库</a>
+			</li>
+			<li class="menu_item">
+				<a href="http://www.huanghanlian.com/front-end-note/">前端笔记</a>
+			</li>
+			<li class="menu_item">
+				<a href="/about/">关于本站</a>
+			</li>
+			<li class="menu_item">
+				<a href="/report/">留言板</a>
+			</li>
+		</ul>
+	</nav>
+
+	<div id="m-btns">
+		<div class="menu"></div>
+	</div>
+	<nav class="nav-bar-tabs ">
+		<ul>
+            <li>
+              	<a href="/">首页</a>
+            </li>
+            <li>
+              	<a href="http://www.huanghanlian.com/widget/">Web组件库</a>
+            </li>
+            <li>
+              	<a href="http://www.huanghanlian.com/front-end-note/">前端笔记</a>
+            </li>
+            <li>
+              	<a href="/about/">关于本站</a>
+            </li>
+            <li>
+              	<a href="/report/">留言板</a>
+            </li>
+        </ul>
+	</nav>
+</header>
+	<div id="container" class="clearfix">
+	<main id="main" class="hfeed">
+		<article id="post-157" class="post-157 hentry">
+			<header class="entry-header">
+				<h1 class="entry-title">基本概念和用法-指令 2-6</h1>
+				<div class="entry-meta">2017-03-11 <span class="dot">•</span>AngularJS<span class="dot">•</span>黄继鹏<span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span></div>
+			</header>
+			<article class="post-content">
+              <p>###解析最简单的指令hello：匹配模式restrict</p>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app="MyModule"&gt;
+	&lt;head&gt;
+		&lt;meta charset="utf-8"&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;hello&gt;&lt;/hello&gt;
+		&lt;div hello&gt;&lt;/div&gt;
+		&lt;div class="hello"&gt;&lt;/div&gt;
+		&lt;!-- directive:hello --&gt;
+		&lt;div&gt;&lt;/div&gt;
+	&lt;/body&gt;
+	&lt;script src="framework/angular-1.3.0.14/angular.js"&gt;&lt;/script&gt;
+	&lt;script src="HelloAngular_Directive.js"&gt;&lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
+
+<pre><code class="language-javascript">var myModule = angular.module("MyModule", []);
+myModule.directive("hello", function() {
+    return {
+        restrict: 'AEMC',
+        template: '&lt;div&gt;Hi everyone!&lt;/div&gt;',
+        replace: true
+    }
+});
+</code></pre>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-aeca8e4842100d37.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p><strong>restrict</strong>表示匹配模式</p>
+
+<p>A表示属性<br />
+E表示元素<br />
+M表示注释<br />
+C表示样式类</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-2e1b8c9033ab7db2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>###解析最简单的指令hello：template，templateUrl，$templateCache</p>
+
+<p>在上面最简单的指令里面有一个配置项<strong>template</strong>这是最总要显示的html标签</p>
+
+<p>使用这种方式编写的内容比较少，</p>
+
+<p>AngularJS提供了<strong>templateUrl</strong>配置项，使用这个就不需要把模板写道js代码里面</p>
+
+<p>把模板切成独立的html去编写，可以编写很多内容。</p>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app="MyModule"&gt;
+	&lt;head&gt;
+		&lt;meta charset="utf-8"&gt;
+		&lt;link rel="stylesheet" href="css/bootstrap-3.0.0/css/bootstrap.css"&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;hello&gt;&lt;/hello&gt;
+	&lt;/body&gt;
+	&lt;script src="framework/angular-1.3.0.14/angular.js"&gt;&lt;/script&gt;
+	&lt;script src="templateUrl.js"&gt;&lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
+
+<pre><code class="language-javascript">var myModule = angular.module("MyModule", []);
+myModule.directive("hello", function() {
+    return {
+        restrict: 'AECM',
+        templateUrl: 'hello.html',
+        replace: true
+    }
+});
+</code></pre>
+
+<p>hello</p>
+<pre><code class="language-html">&lt;div class="panel panel-primary"&gt;
+    &lt;div class="panel-heading"&gt;
+        &lt;div class="panel-title"&gt;双向数据绑定&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="panel-body"&gt;
+        &lt;div class="row"&gt;
+            &lt;div class="col-md-12"&gt;
+                &lt;form class="form-horizontal" role="form" ng-controller="UserInfoCtrl"&gt;
+                    &lt;div class="form-group"&gt;
+                        &lt;label class="col-md-2 control-label"&gt;
+                            邮箱：
+                        &lt;/label&gt;
+                        &lt;div class="col-md-10"&gt;
+                            &lt;input type="email" class="form-control" placeholder="推荐使用126邮箱" ng-model="userInfo.email"&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class="form-group"&gt;
+                        &lt;label class="col-md-2 control-label"&gt;
+                            密码：
+                        &lt;/label&gt;
+                        &lt;div class="col-md-10"&gt;
+                            &lt;input type="password" class="form-control" placeholder="只能是数字、字母、下划线" ng-model="userInfo.password"&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class="form-group"&gt;
+                        &lt;div class="col-md-offset-2 col-md-10"&gt;
+                            &lt;div class="checkbox"&gt;
+                                &lt;label&gt;
+                                    &lt;input type="checkbox" ng-model="userInfo.autoLogin"&gt;自动登录
+                                &lt;/label&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class="form-group"&gt;
+                        &lt;div class="col-md-offset-2 col-md-10"&gt;
+                            &lt;button class="btn btn-default" ng-click="getFormData()"&gt;获取Form表单的值&lt;/button&gt;
+                            &lt;button class="btn btn-default" ng-click="setFormData()"&gt;设置Form表单的值&lt;/button&gt;
+                            &lt;button class="btn btn-default" ng-click="resetForm()"&gt;重置表单&lt;/button&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+</code></pre>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-cf3c066e122727d4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app="MyModule"&gt;
+	&lt;head&gt;
+		&lt;meta charset="utf-8"&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;hello&gt;&lt;/hello&gt;
+	&lt;/body&gt;
+	&lt;script src="framework/angular-1.3.0.14/angular.js"&gt;&lt;/script&gt;
+	&lt;script src="$templateCache.js"&gt;&lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
+
+<pre><code class="language-javascript">var myModule = angular.module("MyModule", []);
+
+//注射器加载完所有模块时，此方法执行一次
+myModule.run(function($templateCache){
+	$templateCache.put("hello.html","&lt;div&gt;Hello everyone!!!!!!&lt;/div&gt;");
+});
+
+myModule.directive("hello", function($templateCache) {
+    return {
+        restrict: 'AECM',
+        template: $templateCache.get("hello.html"),
+        replace: true
+    }
+});
+
+</code></pre>
+
+<p><strong>$templateCache</strong>这个配置项是缓存的意思。</p>
+
+<p><code>  template: $templateCache.get("hello.html"),</code>就可以使用</p>
+
+<p>也就是说将模板缓存起来去让多个指令去使用他</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-1f01cdf23ded59fb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>###解析最简单的指令hello：replace与trabsclude</p>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app="MyModule"&gt;
+	&lt;head&gt;
+		&lt;meta charset="utf-8"&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;hello&gt;
+			&lt;div&gt;这里是指令内部的内容。&lt;/div&gt;
+		&lt;/hello&gt;
+	&lt;/body&gt;
+	&lt;script src="framework/angular-1.3.0.14/angular.js"&gt;&lt;/script&gt;
+	&lt;script src="replace.js"&gt;&lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
+
+<pre><code class="language-javascript">var myModule = angular.module("MyModule", []);
+myModule.directive("hello", function() {
+    return {
+    	restrict:"AE",
+    	template:"&lt;div&gt;Hello everyone!&lt;/div&gt;",
+    	replace:true
+    } 
+});
+</code></pre>
+
+<p>hello作为一个元素当然是可以嵌套的，</p>
+
+<p>如果使用<strong>replace</strong>配置项内部写的内容就会被替换掉，</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-fbd8f70d905e37e3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>但是有一个div</p>
+
+<pre><code class="language-html">&lt;hello&gt;
+			&lt;div&gt;这里是指令内部的内容。&lt;/div&gt;
+		&lt;/hello&gt;
+</code></pre>
+
+<p>使用<strong>trabsclude</strong>方式</p>
+
+<p><strong>trabsclude</strong>表示变换，</p>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app="MyModule"&gt;
+	&lt;head&gt;
+		&lt;meta charset="utf-8"&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;hello&gt;
+			&lt;div&gt;这里是指令内部的内容。&lt;/div&gt;
+		&lt;/hello&gt;
+	&lt;/body&gt;
+	&lt;script src="framework/angular-1.3.0.14/angular.js"&gt;&lt;/script&gt;
+	&lt;script src="transclude.js"&gt;&lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
+
+<pre><code class="language-javascript">var myModule = angular.module("MyModule", []);
+myModule.directive("hello", function() {
+    return {
+    	restrict:"AE",
+    	transclude:true,
+    	template:"&lt;div&gt;Hello everyone!&lt;div ng-transclude&gt;&lt;/div&gt;&lt;/div&gt;"
+    } 
+});
+</code></pre>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-6b01c1ebfddecea7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>使用<strong>trabsclude</strong>内部嵌套的内容会保存下来。这个有非常重要的作用，因为指令互相之间是可以嵌套的，如果最外层的指令把内部的内容全部替换，很显然内部的指令没有办法起作用。</p>
+
+<p>###comile与link(操作元素，添加css样式，绑定事件)</p>
+
+<p>指令在执行时候的机制</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-fd90df1125c52758.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>###指令与控制器之间的交互</p>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app="MyModule"&gt;
+	&lt;head&gt;
+		&lt;meta charset="utf-8"&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;div ng-controller="MyCtrl"&gt;
+			&lt;loader howToLoad="loadData()"&gt;滑动加载&lt;/loader&gt;
+		&lt;/div&gt;
+		&lt;div ng-controller="MyCtrl2"&gt;
+			&lt;loader howToLoad="loadData2()"&gt;滑动加载&lt;/loader&gt;
+		&lt;/div&gt;
+	&lt;/body&gt;
+	&lt;script src="framework/angular-1.3.0.14/angular.js"&gt;&lt;/script&gt;
+	&lt;script src="Directive&amp;Controller.js"&gt;&lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
+
+<pre><code class="language-javascript">var myModule = angular.module("MyModule", []);
+myModule.controller('MyCtrl', ['$scope', function($scope){
+	$scope.loadData=function(){
+		console.log("加载数据中...");
+    }
+}]);
+myModule.controller('MyCtrl2', ['$scope', function($scope){
+    $scope.loadData2=function(){
+        console.log("加载数据中...22222");
+    }
+}]);
+myModule.directive("loader", function() {
+    return {
+    	restrict:"AE",
+    	link:function(scope,element,attrs){
+    		element.bind('mouseenter', function(event) {
+    			//scope.loadData();
+    			// scope.$apply("loadData()");
+    			// 注意这里的坑，howToLoad会被转换成小写的howtoload
+    			scope.$apply(attrs.howtoload);
+    		});
+        }
+    } 
+});
+</code></pre>
+
+<p>指令通过属性值的不同来调用不同控制器上的方法</p>
+
+<p>link:function(scope,element,attrs)</p>
+
+<p>scope作用域</p>
+
+<p>element元素</p>
+
+<p>attrs属性</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-8fba9732b4eb025f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>###指令间的交互</p>
+
+<p>scope: {},   创建独立作用域scope</p>
+
+<p>这里面的controller和MVC的controller不是一个东西，这个是指令内部的controller，他是用来给我们的指令暴露出一组方法给外部去调用的。</p>
+
+<p>supermanCtrl在link中</p>
+
+<p>controller给指令暴露了三个方法</p>
+
+<p>指令间的交互是通过指令上面内部的<strong>controller</strong>暴露出来的方法来给外部进行调用的，</p>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app="MyModule"&gt;
+
+&lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;link rel="stylesheet" href="css/bootstrap-3.0.0/css/bootstrap.css"&gt;
+    &lt;script src="framework/angular-1.3.0.14/angular.js"&gt;&lt;/script&gt;
+    &lt;script src="Directive&amp;Directive.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+	&lt;div class="row"&gt;
+		&lt;div class="col-md-3"&gt;
+			&lt;superman strength&gt;动感超人---力量&lt;/superman&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;div class="row"&gt;
+		&lt;div class="col-md-3"&gt;
+			&lt;superman strength speed&gt;动感超人2---力量+敏捷&lt;/superman&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;div class="row"&gt;
+		&lt;div class="col-md-3"&gt;
+			&lt;superman strength speed light&gt;动感超人3---力量+敏捷+发光&lt;/superman&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+
+</code></pre>
+
+<pre><code class="language-javascript">var myModule = angular.module("MyModule", []);
+myModule.directive("superman", function() {
+    return {
+        scope: {},
+        restrict: 'AE',
+        controller: function($scope) {
+            $scope.abilities = [];
+
+            this.addStrength = function() {
+                $scope.abilities.push("strength");
+            };
+            this.addSpeed = function() {
+                $scope.abilities.push("speed");
+            };
+            this.addLight = function() {
+                $scope.abilities.push("light");
+            };
+        },
+        link: function(scope, element, attrs) {
+            element.addClass('btn btn-primary');
+            element.bind("mouseenter", function() {
+                console.log(scope.abilities);
+            });
+        }
+    }
+});
+myModule.directive("strength", function() {
+    return {
+        require: '^superman',
+        link: function(scope, element, attrs, supermanCtrl) {
+            supermanCtrl.addStrength();
+        }
+    }
+});
+myModule.directive("speed", function() {
+    return {
+        require: '^superman',
+        link: function(scope, element, attrs, supermanCtrl) {
+            supermanCtrl.addSpeed();
+        }
+    }
+});
+myModule.directive("light", function() {
+    return {
+        require: '^superman',
+        link: function(scope, element, attrs, supermanCtrl) {
+            supermanCtrl.addLight();
+        }
+    }
+});
+</code></pre>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-29ee8200b7aed295.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>###scope的类型与独立scope</p>
+
+<p><strong>什么是独立scope</strong></p>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app="MyModule"&gt;
+	&lt;head&gt;
+		&lt;meta charset="utf-8"&gt;
+		&lt;link rel="stylesheet" href="css/bootstrap-3.0.0/css/bootstrap.css"&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;hello&gt;&lt;/hello&gt;
+		&lt;hello&gt;&lt;/hello&gt;
+		&lt;hello&gt;&lt;/hello&gt;
+		&lt;hello&gt;&lt;/hello&gt;
+	&lt;/body&gt;
+	&lt;script src="framework/angular-1.3.0.14/angular.js"&gt;&lt;/script&gt;
+	&lt;script src="IsolateScope.js"&gt;&lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>页面上有四个hello指令</p>
+
+<pre><code class="language-javascript">var myModule = angular.module("MyModule", []);
+myModule.directive("hello", function() {
+    return {
+        restrict: 'AE',
+        template: '&lt;div&gt;&lt;input type="text" ng-model="userName"/&gt;&lt;/div&gt;',
+        replace: true
+    }
+});
+</code></pre>
+
+<p>给这个指令上面加了input<br />
+用来接收用户的输入，然后后面加了双向数据绑用来展示输入的内容，</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-9d058b72b91d4094.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>页面上有四个input，因为这里没有给他创建独立scope会造成当我们其中一个任意input输入发生变化时，会影响其他三个指令实例。</p>
+
+<p>这是有问题的，他们应该互相不受影响，就没有办法独立去使用了，</p>
+
+<p>创建独立scope很简单只要加一个配置项，<code>scope:{}</code></p>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app="MyModule"&gt;
+	&lt;head&gt;
+		&lt;meta charset="utf-8"&gt;
+		&lt;link rel="stylesheet" href="css/bootstrap-3.0.0/css/bootstrap.css"&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;hello&gt;&lt;/hello&gt;
+		&lt;hello&gt;&lt;/hello&gt;
+		&lt;hello&gt;&lt;/hello&gt;
+		&lt;hello&gt;&lt;/hello&gt;
+	&lt;/body&gt;
+	&lt;script src="framework/angular-1.3.0.14/angular.js"&gt;&lt;/script&gt;
+	&lt;script src="IsolateScope.js"&gt;&lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
+
+<pre><code class="language-javascript">var myModule = angular.module("MyModule", []);
+myModule.directive("hello", function() {
+    return {
+        restrict: 'AE',
+        scope:{},
+        template: '&lt;div&gt;&lt;input type="text" ng-model="userName"/&gt;&lt;/div&gt;',
+        replace: true
+    }
+});
+</code></pre>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-3eee206b8ca4020a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>这个时候每个指令都有他独立的scope空间，这样他们就不会互相影响了。</p>
+
+<p>###scope的绑定策略</p>
+
+<p><strong>什么是绑定策略</strong></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-058d726680968696.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app="MyModule"&gt;
+	&lt;head&gt;
+		&lt;meta charset="utf-8"&gt;
+		&lt;link rel="stylesheet" href="css/bootstrap-3.0.0/css/bootstrap.css"&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;div ng-controller="MyCtrl"&gt;
+			&lt;drink flavor=""&gt;&lt;/drink&gt;
+		&lt;/div&gt;
+	&lt;/body&gt;
+	&lt;script src="framework/angular-1.3.0.14/angular.js"&gt;&lt;/script&gt;
+	&lt;script src="ScopeAt.js"&gt;&lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>首先指令drink 有一个叫flavor一个自定义的属性，使用绑定了一个ctrlFlavor属性</p>
+
+<pre><code class="language-javascript">var myModule = angular.module("MyModule", []);
+myModule.controller('MyCtrl', ['$scope', function($scope){
+	$scope.ctrlFlavor="百威";
+}])
+myModule.directive("drink", function() {
+    return {
+    	restrict:'AE',
+        template:"&lt;div&gt;&lt;/div&gt;",
+        link:function(scope,element,attrs){
+        	scope.flavor=attrs.flavor;
+        }
+    }
+});
+</code></pre>
+
+<p>定义控制器上面赋值一个属性ctrlFlavor值是百威</p>
+
+<p>定义指令drink</p>
+
+<p>template模板用来显示内容</p>
+
+<p>link函数里面把指令属性flavor的值赋给scope里flavor属性</p>
+
+<p>实际上template模板用来显示内容是来自于scope上面的flavor属性</p>
+
+<pre><code class="language-javascript">&lt;div ng-controller="MyCtrl"&gt;
+			&lt;drink flavor=""&gt;&lt;/drink&gt;
+		&lt;/div&gt;
+</code></pre>
+
+<p>由于在指令用的这个地方把flavor绑定到了控制器里面的ctrlFlavor上面所以指令里面显示的应该是百威。</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-6e4b26e6840fb3ac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>这样的写法如果每次都这样写会比较累，实际上可以通过<code>scope:{flavor:'@'}</code>这样的方式去写，link函数部分就可以不需要了。</p>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app="MyModule"&gt;
+	&lt;head&gt;
+		&lt;meta charset="utf-8"&gt;
+		&lt;link rel="stylesheet" href="css/bootstrap-3.0.0/css/bootstrap.css"&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;div ng-controller="MyCtrl"&gt;
+			&lt;drink flavor=""&gt;&lt;/drink&gt;
+		&lt;/div&gt;
+	&lt;/body&gt;
+	&lt;script src="framework/angular-1.3.0.14/angular.js"&gt;&lt;/script&gt;
+	&lt;script src="ScopeAt.js"&gt;&lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
+
+<pre><code class="language-javascript">var myModule = angular.module("MyModule", []);
+myModule.controller('MyCtrl', ['$scope', function($scope){
+	$scope.ctrlFlavor="百威";
+}])
+myModule.directive("drink", function() {
+    return {
+    	restrict:'AE',
+        scope: {
+            flavor: '@'
+        },
+        template:"&lt;div&gt;&lt;/div&gt;",
+        /*link:function(scope,element,attrs){
+        	scope.flavor=attrs.flavor;
+        }*/
+    }
+});
+</code></pre>
+
+<p>这样写和之前也是等价的。</p>
+
+<p>这个是<code>@</code>绑定，有一个地方需要注意他传递的是字符串传递的不是对象</p>
+
+<p><strong>scope  = 号的绑定</strong></p>
+
+<p>这种绑定是双向进行绑定</p>
+
+<p>业务是这样的dang不仅仅要把$scope上的ctrlFlavor传递给指令，当指令来修改了$scope上的ctrlFlavor的内容希望也让控制器里面的内容也发生变化，</p>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app="MyModule"&gt;
+	&lt;head&gt;
+		&lt;meta charset="utf-8"&gt;
+		&lt;link rel="stylesheet" href="css/bootstrap-3.0.0/css/bootstrap.css"&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;div ng-controller="MyCtrl"&gt;
+			Ctrl:
+			&lt;br&gt;
+			&lt;input type="text" ng-model="ctrlFlavor"&gt;
+			&lt;br&gt;
+			Directive:
+			&lt;br&gt;
+			&lt;drink flavor="ctrlFlavor"&gt;&lt;/drink&gt;
+		&lt;/div&gt;
+	&lt;/body&gt;
+	&lt;script src="framework/angular-1.3.0.14/angular.js"&gt;&lt;/script&gt;
+	&lt;script src="ScopeEqual.js"&gt;&lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
+
+<pre><code class="language-javascript">var myModule = angular.module("MyModule", []);
+myModule.controller('MyCtrl', ['$scope', function($scope){
+	$scope.ctrlFlavor="百威";
+}])
+myModule.directive("drink", function() {
+    return {
+    	restrict:'AE',
+        scope:{
+        	flavor:'='
+        },
+        template:'&lt;input type="text" ng-model="flavor"/&gt;'
+    }
+});
+</code></pre>
+
+<p>通过 scope:{flavor:’=’},就把flavor的内容绑定到$scope.ctrlFlavor=”百威”;上面。</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-002b87786e15b653.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p><strong>scope  &amp; 号的绑定</strong></p>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app="MyModule"&gt;
+	&lt;head&gt;
+		&lt;meta charset="utf-8"&gt;
+		&lt;link rel="stylesheet" href="css/bootstrap-3.0.0/css/bootstrap.css"&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;div ng-controller="MyCtrl"&gt;
+			&lt;greeting greet="sayHello(name)"&gt;&lt;/greeting&gt;
+			&lt;greeting greet="sayHello(name)"&gt;&lt;/greeting&gt;
+			&lt;greeting greet="sayHello(name)"&gt;&lt;/greeting&gt;
+		&lt;/div&gt;
+	&lt;/body&gt;
+	&lt;script src="framework/angular-1.3.0.14/angular.js"&gt;&lt;/script&gt;
+	&lt;script src="ScopeAnd.js"&gt;&lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>有greeting 指令，这个指令里面要调用控制器上面的方法叫sayHello</p>
+
+<pre><code class="language-javascript">var myModule = angular.module("MyModule", []);
+myModule.controller('MyCtrl', ['$scope', function($scope){
+	$scope.sayHello=function(name){
+		alert("Hello "+name);
+	}
+}])
+myModule.directive("greeting", function() {
+    return {
+    	restrict:'AE',
+        scope:{
+        	greet:'&amp;'
+        },
+        template:'&lt;input type="text" ng-model="userName" /&gt;&lt;br/&gt;'+
+        		 '&lt;button class="btn btn-default" ng-click="greet({name:userName})"&gt;Greeting&lt;/button&gt;&lt;br/&gt;'
+    }
+});
+</code></pre>
+
+<p>js中有一个控制器，作用域上有sayHello方法，弹参数出来。</p>
+
+<p>写了greeting指令，写了scope:{greet:’&amp;’},</p>
+
+<p>在模板里面用一个按钮调用greet函数</p>
+
+<p>这个函数在页面上绑定控制器上面的sayHello方法</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-85a3d700eebb36dd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>###AngularJS内置的指令</p>
+
+<p>http://ngnice.com/  AngularJS-api</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-0ed1c903dd25c550.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-ce0e5302ffc8b580.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<pre><code class="language-html">&lt;html ng-app='TestFormModule'&gt;
+	&lt;head&gt;
+		&lt;meta http-equiv="content-type" content="text/html; charset=utf-8" /&gt;
+		&lt;script src="framework/angular-1.3.0.14/angular.js"&gt;&lt;/script&gt;
+		&lt;script src="FormBasic.js"&gt;&lt;/script&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;form name="myForm" ng-submit="save()" ng-controller="TestFormModule"&gt;
+			  &lt;input name="userName" type="text" ng-model="user.userName" required/&gt;
+			  &lt;input name="password" type="password" ng-model="user.password" required/&gt;
+			  &lt;input type="submit" ng-disabled="myForm.$invalid"/&gt;
+		&lt;/form&gt;
+	&lt;/body&gt;
+&lt;/html&gt;
+
+</code></pre>
+
+<pre><code class="language-javascript">var appModule = angular.module('TestFormModule', []);
+appModule.controller("TestFormModule",function($scope){
+	$scope.user={
+		userName:'damoqiongqiu',
+		password:''
+	};
+	$scope.save=function(){
+		alert("保存数据!");
+	}
+});
+</code></pre>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-973ff96722645d86.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app&gt;
+	&lt;head&gt;
+		&lt;script src="framework/angular-1.3.0.14/angular.js"&gt;&lt;/script&gt;
+		&lt;script src="FormAdv1.js"&gt;&lt;/script&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;div ng-controller="Controller"&gt;
+			&lt;form name="form" class="css-form" novalidate&gt;
+				Name:
+				&lt;input type="text" ng-model="user.name" name="uName" required /&gt;&lt;br/&gt;
+				E-mail:
+				&lt;input type="email" ng-model="user.email" name="uEmail" required /&gt;&lt;br/&gt;
+				&lt;div ng-show="form.uEmail.$dirty &amp;&amp; form.uEmail.$invalid"&gt;
+					Invalid:
+					&lt;span ng-show="form.uEmail.$error.required"&gt;Tell us your email.&lt;/span&gt;
+					&lt;span ng-show="form.uEmail.$error.email"&gt;This is not a valid email.&lt;/span&gt;
+				&lt;/div&gt;
+				Gender:&lt;br/&gt;
+				&lt;input type="radio" ng-model="user.gender" value="male" /&gt;
+				male
+				&lt;input type="radio" ng-model="user.gender" value="female" /&gt;
+				female&lt;br/&gt;
+				&lt;input type="checkbox" ng-model="user.agree" name="userAgree" required /&gt;
+				I agree:
+				&lt;input ng-show="user.agree" type="text" ng-model="user.agreeSign" required /&gt;
+				&lt;div ng-show="!user.agree || !user.agreeSign"&gt;
+					Please agree and sign.
+				&lt;/div&gt;
+				&lt;br/&gt;
+				&lt;button ng-click="reset()" ng-disabled="isUnchanged(user)"&gt;
+					RESET
+				&lt;/button&gt;
+				&lt;button ng-click="update(user)" ng-disabled="form.$invalid || isUnchanged(user)"&gt;
+					SAVE
+				&lt;/button&gt;
+			&lt;/form&gt;
+		&lt;/div&gt;
+	&lt;/body&gt;
+&lt;/html&gt;
+
+</code></pre>
+
+<pre><code class="language-javascript">function Controller($scope) {
+	$scope.master = {};
+
+	$scope.update = function(user) {
+		$scope.master = angular.copy(user);
+	};
+
+	$scope.reset = function() {
+		$scope.user = angular.copy($scope.master);
+	};
+
+	$scope.isUnchanged = function(user) {
+		return angular.equals(user, $scope.master);
+	};
+
+	$scope.reset();
+}
+</code></pre>
+
+<p>###实例解析Expander</p>
+
+<pre><code class="language-html">&lt;html ng-app='expanderModule'&gt;
+	&lt;head&gt;
+		&lt;meta http-equiv="content-type" content="text/html; charset=utf-8" /&gt;
+		&lt;link rel="stylesheet" type="text/css" href="ExpanderSimple.css"/&gt;
+		&lt;script src="framework/angular-1.3.0.14/angular.js"&gt;&lt;/script&gt;
+		&lt;script src="ExpanderSimple.js"&gt;&lt;/script&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;div ng-controller='SomeController'&gt;
+			&lt;expander class='expander' expander-title='title'&gt;
+				
+			&lt;/expander&gt;
+		&lt;/div&gt;
+	&lt;/body&gt;
+&lt;/html&gt;
+
+</code></pre>
+
+<p>定义一个控制器 ，写入expander指令，后面的expander-title=’title’是使用ag绑定策略来进行绑定，</p>
+
+<pre><code class="language-javascript">var expanderModule=angular.module('expanderModule', []);
+expanderModule.directive('expander', function() {
+	return {
+		restrict : 'EA',
+		replace : true,
+		transclude : true,
+		scope : {
+			title : '=expanderTitle'
+		},
+		template : '&lt;div&gt;'
+				 + '&lt;div class="title" ng-click="toggle()"&gt;&lt;/div&gt;'
+				 + '&lt;div class="body" ng-show="showMe" ng-transclude&gt;&lt;/div&gt;'
+				 + '&lt;/div&gt;',
+		link : function(scope, element, attrs) {
+			scope.showMe = false;
+			scope.toggle = function() {
+				scope.showMe = !scope.showMe;
+			}
+		}
+	}
+});
+expanderModule.controller('SomeController',function($scope) {
+    $scope.title = '点击展开';
+	$scope.text = '这里是内部的内容。';
+});
+
+</code></pre>
+
+<p>首先directive定义一个指令expander</p>
+
+<p>restrict : ‘EA’,  可以用元素也可以用属性，</p>
+
+<p>replace : true,   会替换</p>
+
+<p>transclude : true,  内部内容是可以变换的</p>
+
+<pre><code class="language-javascript">scope : {
+			title : '=expanderTitle'
+		},
+//=  等于号这样一个等值绑定  绑定expanderTitle这样一个东西，
+</code></pre>
+
+<p>这个东西就是页面上写的</p>
+
+<pre><code class="language-html">&lt;expander class='expander' expander-title='title'&gt;
+				
+			&lt;/expander&gt;
+</code></pre>
+
+<p>template</p>
+<pre><code class="language-javascript">template : '&lt;div&gt;'
+                 + '&lt;div class="title" ng-click="toggle()"&gt;&lt;/div&gt;'
+                 + '&lt;div class="body" ng-show="showMe" ng-transclude&gt;&lt;/div&gt;'
+                 + '&lt;/div&gt;',
+</code></pre>
+
+<p>template里面有一个ng-click绑定到<code>toggle()</code>这样一个方法上面，这个方法是有指令<code>link</code>这个函数里面提供出来的，很显然是指令内部去使用，外部是调取不到这个方法的，</p>
+
+<pre><code class="language-javascript">link : function(scope, element, attrs) {
+			scope.showMe = false;
+			scope.toggle = function() {
+				scope.showMe = !scope.showMe;
+			}
+		}
+</code></pre>
+
+<p>看看<code>ng-show</code></p>
+
+<p><code>ng-show</code>是用来进行显示和隐藏的切换的，他会根据<code>showMe </code>的属性是不是为<code>true</code>来决定这个<code>div</code>到底显不显示。</p>
+
+<p>以上是一个简单指令的例子</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-9e39a4fc357db349.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
+
+<p>###Accordion</p>
+
+<p>css</p>
+
+<pre><code class="language-css">.expander {
+	border: 1px solid black;
+	width: 250px;
+}
+
+.expander&gt;.title {
+	background-color: black;
+	color: white;
+	padding: .1em .3em;
+	cursor: pointer;
+}
+
+.expander&gt;.body {
+	padding: .1em .3em;
+}
+</code></pre>
+
+<p>html</p>
+
+<pre><code class="language-html">&lt;html ng-app="expanderModule"&gt;
+	&lt;head&gt;
+		&lt;meta http-equiv="content-type" content="text/html; charset=utf-8" /&gt;
+		&lt;link rel="stylesheet" type="text/css" href="Accordion.css"/&gt;
+		&lt;script src="framework/angular-1.3.0.14/angular.js"&gt;&lt;/script&gt;
+		&lt;script src="Accordion.js"&gt;&lt;/script&gt;
+	&lt;/head&gt;
+	&lt;body ng-controller='SomeController' &gt;
+		&lt;accordion&gt;
+			&lt;expander class='expander' ng-repeat='expander in expanders' expander-title='expander.title'&gt;
+				
+			&lt;/expander&gt;
+		&lt;/accordion&gt;
+	&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>这里面指令进了嵌套，外面是个<code>accordion</code>，内部是<code>expander </code>这样一个指令，<code>expander </code>使用<code>ng-repeat='expander in expanders'</code>来进行迭代，他会根据<code>expanders</code>数组里面内容来决定创建多少个<code>expander </code>，</p>
+
+<p>javascript</p>
+
+<pre><code class="language-javascript">var expModule=angular.module('expanderModule',[])
+expModule.directive('accordion', function() {
+	return {
+		restrict : 'EA',
+		replace : true,
+		transclude : true,
+		template : '&lt;div ng-transclude&gt;&lt;/div&gt;',
+		controller : function() {
+			var expanders = [];
+			this.gotOpened = function(selectedExpander) {
+				angular.forEach(expanders, function(expander) {
+					if (selectedExpander != expander) {
+						expander.showMe = false;
+					}
+				});
+			}
+			this.addExpander = function(expander) {
+				expanders.push(expander);
+			}
+		}
+	}
+});
+
+expModule.directive('expander', function() {
+	return {
+		restrict : 'EA',
+		replace : true,
+		transclude : true,
+		require : '^?accordion',
+		scope : {
+			title : '=expanderTitle'
+		},
+		template : '&lt;div&gt;'
+				  + '&lt;div class="title" ng-click="toggle()"&gt;&lt;/div&gt;'
+				  + '&lt;div class="body" ng-show="showMe" ng-transclude&gt;&lt;/div&gt;'
+				  + '&lt;/div&gt;',
+		link : function(scope, element, attrs, accordionController) {
+			scope.showMe = false;
+			accordionController.addExpander(scope);
+			scope.toggle = function toggle() {
+				scope.showMe = !scope.showMe;
+				accordionController.gotOpened(scope);
+			}
+		}
+	}
+});
+
+expModule.controller("SomeController",function($scope) {
+	$scope.expanders = [{
+		title : 'Click me to expand',
+		text : 'Hi there folks, I am the content that was hidden but is now shown.'
+	}, {
+		title : 'Click this',
+		text : 'I am even better text than you have seen previously'
+	}, {
+		title : 'Test',
+		text : 'test'
+	}];
+});
+
+</code></pre>
+<p><code>expander</code>指令中<code>require : '^?accordion',</code>依赖外部的<code>accordion</code>，</p>
+
+<p>在<code>link</code>里面就能接收到第四个参数<code>accordionController</code></p>
+
+<p>通过参数<code>accordionController</code>就可以跟外层的指令来进行一些交互，</p>
+
+<p><code>accordion</code>里面通过<code>controller </code>暴露了一些方法出来，</p>
+
+<pre><code class="language-javascript">controller : function() {
+            var expanders = [];
+            this.gotOpened = function(selectedExpander) {
+                angular.forEach(expanders, function(expander) {
+                    if (selectedExpander != expander) {
+                        expander.showMe = false;
+                    }
+                });
+            }
+            this.addExpander = function(expander) {
+                expanders.push(expander);
+            }
+        }
+</code></pre>
+
+<p>这样<code>expander</code>就能通过<code>accordionController</code>来调用</p>
+
+<p>效果</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-638cd88811aec914.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
+
+<p>第三方指令库，借助指令库加强开发速度</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-e8904a53139d1d0d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
+
+<p>###指令的运行原理：compile和link</p>
+
+<p>###总结：ERP类型的系统必备的UI组件</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-bac8e6bd7b9951d0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
+
+<p>http://miniui.com/</p>
+
+<p>###总结：互联网/电商型系统必备的UI组件</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-186853cf895f76bf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png" /></p>
+
+<p>###第三方指令库angular-ui</p>
+
+<p>###Directive思想的起源和原理概述</p>
+
+              <!-- 多说评论框 start -->
+              		<!-- <span class="ds-thread-count" data-thread-key="/angularjs/2017/03/11/angularjs_basics8" data-count-type="comments"></span> -->
+					<div class="ds-thread" data-thread-key="http://www.huanghanlian.com/angularjs/2017/03/11/angularjs_basics8" data-title="基本概念和用法-指令 2-6" data-url="http://www.huanghanlian.com/angularjs/2017/03/11/angularjs_basics8"></div>
+				<!-- 多说评论框 end -->
+				<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+				<script type="text/javascript">
+				var duoshuoQuery = {short_name:"huanghuanlian"};
+					(function() {
+						var ds = document.createElement('script');
+						ds.type = 'text/javascript';ds.async = true;
+						ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+						ds.charset = 'UTF-8';
+						(document.getElementsByTagName('head')[0]
+						 || document.getElementsByTagName('body')[0]).appendChild(ds);
+					})();
+				</script>
+				<!-- 多说公共JS代码 end -->
+
+
+				
+            </article>
+		</article>
+
+	</main>
+	<div class="sidebar" id="sidebar">
+	<div class="sidebar-top">
+		<aside class="widjhuh">
+			<h3 class="widget-title">最新文章</h3>
+			<ul class="minty_thumblist">
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics10.html">
+
+                    	<span>基本概念和用法-综合应用BookStore  2-8</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics9.html">
+
+                    	<span>基本概念和用法-Service与Peovider  2-7</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics7.html">
+
+                    	<span>基本概念和用法-路由 2-5</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics6.html">
+
+                    	<span>基本概念和用法-双向数据绑定 2-4</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics5.html">
+
+                    	<span>基本概念和用法-路由，模块，依赖注入 2-3</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics4.html">
+
+                    	<span>基本概念和用法-MVC 2-2</span>
+                    </a>
+                  </li>
+				
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">最近访客</h3>
+			<ul class="minty_thumblist minty_thumblist_a ds-recent-visitors visitorsopi" data-num-items="20" data-avatar-size="38">
+
+			</ul>
+
+		    <!--多说js加载开始，一个页面只需要加载一次 -->
+		    <script type="text/javascript">
+		    var duoshuoQuery = {short_name:"huanghuanlian"};
+		    (function() {
+		        var ds = document.createElement('script');
+		        ds.type = 'text/javascript';ds.async = true;
+		        ds.src = 'http://static.duoshuo.com/embed.js';
+		        ds.charset = 'UTF-8';
+		        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+		    })();
+		    </script>
+		    <!--多说js加载结束，一个页面只需要加载一次 -->
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">分类目录</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+				
+				<li>
+					<a href="/categories/Markdown/" title="view all
+posts">
+						Markdown (2)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Canvas/" title="view all
+posts">
+						Canvas (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Git/" title="view all
+posts">
+						Git (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/JavaScript/" title="view all
+posts">
+						JavaScript (30)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/AngularJS/" title="view all
+posts">
+						AngularJS (10)
+					</a>
+				</li>
+				
+			</ul>
+		</aside>
+	</div>
+
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">标签目录</h3>
+			<div class="tagcloud" id="tagcloud">
+				
+					<a href="/tag/Markdown/" title="view all
+posts">
+						Markdown
+					</a>
+				
+					<a href="/tag/Canvas/" title="view all
+posts">
+						Canvas
+					</a>
+				
+					<a href="/tag/Git/" title="view all
+posts">
+						Git
+					</a>
+				
+					<a href="/tag/JavaScript/" title="view all
+posts">
+						JavaScript
+					</a>
+				
+					<a href="/tag/RegExp/" title="view all
+posts">
+						RegExp
+					</a>
+				
+					<a href="/tag/DOM/" title="view all
+posts">
+						DOM
+					</a>
+				
+					<a href="/tag/BOM/" title="view all
+posts">
+						BOM
+					</a>
+				
+					<a href="/tag/__proto__/" title="view all
+posts">
+						__proto__
+					</a>
+				
+					<a href="/tag/Ajax/" title="view all
+posts">
+						Ajax
+					</a>
+				
+					<a href="/tag/AngularJS/" title="view all
+posts">
+						AngularJS
+					</a>
+				
+			</div>
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">友情链接</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+
+				<li>
+					<a href="http://blog.csdn.net/u013861109?viewmode=contents" target="blank">
+						csdn博客
+					</a>
+				</li>
+				<li>
+					<a href="http://www.imooc.com/" target="blank">
+						慕课网
+					</a>
+				</li>
+				<li>
+					<a href="http://www.dglives.com/" target="blank">
+						数字生活前端
+					</a>
+				</li>
+				<li>
+					<a href="http://www.jianshu.com/" target="blank">
+						简书
+					</a>
+				</li>
+				<li>
+					<a href="http://www.runoob.com/" target="blank">
+						菜鸟
+					</a>
+				</li>
+				<li>
+					<a href="http://www.qdfuns.com/" target="blank">
+						前端网
+					</a>
+				</li>
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">QQ交流群</h3>
+			<img style="margin-top: 10px; box-shadow: none;" src="/assets/images/ertw.png">
+		</aside>
+	</div>
+
+
+	<script>
+	var box=document.getElementById("tagcloud").getElementsByTagName("a");
+	for(var i=0;i<box.length;i++){
+		var a =Math.round(Math.random()*20)/10;
+		box[i].style.fontSize=a+'em';
+	}
+	</script>
+
+</div>
+</div>
+	<footer id="footer">
+	<nav class="links">
+		<a href="">作品</a>
+		<a href="/about/">关于本站</a>
+		<a href="/report/">留言板</a>
+	</nav>
+	<div class="copyright">
+		© 2016 <a href="">继小鹏的前端博客</a>
+	</div>
+	<a href="javascript:pageScroll();" id="rocket" class=""></a>
+	<span id="busuanzi_container_site_pv">
+	    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+	<span id="busuanzi_container_site_uv">
+	  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+	</span>
+</footer>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+
+$(function(){
+	$("#m-btns").click(function(){
+		if($("body").hasClass('nav-is-open')){
+			$("body").removeClass('nav-is-open')
+		}else{
+			$("body").addClass('nav-is-open')
+		};
+	})
+})
+var fhdb = document.getElementById("rocket");
+
+//获取页面可视区高度
+var dqy = document.documentElement.clientHeight;
+
+var main_left=$('#main').offset().left+$('#main').width()+16;
+
+//滚动条滚动时触发   在滚动的时候触发
+window.onscroll = function() {
+	var sTop = document.documentElement.scrollTop || document.body.scrollTop;
+	if (sTop >= dqy) {
+		$("#rocket").addClass('show');
+	} else {
+		$("#rocket").removeClass('show');
+	}
+}
+
+function pageScroll() {
+	//把内容滚动指定的像素数（第一个参数是向右滚动的像素数，第二个参数是向下滚动的像素数）
+	window.scrollBy(0, -100);
+	//延时递归调用，模拟滚动向上效果
+	scrolldelay = setTimeout('pageScroll()', 5);
+	//获取scrollTop值，声明了DTD的标准网页取document.documentElement.scrollTop，否则取document.body.scrollTop；因为二者只有一个会生效，另一个就恒为0，所以取和值可以得到网页的真正的scrollTop值
+	var sTop = document.documentElement.scrollTop + document.body.scrollTop;
+	//判断当页面到达顶部，取消延时代码（否则页面滚动到顶部会无法再向下正常浏览页面）
+	if (sTop == 0) clearTimeout(scrolldelay)
+
+}
+
+
+
+</script>
+</body>
+</html>

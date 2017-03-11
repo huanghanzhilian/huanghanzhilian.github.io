@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>基本概念和用法-双向数据绑定 2-4</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css">
+	<link rel="shortcut icon" href="/assets/images/logo_ioc.ico" type="images/x-icon"/>
+	<link rel="icon" href="/assets/images/logo_ioc.png" type="images/png"/>
+	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
+	
+	<script type="text/javascript">
+	    (function($) {
+
+	    	var temp = 0;
+	    	$(document).scroll(function() {
+
+	    		if ($(document).scrollTop() > temp) {
+	    			$("#header").addClass("hide-top");
+	    		} else {
+	    			$("#header").removeClass("hide-top");
+	    		}
+	    		temp = $(document).scrollTop();
+	    	});
+	    	
+	    	//console.log($(".menu"))
+	    })(jQuery);
+
+	</script>
+
+</head>
+<body>
+    <header id="header" role="banner">
+	<a id="hgroup" href="/" rel="home">
+		<h1 id="logo"></h1>
+		<i class="slogan" title="返回首页">
+			热爱编程，关注前端开发技术
+		</i>
+	</a>
+	<div class="connect">
+		<a href="https://github.com/huanghanzhilian" class="git" target="_blank"></a>
+		<a href="http://www.huanghanlian.com/feed.xml" class="rss"></a>
+	</div>
+	<nav id="nav">
+		<ul class="menu">
+			<li class="menu_item">
+				<a href="/">首页</a>
+			</li>
+			<li class="menu_item">
+				<a href="http://www.huanghanlian.com/widget/">Web组件库</a>
+			</li>
+			<li class="menu_item">
+				<a href="http://www.huanghanlian.com/front-end-note/">前端笔记</a>
+			</li>
+			<li class="menu_item">
+				<a href="/about/">关于本站</a>
+			</li>
+			<li class="menu_item">
+				<a href="/report/">留言板</a>
+			</li>
+		</ul>
+	</nav>
+
+	<div id="m-btns">
+		<div class="menu"></div>
+	</div>
+	<nav class="nav-bar-tabs ">
+		<ul>
+            <li>
+              	<a href="/">首页</a>
+            </li>
+            <li>
+              	<a href="http://www.huanghanlian.com/widget/">Web组件库</a>
+            </li>
+            <li>
+              	<a href="http://www.huanghanlian.com/front-end-note/">前端笔记</a>
+            </li>
+            <li>
+              	<a href="/about/">关于本站</a>
+            </li>
+            <li>
+              	<a href="/report/">留言板</a>
+            </li>
+        </ul>
+	</nav>
+</header>
+	<div id="container" class="clearfix">
+	<main id="main" class="hfeed">
+		<article id="post-157" class="post-157 hentry">
+			<header class="entry-header">
+				<h1 class="entry-title">基本概念和用法-双向数据绑定 2-4</h1>
+				<div class="entry-meta">2017-03-11 <span class="dot">•</span>AngularJS<span class="dot">•</span>黄继鹏<span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span></div>
+			</header>
+			<article class="post-content">
+              <p>双向数据绑定指的是两个方向，这两个方向指的是从视图到数据模型，AngularJS是MVC框架，程序主要是通过控制器进行操作的，控制器去修改数据模型，数据模型的变更会反应到视图上。视图上面如果发生了数据变化AngularJS框架会同步到数据模型中。</p>
+
+<p>###简单例子</p>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app&gt;
+    &lt;head&gt;
+        &lt;meta charset="utf-8"&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div ng-controller="HelloAngular"&gt;
+            &lt;p&gt;,Angular&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+    &lt;script src="js/angular-1.3.0.js"&gt;&lt;/script&gt;
+    &lt;script src="HelloAngular_MVC.js"&gt;&lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
+
+<pre><code class="language-javascript">function HelloAngular($scope) {
+    $scope.greeting = {
+        text: 'Hello'
+    };
+}
+</code></pre>
+
+<p>html页面中p标签的双花口号是一个取值表达式，</p>
+
+<p>这个页面有一个问题，如果刷新页面在网络不好的情况下可能会看到``</p>
+
+<p>###取值表达式与ng-bind指令</p>
+
+<p>AngularJS提供了一个叫ng-bind指令来避免上面出现取值表达式的问题，</p>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app&gt;
+    &lt;head&gt;
+        &lt;meta charset="utf-8"&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div ng-controller="HelloAngular"&gt;
+            &lt;p&gt;&lt;span ng-bind="greeting.text"&gt;&lt;/span&gt;,Angular&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+    &lt;script src="js/angular-1.3.0.js"&gt;&lt;/script&gt;
+    &lt;script src="HelloAngular_MVC.js"&gt;&lt;/script&gt;
+&lt;/html&gt;
+
+</code></pre>
+
+<pre><code class="language-javascript">function HelloAngular($scope) {
+    $scope.greeting = {
+        text: 'Hello'
+    };
+}
+
+</code></pre>
+
+<p>使用ng-bind指令不会出现取值表达式的问题</p>
+
+<p>在``取值表达式和<code>ng-bind</code>间如何取舍，什么时候该使用哪个呢？</p>
+
+<p>AngularJS本身的库在记载完以后整个页面就归AngularJS来管了这个时候使用``绑定的方式呢就不会有很大的问题。</p>
+
+<p>也就是说在应用主程序index中如果有数据绑定，使用<code>ng-bind</code>去绑定，一般在导入ng核心库的时候一般都是放在index上面，一般不会在内层去加载ng核心库，所以后续的页面通过模板加载进来的页面使用``绑定就ok了。这样是不会堪当表达式的。</p>
+
+<p>在什么情况下会需要视图会修改值，然后导致去改变数据模型呢？</p>
+
+<p>典型的场景就是form表单，form是让用户可以交互和输入的。</p>
+
+<p>###双向绑定的经典场景</p>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app="UserInfoModule"&gt;
+
+&lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;link rel="stylesheet" href="css/bootstrap-3.0.0/css/bootstrap.css"&gt;
+    &lt;script src="js/angular-1.3.0.js"&gt;&lt;/script&gt;
+    &lt;script src="Form.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div class="panel panel-primary"&gt;
+        &lt;div class="panel-heading"&gt;
+            &lt;div class="panel-title"&gt;双向数据绑定&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="panel-body"&gt;
+            &lt;div class="row"&gt;
+                &lt;div class="col-md-12"&gt;
+                    &lt;form class="form-horizontal" role="form" ng-controller="UserInfoCtrl"&gt;
+                        &lt;div class="form-group"&gt;
+                            &lt;label class="col-md-2 control-label"&gt;
+                                邮箱：
+                            &lt;/label&gt;
+                            &lt;div class="col-md-10"&gt;
+                                &lt;input type="email" class="form-control" placeholder="推荐使用126邮箱" ng-model="userInfo.email"&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                        &lt;div class="form-group"&gt;
+                            &lt;label class="col-md-2 control-label"&gt;
+                                密码：
+                            &lt;/label&gt;
+                            &lt;div class="col-md-10"&gt;
+                                &lt;input type="password" class="form-control" placeholder="只能是数字、字母、下划线" ng-model="userInfo.password"&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                        &lt;div class="form-group"&gt;
+                            &lt;div class="col-md-offset-2 col-md-10"&gt;
+                                &lt;div class="checkbox"&gt;
+                                    &lt;label&gt;
+                                        &lt;input type="checkbox" ng-model="userInfo.autoLogin"&gt;自动登录
+                                    &lt;/label&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                        &lt;div class="form-group"&gt;
+                            &lt;div class="col-md-offset-2 col-md-10"&gt;
+                                &lt;button class="btn btn-default" ng-click="getFormData()"&gt;获取Form表单的值&lt;/button&gt;
+                                &lt;button class="btn btn-default" ng-click="setFormData()"&gt;设置Form表单的值&lt;/button&gt;
+                                &lt;button class="btn btn-default" ng-click="resetForm()"&gt;重置表单&lt;/button&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/form&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+
+</code></pre>
+
+<pre><code class="language-javascript">var userInfoModule = angular.module('UserInfoModule', []);
+userInfoModule.controller('UserInfoCtrl', ['$scope',
+    function($scope) {
+        $scope.userInfo = {
+            email: "1319639755@qq.com",
+            password: "253445528",
+            autoLogin: true
+        };
+        $scope.getFormData = function() {
+            console.log($scope.userInfo);
+        };
+        $scope.setFormData = function() {
+            $scope.userInfo = {
+                email: '2254513188@qq.com',
+                password: 'damoqiongqiu',
+                autoLogin: false
+            }
+        };
+        $scope.resetForm = function() {
+            $scope.userInfo = {
+                email: "1319639755@qq.com",
+                password: "253445528",
+                autoLogin: true
+            };
+        }
+    }
+])
+
+</code></pre>
+
+<p>预览</p>
+
+<p>以上代码创建模块，这个模块不以来任何东西，所以数组是空，</p>
+
+<p>有了模块需要建立一个控制器由控制器来控制数据模型和视图，UserInfoCtrl，这个控制器放在了form上。</p>
+
+<p>在$scope上赋一个对象userInfo，定义好登入需要的一些信息，</p>
+
+<p>然后回到html绑定值，使用<code>ng-model</code>绑定值。</p>
+
+<p>这样这些输入项就和数据模型绑定起来了，</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-82bd9a11cb4bf7a9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>在$scope上建立getFormData方法，打印userInfo的数据</p>
+
+<p>如何调用$scope上的方法呢？在页面按钮标签使用ng-click=”getFormData()”指令，就可以去执行$scope上的方法。</p>
+
+<p>点击获取数据按钮，就会打印userInfo的数据</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-abf7291aa79db6c7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>如果我修改了input上面的值会不会同步到数据模型中去，也就是$scope.userInfo对象上面去。</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-f52a5f1453cc0b03.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>答案是数据修改了，也就是说视图上的修改会自动同步到数据模型上面去，</p>
+
+<pre><code class="language-javascript">        $scope.setFormData = function() {
+            $scope.userInfo = {
+                email: '2254513188@qq.com',
+                password: 'damoqiongqiu',
+                autoLogin: false
+            }
+        };
+</code></pre>
+
+<p>也可以通过程序修改数据模型，视图同步改变。</p>
+
+<pre><code class="language-javascript">        $scope.resetForm = function() {
+            $scope.userInfo = {
+                email: "1319639755@qq.com",
+                password: "253445528",
+                autoLogin: true
+            };
+        }
+</code></pre>
+
+<p>重置表单</p>
+
+<p>###动态切换标签样式</p>
+
+<p>双向数据绑定还可以用在修改样式上面，</p>
+
+<pre><code class="language-css">.text-red {
+    background-color: #ff0000;
+}
+.text-green {
+    background-color: #00ff00;
+}
+
+</code></pre>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app="MyCSSModule"&gt;
+
+&lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;link rel="stylesheet" href="CSS1.css"&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div ng-controller="CSSCtrl"&gt;
+        &lt;p class="text-"&gt;测试CSS样式&lt;/p&gt;
+        &lt;button class="btn btn-default" ng-click="setGreen()"&gt;绿色&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;script src="js/angular-1.3.0.js"&gt;&lt;/script&gt;
+&lt;script src="CSS1.js"&gt;&lt;/script&gt;
+
+&lt;/html&gt;
+
+</code></pre>
+
+<pre><code class="language-javascript">var myCSSModule = angular.module('MyCSSModule', []);
+myCSSModule.controller('CSSCtrl', ['$scope',
+    function($scope) {
+        $scope.color = "red";
+        $scope.setGreen = function() {
+            $scope.color = "green";
+        }
+    }
+])
+
+</code></pre>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-b87f5c300e937b90.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-7d121bcbb2d33299.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>###ng-class</p>
+
+<p>这种方式有一个问题，真实项目中标签结构很复杂，如果里面的值取错了，或者说没有值，取成了null，就会发生一些比较诡异的情况。</p>
+
+<p>为了避免这种状况AngularJS提供了<code>ng-class</code>指令，</p>
+
+<p><code>ng-class</code>和原生的class是有去别的，它支持是可以接收一些表达式的  。</p>
+
+<pre><code class="language-css">.error {
+    background-color: red;
+}
+.warning {
+    background-color: yellow;
+}
+
+
+</code></pre>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app="MyCSSModule"&gt;
+
+&lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;link rel="stylesheet" href="NgClass.css"&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div ng-controller='HeaderController'&gt;
+        &lt;div ng-class='{error: isError, warning: isWarning}'&gt;&lt;/div&gt;
+        &lt;button ng-click='showError()'&gt;Simulate Error&lt;/button&gt;
+        &lt;button ng-click='showWarning()'&gt;Simulate Warning&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;script src="js/angular-1.3.0.js"&gt;&lt;/script&gt;
+&lt;script src="NgClass.js"&gt;&lt;/script&gt;
+
+&lt;/html&gt;
+
+</code></pre>
+
+<pre><code class="language-javascript">var myCSSModule = angular.module('MyCSSModule', []);
+myCSSModule.controller('HeaderController', ['$scope',
+    function($scope) {
+        $scope.isError = false;
+        $scope.isWarning = false;
+        $scope.showError = function() {
+            $scope.messageText = 'This is an error!';
+            $scope.isError = true;
+            $scope.isWarning = false;
+        };
+        $scope.showWarning = function() {
+            $scope.messageText = 'Just a warning. Please carry on.';
+            $scope.isWarning = true;
+            $scope.isError = false;
+        };
+    }
+])
+
+
+</code></pre>
+
+<p><code>&lt;div ng-class='{error: isError, warning: isWarning}'&gt;&lt;/div&gt;</code></p>
+
+<p>这行代码使用了ng-class，他是一个表达式，如果isError的值是true他就会用error这个样式，如果isWarning的值是true他就会用warning这个样式，</p>
+
+<pre><code class="language-javascript">var myCSSModule = angular.module('MyCSSModule', []);
+myCSSModule.controller('HeaderController', ['$scope',
+    function($scope) {
+        $scope.isError = false;
+        $scope.isWarning = false;
+        $scope.showError = function() {
+            $scope.messageText = 'This is an error!';
+            $scope.isError = true;
+            $scope.isWarning = false;
+        };
+        $scope.showWarning = function() {
+            $scope.messageText = 'Just a warning. Please carry on.';
+            $scope.isWarning = true;
+            $scope.isError = false;
+        };
+    }
+])
+
+
+</code></pre>
+
+<p>这段js代码中一开始是两个值都是false，底下两个按钮分别执行两个不同的方法，</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-db03e31ad10d53a3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-42fe859ab7c03db4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>###ng-show和ng-hide</p>
+
+<p>控制一个标签的显示和隐藏，</p>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app="MyCSSModule"&gt;
+
+&lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div ng-controller='DeathrayMenuController'&gt;
+        &lt;button ng-click='toggleMenu()'&gt;Toggle Menu&lt;/button&gt;
+        &lt;ul ng-show='menuState.show'&gt;
+            &lt;li ng-click='stun()'&gt;Stun&lt;/li&gt;
+            &lt;li ng-click='disintegrate()'&gt;Disintegrate&lt;/li&gt;
+            &lt;li ng-click='erase()'&gt;Erase from history&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;div/&gt;
+&lt;/body&gt;
+
+&lt;script src="js/angular-1.3.0.js"&gt;&lt;/script&gt;
+&lt;script src="NgShow.js"&gt;&lt;/script&gt;
+
+&lt;/html&gt;
+
+
+</code></pre>
+
+<pre><code class="language-javascript">var myCSSModule = angular.module('MyCSSModule', []);
+myCSSModule.controller('DeathrayMenuController', ['$scope',
+    function($scope) {
+        $scope.menuState={show:false};
+        $scope.toggleMenu = function() {
+            $scope.menuState.show = !$scope.menuState.show;
+        };
+    }
+])
+
+</code></pre>
+
+<p>这个例子是点击按钮切换列表项的显示状态，</p>
+
+<p><code>&lt;ul ng-show='menuState.show'&gt;</code> menuState.show这个模型的值</p>
+
+<p>按钮点击运行toggleMenu方法</p>
+
+<pre><code class="language-javascript">
+        $scope.toggleMenu = function() {
+            $scope.menuState.show = !$scope.menuState.show;
+        };
+</code></pre>
+<p>每次运行都会区一个和之前相反的值，也就是区非。</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-2a4e3ac74b9035cc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-0659ed51cec68907.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>这是一种开关效果。</p>
+
+<p><strong>ng-hide是和ng-show是想反的动作</strong></p>
+
+<p>###ngAnimate</p>
+
+              <!-- 多说评论框 start -->
+              		<!-- <span class="ds-thread-count" data-thread-key="/angularjs/2017/03/11/angularjs_basics6" data-count-type="comments"></span> -->
+					<div class="ds-thread" data-thread-key="http://www.huanghanlian.com/angularjs/2017/03/11/angularjs_basics6" data-title="基本概念和用法-双向数据绑定 2-4" data-url="http://www.huanghanlian.com/angularjs/2017/03/11/angularjs_basics6"></div>
+				<!-- 多说评论框 end -->
+				<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+				<script type="text/javascript">
+				var duoshuoQuery = {short_name:"huanghuanlian"};
+					(function() {
+						var ds = document.createElement('script');
+						ds.type = 'text/javascript';ds.async = true;
+						ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+						ds.charset = 'UTF-8';
+						(document.getElementsByTagName('head')[0]
+						 || document.getElementsByTagName('body')[0]).appendChild(ds);
+					})();
+				</script>
+				<!-- 多说公共JS代码 end -->
+
+
+				
+            </article>
+		</article>
+
+	</main>
+	<div class="sidebar" id="sidebar">
+	<div class="sidebar-top">
+		<aside class="widjhuh">
+			<h3 class="widget-title">最新文章</h3>
+			<ul class="minty_thumblist">
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics10.html">
+
+                    	<span>基本概念和用法-综合应用BookStore  2-8</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics9.html">
+
+                    	<span>基本概念和用法-Service与Peovider  2-7</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics8.html">
+
+                    	<span>基本概念和用法-指令 2-6</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics7.html">
+
+                    	<span>基本概念和用法-路由 2-5</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics5.html">
+
+                    	<span>基本概念和用法-路由，模块，依赖注入 2-3</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics4.html">
+
+                    	<span>基本概念和用法-MVC 2-2</span>
+                    </a>
+                  </li>
+				
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">最近访客</h3>
+			<ul class="minty_thumblist minty_thumblist_a ds-recent-visitors visitorsopi" data-num-items="20" data-avatar-size="38">
+
+			</ul>
+
+		    <!--多说js加载开始，一个页面只需要加载一次 -->
+		    <script type="text/javascript">
+		    var duoshuoQuery = {short_name:"huanghuanlian"};
+		    (function() {
+		        var ds = document.createElement('script');
+		        ds.type = 'text/javascript';ds.async = true;
+		        ds.src = 'http://static.duoshuo.com/embed.js';
+		        ds.charset = 'UTF-8';
+		        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+		    })();
+		    </script>
+		    <!--多说js加载结束，一个页面只需要加载一次 -->
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">分类目录</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+				
+				<li>
+					<a href="/categories/Markdown/" title="view all
+posts">
+						Markdown (2)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Canvas/" title="view all
+posts">
+						Canvas (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Git/" title="view all
+posts">
+						Git (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/JavaScript/" title="view all
+posts">
+						JavaScript (30)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/AngularJS/" title="view all
+posts">
+						AngularJS (10)
+					</a>
+				</li>
+				
+			</ul>
+		</aside>
+	</div>
+
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">标签目录</h3>
+			<div class="tagcloud" id="tagcloud">
+				
+					<a href="/tag/Markdown/" title="view all
+posts">
+						Markdown
+					</a>
+				
+					<a href="/tag/Canvas/" title="view all
+posts">
+						Canvas
+					</a>
+				
+					<a href="/tag/Git/" title="view all
+posts">
+						Git
+					</a>
+				
+					<a href="/tag/JavaScript/" title="view all
+posts">
+						JavaScript
+					</a>
+				
+					<a href="/tag/RegExp/" title="view all
+posts">
+						RegExp
+					</a>
+				
+					<a href="/tag/DOM/" title="view all
+posts">
+						DOM
+					</a>
+				
+					<a href="/tag/BOM/" title="view all
+posts">
+						BOM
+					</a>
+				
+					<a href="/tag/__proto__/" title="view all
+posts">
+						__proto__
+					</a>
+				
+					<a href="/tag/Ajax/" title="view all
+posts">
+						Ajax
+					</a>
+				
+					<a href="/tag/AngularJS/" title="view all
+posts">
+						AngularJS
+					</a>
+				
+			</div>
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">友情链接</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+
+				<li>
+					<a href="http://blog.csdn.net/u013861109?viewmode=contents" target="blank">
+						csdn博客
+					</a>
+				</li>
+				<li>
+					<a href="http://www.imooc.com/" target="blank">
+						慕课网
+					</a>
+				</li>
+				<li>
+					<a href="http://www.dglives.com/" target="blank">
+						数字生活前端
+					</a>
+				</li>
+				<li>
+					<a href="http://www.jianshu.com/" target="blank">
+						简书
+					</a>
+				</li>
+				<li>
+					<a href="http://www.runoob.com/" target="blank">
+						菜鸟
+					</a>
+				</li>
+				<li>
+					<a href="http://www.qdfuns.com/" target="blank">
+						前端网
+					</a>
+				</li>
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">QQ交流群</h3>
+			<img style="margin-top: 10px; box-shadow: none;" src="/assets/images/ertw.png">
+		</aside>
+	</div>
+
+
+	<script>
+	var box=document.getElementById("tagcloud").getElementsByTagName("a");
+	for(var i=0;i<box.length;i++){
+		var a =Math.round(Math.random()*20)/10;
+		box[i].style.fontSize=a+'em';
+	}
+	</script>
+
+</div>
+</div>
+	<footer id="footer">
+	<nav class="links">
+		<a href="">作品</a>
+		<a href="/about/">关于本站</a>
+		<a href="/report/">留言板</a>
+	</nav>
+	<div class="copyright">
+		© 2016 <a href="">继小鹏的前端博客</a>
+	</div>
+	<a href="javascript:pageScroll();" id="rocket" class=""></a>
+	<span id="busuanzi_container_site_pv">
+	    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+	<span id="busuanzi_container_site_uv">
+	  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+	</span>
+</footer>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+
+$(function(){
+	$("#m-btns").click(function(){
+		if($("body").hasClass('nav-is-open')){
+			$("body").removeClass('nav-is-open')
+		}else{
+			$("body").addClass('nav-is-open')
+		};
+	})
+})
+var fhdb = document.getElementById("rocket");
+
+//获取页面可视区高度
+var dqy = document.documentElement.clientHeight;
+
+var main_left=$('#main').offset().left+$('#main').width()+16;
+
+//滚动条滚动时触发   在滚动的时候触发
+window.onscroll = function() {
+	var sTop = document.documentElement.scrollTop || document.body.scrollTop;
+	if (sTop >= dqy) {
+		$("#rocket").addClass('show');
+	} else {
+		$("#rocket").removeClass('show');
+	}
+}
+
+function pageScroll() {
+	//把内容滚动指定的像素数（第一个参数是向右滚动的像素数，第二个参数是向下滚动的像素数）
+	window.scrollBy(0, -100);
+	//延时递归调用，模拟滚动向上效果
+	scrolldelay = setTimeout('pageScroll()', 5);
+	//获取scrollTop值，声明了DTD的标准网页取document.documentElement.scrollTop，否则取document.body.scrollTop；因为二者只有一个会生效，另一个就恒为0，所以取和值可以得到网页的真正的scrollTop值
+	var sTop = document.documentElement.scrollTop + document.body.scrollTop;
+	//判断当页面到达顶部，取消延时代码（否则页面滚动到顶部会无法再向下正常浏览页面）
+	if (sTop == 0) clearTimeout(scrolldelay)
+
+}
+
+
+
+</script>
+</body>
+</html>

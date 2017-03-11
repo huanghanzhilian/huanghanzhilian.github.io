@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>基本概念和用法-MVC 2-2</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css">
+	<link rel="shortcut icon" href="/assets/images/logo_ioc.ico" type="images/x-icon"/>
+	<link rel="icon" href="/assets/images/logo_ioc.png" type="images/png"/>
+	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
+	
+	<script type="text/javascript">
+	    (function($) {
+
+	    	var temp = 0;
+	    	$(document).scroll(function() {
+
+	    		if ($(document).scrollTop() > temp) {
+	    			$("#header").addClass("hide-top");
+	    		} else {
+	    			$("#header").removeClass("hide-top");
+	    		}
+	    		temp = $(document).scrollTop();
+	    	});
+	    	
+	    	//console.log($(".menu"))
+	    })(jQuery);
+
+	</script>
+
+</head>
+<body>
+    <header id="header" role="banner">
+	<a id="hgroup" href="/" rel="home">
+		<h1 id="logo"></h1>
+		<i class="slogan" title="返回首页">
+			热爱编程，关注前端开发技术
+		</i>
+	</a>
+	<div class="connect">
+		<a href="https://github.com/huanghanzhilian" class="git" target="_blank"></a>
+		<a href="http://www.huanghanlian.com/feed.xml" class="rss"></a>
+	</div>
+	<nav id="nav">
+		<ul class="menu">
+			<li class="menu_item">
+				<a href="/">首页</a>
+			</li>
+			<li class="menu_item">
+				<a href="http://www.huanghanlian.com/widget/">Web组件库</a>
+			</li>
+			<li class="menu_item">
+				<a href="http://www.huanghanlian.com/front-end-note/">前端笔记</a>
+			</li>
+			<li class="menu_item">
+				<a href="/about/">关于本站</a>
+			</li>
+			<li class="menu_item">
+				<a href="/report/">留言板</a>
+			</li>
+		</ul>
+	</nav>
+
+	<div id="m-btns">
+		<div class="menu"></div>
+	</div>
+	<nav class="nav-bar-tabs ">
+		<ul>
+            <li>
+              	<a href="/">首页</a>
+            </li>
+            <li>
+              	<a href="http://www.huanghanlian.com/widget/">Web组件库</a>
+            </li>
+            <li>
+              	<a href="http://www.huanghanlian.com/front-end-note/">前端笔记</a>
+            </li>
+            <li>
+              	<a href="/about/">关于本站</a>
+            </li>
+            <li>
+              	<a href="/report/">留言板</a>
+            </li>
+        </ul>
+	</nav>
+</header>
+	<div id="container" class="clearfix">
+	<main id="main" class="hfeed">
+		<article id="post-157" class="post-157 hentry">
+			<header class="entry-header">
+				<h1 class="entry-title">基本概念和用法-MVC 2-2</h1>
+				<div class="entry-meta">2017-03-11 <span class="dot">•</span>AngularJS<span class="dot">•</span>黄继鹏<span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span></div>
+			</header>
+			<article class="post-content">
+              <p>###如何复用Model?</p>
+
+<p>数据模型也就是Model，在AngularJS里面是怎么实现的</p>
+
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="en" ng-app&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div&gt;
+        &lt;input type="text" ng-model="greeting.text"/&gt;
+        &lt;p&gt;,Angular&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;script src="js/angular-1.3.0.js"&gt;&lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>这段代码写了一个input输入框，这个里面通过ng-model这样一个指令生成一个数据模型，这个数据模型他的结构是greeting.text，在下面的p标签里面通过花括号来取值，获得greeting.text这个模型的值，<br />
+这个是Angular JS里面实现数据模型的一种方式，运行的效果是input进行输入的时候p标签会实时的去更新，p标签里面的内容实际上是绑定了ng-model相同的内容上面，这个例子里面实际上是没有写任何一段js代码的。</p>
+
+<p>Angular JS 首先会在Angular JS加载完成之后他会启动，启动完了以后首先去找ng-app这个指令，找到这个指令他就认为ng-app这个标签内部所有的内容都归Angular JS去管，这个时候她就回去找子层表情所有的指令，对他进行编译操作，这个时候他就会找到ng-model，找到ng-model后会帮我们生成一个数据模型，这个数据模型是挂在所谓的$rootscope上面，也就是根作用域上面的，所以ng-app下面的所有子层标签任意一个层级上都可以去获取这样一个值。</p>
+
+<p>Angular JS里面的数据模型一般来说是不需要你自己手动去创建的，也就是说你不需要明确的去new一个model这样一个东西，Angular JS里面的数据模型他一般都是绑定在$scope这样一个对象上面的，</p>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app="HelloAngular"&gt;
+    &lt;head&gt;
+        &lt;meta charset="utf-8"&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div ng-controller="Commoncontroller"&gt;
+            &lt;!-- ng-controller控制器 --&gt;
+            &lt;div ng-controller="Controller1"&gt;
+                &lt;p&gt;,Angular&lt;/p&gt;
+                &lt;button ng-click="test1()"&gt;test1&lt;/button&gt;
+                &lt;button ng-click="commonFn()"&gt;通用&lt;/button&gt;
+            &lt;/div&gt;
+            &lt;div ng-controller="Controller2"&gt;
+                &lt;p&gt;,Angular&lt;/p&gt;
+                &lt;button ng-click="test2()"&gt;test2&lt;/button&gt;
+                &lt;button ng-click="commonFn()"&gt;通用&lt;/button&gt;
+            &lt;/div&gt;
+            &lt;button ng-click="commonFn()"&gt;通用&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+    &lt;script src="js/angular-1.3.0.js"&gt;&lt;/script&gt;
+    &lt;script src="HelloAngular_MVC3lx.js"&gt;&lt;/script&gt;
+&lt;/html&gt;
+
+</code></pre>
+
+<pre><code class="language-javascript">var myModule = angular.module("HelloAngular", []);
+
+myModule.controller("Commoncontroller", ['$scope',
+    function($scope){
+        $scope.commonFn = function(){
+            alert("这里是通用功能")
+        }
+    }
+]);
+
+myModule.controller("Controller1", ['$scope',
+    function($scope) {
+        $scope.greeting = {
+            test:'hello1'
+        }
+        $scope.test1=function(){
+            alert("test1")
+        }
+    }
+]);
+
+myModule.controller("Controller2", ['$scope',
+    function($scope) {
+        $scope.greeting = {
+            test:'hello2'
+        }
+        $scope.test2=function(){
+            alert("test2")
+        }
+    }
+]);
+</code></pre>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-cdafd059174ae05e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>上面的例子中可以看到我们获得最终的hello1和hello2在界面上显示实际上都是来自于$scope这里面对象的属性这就是AngularJS实现数据模型的方式，</p>
+
+<p>###如何复用Viel视图?</p>
+
+<p>html</p>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app="MyModule"&gt;
+	&lt;head&gt;
+		&lt;meta charset="utf-8"&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;hello&gt;&lt;/hello&gt;
+	&lt;/body&gt;
+	&lt;script src="js/angular-1.3.0.js"&gt;&lt;/script&gt;
+	&lt;script src="HelloAngular_Directive.js"&gt;&lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>javascript</p>
+
+<pre><code class="language-javascript">var myModule = angular.module("MyModule", []);
+myModule.directive("hello", function() {
+    return {
+        restrict: 'E',
+        template: '&lt;div&gt;Hi everyone!&lt;/div&gt;',
+        replace: true
+    }
+});
+</code></pre>
+
+<p>运行效果</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-d688b09b01e01ac8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>看看body表情内的<hello></hello>标签，很显然浏览器是不认识这个标签的，不认识他在默认情况下浏览器会忽略他，Angular js就会想一下怎样能让浏览器认识这个标签呢，这就需要借助Angular js的Directive这个特性，</p>
+
+<p>上面代码，自己定义了一个hello标签，然后借助Angular的directive机制把他替换成div内容是Hi everyone!这样一个字符串，</p>
+
+<p>Angular js的视图是需要通过指令去实现的，</p>
+
+<p>Angular js的MVC是借助于$scope实现的！！！</p>
+
+<p>也就是说全部借助于作用域去实现的</p>
+
+<p>那么作用域是什么呢</p>
+
+<pre><code class="language-css">.show-scope-demo .ng-scope,.show-scope-demo .ng-scope {
+	border: 1px solid red;
+	margin: 3px;
+}
+</code></pre>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app&gt;
+	&lt;head&gt;
+		&lt;meta charset="utf-8"&gt;
+		&lt;link rel="stylesheet" type="text/css" href="Scope1.css" /&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;div class="show-scope-demo"&gt;
+			&lt;div ng-controller="GreetCtrl"&gt;
+				Hello !
+			&lt;/div&gt;
+			&lt;div ng-controller="ListCtrl"&gt;
+				&lt;ol&gt;
+					&lt;li ng-repeat="name in names"&gt;
+						 from 
+					&lt;/li&gt;
+				&lt;/ol&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+	&lt;/body&gt;
+	&lt;script src="js/angular-1.3.0.js"&gt;&lt;/script&gt;
+	&lt;script src="Scope1.js"&gt;&lt;/script&gt;
+&lt;/html&gt;
+
+
+</code></pre>
+
+<pre><code class="language-javascript">function GreetCtrl($scope, $rootScope) {
+	$scope.name = 'World';
+	$rootScope.department = 'Angular';
+}
+
+function ListCtrl($scope) {
+	$scope.names = ['Igor', 'Misko', 'Vojta'];
+}
+
+</code></pre>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-b4655b2aa451a87c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>以上代码有两个控制器，第一个GreetCtrl，第二个ListCtrl，</p>
+
+<p>GreetCtrl里面Hello !</p>
+
+<p>ListCtrl里面使用到了<code>ng-repeat</code>的指令，这个指令是用来迭代一个数组的，我们有一个names数组放了很多的姓名，</p>
+
+<p>使用<code>ng-repeat</code>的指令可以将数组一个个输出，</p>
+
+<pre><code class="language-javascript">function GreetCtrl($scope, $rootScope) {
+	$scope.name = 'World';
+	$rootScope.department = 'Angular';
+}
+
+function ListCtrl($scope) {
+	$scope.names = ['Igor', 'Misko', 'Vojta'];
+}
+
+</code></pre>
+
+<p>GreetCtrl控制器中$scope.name设置了 ‘World’;的字符串</p>
+
+<p>然后在$rootScope上面创建了一个属性叫做department</p>
+
+<p>$rootScope也就是根作用域，$rootScope是处于最顶层的作用域对象，</p>
+
+<p>整个作用域就像html标签一样是一个树型的结构，$rootScope就类似于根标签html。</p>
+
+<p>ListCtrl控制器中有一个names数组，数组有三个内容，在页面上通过<code>ng-repeat</code>的指令把他输出</p>
+
+<p>页面显示结果告诉我们department 是根作用于上的属性，也就是说作用域是有一个层次结构的，在内层的作用域上面如果获得不到的属性他就会一一向上查找，这个过程其实和js里面的原型继承或者说原型查找机制是一模一样的。</p>
+
+<p>例子</p>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html ng-app&gt;
+	&lt;head&gt;
+		&lt;meta charset="utf-8"&gt;
+		&lt;link rel="stylesheet" type="text/css" href="Scope1.css" /&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;div ng-controller="EventController"&gt;
+			Root scope
+			&lt;tt&gt;MyEvent&lt;/tt&gt; count: 
+			&lt;ul&gt;
+				&lt;li ng-repeat="i in [1]" ng-controller="EventController"&gt;
+					&lt;button ng-click="$emit('MyEvent')"&gt;
+						$emit('MyEvent')
+					&lt;/button&gt;
+					&lt;button ng-click="$broadcast('MyEvent')"&gt;
+						$broadcast('MyEvent')
+					&lt;/button&gt;
+					&lt;br&gt;
+					Middle scope
+					&lt;tt&gt;MyEvent&lt;/tt&gt; count: 
+					&lt;ul&gt;
+						&lt;li ng-repeat="item in [1, 2]" ng-controller="EventController"&gt;
+							Leaf scope
+							&lt;tt&gt;MyEvent&lt;/tt&gt; count: 
+						&lt;/li&gt;
+					&lt;/ul&gt;
+				&lt;/li&gt;
+			&lt;/ul&gt;
+		&lt;/div&gt;
+	&lt;/body&gt;
+	&lt;script src="js/angular-1.3.0.js"&gt;&lt;/script&gt;
+	&lt;script src="Scope2.js"&gt;&lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
+
+<pre><code class="language-javascript">function EventController($scope) {
+	$scope.count = 0;
+	$scope.$on('MyEvent', function() {
+		$scope.count++;
+	});
+}
+
+</code></pre>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-89829b5d8e760d43.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-ccb6f14408557f5c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>ng-repeat=”i in [1]”是内联表达式。</p>
+
+<pre><code class="language-javascript">function EventController($scope) {
+	$scope.count = 0;
+	$scope.$on('MyEvent', function() {
+		$scope.count++;
+	});
+}
+
+</code></pre>
+
+<p>这里的js，先初始化一个$scope.count = 0;</p>
+
+<p>当收到MyEvent的时候$scope上的count就会加1</p>
+
+<p>###神奇的$scope</p>
+
+<p><strong>$scope是一个POJO(Plain Old Javascript Object)</strong></p>
+
+<p>$scope是一个普通的js对象</p>
+
+<p><strong>$scope提供了一些工具方法$watch()/$apply()</strong></p>
+
+<p>$watch()/$apply()是用来实时监控一些属性的变化的一般来说不会手动去调用这些方法。他会在内部帮我们去监控</p>
+
+<p><strong>$scope是表达式的执行环境（或者叫作用域）</strong></p>
+
+<p><strong>$scope是一个树型结构，与DOM标签平行</strong></p>
+
+<p><strong>子$scope对象会继承父$scope上的属性和方法</strong></p>
+
+<p><strong>每一个AngularJS应用只有一个根$scope对象，（一般位于ng-app上）</strong></p>
+
+<p><strong>$scope可以传播事件，类似于DOM事件，可以向上也可以向下</strong></p>
+
+<p><strong>$scope不仅是MVC的基础，也是后面实现双向数据绑定的基础</strong></p>
+
+<p><strong>可以用angular.element($0).scope()进行调试</strong></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-b407f798e7435176.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>安装调试插件</p>
+
+              <!-- 多说评论框 start -->
+              		<!-- <span class="ds-thread-count" data-thread-key="/angularjs/2017/03/11/angularjs_basics4" data-count-type="comments"></span> -->
+					<div class="ds-thread" data-thread-key="http://www.huanghanlian.com/angularjs/2017/03/11/angularjs_basics4" data-title="基本概念和用法-MVC 2-2" data-url="http://www.huanghanlian.com/angularjs/2017/03/11/angularjs_basics4"></div>
+				<!-- 多说评论框 end -->
+				<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+				<script type="text/javascript">
+				var duoshuoQuery = {short_name:"huanghuanlian"};
+					(function() {
+						var ds = document.createElement('script');
+						ds.type = 'text/javascript';ds.async = true;
+						ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+						ds.charset = 'UTF-8';
+						(document.getElementsByTagName('head')[0]
+						 || document.getElementsByTagName('body')[0]).appendChild(ds);
+					})();
+				</script>
+				<!-- 多说公共JS代码 end -->
+
+
+				
+            </article>
+		</article>
+
+	</main>
+	<div class="sidebar" id="sidebar">
+	<div class="sidebar-top">
+		<aside class="widjhuh">
+			<h3 class="widget-title">最新文章</h3>
+			<ul class="minty_thumblist">
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics10.html">
+
+                    	<span>基本概念和用法-综合应用BookStore  2-8</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics9.html">
+
+                    	<span>基本概念和用法-Service与Peovider  2-7</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics8.html">
+
+                    	<span>基本概念和用法-指令 2-6</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics7.html">
+
+                    	<span>基本概念和用法-路由 2-5</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics6.html">
+
+                    	<span>基本概念和用法-双向数据绑定 2-4</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/angularjs/2017/03/11/angularjs-basics5.html">
+
+                    	<span>基本概念和用法-路由，模块，依赖注入 2-3</span>
+                    </a>
+                  </li>
+				
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">最近访客</h3>
+			<ul class="minty_thumblist minty_thumblist_a ds-recent-visitors visitorsopi" data-num-items="20" data-avatar-size="38">
+
+			</ul>
+
+		    <!--多说js加载开始，一个页面只需要加载一次 -->
+		    <script type="text/javascript">
+		    var duoshuoQuery = {short_name:"huanghuanlian"};
+		    (function() {
+		        var ds = document.createElement('script');
+		        ds.type = 'text/javascript';ds.async = true;
+		        ds.src = 'http://static.duoshuo.com/embed.js';
+		        ds.charset = 'UTF-8';
+		        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+		    })();
+		    </script>
+		    <!--多说js加载结束，一个页面只需要加载一次 -->
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">分类目录</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+				
+				<li>
+					<a href="/categories/Markdown/" title="view all
+posts">
+						Markdown (2)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Canvas/" title="view all
+posts">
+						Canvas (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Git/" title="view all
+posts">
+						Git (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/JavaScript/" title="view all
+posts">
+						JavaScript (30)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/AngularJS/" title="view all
+posts">
+						AngularJS (10)
+					</a>
+				</li>
+				
+			</ul>
+		</aside>
+	</div>
+
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">标签目录</h3>
+			<div class="tagcloud" id="tagcloud">
+				
+					<a href="/tag/Markdown/" title="view all
+posts">
+						Markdown
+					</a>
+				
+					<a href="/tag/Canvas/" title="view all
+posts">
+						Canvas
+					</a>
+				
+					<a href="/tag/Git/" title="view all
+posts">
+						Git
+					</a>
+				
+					<a href="/tag/JavaScript/" title="view all
+posts">
+						JavaScript
+					</a>
+				
+					<a href="/tag/RegExp/" title="view all
+posts">
+						RegExp
+					</a>
+				
+					<a href="/tag/DOM/" title="view all
+posts">
+						DOM
+					</a>
+				
+					<a href="/tag/BOM/" title="view all
+posts">
+						BOM
+					</a>
+				
+					<a href="/tag/__proto__/" title="view all
+posts">
+						__proto__
+					</a>
+				
+					<a href="/tag/Ajax/" title="view all
+posts">
+						Ajax
+					</a>
+				
+					<a href="/tag/AngularJS/" title="view all
+posts">
+						AngularJS
+					</a>
+				
+			</div>
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">友情链接</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+
+				<li>
+					<a href="http://blog.csdn.net/u013861109?viewmode=contents" target="blank">
+						csdn博客
+					</a>
+				</li>
+				<li>
+					<a href="http://www.imooc.com/" target="blank">
+						慕课网
+					</a>
+				</li>
+				<li>
+					<a href="http://www.dglives.com/" target="blank">
+						数字生活前端
+					</a>
+				</li>
+				<li>
+					<a href="http://www.jianshu.com/" target="blank">
+						简书
+					</a>
+				</li>
+				<li>
+					<a href="http://www.runoob.com/" target="blank">
+						菜鸟
+					</a>
+				</li>
+				<li>
+					<a href="http://www.qdfuns.com/" target="blank">
+						前端网
+					</a>
+				</li>
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">QQ交流群</h3>
+			<img style="margin-top: 10px; box-shadow: none;" src="/assets/images/ertw.png">
+		</aside>
+	</div>
+
+
+	<script>
+	var box=document.getElementById("tagcloud").getElementsByTagName("a");
+	for(var i=0;i<box.length;i++){
+		var a =Math.round(Math.random()*20)/10;
+		box[i].style.fontSize=a+'em';
+	}
+	</script>
+
+</div>
+</div>
+	<footer id="footer">
+	<nav class="links">
+		<a href="">作品</a>
+		<a href="/about/">关于本站</a>
+		<a href="/report/">留言板</a>
+	</nav>
+	<div class="copyright">
+		© 2016 <a href="">继小鹏的前端博客</a>
+	</div>
+	<a href="javascript:pageScroll();" id="rocket" class=""></a>
+	<span id="busuanzi_container_site_pv">
+	    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+	<span id="busuanzi_container_site_uv">
+	  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+	</span>
+</footer>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+
+$(function(){
+	$("#m-btns").click(function(){
+		if($("body").hasClass('nav-is-open')){
+			$("body").removeClass('nav-is-open')
+		}else{
+			$("body").addClass('nav-is-open')
+		};
+	})
+})
+var fhdb = document.getElementById("rocket");
+
+//获取页面可视区高度
+var dqy = document.documentElement.clientHeight;
+
+var main_left=$('#main').offset().left+$('#main').width()+16;
+
+//滚动条滚动时触发   在滚动的时候触发
+window.onscroll = function() {
+	var sTop = document.documentElement.scrollTop || document.body.scrollTop;
+	if (sTop >= dqy) {
+		$("#rocket").addClass('show');
+	} else {
+		$("#rocket").removeClass('show');
+	}
+}
+
+function pageScroll() {
+	//把内容滚动指定的像素数（第一个参数是向右滚动的像素数，第二个参数是向下滚动的像素数）
+	window.scrollBy(0, -100);
+	//延时递归调用，模拟滚动向上效果
+	scrolldelay = setTimeout('pageScroll()', 5);
+	//获取scrollTop值，声明了DTD的标准网页取document.documentElement.scrollTop，否则取document.body.scrollTop；因为二者只有一个会生效，另一个就恒为0，所以取和值可以得到网页的真正的scrollTop值
+	var sTop = document.documentElement.scrollTop + document.body.scrollTop;
+	//判断当页面到达顶部，取消延时代码（否则页面滚动到顶部会无法再向下正常浏览页面）
+	if (sTop == 0) clearTimeout(scrolldelay)
+
+}
+
+
+
+</script>
+</body>
+</html>
