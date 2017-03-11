@@ -2,12 +2,12 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>JavaScript 精粹 基础 进阶(9)OOP面向对象编程(下)</title>
+<title>Posts Tagged &ldquo;是&rdquo;</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
 	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
 	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
-	<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css">
+	<!-- <link rel="stylesheet" type="text/css" href="/assets/css/pygments.css"> -->
 	<link rel="shortcut icon" href="/assets/images/logo_ioc.ico" type="images/x-icon"/>
 	<link rel="icon" href="/assets/images/logo_ioc.png" type="images/png"/>
 	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
@@ -87,315 +87,401 @@
         </ul>
 	</nav>
 </header>
-	<div id="container" class="clearfix">
-	<main id="main" class="hfeed">
-		<article id="post-157" class="post-157 hentry">
-			<header class="entry-header">
-				<h1 class="entry-title">JavaScript 精粹 基础 进阶(9)OOP面向对象编程(下)</h1>
-				<div class="entry-meta">2016-12-20 <span class="dot">•</span>JavaScript<span class="dot">•</span>黄继鹏<span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span></div>
-			</header>
-			<article class="post-content">
-              <p>我们怎么去模拟重载，在javasceipr中我们可以通过参数的类型区别或者数量的区别，来去让同样一个函数名字，可以根据不同的参数列表的情况来去调用相应的函数。</p>
-
-<p>javascript中函数类型是不确定的，并且参数的个数也是可以任意的，那么我们可以通过判断实际传入的参数的个数，来去做一个模拟的重载，</p>
-
-<p>###OOP(模拟重载、链式调用、模块化)</p>
-
-<blockquote>
-  <p>模拟重载</p>
-</blockquote>
-
-<pre><code>function person() {
-	var args = arguments;
-	if (typeof args[0] === 'object' &amp;&amp; args[0]) {
-		if (args[0].name) {
-			this.name = args[0].name;
-		}
-		if (args[0].age) {
-			this.age = args[0].age;
-		}
-	} else {
-		if (args[0]) {
-			this.name = args[0];
-		}
-		if (args[1]) {
-			this.age = args[1];
-		}
-	}
-};
-person.prototype.toString = function() {
-	return "姓名:" + this.name + "年龄:" + this.age
-}
-
-
-var peng = new person({
-	name: "继小鹏",
-	age: 23
-});
-console.log(peng.toString()); //姓名:继小鹏年龄:23
-
-var peng1 = new person("是你", 23);
-console.log(peng1.toString()); //姓名:是你年龄:23
-</code></pre>
-
-<blockquote>
-  <p>调用子类方法</p>
-</blockquote>
-
-<p><strong>例子1</strong></p>
-
-<pre><code>if (!Object.create) {
-    Object.create = function(proto) {
-        function F() {};
-        F.prototype = proto;
-        return new F();
-    };
-}
-
-function person(name) {//基类
-	this.name=name;
-}
-person.prototype.init=function(){
-	console.log("你好"+this.name)
-}
-
-function student(name,classname){   //学生类
-	this.classname=classname;
-	person.call(this,name);
-}
-
-student.prototype = Object.create(person.prototype);
-student.prototype.constructor = student;
-
-
-student.prototype.init=function(){
-	console.log("你好s"+this.name)
-}
-
-
-
-
-var peng=new student("继小鹏","class2");
-console.log(peng);
-peng.init();
-</code></pre>
-
-<p><strong>例子2子类调用基类方法</strong></p>
-
-<pre><code>function person(name) {//基类
-	this.name=name;
-}
-
-function student(name,classname){   //学生类
-	this.classname=classname;
-	person.call(this,name);
-}
-
-person.prototype.init=function(){
-	console.log(this.name)
-}
-
-student.prototype.init=function(){
-	person.prototype.init.apply(this,arguments);
-}
-
-var peng=new student("继小鹏","class2");
-console.log(peng);
-peng.init();
-</code></pre>
-
-<blockquote>
-  <p>链式调用</p>
-</blockquote>
-
-<pre><code>function classman() {}
-classman.prototype.addClass = function(str) {
-	console.log('calss' + str + 'added');
-	return this;
-}
-var mang = new classman();
-mang.addClass('classA').addClass('classB').addClass('classC')
-
-// calssclassAadded
-// calssclassBadded
-// calssclassCadded
-</code></pre>
-
-<p>使用jq的时候$(“#id”).addClass(‘df’)<br />
-选择器做些操作后在继续addClass(‘df’)还可以再做动作一层层链式去调用。</p>
-
-<p>例子解释</p>
-
-<pre><code>function classman() {}   //现定义一个构造器classman
-classman.prototype.addClass = function(str) {   //给classman构造器prototype添加addClass属性方法
-	console.log('calss' + str + 'added');   //输出表示添加一个class
-	return this;  //return this表示返回classman的实例因为返回了实例那么紧接着后面不需要加mang.addClass('classA')直接后面加.addClass('classB').addClass('classB')就可以，每次执行完都会返回实例
-}
-var mang = new classman();
-mang.addClass('classA').addClass('classB').addClass('classC')
-
-// calssclassAadded
-// calssclassBadded
-// calssclassCadded
-</code></pre>
-
-<blockquote>
-  <p>抽象类</p>
-</blockquote>
-
-<pre><code>function Detectorlse() {
-	throw new Error("Abstract class can not be invoked directly!");
-}
-Detectorlse.detect = function() {
-	console.log('Detcetion starting...');
-}
-Detectorlse.stop = function() {
-	console.log('Detector stopped');
-}
-Detectorlse.init = function() {
-	throw new Error("Error");
-}
-
-function linkDetector() {};
-linkDetector.prototype = Object.create(Detectorlse.prototype)
-linkDetector.prototype.constructor = linkDetector;
-
-//...add methods to LinkDetector...
-</code></pre>
-
-<blockquote>
-  <p>defineProperty(ES5)</p>
-</blockquote>
-
-<pre><code>function Person(name) {
-	Object.defineProperty(this, 'name', {
-		value: name,
-		enumerable: true
-	});
-};
-Object.defineProperty(Person, 'arms_num', {
-	value: 2,
-	enumerable: true
-});
-Object.seal(Person.prototype);
-Object.seal(Person);
-
-function student(name, classname) {
-	this.classname = classname;
-	Person.call(this, name);
-};
-student.prototype = Object.create(Person.prototype);
-student.prototype.constructor = student;
-
-var peng = new Person('继小鹏');
-console.log(peng);
-
-var han = new student("汗", "class2");
-console.log(han);
-</code></pre>
-
-<blockquote>
-  <p>模块化</p>
-</blockquote>
-
-<p>定义简单模块化</p>
-
-<pre><code>var moduleA;
-moduleA=function(){
-	var prop=1;
-	function func(){};
-	return {
-		func:func,
-		prop:prop
-	}
-}();
-</code></pre>
-
-<p>定义简单模块化2</p>
-
-<pre><code>var moduleA;
-moduleA = new function() {
-	var prop = 1;
-
-	function func() {};
-	this.func = func;
-	this.prop = prop;
-}();
-</code></pre>
-
-<p>###实践（探测器）</p>
-
-              <!-- 多说评论框 start -->
-              		<!-- <span class="ds-thread-count" data-thread-key="/javascript/2016/12/20/javascript_jinjie9" data-count-type="comments"></span> -->
-					<div class="ds-thread" data-thread-key="http://www.huanghanlian.com/javascript/2016/12/20/javascript_jinjie9" data-title="JavaScript 精粹 基础 进阶(9)OOP面向对象编程(下)" data-url="http://www.huanghanlian.com/javascript/2016/12/20/javascript_jinjie9"></div>
-				<!-- 多说评论框 end -->
-				<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-				<script type="text/javascript">
-				var duoshuoQuery = {short_name:"huanghuanlian"};
-					(function() {
-						var ds = document.createElement('script');
-						ds.type = 'text/javascript';ds.async = true;
-						ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-						ds.charset = 'UTF-8';
-						(document.getElementsByTagName('head')[0]
-						 || document.getElementsByTagName('body')[0]).appendChild(ds);
-					})();
-				</script>
-				<!-- 多说公共JS代码 end -->
+	<!-- <h2 class="post_title">Posts Tagged &ldquo;是&rdquo;</h2>
+<ul>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <li class="archive_list">
+    <time style="color:#666;font-size:11px;" datetime='2016-12-20'>12/20/16</time> <a class="archive_list_article_link" href='/javascript/2016/12/20/javascript-jinjie9.html'>JavaScript 精粹 基础 进阶(9)OOP面向对象编程(下)</a>
+    <p class="summary"></p>
+    <ul class="tag_list">
+      
+      <li class="inline archive_list"><a class="tag_list_link" href="/tag/是">是</a></li>
+      
+    </ul>
+  </li>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+</ul> -->
 
 
-				
-            </article>
-		</article>
+<div id="container" class="clearfix">
+  <main id="main" class="hfeed">
+    <ul>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      　　<li class="entry_list">
+          <a href="/javascript/2016/12/20/javascript-jinjie9.html">
+            <h2 class="entry-title">JavaScript 精粹 基础 进阶(9)OOP面向对象编程(下)</h2>
+            <div class="entry-meta">2016-12-20 <span class="dot">•</span>是<span class="dot">•</span>继小鹏</div>
+            <div class="entry-summary">
+              <p>
+                <p>我们怎么去模拟重载，在javasceipr中我们可以通过参数的类型区别或者数量的区别，来去让同样一个函数名字，可以根据不同的参数列表的情况来去调用相应的函数。</p>
 
-	</main>
-	<div class="sidebar" id="sidebar">
+              </p>
+            </div>
+          </a>
+        </li>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    </ul>
+
+
+
+  </main>
+  <div class="sidebar" id="sidebar">
 	<div class="sidebar-top">
 		<aside class="widjhuh">
 			<h3 class="widget-title">最新文章</h3>
 			<ul class="minty_thumblist">
-				
-                  <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics10.html">
-
-                    	<span>基本概念和用法-综合应用BookStore  2-8</span>
-                    </a>
-                  </li>
-				
-                  <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics9.html">
-
-                    	<span>基本概念和用法-Service与Peovider  2-7</span>
-                    </a>
-                  </li>
-				
-                  <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics8.html">
-
-                    	<span>基本概念和用法-指令 2-6</span>
-                    </a>
-                  </li>
-				
-                  <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics7.html">
-
-                    	<span>基本概念和用法-路由 2-5</span>
-                    </a>
-                  </li>
-				
-                  <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics6.html">
-
-                    	<span>基本概念和用法-双向数据绑定 2-4</span>
-                    </a>
-                  </li>
-				
-                  <li>
-                    <a href="/angularjs/2017/03/11/angularjs-basics5.html">
-
-                    	<span>基本概念和用法-路由，模块，依赖注入 2-3</span>
-                    </a>
-                  </li>
 				
 			</ul>
 		</aside>
@@ -514,6 +600,11 @@ posts">
 						__proto__
 					</a>
 				
+					<a href="/tag/是/" title="view all
+posts">
+						是
+					</a>
+				
 					<a href="/tag/Ajax/" title="view all
 posts">
 						Ajax
@@ -586,7 +677,8 @@ posts">
 
 </div>
 </div>
-	<footer id="footer">
+	
+<footer id="footer">
 	<nav class="links">
 		<a href="">作品</a>
 		<a href="/about/">关于本站</a>

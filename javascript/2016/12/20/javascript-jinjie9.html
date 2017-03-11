@@ -7,7 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
 	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
 	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
-	<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css">
+	<!-- <link rel="stylesheet" type="text/css" href="/assets/css/pygments.css"> -->
 	<link rel="shortcut icon" href="/assets/images/logo_ioc.ico" type="images/x-icon"/>
 	<link rel="icon" href="/assets/images/logo_ioc.png" type="images/png"/>
 	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
@@ -99,52 +99,49 @@
 
 <p>javascript中函数类型是不确定的，并且参数的个数也是可以任意的，那么我们可以通过判断实际传入的参数的个数，来去做一个模拟的重载，</p>
 
-<p>###OOP(模拟重载、链式调用、模块化)</p>
+<h3>OOP(模拟重载、链式调用、模块化)</h3>
 
 <blockquote>
-  <p>模拟重载</p>
+<p>模拟重载</p>
 </blockquote>
-
-<pre><code>function person() {
-	var args = arguments;
-	if (typeof args[0] === 'object' &amp;&amp; args[0]) {
-		if (args[0].name) {
-			this.name = args[0].name;
-		}
-		if (args[0].age) {
-			this.age = args[0].age;
-		}
-	} else {
-		if (args[0]) {
-			this.name = args[0];
-		}
-		if (args[1]) {
-			this.age = args[1];
-		}
-	}
+<div class="highlight"><pre><code class="language-" data-lang="">function person() {
+    var args = arguments;
+    if (typeof args[0] === 'object' &amp;&amp; args[0]) {
+        if (args[0].name) {
+            this.name = args[0].name;
+        }
+        if (args[0].age) {
+            this.age = args[0].age;
+        }
+    } else {
+        if (args[0]) {
+            this.name = args[0];
+        }
+        if (args[1]) {
+            this.age = args[1];
+        }
+    }
 };
 person.prototype.toString = function() {
-	return "姓名:" + this.name + "年龄:" + this.age
+    return "姓名:" + this.name + "年龄:" + this.age
 }
 
 
 var peng = new person({
-	name: "继小鹏",
-	age: 23
+    name: "继小鹏",
+    age: 23
 });
 console.log(peng.toString()); //姓名:继小鹏年龄:23
 
 var peng1 = new person("是你", 23);
 console.log(peng1.toString()); //姓名:是你年龄:23
-</code></pre>
-
+</code></pre></div>
 <blockquote>
-  <p>调用子类方法</p>
+<p>调用子类方法</p>
 </blockquote>
 
 <p><strong>例子1</strong></p>
-
-<pre><code>if (!Object.create) {
+<div class="highlight"><pre><code class="language-" data-lang="">if (!Object.create) {
     Object.create = function(proto) {
         function F() {};
         F.prototype = proto;
@@ -153,15 +150,15 @@ console.log(peng1.toString()); //姓名:是你年龄:23
 }
 
 function person(name) {//基类
-	this.name=name;
+    this.name=name;
 }
 person.prototype.init=function(){
-	console.log("你好"+this.name)
+    console.log("你好"+this.name)
 }
 
 function student(name,classname){   //学生类
-	this.classname=classname;
-	person.call(this,name);
+    this.classname=classname;
+    person.call(this,name);
 }
 
 student.prototype = Object.create(person.prototype);
@@ -169,7 +166,7 @@ student.prototype.constructor = student;
 
 
 student.prototype.init=function(){
-	console.log("你好s"+this.name)
+    console.log("你好s"+this.name)
 }
 
 
@@ -178,40 +175,36 @@ student.prototype.init=function(){
 var peng=new student("继小鹏","class2");
 console.log(peng);
 peng.init();
-</code></pre>
-
+</code></pre></div>
 <p><strong>例子2子类调用基类方法</strong></p>
-
-<pre><code>function person(name) {//基类
-	this.name=name;
+<div class="highlight"><pre><code class="language-" data-lang="">function person(name) {//基类
+    this.name=name;
 }
 
 function student(name,classname){   //学生类
-	this.classname=classname;
-	person.call(this,name);
+    this.classname=classname;
+    person.call(this,name);
 }
 
 person.prototype.init=function(){
-	console.log(this.name)
+    console.log(this.name)
 }
 
 student.prototype.init=function(){
-	person.prototype.init.apply(this,arguments);
+    person.prototype.init.apply(this,arguments);
 }
 
 var peng=new student("继小鹏","class2");
 console.log(peng);
 peng.init();
-</code></pre>
-
+</code></pre></div>
 <blockquote>
-  <p>链式调用</p>
+<p>链式调用</p>
 </blockquote>
-
-<pre><code>function classman() {}
+<div class="highlight"><pre><code class="language-" data-lang="">function classman() {}
 classman.prototype.addClass = function(str) {
-	console.log('calss' + str + 'added');
-	return this;
+    console.log('calss' + str + 'added');
+    return this;
 }
 var mang = new classman();
 mang.addClass('classA').addClass('classB').addClass('classC')
@@ -219,17 +212,15 @@ mang.addClass('classA').addClass('classB').addClass('classC')
 // calssclassAadded
 // calssclassBadded
 // calssclassCadded
-</code></pre>
-
-<p>使用jq的时候$(“#id”).addClass(‘df’)<br />
-选择器做些操作后在继续addClass(‘df’)还可以再做动作一层层链式去调用。</p>
+</code></pre></div>
+<p>使用jq的时候$(&quot;#id&quot;).addClass(&#39;df&#39;)
+选择器做些操作后在继续addClass(&#39;df&#39;)还可以再做动作一层层链式去调用。</p>
 
 <p>例子解释</p>
-
-<pre><code>function classman() {}   //现定义一个构造器classman
+<div class="highlight"><pre><code class="language-" data-lang="">function classman() {}   //现定义一个构造器classman
 classman.prototype.addClass = function(str) {   //给classman构造器prototype添加addClass属性方法
-	console.log('calss' + str + 'added');   //输出表示添加一个class
-	return this;  //return this表示返回classman的实例因为返回了实例那么紧接着后面不需要加mang.addClass('classA')直接后面加.addClass('classB').addClass('classB')就可以，每次执行完都会返回实例
+    console.log('calss' + str + 'added');   //输出表示添加一个class
+    return this;  //return this表示返回classman的实例因为返回了实例那么紧接着后面不需要加mang.addClass('classA')直接后面加.addClass('classB').addClass('classB')就可以，每次执行完都会返回实例
 }
 var mang = new classman();
 mang.addClass('classA').addClass('classB').addClass('classC')
@@ -237,23 +228,21 @@ mang.addClass('classA').addClass('classB').addClass('classC')
 // calssclassAadded
 // calssclassBadded
 // calssclassCadded
-</code></pre>
-
+</code></pre></div>
 <blockquote>
-  <p>抽象类</p>
+<p>抽象类</p>
 </blockquote>
-
-<pre><code>function Detectorlse() {
-	throw new Error("Abstract class can not be invoked directly!");
+<div class="highlight"><pre><code class="language-" data-lang="">function Detectorlse() {
+    throw new Error("Abstract class can not be invoked directly!");
 }
 Detectorlse.detect = function() {
-	console.log('Detcetion starting...');
+    console.log('Detcetion starting...');
 }
 Detectorlse.stop = function() {
-	console.log('Detector stopped');
+    console.log('Detector stopped');
 }
 Detectorlse.init = function() {
-	throw new Error("Error");
+    throw new Error("Error");
 }
 
 function linkDetector() {};
@@ -261,28 +250,26 @@ linkDetector.prototype = Object.create(Detectorlse.prototype)
 linkDetector.prototype.constructor = linkDetector;
 
 //...add methods to LinkDetector...
-</code></pre>
-
+</code></pre></div>
 <blockquote>
-  <p>defineProperty(ES5)</p>
+<p>defineProperty(ES5)</p>
 </blockquote>
-
-<pre><code>function Person(name) {
-	Object.defineProperty(this, 'name', {
-		value: name,
-		enumerable: true
-	});
+<div class="highlight"><pre><code class="language-" data-lang="">function Person(name) {
+    Object.defineProperty(this, 'name', {
+        value: name,
+        enumerable: true
+    });
 };
 Object.defineProperty(Person, 'arms_num', {
-	value: 2,
-	enumerable: true
+    value: 2,
+    enumerable: true
 });
 Object.seal(Person.prototype);
 Object.seal(Person);
 
 function student(name, classname) {
-	this.classname = classname;
-	Person.call(this, name);
+    this.classname = classname;
+    Person.call(this, name);
 };
 student.prototype = Object.create(Person.prototype);
 student.prototype.constructor = student;
@@ -292,38 +279,33 @@ console.log(peng);
 
 var han = new student("汗", "class2");
 console.log(han);
-</code></pre>
-
+</code></pre></div>
 <blockquote>
-  <p>模块化</p>
+<p>模块化</p>
 </blockquote>
 
 <p>定义简单模块化</p>
-
-<pre><code>var moduleA;
+<div class="highlight"><pre><code class="language-" data-lang="">var moduleA;
 moduleA=function(){
-	var prop=1;
-	function func(){};
-	return {
-		func:func,
-		prop:prop
-	}
+    var prop=1;
+    function func(){};
+    return {
+        func:func,
+        prop:prop
+    }
 }();
-</code></pre>
-
+</code></pre></div>
 <p>定义简单模块化2</p>
-
-<pre><code>var moduleA;
+<div class="highlight"><pre><code class="language-" data-lang="">var moduleA;
 moduleA = new function() {
-	var prop = 1;
+    var prop = 1;
 
-	function func() {};
-	this.func = func;
-	this.prop = prop;
+    function func() {};
+    this.func = func;
+    this.prop = prop;
 }();
-</code></pre>
-
-<p>###实践（探测器）</p>
+</code></pre></div>
+<h3>实践（探测器）</h3>
 
               <!-- 多说评论框 start -->
               		<!-- <span class="ds-thread-count" data-thread-key="/javascript/2016/12/20/javascript_jinjie9" data-count-type="comments"></span> -->
@@ -586,7 +568,8 @@ posts">
 
 </div>
 </div>
-	<footer id="footer">
+	
+<footer id="footer">
 	<nav class="links">
 		<a href="">作品</a>
 		<a href="/about/">关于本站</a>

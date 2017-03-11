@@ -7,7 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
 	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
 	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
-	<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css">
+	<!-- <link rel="stylesheet" type="text/css" href="/assets/css/pygments.css"> -->
 	<link rel="shortcut icon" href="/assets/images/logo_ioc.ico" type="images/x-icon"/>
 	<link rel="icon" href="/assets/images/logo_ioc.png" type="images/png"/>
 	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
@@ -95,129 +95,119 @@
 				<div class="entry-meta">2017-03-11 <span class="dot">•</span>AngularJS<span class="dot">•</span>黄继鹏<span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span></div>
 			</header>
 			<article class="post-content">
-              <p>###如何复用Model?</p>
+              <h3>如何复用Model?</h3>
 
 <p>数据模型也就是Model，在AngularJS里面是怎么实现的</p>
-
-<pre><code class="language-html">&lt;!DOCTYPE html&gt;
-&lt;html lang="en" ng-app&gt;
-&lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;Document&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;div&gt;
-        &lt;input type="text" ng-model="greeting.text"/&gt;
-        &lt;p&gt;,Angular&lt;/p&gt;
-    &lt;/div&gt;
-&lt;/body&gt;
-&lt;script src="js/angular-1.3.0.js"&gt;&lt;/script&gt;
-&lt;/html&gt;
-</code></pre>
-
-<p>这段代码写了一个input输入框，这个里面通过ng-model这样一个指令生成一个数据模型，这个数据模型他的结构是greeting.text，在下面的p标签里面通过花括号来取值，获得greeting.text这个模型的值，<br />
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span> <span class="na">ng-app</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span>Document<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;div&gt;</span>
+        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">ng-model=</span><span class="s">"greeting.text"</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;p&gt;</span>,Angular<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"js/angular-1.3.0.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div>
+<p>这段代码写了一个input输入框，这个里面通过ng-model这样一个指令生成一个数据模型，这个数据模型他的结构是greeting.text，在下面的p标签里面通过花括号来取值，获得greeting.text这个模型的值，
 这个是Angular JS里面实现数据模型的一种方式，运行的效果是input进行输入的时候p标签会实时的去更新，p标签里面的内容实际上是绑定了ng-model相同的内容上面，这个例子里面实际上是没有写任何一段js代码的。</p>
 
 <p>Angular JS 首先会在Angular JS加载完成之后他会启动，启动完了以后首先去找ng-app这个指令，找到这个指令他就认为ng-app这个标签内部所有的内容都归Angular JS去管，这个时候她就回去找子层表情所有的指令，对他进行编译操作，这个时候他就会找到ng-model，找到ng-model后会帮我们生成一个数据模型，这个数据模型是挂在所谓的$rootscope上面，也就是根作用域上面的，所以ng-app下面的所有子层标签任意一个层级上都可以去获取这样一个值。</p>
 
 <p>Angular JS里面的数据模型一般来说是不需要你自己手动去创建的，也就是说你不需要明确的去new一个model这样一个东西，Angular JS里面的数据模型他一般都是绑定在$scope这样一个对象上面的，</p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!doctype html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">ng-app=</span><span class="s">"HelloAngular"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;head&gt;</span>
+        <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/head&gt;</span>
+    <span class="nt">&lt;body&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">ng-controller=</span><span class="s">"Commoncontroller"</span><span class="nt">&gt;</span>
+            <span class="c">&lt;!-- ng-controller控制器 --&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">ng-controller=</span><span class="s">"Controller1"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;p&gt;</span>,Angular<span class="nt">&lt;/p&gt;</span>
+                <span class="nt">&lt;button</span> <span class="na">ng-click=</span><span class="s">"test1()"</span><span class="nt">&gt;</span>test1<span class="nt">&lt;/button&gt;</span>
+                <span class="nt">&lt;button</span> <span class="na">ng-click=</span><span class="s">"commonFn()"</span><span class="nt">&gt;</span>通用<span class="nt">&lt;/button&gt;</span>
+            <span class="nt">&lt;/div&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">ng-controller=</span><span class="s">"Controller2"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;p&gt;</span>,Angular<span class="nt">&lt;/p&gt;</span>
+                <span class="nt">&lt;button</span> <span class="na">ng-click=</span><span class="s">"test2()"</span><span class="nt">&gt;</span>test2<span class="nt">&lt;/button&gt;</span>
+                <span class="nt">&lt;button</span> <span class="na">ng-click=</span><span class="s">"commonFn()"</span><span class="nt">&gt;</span>通用<span class="nt">&lt;/button&gt;</span>
+            <span class="nt">&lt;/div&gt;</span>
+            <span class="nt">&lt;button</span> <span class="na">ng-click=</span><span class="s">"commonFn()"</span><span class="nt">&gt;</span>通用<span class="nt">&lt;/button&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/body&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"js/angular-1.3.0.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"HelloAngular_MVC3lx.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
 
-<pre><code class="language-html">&lt;!doctype html&gt;
-&lt;html ng-app="HelloAngular"&gt;
-    &lt;head&gt;
-        &lt;meta charset="utf-8"&gt;
-    &lt;/head&gt;
-    &lt;body&gt;
-        &lt;div ng-controller="Commoncontroller"&gt;
-            &lt;!-- ng-controller控制器 --&gt;
-            &lt;div ng-controller="Controller1"&gt;
-                &lt;p&gt;,Angular&lt;/p&gt;
-                &lt;button ng-click="test1()"&gt;test1&lt;/button&gt;
-                &lt;button ng-click="commonFn()"&gt;通用&lt;/button&gt;
-            &lt;/div&gt;
-            &lt;div ng-controller="Controller2"&gt;
-                &lt;p&gt;,Angular&lt;/p&gt;
-                &lt;button ng-click="test2()"&gt;test2&lt;/button&gt;
-                &lt;button ng-click="commonFn()"&gt;通用&lt;/button&gt;
-            &lt;/div&gt;
-            &lt;button ng-click="commonFn()"&gt;通用&lt;/button&gt;
-        &lt;/div&gt;
-    &lt;/body&gt;
-    &lt;script src="js/angular-1.3.0.js"&gt;&lt;/script&gt;
-    &lt;script src="HelloAngular_MVC3lx.js"&gt;&lt;/script&gt;
-&lt;/html&gt;
+</code></pre></div><div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">myModule</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">"HelloAngular"</span><span class="p">,</span> <span class="p">[]);</span>
 
-</code></pre>
+<span class="nx">myModule</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s2">"Commoncontroller"</span><span class="p">,</span> <span class="p">[</span><span class="s1">'$scope'</span><span class="p">,</span>
+    <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">){</span>
+        <span class="nx">$scope</span><span class="p">.</span><span class="nx">commonFn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+            <span class="nx">alert</span><span class="p">(</span><span class="s2">"这里是通用功能"</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">]);</span>
 
-<pre><code class="language-javascript">var myModule = angular.module("HelloAngular", []);
+<span class="nx">myModule</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s2">"Controller1"</span><span class="p">,</span> <span class="p">[</span><span class="s1">'$scope'</span><span class="p">,</span>
+    <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">$scope</span><span class="p">.</span><span class="nx">greeting</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="na">test</span><span class="p">:</span><span class="s1">'hello1'</span>
+        <span class="p">}</span>
+        <span class="nx">$scope</span><span class="p">.</span><span class="nx">test1</span><span class="o">=</span><span class="kd">function</span><span class="p">(){</span>
+            <span class="nx">alert</span><span class="p">(</span><span class="s2">"test1"</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">]);</span>
 
-myModule.controller("Commoncontroller", ['$scope',
-    function($scope){
-        $scope.commonFn = function(){
-            alert("这里是通用功能")
-        }
-    }
-]);
-
-myModule.controller("Controller1", ['$scope',
-    function($scope) {
-        $scope.greeting = {
-            test:'hello1'
-        }
-        $scope.test1=function(){
-            alert("test1")
-        }
-    }
-]);
-
-myModule.controller("Controller2", ['$scope',
-    function($scope) {
-        $scope.greeting = {
-            test:'hello2'
-        }
-        $scope.test2=function(){
-            alert("test2")
-        }
-    }
-]);
-</code></pre>
-
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-cdafd059174ae05e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+<span class="nx">myModule</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s2">"Controller2"</span><span class="p">,</span> <span class="p">[</span><span class="s1">'$scope'</span><span class="p">,</span>
+    <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">$scope</span><span class="p">.</span><span class="nx">greeting</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="na">test</span><span class="p">:</span><span class="s1">'hello2'</span>
+        <span class="p">}</span>
+        <span class="nx">$scope</span><span class="p">.</span><span class="nx">test2</span><span class="o">=</span><span class="kd">function</span><span class="p">(){</span>
+            <span class="nx">alert</span><span class="p">(</span><span class="s2">"test2"</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">]);</span>
+</code></pre></div>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-cdafd059174ae05e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
 <p>上面的例子中可以看到我们获得最终的hello1和hello2在界面上显示实际上都是来自于$scope这里面对象的属性这就是AngularJS实现数据模型的方式，</p>
 
-<p>###如何复用Viel视图?</p>
+<h3>如何复用Viel视图?</h3>
 
 <p>html</p>
-
-<pre><code class="language-html">&lt;!doctype html&gt;
-&lt;html ng-app="MyModule"&gt;
-	&lt;head&gt;
-		&lt;meta charset="utf-8"&gt;
-	&lt;/head&gt;
-	&lt;body&gt;
-		&lt;hello&gt;&lt;/hello&gt;
-	&lt;/body&gt;
-	&lt;script src="js/angular-1.3.0.js"&gt;&lt;/script&gt;
-	&lt;script src="HelloAngular_Directive.js"&gt;&lt;/script&gt;
-&lt;/html&gt;
-</code></pre>
-
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!doctype html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">ng-app=</span><span class="s">"MyModule"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;head&gt;</span>
+        <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/head&gt;</span>
+    <span class="nt">&lt;body&gt;</span>
+        <span class="nt">&lt;hello&gt;&lt;/hello&gt;</span>
+    <span class="nt">&lt;/body&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"js/angular-1.3.0.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"HelloAngular_Directive.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div>
 <p>javascript</p>
-
-<pre><code class="language-javascript">var myModule = angular.module("MyModule", []);
-myModule.directive("hello", function() {
-    return {
-        restrict: 'E',
-        template: '&lt;div&gt;Hi everyone!&lt;/div&gt;',
-        replace: true
-    }
-});
-</code></pre>
-
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">myModule</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">"MyModule"</span><span class="p">,</span> <span class="p">[]);</span>
+<span class="nx">myModule</span><span class="p">.</span><span class="nx">directive</span><span class="p">(</span><span class="s2">"hello"</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="na">restrict</span><span class="p">:</span> <span class="s1">'E'</span><span class="p">,</span>
+        <span class="na">template</span><span class="p">:</span> <span class="s1">'&lt;div&gt;Hi everyone!&lt;/div&gt;'</span><span class="p">,</span>
+        <span class="na">replace</span><span class="p">:</span> <span class="kc">true</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div>
 <p>运行效果</p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-d688b09b01e01ac8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-d688b09b01e01ac8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
 <p>看看body表情内的<hello></hello>标签，很显然浏览器是不认识这个标签的，不认识他在默认情况下浏览器会忽略他，Angular js就会想一下怎样能让浏览器认识这个标签呢，这就需要借助Angular js的Directive这个特性，</p>
 
@@ -230,52 +220,46 @@ myModule.directive("hello", function() {
 <p>也就是说全部借助于作用域去实现的</p>
 
 <p>那么作用域是什么呢</p>
-
-<pre><code class="language-css">.show-scope-demo .ng-scope,.show-scope-demo .ng-scope {
-	border: 1px solid red;
-	margin: 3px;
-}
-</code></pre>
-
-<pre><code class="language-html">&lt;!doctype html&gt;
-&lt;html ng-app&gt;
-	&lt;head&gt;
-		&lt;meta charset="utf-8"&gt;
-		&lt;link rel="stylesheet" type="text/css" href="Scope1.css" /&gt;
-	&lt;/head&gt;
-	&lt;body&gt;
-		&lt;div class="show-scope-demo"&gt;
-			&lt;div ng-controller="GreetCtrl"&gt;
-				Hello !
-			&lt;/div&gt;
-			&lt;div ng-controller="ListCtrl"&gt;
-				&lt;ol&gt;
-					&lt;li ng-repeat="name in names"&gt;
-						 from 
-					&lt;/li&gt;
-				&lt;/ol&gt;
-			&lt;/div&gt;
-		&lt;/div&gt;
-	&lt;/body&gt;
-	&lt;script src="js/angular-1.3.0.js"&gt;&lt;/script&gt;
-	&lt;script src="Scope1.js"&gt;&lt;/script&gt;
-&lt;/html&gt;
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.show-scope-demo</span> <span class="nc">.ng-scope</span><span class="o">,</span><span class="nc">.show-scope-demo</span> <span class="nc">.ng-scope</span> <span class="p">{</span>
+    <span class="nl">border</span><span class="p">:</span> <span class="m">1px</span> <span class="nb">solid</span> <span class="no">red</span><span class="p">;</span>
+    <span class="nl">margin</span><span class="p">:</span> <span class="m">3px</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><div class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!doctype html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">ng-app</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;head&gt;</span>
+        <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">type=</span><span class="s">"text/css"</span> <span class="na">href=</span><span class="s">"Scope1.css"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;/head&gt;</span>
+    <span class="nt">&lt;body&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"show-scope-demo"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">ng-controller=</span><span class="s">"GreetCtrl"</span><span class="nt">&gt;</span>
+                Hello !
+            <span class="nt">&lt;/div&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">ng-controller=</span><span class="s">"ListCtrl"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;ol&gt;</span>
+                    <span class="nt">&lt;li</span> <span class="na">ng-repeat=</span><span class="s">"name in names"</span><span class="nt">&gt;</span>
+                         from 
+                    <span class="nt">&lt;/li&gt;</span>
+                <span class="nt">&lt;/ol&gt;</span>
+            <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/body&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"js/angular-1.3.0.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"Scope1.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
 
 
-</code></pre>
+</code></pre></div><div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">GreetCtrl</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">$rootScope</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">$scope</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'World'</span><span class="p">;</span>
+    <span class="nx">$rootScope</span><span class="p">.</span><span class="nx">department</span> <span class="o">=</span> <span class="s1">'Angular'</span><span class="p">;</span>
+<span class="p">}</span>
 
-<pre><code class="language-javascript">function GreetCtrl($scope, $rootScope) {
-	$scope.name = 'World';
-	$rootScope.department = 'Angular';
-}
+<span class="kd">function</span> <span class="nx">ListCtrl</span><span class="p">(</span><span class="nx">$scope</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">$scope</span><span class="p">.</span><span class="nx">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Igor'</span><span class="p">,</span> <span class="s1">'Misko'</span><span class="p">,</span> <span class="s1">'Vojta'</span><span class="p">];</span>
+<span class="p">}</span>
 
-function ListCtrl($scope) {
-	$scope.names = ['Igor', 'Misko', 'Vojta'];
-}
-
-</code></pre>
-
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-b4655b2aa451a87c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+</code></pre></div>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-b4655b2aa451a87c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
 <p>以上代码有两个控制器，第一个GreetCtrl，第二个ListCtrl，</p>
 
@@ -284,21 +268,19 @@ function ListCtrl($scope) {
 <p>ListCtrl里面使用到了<code>ng-repeat</code>的指令，这个指令是用来迭代一个数组的，我们有一个names数组放了很多的姓名，</p>
 
 <p>使用<code>ng-repeat</code>的指令可以将数组一个个输出，</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">GreetCtrl</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">$rootScope</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">$scope</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'World'</span><span class="p">;</span>
+    <span class="nx">$rootScope</span><span class="p">.</span><span class="nx">department</span> <span class="o">=</span> <span class="s1">'Angular'</span><span class="p">;</span>
+<span class="p">}</span>
 
-<pre><code class="language-javascript">function GreetCtrl($scope, $rootScope) {
-	$scope.name = 'World';
-	$rootScope.department = 'Angular';
-}
+<span class="kd">function</span> <span class="nx">ListCtrl</span><span class="p">(</span><span class="nx">$scope</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">$scope</span><span class="p">.</span><span class="nx">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Igor'</span><span class="p">,</span> <span class="s1">'Misko'</span><span class="p">,</span> <span class="s1">'Vojta'</span><span class="p">];</span>
+<span class="p">}</span>
 
-function ListCtrl($scope) {
-	$scope.names = ['Igor', 'Misko', 'Vojta'];
-}
+</code></pre></div>
+<p>GreetCtrl控制器中$scope.name设置了 &#39;World&#39;;的字符串</p>
 
-</code></pre>
-
-<p>GreetCtrl控制器中$scope.name设置了 ‘World’;的字符串</p>
-
-<p>然后在$rootScope上面创建了一个属性叫做department</p>
+<p>然后在$rootScope上面创建了一个属性叫做department </p>
 
 <p>$rootScope也就是根作用域，$rootScope是处于最顶层的作用域对象，</p>
 
@@ -309,72 +291,66 @@ function ListCtrl($scope) {
 <p>页面显示结果告诉我们department 是根作用于上的属性，也就是说作用域是有一个层次结构的，在内层的作用域上面如果获得不到的属性他就会一一向上查找，这个过程其实和js里面的原型继承或者说原型查找机制是一模一样的。</p>
 
 <p>例子</p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!doctype html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">ng-app</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;head&gt;</span>
+        <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">type=</span><span class="s">"text/css"</span> <span class="na">href=</span><span class="s">"Scope1.css"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;/head&gt;</span>
+    <span class="nt">&lt;body&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">ng-controller=</span><span class="s">"EventController"</span><span class="nt">&gt;</span>
+            Root scope
+            <span class="nt">&lt;tt&gt;</span>MyEvent<span class="nt">&lt;/tt&gt;</span> count: 
+            <span class="nt">&lt;ul&gt;</span>
+                <span class="nt">&lt;li</span> <span class="na">ng-repeat=</span><span class="s">"i in [1]"</span> <span class="na">ng-controller=</span><span class="s">"EventController"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;button</span> <span class="na">ng-click=</span><span class="s">"$emit('MyEvent')"</span><span class="nt">&gt;</span>
+                        $emit('MyEvent')
+                    <span class="nt">&lt;/button&gt;</span>
+                    <span class="nt">&lt;button</span> <span class="na">ng-click=</span><span class="s">"$broadcast('MyEvent')"</span><span class="nt">&gt;</span>
+                        $broadcast('MyEvent')
+                    <span class="nt">&lt;/button&gt;</span>
+                    <span class="nt">&lt;br&gt;</span>
+                    Middle scope
+                    <span class="nt">&lt;tt&gt;</span>MyEvent<span class="nt">&lt;/tt&gt;</span> count: 
+                    <span class="nt">&lt;ul&gt;</span>
+                        <span class="nt">&lt;li</span> <span class="na">ng-repeat=</span><span class="s">"item in [1, 2]"</span> <span class="na">ng-controller=</span><span class="s">"EventController"</span><span class="nt">&gt;</span>
+                            Leaf scope
+                            <span class="nt">&lt;tt&gt;</span>MyEvent<span class="nt">&lt;/tt&gt;</span> count: 
+                        <span class="nt">&lt;/li&gt;</span>
+                    <span class="nt">&lt;/ul&gt;</span>
+                <span class="nt">&lt;/li&gt;</span>
+            <span class="nt">&lt;/ul&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/body&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"js/angular-1.3.0.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"Scope2.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">EventController</span><span class="p">(</span><span class="nx">$scope</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">$scope</span><span class="p">.</span><span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="nx">$scope</span><span class="p">.</span><span class="nx">$on</span><span class="p">(</span><span class="s1">'MyEvent'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">$scope</span><span class="p">.</span><span class="nx">count</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">});</span>
+<span class="p">}</span>
 
-<pre><code class="language-html">&lt;!doctype html&gt;
-&lt;html ng-app&gt;
-	&lt;head&gt;
-		&lt;meta charset="utf-8"&gt;
-		&lt;link rel="stylesheet" type="text/css" href="Scope1.css" /&gt;
-	&lt;/head&gt;
-	&lt;body&gt;
-		&lt;div ng-controller="EventController"&gt;
-			Root scope
-			&lt;tt&gt;MyEvent&lt;/tt&gt; count: 
-			&lt;ul&gt;
-				&lt;li ng-repeat="i in [1]" ng-controller="EventController"&gt;
-					&lt;button ng-click="$emit('MyEvent')"&gt;
-						$emit('MyEvent')
-					&lt;/button&gt;
-					&lt;button ng-click="$broadcast('MyEvent')"&gt;
-						$broadcast('MyEvent')
-					&lt;/button&gt;
-					&lt;br&gt;
-					Middle scope
-					&lt;tt&gt;MyEvent&lt;/tt&gt; count: 
-					&lt;ul&gt;
-						&lt;li ng-repeat="item in [1, 2]" ng-controller="EventController"&gt;
-							Leaf scope
-							&lt;tt&gt;MyEvent&lt;/tt&gt; count: 
-						&lt;/li&gt;
-					&lt;/ul&gt;
-				&lt;/li&gt;
-			&lt;/ul&gt;
-		&lt;/div&gt;
-	&lt;/body&gt;
-	&lt;script src="js/angular-1.3.0.js"&gt;&lt;/script&gt;
-	&lt;script src="Scope2.js"&gt;&lt;/script&gt;
-&lt;/html&gt;
-</code></pre>
+</code></pre></div>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-89829b5d8e760d43.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
-<pre><code class="language-javascript">function EventController($scope) {
-	$scope.count = 0;
-	$scope.$on('MyEvent', function() {
-		$scope.count++;
-	});
-}
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-ccb6f14408557f5c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
-</code></pre>
+<p>ng-repeat=&quot;i in [1]&quot;是内联表达式。</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">EventController</span><span class="p">(</span><span class="nx">$scope</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">$scope</span><span class="p">.</span><span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="nx">$scope</span><span class="p">.</span><span class="nx">$on</span><span class="p">(</span><span class="s1">'MyEvent'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">$scope</span><span class="p">.</span><span class="nx">count</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">});</span>
+<span class="p">}</span>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-89829b5d8e760d43.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
-
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-ccb6f14408557f5c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
-
-<p>ng-repeat=”i in [1]”是内联表达式。</p>
-
-<pre><code class="language-javascript">function EventController($scope) {
-	$scope.count = 0;
-	$scope.$on('MyEvent', function() {
-		$scope.count++;
-	});
-}
-
-</code></pre>
-
+</code></pre></div>
 <p>这里的js，先初始化一个$scope.count = 0;</p>
 
 <p>当收到MyEvent的时候$scope上的count就会加1</p>
 
-<p>###神奇的$scope</p>
+<h3>神奇的$scope</h3>
 
 <p><strong>$scope是一个POJO(Plain Old Javascript Object)</strong></p>
 
@@ -398,7 +374,7 @@ function ListCtrl($scope) {
 
 <p><strong>可以用angular.element($0).scope()进行调试</strong></p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-b407f798e7435176.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-b407f798e7435176.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
 <p>安装调试插件</p>
 
@@ -663,7 +639,8 @@ posts">
 
 </div>
 </div>
-	<footer id="footer">
+	
+<footer id="footer">
 	<nav class="links">
 		<a href="">作品</a>
 		<a href="/about/">关于本站</a>

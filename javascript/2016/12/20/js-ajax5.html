@@ -7,7 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
 	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
 	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
-	<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css">
+	<!-- <link rel="stylesheet" type="text/css" href="/assets/css/pygments.css"> -->
 	<link rel="shortcut icon" href="/assets/images/logo_ioc.ico" type="images/x-icon"/>
 	<link rel="icon" href="/assets/images/logo_ioc.png" type="images/png"/>
 	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
@@ -97,64 +97,62 @@
 			<article class="post-content">
               <p>那么什么是跨域呢？</p>
 
-<p>####处理跨域方式-代理</p>
+<h4>处理跨域方式-代理</h4>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-3b7e68f4ceee1be1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-3b7e68f4ceee1be1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
 <p>我们在前端代码中将ajax访问后台<code>url</code>改成<code>http://127.0.0.1:80/dengtu/serverjsonp.php</code></p>
+<div class="highlight"><pre><code class="language-" data-lang="">$(document).ready(function() {
+    $("#search").click(function() {
+        $.ajax({
+            type: "GET",
+            url: "http://127.0.0.1:80/dengtu/serverjsonp.php?number=" + $("#keyword").val(),
+            dataType: "json",
+            success: function(data) {
+                if (data.success) {
+                    $("#searchResult").html(data.msg);
+                } else {
+                    $("#searchResult").html("出现错误：" + data.msg);
+                }
+            },
+            error: function(jqXHR) {
+                alert("发生错误：" + jqXHR.status);
+            },
+        });
+    });
 
-<pre><code>$(document).ready(function() {
-	$("#search").click(function() {
-		$.ajax({
-			type: "GET",
-			url: "http://127.0.0.1:80/dengtu/serverjsonp.php?number=" + $("#keyword").val(),
-			dataType: "json",
-			success: function(data) {
-				if (data.success) {
-					$("#searchResult").html(data.msg);
-				} else {
-					$("#searchResult").html("出现错误：" + data.msg);
-				}
-			},
-			error: function(jqXHR) {
-				alert("发生错误：" + jqXHR.status);
-			},
-		});
-	});
-
-	$("#save").click(function() {
-		$.ajax({
-			type: "POST",
-			url: "http://127.0.0.1:80/dengtu/serverjsonp.php",
-			data: {
-				name: $("#staffName").val(),
-				number: $("#staffNumber").val(),
-				sex: $("#staffSex").val(),
-				job: $("#staffJob").val()
-			},
-			dataType: "json",
-			success: function(data) {
-				if (data.success) {
-					$("#createResult").html(data.msg);
-				} else {
-					$("#createResult").html("出现错误：" + data.msg);
-				}
-			},
-			error: function(jqXHR) {
-				alert("发生错误：" + jqXHR.status);
-			},
-		});
-	});
+    $("#save").click(function() {
+        $.ajax({
+            type: "POST",
+            url: "http://127.0.0.1:80/dengtu/serverjsonp.php",
+            data: {
+                name: $("#staffName").val(),
+                number: $("#staffNumber").val(),
+                sex: $("#staffSex").val(),
+                job: $("#staffJob").val()
+            },
+            dataType: "json",
+            success: function(data) {
+                if (data.success) {
+                    $("#createResult").html(data.msg);
+                } else {
+                    $("#createResult").html("出现错误：" + data.msg);
+                }
+            },
+            error: function(jqXHR) {
+                alert("发生错误：" + jqXHR.status);
+            },
+        });
+    });
 });
-</code></pre>
-
+</code></pre></div>
 <p><code>http://127.0.0.1:80/dengtu</code>指向的也是<code>http://localhost/dengtu</code>但是他们不是一个域名，</p>
 
 <p>这样我们能访问到吗？</p>
 
 <p>答案是不能，返回错误告诉你没有权限访问。</p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-ff2eed58c0e4bf74.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-ff2eed58c0e4bf74.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
 <p>这就要用到跨域了</p>
 
@@ -162,11 +160,11 @@
 
 <p>JavaScript出于安全方面的考虑，不允许跨域调用其他页面的对象，什么是跨域呢，简单的理解就是因为JavaScript同源策略的限制，a.com域名下的js无法操作b.com或c.a.com域名下的对象。</p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-090891382cc0ad71.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-090891382cc0ad71.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
 <p><strong>子域名不相同都会认为是跨域</strong></p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-46750de75c3040aa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-46750de75c3040aa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
 <p><strong>通过代理跨域</strong></p>
 
@@ -182,9 +180,9 @@
 
 <p>也就是北京的服务在后台做了个代理，这样前端只需要访问北京的代理的服务也就相当于访问了上海的服务。</p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-b72374f8f64ddb0f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-b72374f8f64ddb0f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
-<p>####处理跨域方式–JSONP</p>
+<h4>处理跨域方式--JSONP</h4>
 
 <p>JSONP不支持post方式</p>
 
@@ -193,120 +191,97 @@
 <p>前端</p>
 
 <ol>
-  <li>
-    <p>需要改变<code>dataType: "jsonp",</code></p>
-  </li>
-  <li>
-    <p>接着再增加一个属性<code>jsonp:"callback",</code><code>jsonp:"任意值",</code></p>
-  </li>
+<li><p>需要改变<code>dataType: &quot;jsonp&quot;,</code></p></li>
+<li><p>接着再增加一个属性<code>jsonp:&quot;callback&quot;,</code><code>jsonp:&quot;任意值&quot;,</code></p></li>
 </ol>
 
 <p>后端</p>
 
 <ol>
-  <li>
-    <p>在git请求处理中，获取到<code>callback</code>，<code>$jsonp=$_GET["callback"];</code></p>
-  </li>
-  <li>
-    <p>改变返回值，<code>echo $jsonp.'({"success":false,"msg":"参数错误"})';</code></p>
-  </li>
+<li><p>在git请求处理中，获取到<code>callback</code>，<code>$jsonp=$_GET[&quot;callback&quot;];</code></p></li>
+<li><p>改变返回值，<code>echo $jsonp.&#39;({&quot;success&quot;:false,&quot;msg&quot;:&quot;参数错误&quot;})&#39;;</code></p></li>
 </ol>
 
 <p>前端代码</p>
-
-<pre><code>$(document).ready(function() {
-	$("#search").click(function() {
-		$.ajax({
-			type: "GET",
-			url: "http://127.0.0.1:80/dengtu/serverjsonp.php?number=" + $("#keyword").val(),
-			dataType: "jsonp",
-			jsonp:"callback",
-			success: function(data) {
-				if (data.success) {
-					$("#searchResult").html(data.msg);
-				} else {
-					$("#searchResult").html("出现错误：" + data.msg);
-				}
-			},
-			error: function(jqXHR) {
-				alert("发生错误：" + jqXHR.status);
-			},
-		});
-	});
-</code></pre>
-
+<div class="highlight"><pre><code class="language-" data-lang="">$(document).ready(function() {
+    $("#search").click(function() {
+        $.ajax({
+            type: "GET",
+            url: "http://127.0.0.1:80/dengtu/serverjsonp.php?number=" + $("#keyword").val(),
+            dataType: "jsonp",
+            jsonp:"callback",
+            success: function(data) {
+                if (data.success) {
+                    $("#searchResult").html(data.msg);
+                } else {
+                    $("#searchResult").html("出现错误：" + data.msg);
+                }
+            },
+            error: function(jqXHR) {
+                alert("发生错误：" + jqXHR.status);
+            },
+        });
+    });
+</code></pre></div>
 <p>后端代码</p>
-
-<pre><code>//通过员工编号搜索员工
+<div class="highlight"><pre><code class="language-" data-lang="">//通过员工编号搜索员工
 function search(){
-	$jsonp=$_GET["callback"];
-	//检查是否有员工编号的参数
-	//isset检测变量是否设置；empty判断值为否为空
-	//超全局变量 $_GET 和 $_POST 用于收集表单数据
-	if (!isset($_GET["number"]) || empty($_GET["number"])) {
-		echo $jsonp.'({"success":false,"msg":"参数错误"})';
-		return;
-	}
-	//函数之外声明的变量拥有 Global 作用域，只能在函数以外进行访问。
-	//global 关键词用于访问函数内的全局变量
-	global $staff;
-	//获取number参数
-	$number = $_GET["number"];
-	$result = $jsonp.'({"success":false,"msg":"没有找到员工。"})';
-	
-	//遍历$staff多维数组，查找key值为number的员工是否存在，如果存在，则修改返回结果
-	foreach ($staff as $value) {
-		if ($value["number"] == $number) {
-			$result = $jsonp.'({"success":true,"msg":"找到员工：员工编号：' . $value["number"] . 
-							'，员工姓名：' . $value["name"] . 
-							'，员工性别：' . $value["sex"] . 
-							'，员工职位：' . $value["job"] . '"})';
-			break;
-		}
-	}
+    $jsonp=$_GET["callback"];
+    //检查是否有员工编号的参数
+    //isset检测变量是否设置；empty判断值为否为空
+    //超全局变量 $_GET 和 $_POST 用于收集表单数据
+    if (!isset($_GET["number"]) || empty($_GET["number"])) {
+        echo $jsonp.'({"success":false,"msg":"参数错误"})';
+        return;
+    }
+    //函数之外声明的变量拥有 Global 作用域，只能在函数以外进行访问。
+    //global 关键词用于访问函数内的全局变量
+    global $staff;
+    //获取number参数
+    $number = $_GET["number"];
+    $result = $jsonp.'({"success":false,"msg":"没有找到员工。"})';
+
+    //遍历$staff多维数组，查找key值为number的员工是否存在，如果存在，则修改返回结果
+    foreach ($staff as $value) {
+        if ($value["number"] == $number) {
+            $result = $jsonp.'({"success":true,"msg":"找到员工：员工编号：' . $value["number"] . 
+                            '，员工姓名：' . $value["name"] . 
+                            '，员工性别：' . $value["sex"] . 
+                            '，员工职位：' . $value["job"] . '"})';
+            break;
+        }
+    }
     echo $result;
 }
-</code></pre>
-
+</code></pre></div>
 <p>这样就能通过jsonp来获取跨域信息。</p>
 
 <p><strong>callback和jsonp的作用和原理</strong></p>
 
-<p>1先定义一个”callback123”字段用来映射jquery生成的jQueryxxxxx_xxxxx函数名（这个函数在服务器处理完毕并返回数据时再由jquery调用）；</p>
+<p>1先定义一个&quot;callback123&quot;字段用来映射jquery生成的jQueryxxxxx_xxxxx函数名（这个函数在服务器处理完毕并返回数据时再由jquery调用）；</p>
 
 <ol>
-  <li>
-    <p>然后jsonp协议直接请求<code>http://127.0.0.1:8080/ajaxdemo/service.php?number=111；</code>（个人感觉jsonp协议不受同源策略限制）</p>
-  </li>
-  <li>
-    <p>接着服务器端定义变量$jsonp获取请求中名为”callback123”的值，也就是获取到回调函数名”jQueryxxxxx_xxxxx”；</p>
-  </li>
-  <li>
-    <p>再接着服务器处理完毕后将数据放到回调函数中，也就是视频中老师以jQueryxxxxx_xxxxx(jsondata)这种$jsonp拼接(jsondata)的形式返回给前端；</p>
-  </li>
-  <li>
-    <p>最后前端接收到”jQueryxxxxx_xxxxx(jsondata)”，jquery调用这个jQueryxxxxx_xxxxx函数，将jsondata传入到success中的function中，这样就实现了跨域。</p>
-  </li>
+<li><p>然后jsonp协议直接请求<code>http://127.0.0.1:8080/ajaxdemo/service.php?number=111；</code>（个人感觉jsonp协议不受同源策略限制）</p></li>
+<li><p>接着服务器端定义变量$jsonp获取请求中名为&quot;callback123&quot;的值，也就是获取到回调函数名&quot;jQueryxxxxx_xxxxx&quot;；</p></li>
+<li><p>再接着服务器处理完毕后将数据放到回调函数中，也就是视频中老师以jQueryxxxxx_xxxxx(jsondata)这种$jsonp拼接(jsondata)的形式返回给前端；</p></li>
+<li><p>最后前端接收到&quot;jQueryxxxxx<em>xxxxx(jsondata)&quot;，jquery调用这个jQueryxxxxx</em>xxxxx函数，将jsondata传入到success中的function中，这样就实现了跨域。</p></li>
 </ol>
 
-<p>####处理跨域方式–XHR2</p>
+<h4>处理跨域方式--XHR2</h4>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-4936aeb13b5f82bd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-4936aeb13b5f82bd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 
 <p>XMR2方法不支持ie10以下版本。</p>
 
 <p><strong>使用XMR2方法</strong></p>
 
 <p>在服务端改写脚本</p>
-
-<pre><code>header('Access-Control-Allow-Origin:*');   //值设置为*。*意思是所有域都可以访问，当然可以设置特定的域名
+<div class="highlight"><pre><code class="language-" data-lang="">header('Access-Control-Allow-Origin:*');   //值设置为*。*意思是所有域都可以访问，当然可以设置特定的域名
 header('Access-Control-Allow-Methods:POST,GET');  //允许post/git
 header('Access-Control-Allow-Credentials:true'); 
 header("Content-Type: application/json;charset=utf-8"); 
-</code></pre>
-
+</code></pre></div>
 <p>这样就能做到跨域</p>
-
 
               <!-- 多说评论框 start -->
               		<!-- <span class="ds-thread-count" data-thread-key="/javascript/2016/12/20/js_ajax5" data-count-type="comments"></span> -->
@@ -569,7 +544,8 @@ posts">
 
 </div>
 </div>
-	<footer id="footer">
+	
+<footer id="footer">
 	<nav class="links">
 		<a href="">作品</a>
 		<a href="/about/">关于本站</a>
