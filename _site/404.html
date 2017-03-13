@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>404 | Page Not Found</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+	<!-- <link rel="stylesheet" type="text/css" href="/assets/css/pygments.css"> -->
+	<link rel="shortcut icon" href="/assets/images/logo_ioc.ico" type="images/x-icon"/>
+	<link rel="icon" href="/assets/images/logo_ioc.png" type="images/png"/>
+	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
+	
+	<script type="text/javascript">
+	    (function($) {
+
+	    	var temp = 0;
+	    	$(document).scroll(function() {
+
+	    		if ($(document).scrollTop() > temp) {
+	    			$("#header").addClass("hide-top");
+	    		} else {
+	    			$("#header").removeClass("hide-top");
+	    		}
+	    		temp = $(document).scrollTop();
+	    	});
+	    	
+	    	//console.log($(".menu"))
+	    })(jQuery);
+
+	</script>
+
+</head>
+<body>
+    <header id="header" role="banner">
+	<a id="hgroup" href="/" rel="home">
+		<h1 id="logo"></h1>
+		<i class="slogan" title="返回首页">
+			热爱编程，关注前端开发技术
+		</i>
+	</a>
+	<div class="connect">
+		<a href="https://github.com/huanghanzhilian" class="git" target="_blank"></a>
+		<a href="http://www.huanghanlian.com/feed.xml" class="rss"></a>
+	</div>
+	<nav id="nav">
+		<ul class="menu">
+			<li class="menu_item">
+				<a href="/">首页</a>
+			</li>
+			<li class="menu_item">
+				<a href="http://www.huanghanlian.com/widget/">Web组件库</a>
+			</li>
+			<li class="menu_item">
+				<a href="http://www.huanghanlian.com/front-end-note/">前端笔记</a>
+			</li>
+			<li class="menu_item">
+				<a href="/about/">关于本站</a>
+			</li>
+			<li class="menu_item">
+				<a href="/report/">留言板</a>
+			</li>
+		</ul>
+	</nav>
+
+	<div id="m-btns">
+		<div class="menu"></div>
+	</div>
+	<nav class="nav-bar-tabs ">
+		<ul>
+            <li>
+              	<a href="/">首页</a>
+            </li>
+            <li>
+              	<a href="http://www.huanghanlian.com/widget/">Web组件库</a>
+            </li>
+            <li>
+              	<a href="http://www.huanghanlian.com/front-end-note/">前端笔记</a>
+            </li>
+            <li>
+              	<a href="/about/">关于本站</a>
+            </li>
+            <li>
+              	<a href="/report/">留言板</a>
+            </li>
+        </ul>
+	</nav>
+</header>
+	<div id="container" class="clearfix">
+
+
+
+    <main id="error404" role="main">
+        <article class="content">
+            <span class="code">404</span>
+            <h1>有点尴尬诶。</h1>
+            <h3>这儿似乎什么都没有</h3>
+            <ul>
+                <li><a href="/">« 返回首页</a></li>
+                <li><a href="/about/">给我留言 »</a></li>
+            </ul>
+        </article>
+    </main>
+
+
+</div>
+
+	
+<footer id="footer">
+	<nav class="links">
+		<a href="">作品</a>
+		<a href="/about/">关于本站</a>
+		<a href="/report/">留言板</a>
+	</nav>
+	<div class="copyright">
+		© 2016 <a href="">继小鹏的前端博客</a>
+	</div>
+	<a href="javascript:pageScroll();" id="rocket" class=""></a>
+	<span id="busuanzi_container_site_pv">
+	    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+	<span id="busuanzi_container_site_uv">
+	  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+	</span>
+</footer>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+
+$(function(){
+	$("#m-btns").click(function(){
+		if($("body").hasClass('nav-is-open')){
+			$("body").removeClass('nav-is-open')
+		}else{
+			$("body").addClass('nav-is-open')
+		};
+	})
+})
+var fhdb = document.getElementById("rocket");
+
+//获取页面可视区高度
+var dqy = document.documentElement.clientHeight;
+
+var main_left=$('#main').offset().left+$('#main').width()+16;
+
+//滚动条滚动时触发   在滚动的时候触发
+window.onscroll = function() {
+	var sTop = document.documentElement.scrollTop || document.body.scrollTop;
+	if (sTop >= dqy) {
+		$("#rocket").addClass('show');
+	} else {
+		$("#rocket").removeClass('show');
+	}
+}
+
+function pageScroll() {
+	//把内容滚动指定的像素数（第一个参数是向右滚动的像素数，第二个参数是向下滚动的像素数）
+	window.scrollBy(0, -100);
+	//延时递归调用，模拟滚动向上效果
+	scrolldelay = setTimeout('pageScroll()', 5);
+	//获取scrollTop值，声明了DTD的标准网页取document.documentElement.scrollTop，否则取document.body.scrollTop；因为二者只有一个会生效，另一个就恒为0，所以取和值可以得到网页的真正的scrollTop值
+	var sTop = document.documentElement.scrollTop + document.body.scrollTop;
+	//判断当页面到达顶部，取消延时代码（否则页面滚动到顶部会无法再向下正常浏览页面）
+	if (sTop == 0) clearTimeout(scrolldelay)
+
+}
+
+
+
+</script>
+</body>
+</html>
