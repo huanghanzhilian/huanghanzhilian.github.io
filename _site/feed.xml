@@ -5,9 +5,238 @@
     <description>没有所谓失败，除非你不再尝试。!</description>
     <link>http://www.huanghanlian.com/</link>
     <atom:link href="http://www.huanghanlian.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 13 Mar 2017 23:03:13 +0800</pubDate>
-    <lastBuildDate>Mon, 13 Mar 2017 23:03:13 +0800</lastBuildDate>
+    <pubDate>Tue, 14 Mar 2017 23:39:26 +0800</pubDate>
+    <lastBuildDate>Tue, 14 Mar 2017 23:39:26 +0800</lastBuildDate>
     <generator>Jekyll v3.0.0</generator>
+    
+      <item>
+        <title>PHP概述-环境配置</title>
+        <description>&lt;h3&gt;window下安装方法&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Appserv &lt;a href=&quot;http://www.appservnetwork.com&quot;&gt;官网http://www.appservnetwork.com&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;安装成功后，到你安装盘下有&lt;code&gt;AppServ&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-24ecbcb60b2160e0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;有四个文件夹和一个删除程序&lt;/p&gt;
+
+&lt;p&gt;网站默认目录在&lt;code&gt;www&lt;/code&gt;文件下&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-2f8ea58d503897bc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;phpMyAdmin&lt;/code&gt;是一个web应用程序，控制mysql&lt;/p&gt;
+
+&lt;p&gt;输入项目下的&lt;code&gt;phpMyAdmin&lt;/code&gt;路径&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-fadddf0c1964aec9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;输入刚注册时候的数据库密码即可等人，可以可视化操作数据库&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-5e3704f2edec39b2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;phpstudy&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Wamp&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;很多人使用Wamp&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Xmapp&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3&gt;安装WEB网站&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;安装多用户留言系统Guest项目&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;安装discuz论坛&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;安装ecshop网店&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;安装多用户留言系统Guest项目&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;安装discuz论坛&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.discuz.net/forum.php&quot;&gt;去http://www.discuz.net/forum.php&lt;/a&gt;下载论坛程序，然后安装&lt;/p&gt;
+
+&lt;p&gt;或者&lt;a href=&quot;http://www.comsenz.com/&quot;&gt;http://www.comsenz.com/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-2e8814d51533c81d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;选择简体utf-8或者简体GBK&lt;/p&gt;
+
+&lt;p&gt;这里选择简体GBK下载&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-2d818809d59ba59d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;将下载的文件压缩包复制到&lt;code&gt;WWW&lt;/code&gt;文件夹中&lt;/p&gt;
+
+&lt;p&gt;解压其中一个&lt;code&gt;upload&lt;/code&gt;文件，其他的文件不要&lt;/p&gt;
+
+&lt;p&gt;将文件包可以删除了&lt;/p&gt;
+
+&lt;p&gt;将&lt;code&gt;upload&lt;/code&gt;文件名改成&lt;code&gt;discuz&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-542f4e28658c0abf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;打开&lt;a href=&quot;http://localhost/discuz/install/&quot;&gt;http://localhost/discuz/install/&lt;/a&gt;discuz安装路径&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-b55fbe747014b412.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;安装完可以把&lt;code&gt;install&lt;/code&gt;删除&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-9b9d3e60830d9a06.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;填写完点击下一步&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-7ec36916ab692101.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;等待安装完成&lt;/p&gt;
+
+&lt;p&gt;安装完即可打开http://localhost/discuz/项目&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-44771b44f02f6ad7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;来注册下&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-782a1c34fd9f66c7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;在整个安装过程都是智能化的&lt;/p&gt;
+
+&lt;p&gt;数据库已经自动导入到我们的数据中&lt;/p&gt;
+
+&lt;p&gt;这个时候就可以使用该网站&lt;/p&gt;
+
+&lt;p&gt;admin是管理员账号&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-7e2207ef395c5df7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;安装ecshop网店&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;进入&lt;a href=&quot;http://ecshop.com/&quot;&gt;http://ecshop.com/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-ba9a4108a4958b17.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;点击下载&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-edadcb25026a48ee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;下载后同样将upload文件放在www目录下&lt;/p&gt;
+
+&lt;p&gt;将upload文件名改为ecshop&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-92f0aace34d8eb1e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;ecshop进到他的主页会判断你有没有安装，&lt;/p&gt;
+
+&lt;p&gt;打开http://localhost/ecshop/会直接来到安装的路径&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-77b23d48c87a5a23.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;下一步下一步安装&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-a0a4f2446ee12c52.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;填写信息&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-5e7242ee58b9ad4f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;安装成功后可以打开网站和后台管理&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-20eb85b5cb16ec5d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-4b45922bf8f7bf8c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;h3&gt;安装开发工具Zend Studio&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.zendstudio.net/&quot;&gt;http://www.zendstudio.net/&lt;/a&gt;下载&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-efcc0561679c42d3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;zend官网下载&lt;a href=&quot;http://www.zend.com/&quot;&gt;http://www.zend.com/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;选择产品Zend Studio进入下载页面&lt;/p&gt;
+
+&lt;p&gt;下载后双击傻瓜式安装&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-1d59913041e124f3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-bea6949cce31d3c7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;安装后打开软件&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-7bac7e2cf85de09f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;设置工作目录，勾选以后不在询问&lt;/p&gt;
+
+&lt;p&gt;进来是这样的&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-b5d9c66936d02ade.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;创建项目&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-5257cc4ba3616438.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;新建php文件&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-1f026de9e726b29e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-56088d771b547c35.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;默认的编辑区域文字太小而且么有结束标签&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-44a419097c42c3ad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;调整默认文件字体大小&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-e40cec435fd10ae7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-7e668548ff21f51c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-36c239a8fd113424.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;关闭项目为了不妨碍工作，不是删除&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-6c8a09317387384d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-1e089f6bc6c91908.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;新建php文件没有结尾  之解决&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-a2560676c6ca437f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;新建文档的模板设置：
+Window -&amp;gt; Preferences -&amp;gt; PHP -&amp;gt; Code Style -&amp;gt;Code Templates -&amp;gt;Code-&amp;gt;New simple PHP file
+//这个可以修改每次新建文件的起始代码&lt;/p&gt;
+
+&lt;p&gt;第一步&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-54e515afe40ded5f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-9254ffec2c1a8f1c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;成功&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-4d0d36bf8ec44fa6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;自动提示代码速度很慢：
+Window -&amp;gt; Preferences -&amp;gt; PHP -&amp;gt; Editor -&amp;gt; Content Assist -&amp;gt;Auto Activation
+//将代码自动提示的速度500设置成50&lt;/p&gt;
+
+&lt;p&gt;编辑器乱码问题&lt;/p&gt;
+
+&lt;p&gt;一般php文件都为utf-8无BOM格式的,用zendstudio默认设置打开时中文会产生乱码，这是因为zendstudio默认设置编码格式为GBK格式，所以我们这里需要重新设置其编码格式，这个是zendstudio9.0.0.4版本，其他版本基本一样&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-76c7a42cf795b131.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;图片.png&quot;&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 14 Mar 2017 23:37:42 +0800</pubDate>
+        <link>http://www.huanghanlian.com/php/2017/03/14/phpzendstudio.html</link>
+        <guid isPermaLink="true">http://www.huanghanlian.com/php/2017/03/14/phpzendstudio.html</guid>
+        
+        <category>PHP</category>
+        
+        
+        <category>PHP</category>
+        
+      </item>
     
       <item>
         <title>PHP进阶-数组(1)</title>
@@ -2927,65 +3156,6 @@ function Controller2($scope) {
         <pubDate>Sat, 11 Mar 2017 23:47:13 +0800</pubDate>
         <link>http://www.huanghanlian.com/angularjs/2017/03/11/angularjs-basics3.html</link>
         <guid isPermaLink="true">http://www.huanghanlian.com/angularjs/2017/03/11/angularjs-basics3.html</guid>
-        
-        <category>AngularJS</category>
-        
-        
-        <category>AngularJS</category>
-        
-      </item>
-    
-      <item>
-        <title>开发、调试、测试工具1-2</title>
-        <description>&lt;p&gt;前端开发需自动化，工业化&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-568ab0cf4d744a36.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot;&gt;&lt;/p&gt;
-
-&lt;h3&gt;推荐代码编辑工具&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;sublime&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-4a262741b93135db.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;webstorm&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-6c3e978732b0df18.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot;&gt;&lt;/p&gt;
-
-&lt;h3&gt;断点调试工具&lt;/h3&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-924a6e759c1e8fc4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot;&gt;&lt;/p&gt;
-
-&lt;h3&gt;版本管理工具&lt;/h3&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-d242a4d202dedccf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-dcd69c9677841023.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot;&gt;&lt;/p&gt;
-
-&lt;h3&gt;开发和调试工具&lt;/h3&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-223d2b7071ffc673.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot;&gt;&lt;/p&gt;
-
-&lt;h3&gt;代码合并和混淆工具&lt;/h3&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-5466c85c662128ea.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot;&gt;&lt;/p&gt;
-
-&lt;h3&gt;依赖管理工具&lt;/h3&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-5c466fcb2574d54e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-bb11e26a71435436.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-fc6e9c2b5f768822.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-9923f927b02e86f0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-7083cb16bf32fa6b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-1b98eadbf33189f0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;Paste_Image.png&quot;&gt;&lt;/p&gt;
-</description>
-        <pubDate>Sat, 11 Mar 2017 23:46:13 +0800</pubDate>
-        <link>http://www.huanghanlian.com/angularjs/2017/03/11/angularjs-basics2.html</link>
-        <guid isPermaLink="true">http://www.huanghanlian.com/angularjs/2017/03/11/angularjs-basics2.html</guid>
         
         <category>AngularJS</category>
         
