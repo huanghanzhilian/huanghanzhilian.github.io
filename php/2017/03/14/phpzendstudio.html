@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>JavaScript获取DOM元素位置和尺寸大小</title>
+<title>PHP概述-环境配置</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
 	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
@@ -91,200 +91,229 @@
 	<main id="main" class="hfeed">
 		<article id="post-157" class="post-157 hentry">
 			<header class="entry-header">
-				<h1 class="entry-title">JavaScript获取DOM元素位置和尺寸大小</h1>
-				<div class="entry-meta">2016-12-11 <span class="dot">•</span>JavaScript<span class="dot">•</span>黄继鹏<span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span></div>
+				<h1 class="entry-title">PHP概述-环境配置</h1>
+				<div class="entry-meta">2017-03-14 <span class="dot">•</span>PHP<span class="dot">•</span>黄继鹏<span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span></div>
 			</header>
 			<article class="post-content">
-              <p>在一些复杂的页面中经常会用JavaScript处理一些DOM元素的动态效果，这种时候我们经常会用到一些元素位置和尺寸的计算，浏览器兼容性问题也是不可忽略的一部分，要想写出预想效果的JavaScript代码，我们需要了解一些基本知识。</p>
+              <h3>window下安装方法</h3>
 
-<h4>基础概念</h4>
+<p><strong>Appserv <a href="http://www.appservnetwork.com">官网http://www.appservnetwork.com</a></strong></p>
 
-<p>为了方便理解，我们需要了解几个基础概念，每个HTML元素都有下列属性</p>
+<p>安装成功后，到你安装盘下有<code>AppServ</code></p>
 
-<p>offset| client| scroll
-----|------|----
-offsetWidth| clientWidth| scrollWidth
-offsetHeight| clientHeight| scrollHeight
-offsetLeft| clientLeft| scrollLeft
-offsetTop| clientTop| scrollTop</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-24ecbcb60b2160e0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
 
-<blockquote>
-<p>clientHeight和clientWidth用于描述元素内尺寸，是指 元素内容+内边距 大小，不包括边框（IE下实际包括）、外边距、滚动条部分</p>
+<p>有四个文件夹和一个删除程序</p>
 
-<p>offsetHeight和offsetWidth用于描述元素外尺寸，是指 元素内容+内边距+边框，不包括外边距和滚动条部分</p>
+<p>网站默认目录在<code>www</code>文件下</p>
 
-<p>clientTop和clientLeft返回内边距的边缘和边框的外边缘之间的水平和垂直距离，也就是左，上边框宽度</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-2f8ea58d503897bc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
 
-<p>offsetTop和offsetLeft表示该元素的左上角（边框外边缘）与已定位的父容器（offsetParent对象）左上角的距离
-offsetParent对象是指元素最近的定位（relative,absolute）祖先元素，递归上溯，如果没有祖先元素是定位的话，会返回null</p>
-</blockquote>
+<p><code>phpMyAdmin</code>是一个web应用程序，控制mysql</p>
 
-<p>写个小例子方便理解</p>
-<div class="highlight"><pre><code class="language-" data-lang="">&lt;div id="divParent" style="padding: 18px; background-color: #aaa; position: relative;"&gt;
-    &lt;div id="divDisplay" style="background-color: #0f0; margin: 30px; padding: 10px;
-        height: 200px; width: 200px; border: solid 10px #f00;"&gt;
-    &lt;/div&gt;
-&lt;/div&gt;
+<p>输入项目下的<code>phpMyAdmin</code>路径</p>
 
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-fadddf0c1964aec9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
 
+<p>输入刚注册时候的数据库密码即可等人，可以可视化操作数据库</p>
 
-var div = document.getElementById('divDisplay');
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-5e3704f2edec39b2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
 
-var clientHeight = div.clientHeight;
-var clientWidth = div.clientWidth;
-div.innerHTML += 'clientHeight: ' + clientHeight + '&lt;br/&gt;';
-div.innerHTML += 'clientWidth: ' + clientWidth + '&lt;br/&gt;';
+<p><strong>phpstudy</strong></p>
 
-var clientLeft = div.clientLeft;
-var clientTop = div.clientTop;
-div.innerHTML += 'clientLeft: ' + clientLeft + '&lt;br/&gt;';
-div.innerHTML += 'clientTop: ' + clientTop + '&lt;br/&gt;';
+<p><strong>Wamp</strong></p>
 
-var offsetHeight = div.offsetHeight;
-var offsetWidth = div.offsetWidth;
-div.innerHTML += 'offsetHeight: ' + offsetHeight + '&lt;br/&gt;';
-div.innerHTML += 'offsetWidth: ' + offsetWidth + '&lt;br/&gt;';
+<p>很多人使用Wamp</p>
 
-var offsetLeft = div.offsetLeft;
-var offsetTop = div.offsetTop;
-div.innerHTML += 'offsetLeft: ' + offsetLeft + '&lt;br/&gt;';
-div.innerHTML += 'offsetTop: ' + offsetTop + '&lt;br/&gt;';
+<p><strong>Xmapp</strong></p>
 
-var offsetParent = div.offsetParent;
-div.innerHTML += 'offsetParent: ' + offsetParent.id + '&lt;br/&gt;';
-</code></pre></div>
-<p>效果如图</p>
+<h3>安装WEB网站</h3>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-4c16b0f2a5f14f47.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<ol>
+<li><p>安装多用户留言系统Guest项目</p></li>
+<li><p>安装discuz论坛</p></li>
+<li><p>安装ecshop网店</p></li>
+</ol>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-f29eb579a580df62.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p><strong>安装多用户留言系统Guest项目</strong></p>
 
-<p>从图中我们可以看到，clientHeight就是div的高度+上下各10px的padding，clientWidth同理</p>
+<p><strong>安装discuz论坛</strong></p>
 
-<p>而clientLeft和ClientTop即为div左、上边框宽度</p>
+<p><a href="http://www.discuz.net/forum.php">去http://www.discuz.net/forum.php</a>下载论坛程序，然后安装</p>
 
-<p>offsetHeight是clientHeight+上下个3px的边框宽度之和，offsetWidth同理</p>
+<p>或者<a href="http://www.comsenz.com/">http://www.comsenz.com/</a></p>
 
-<p>offsetTop是div 30px的 maggin+offsetparent 8px的 padding，offsetLeft同理</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-2e8814d51533c81d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
 
-<blockquote>
-<p>6.scrollWidth和scrollHeight是元素的内容区域加上内边距加上溢出尺寸，当内容正好和内容区域匹配没有溢出时，这些属性与clientWidth和clientHeight相等</p>
+<p>选择简体utf-8或者简体GBK</p>
 
-<p>7.scrollLeft和scrollTop是指元素滚动条位置，它们是<strong>可写</strong>的</p>
-</blockquote>
+<p>这里选择简体GBK下载</p>
 
-<p>下面写个简单例子理解</p>
-<div class="highlight"><pre><code class="language-" data-lang="">&lt;div id="divParent" style="background-color: #aaa; padding:8px; border:solid 7px #000; height:200px; width:500px; overflow:auto;"&gt;
-    &lt;div id="divDisplay" style="background-color: #0f0; margin: 30px; padding: 10px;
-        height: 400px; width: 200px; border: solid 3px #f00;"&gt;
-    &lt;/div&gt;
-&lt;/div&gt;
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-2d818809d59ba59d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
 
+<p>将下载的文件压缩包复制到<code>WWW</code>文件夹中</p>
 
+<p>解压其中一个<code>upload</code>文件，其他的文件不要</p>
 
-var divP = document.getElementById('divParent');
-var divD = document.getElementById('divDisplay');
+<p>将文件包可以删除了</p>
 
-var scrollHeight = divP.scrollHeight;
-var scrollWidth = divP.scrollWidth;
-divD.innerHTML += 'scrollHeight: ' + scrollHeight + '&lt;br/&gt;';
-divD.innerHTML += 'scrollWidth: ' + scrollWidth + '&lt;br/&gt;';
-</code></pre></div>
-<p>效果图</p>
+<p>将<code>upload</code>文件名改成<code>discuz</code></p>
 
-<p><img src="http://upload-images.jianshu.io/upload_images/3877962-fc19f4bb6fe78aa6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-542f4e28658c0abf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
 
-<p>在FireFox和IE10（IE10以下版本盒模型和W3C标准不一致，不加讨论，兼容性问题下面会介绍到）下得到结果scrollHeight: <strong>494</strong>，而在Chrome和Safari下得到结果scrollHeight: <strong>502</strong>，差了8px，根据8可以简单推测是divParent的padding，来算一下是不是</p>
+<p>打开<a href="http://localhost/discuz/install/">http://localhost/discuz/install/</a>discuz安装路径</p>
 
-<p>我们可以看看它们的结果是怎么来的，首先scrollHeight肯定包含了divDisplay所需的高度 400px的高度+上下各10px的padding+上下各3px的border+上下各30px的margin，这样</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-b55fbe747014b412.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
 
-<p>400+10<em>2+3</em>2+30*2=486</p>
+<p>安装完可以把<code>install</code>删除</p>
 
-<p>这样486+8=494， 486+8<em>2=502果真是这样，</em><em>在FireFox和IE10下没有计算下padding</em>*</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-9b9d3e60830d9a06.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
 
-<p>有了这些基础知识后，我们就可以计算元素的位置和尺寸了。</p>
+<p>填写完点击下一步</p>
 
-<h4>相对于文档与视口的坐标</h4>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-7ec36916ab692101.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
 
-<p>当我们计算一个DOM元素位置也就是坐标的时候，会涉及到两种坐标系，<strong>文档坐标</strong>和<strong>视口坐标</strong>。</p>
+<p>等待安装完成</p>
 
-<p>我们经常用到的<strong>document就是整个页面部分，而不仅仅是窗口可见部分</strong>，还包括因为窗口大小限制而出现滚动条的部分，它的左上角就是我们所谓相对于文档坐标的原点。</p>
+<p>安装完即可打开http://localhost/discuz/项目</p>
 
-<p><strong>视口是显示文档内容的浏览器的一部分，它不包括浏览器外壳</strong>（菜单，工具栏，状态栏等），也就是当前窗口显示页面部分，不包括滚动条。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-44771b44f02f6ad7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
 
-<p>如果文档比视口小，说明没有出现滚动，文档左上角和视口左上角相同，一般来讲在两种坐标系之间进行切换，需要加上或减去滚动的偏移量（scroll offset）。</p>
+<p>来注册下</p>
 
-<p>为了在坐标系之间进行转换，我们需要判定浏览器窗口的滚动条位置。window对象的pageXoffset和pageYoffset提供这些值，IE 8及更早版本除外。也可以通过scrollLeft和scrollTop属性获得滚动条位置，正常情况下通过查询文档根节点（document.documentElement）来获得这些属性值，但在怪异模式下必须通过文档的body上查询。</p>
-<div class="highlight"><pre><code class="language-" data-lang="">function getScrollOffsets(w) {
-    var w = w || window;
-    if (w.pageXoffset != null) {
-        return {
-            x: w.pageXoffset,
-            y: pageYoffset
-        };
-    }
-    var d = w.document;
-    if (document.compatMode == "CSS1Compat")
-        return {
-            x: d.documentElement.scrollLeft,
-            y: d.documentElement.scrollTop
-        };
-    return {
-        x: d.body.scrollLeft,
-        y: d.body.scrollTop
-    };
-}
-</code></pre></div>
-<p>有时候能够判断视口的尺寸也是非常有用的</p>
-<div class="highlight"><pre><code class="language-" data-lang="">function getViewPortSize(w) {
-    var w = w || window;
-    if (w.innerWidth != null)
-        return {
-            w: w.innerWidth,
-            h: w.innerHeight
-        };
-    var d = w.document;
-    if (document.compatMode == "CSS1Compat")
-        return {
-            w: d.documentElement.clientWidth,
-            h: d.documentElement.clientHeight
-        };
-    return {
-        w: d.body.clientWidth,
-        h: d.body.clientHeight
-    };
-}
-</code></pre></div>
-<p><strong>文档坐标</strong></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-782a1c34fd9f66c7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
 
-<p>任何HTML元素都拥有offectLeft和offectTop属性返回元素的X和Y坐标，对于很多元素，这些值是文档坐标，但是对于以定位元素后代及一些其他元素（表格单元），返回相对于<strong>祖先</strong>的坐标。我们可以通过简单的递归上溯累加计算</p>
-<div class="highlight"><pre><code class="language-" data-lang="">function getElementPosition(e) {
-    var x = 0,
-        y = 0;
-    while (e != null) {
-        x += e.offsetLeft;
-        y += e.offsetTop;
-        e = e.offsetParent;
-    }
-    return {
-        x: x,
-        y: y
-    };
-}
-</code></pre></div>
-<p>尽管如此，这个函数也不总是计算正确的值，当文档中含有滚动条的时候这个方法就不能正常工作了，我们只能在没有滚动条的情况下使用这个方法，不过我们用这个原理算出一些元素相对于某个父元素的坐标。</p>
+<p>在整个安装过程都是智能化的</p>
 
-<p><strong>视口坐标</strong></p>
+<p>数据库已经自动导入到我们的数据中</p>
 
-<p>计算<strong>视口坐标</strong>就相对简单了很多，可以通过调用<strong>元素</strong>的<strong>getBoundingClientRect</strong>方法。方法返回一个有left、right、top、bottom属性的对象，分别表示元素四个位置的相对于视口的坐标。<strong>getBoundingClientRect所返回的坐标包含元素的内边距和边框</strong>，不包含外边距。兼容性很好，非常好用</p>
+<p>这个时候就可以使用该网站</p>
 
-<p><strong>元素尺寸</strong></p>
+<p>admin是管理员账号</p>
 
-<p>由上面计算坐标方法，我们可以方便得出元素尺寸。在符合W3C标准的浏览器中getBoundingClientRect返回的对象还包括width和height,但在原始IE中未实现，但是通过返回对象的right-left和bottom-top可以方便计算出。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-7e2207ef395c5df7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<p><strong>安装ecshop网店</strong></p>
+
+<p>进入<a href="http://ecshop.com/">http://ecshop.com/</a></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-ba9a4108a4958b17.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<p>点击下载</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-edadcb25026a48ee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<p>下载后同样将upload文件放在www目录下</p>
+
+<p>将upload文件名改为ecshop</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-92f0aace34d8eb1e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<p>ecshop进到他的主页会判断你有没有安装，</p>
+
+<p>打开http://localhost/ecshop/会直接来到安装的路径</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-77b23d48c87a5a23.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<p>下一步下一步安装</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-a0a4f2446ee12c52.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<p>填写信息</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-5e7242ee58b9ad4f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<p>安装成功后可以打开网站和后台管理</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-20eb85b5cb16ec5d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-4b45922bf8f7bf8c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<h3>安装开发工具Zend Studio</h3>
+
+<p><a href="http://www.zendstudio.net/">http://www.zendstudio.net/</a>下载</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-efcc0561679c42d3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<p>zend官网下载<a href="http://www.zend.com/">http://www.zend.com/</a></p>
+
+<p>选择产品Zend Studio进入下载页面</p>
+
+<p>下载后双击傻瓜式安装</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-1d59913041e124f3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-bea6949cce31d3c7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<p>安装后打开软件</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-7bac7e2cf85de09f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<p>设置工作目录，勾选以后不在询问</p>
+
+<p>进来是这样的</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-b5d9c66936d02ade.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<p>创建项目</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-5257cc4ba3616438.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<p>新建php文件</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-1f026de9e726b29e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-56088d771b547c35.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<p>默认的编辑区域文字太小而且么有结束标签</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-44a419097c42c3ad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<p>调整默认文件字体大小</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-e40cec435fd10ae7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-7e668548ff21f51c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-36c239a8fd113424.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<p>关闭项目为了不妨碍工作，不是删除</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-6c8a09317387384d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-1e089f6bc6c91908.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<p>新建php文件没有结尾  之解决</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-a2560676c6ca437f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<p>新建文档的模板设置：
+Window -&gt; Preferences -&gt; PHP -&gt; Code Style -&gt;Code Templates -&gt;Code-&gt;New simple PHP file
+//这个可以修改每次新建文件的起始代码</p>
+
+<p>第一步</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-54e515afe40ded5f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-9254ffec2c1a8f1c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<p>成功</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-4d0d36bf8ec44fa6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
+
+<p>自动提示代码速度很慢：
+Window -&gt; Preferences -&gt; PHP -&gt; Editor -&gt; Content Assist -&gt;Auto Activation
+//将代码自动提示的速度500设置成50</p>
+
+<p>编辑器乱码问题</p>
+
+<p>一般php文件都为utf-8无BOM格式的,用zendstudio默认设置打开时中文会产生乱码，这是因为zendstudio默认设置编码格式为GBK格式，所以我们这里需要重新设置其编码格式，这个是zendstudio9.0.0.4版本，其他版本基本一样</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-76c7a42cf795b131.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片.png"></p>
 
               <!-- 多说评论框 start -->
-              		<!-- <span class="ds-thread-count" data-thread-key="/javascript/2016/12/11/javascript_dom_size" data-count-type="comments"></span> -->
-					<div class="ds-thread" data-thread-key="http://www.huanghanlian.com/javascript/2016/12/11/javascript_dom_size" data-title="JavaScript获取DOM元素位置和尺寸大小" data-url="http://www.huanghanlian.com/javascript/2016/12/11/javascript_dom_size"></div>
+              		<!-- <span class="ds-thread-count" data-thread-key="/php/2017/03/14/phpzendstudio" data-count-type="comments"></span> -->
+					<div class="ds-thread" data-thread-key="http://www.huanghanlian.com/php/2017/03/14/phpzendstudio" data-title="PHP概述-环境配置" data-url="http://www.huanghanlian.com/php/2017/03/14/phpzendstudio"></div>
 				<!-- 多说评论框 end -->
 				<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 				<script type="text/javascript">
@@ -424,7 +453,7 @@ posts">
 				<li>
 					<a href="/categories/PHP/" title="view all
 posts">
-						PHP (1)
+						PHP (2)
 					</a>
 				</li>
 				
@@ -491,6 +520,11 @@ posts">
 					<a href="/tag/PHP_study/" title="view all
 posts">
 						PHP_study
+					</a>
+				
+					<a href="/tag/PHP/" title="view all
+posts">
+						PHP
 					</a>
 				
 			</div>
