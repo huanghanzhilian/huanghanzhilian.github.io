@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Node.js-源码解读之先了解作用域、上下文</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+	<!-- <link rel="stylesheet" type="text/css" href="/assets/css/pygments.css"> -->
+	<link rel="shortcut icon" href="/assets/images/logo_ioc.ico" type="images/x-icon"/>
+	<link rel="icon" href="/assets/images/logo_ioc.png" type="images/png"/>
+	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
+	
+	<script type="text/javascript">
+	    (function($) {
+
+	    	var temp = 0;
+	    	$(document).scroll(function() {
+
+	    		if ($(document).scrollTop() > temp) {
+	    			$("#header").addClass("hide-top");
+	    		} else {
+	    			$("#header").removeClass("hide-top");
+	    		}
+	    		temp = $(document).scrollTop();
+	    	});
+	    	
+	    	//console.log($(".menu"))
+	    })(jQuery);
+
+	</script>
+
+</head>
+<body>
+    <header id="header" role="banner">
+	<a id="hgroup" href="/" rel="home">
+		<h1 id="logo"></h1>
+		<i class="slogan" title="返回首页">
+			热爱编程，关注前端开发技术
+		</i>
+	</a>
+	<div class="connect">
+		<a href="https://github.com/huanghanzhilian" class="git" target="_blank"></a>
+		<a href="http://www.huanghanlian.com/feed.xml" class="rss"></a>
+	</div>
+	<nav id="nav">
+		<ul class="menu">
+			<li class="menu_item">
+				<a href="/">首页</a>
+			</li>
+			<li class="menu_item">
+				<a href="http://www.huanghanlian.com/widget/">Web组件库</a>
+			</li>
+			<li class="menu_item">
+				<a href="http://www.huanghanlian.com/front-end-note/">前端笔记</a>
+			</li>
+			<li class="menu_item">
+				<a href="/about/">关于本站</a>
+			</li>
+			<li class="menu_item">
+				<a href="/report/">留言板</a>
+			</li>
+		</ul>
+	</nav>
+
+	<div id="m-btns">
+		<div class="menu"></div>
+	</div>
+	<nav class="nav-bar-tabs ">
+		<ul>
+            <li>
+              	<a href="/">首页</a>
+            </li>
+            <li>
+              	<a href="http://www.huanghanlian.com/widget/">Web组件库</a>
+            </li>
+            <li>
+              	<a href="http://www.huanghanlian.com/front-end-note/">前端笔记</a>
+            </li>
+            <li>
+              	<a href="/about/">关于本站</a>
+            </li>
+            <li>
+              	<a href="/report/">留言板</a>
+            </li>
+        </ul>
+	</nav>
+</header>
+	<div id="container" class="clearfix">
+	<main id="main" class="hfeed">
+		<article id="post-157" class="post-157 hentry">
+			<header class="entry-header">
+				<h1 class="entry-title">Node.js-源码解读之先了解作用域、上下文</h1>
+				<div class="entry-meta">2017-04-13 <span class="dot">•</span>Nodejs<span class="dot">•</span>黄继鹏<span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span></div>
+			</header>
+			<article class="post-content">
+              <p>nodejs适合于高并发，IO密集操作等。</p>
+
+<p>在看源码以前需要弄清两个概念，</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-3ddb7d1be3d33c03.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+
+<h4>什么是作用域</h4>
+
+<p>上下文和作用域并不是一回事，作用域和调用函数访问变量的能力有关，上下文总是<code>this</code>这个关键字有关，是调用当前可执行代码的引用，</p>
+
+<p>首先来说作用域</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript">
+
+<span class="c1">//scope.js</span>
+<span class="c1">//global是node环境中的全局对象相当于浏览器的window</span>
+<span class="c1">//console.log(global)</span>
+
+
+<span class="c1">//定义一个全局变量</span>
+<span class="kd">var</span> <span class="nx">globalVariable</span><span class="o">=</span><span class="s1">'this is global variable'</span><span class="p">;</span>
+
+
+<span class="c1">//定义全局函数</span>
+<span class="kd">function</span> <span class="nx">globalFunction</span><span class="p">(){</span>
+    <span class="c1">//在函数里面就是局部变量外部是访问不到的</span>
+    <span class="kd">var</span> <span class="nx">localvariable</span><span class="o">=</span><span class="s1">'hello'</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h4>什么是上下文</h4>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//context.js</span>
+
+<span class="kd">var</span> <span class="nx">pet</span><span class="o">=</span><span class="p">{</span>
+    <span class="na">words</span><span class="p">:</span><span class="s1">'...'</span><span class="p">,</span>
+    <span class="na">speak</span><span class="p">:</span><span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">words</span><span class="p">);</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="o">===</span><span class="nx">pet</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="nx">pet</span><span class="p">.</span><span class="nx">speak</span><span class="p">();</span>
+</code></pre></div>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-160f4e9edd125e97.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//context.js</span>
+
+<span class="cm">/*var pet={
+    words:'...',
+    speak:function(){
+        console.log(this.words);
+        console.log(this===pet);
+    }
+}
+pet.speak();*/</span>
+
+<span class="kd">function</span> <span class="nx">pet</span><span class="p">(</span><span class="nx">words</span><span class="p">){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">words</span><span class="o">=</span><span class="nx">words</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">words</span><span class="p">)</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="o">===</span><span class="nx">global</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nx">pet</span><span class="p">(</span><span class="s1">'hello'</span><span class="p">);</span>
+</code></pre></div>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-596da402bfc39f61.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">pet</span><span class="p">(</span><span class="nx">words</span><span class="p">){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">words</span><span class="o">=</span><span class="nx">words</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">speak</span><span class="o">=</span><span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">words</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="kd">var</span> <span class="nx">cat</span><span class="o">=</span><span class="k">new</span> <span class="nx">pet</span><span class="p">(</span><span class="s1">'hello'</span><span class="p">);</span>
+<span class="nx">cat</span><span class="p">.</span><span class="nx">speak</span><span class="p">();</span>
+</code></pre></div>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-ab4337b553a89679.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+
+<p>来理解下js上下文，在javascript里面<code>this</code>关键字通常是指向当前函数的拥有者，通常把拥有者叫做执行上下文，<code>this</code>是javascript语言的一个关键字，代表函数运行时候自动生成了一个内部对象只能在函数内部使用，<code>this</code>指向的是函数拥有者，<code>this</code>只能在内部使用，同时对于函数的上下文执行对象需要依据当前的运行环境而定，</p>
+
+<p>使用call，apply可以改变上下文执行对象他俩可以可以让你在定义上下文中执行函数作用是一样的。</p>
+
+<p>他俩具体的作用是调用对象的一个方法，已另一个对象替换当前对象，其实就是更改对象的this指向的内容，说的标准点是以某个方法当作指定的某个对象的方法被执行。</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//call_apply.js</span>
+
+<span class="kd">var</span> <span class="nx">pet</span><span class="o">=</span><span class="p">{</span>
+    <span class="na">words</span><span class="p">:</span><span class="s1">'...'</span><span class="p">,</span>
+    <span class="na">speak</span><span class="p">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">say</span><span class="p">){</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">say</span><span class="o">+</span><span class="s1">' '</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">words</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="c1">//pet.speak('hello')</span>
+
+<span class="kd">var</span> <span class="nx">dog</span><span class="o">=</span><span class="p">{</span>
+    <span class="na">words</span><span class="p">:</span><span class="s1">'huang'</span>
+<span class="p">}</span>
+<span class="c1">//这里调用的是pet对象上的一个方法，理论上this指针应该是pet对象，但是通过call改变了他的执行上下文，将pet上的this指向了dog后面是向这个方法传递的参数</span>
+<span class="nx">pet</span><span class="p">.</span><span class="nx">speak</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">dog</span><span class="p">,</span><span class="s1">'hello'</span><span class="p">);</span>
+</code></pre></div>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-911bd610ad417ffe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+
+<h4>使用<code>call</code>实现js继承</h4>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//call_apply_extend.js</span>
+
+<span class="kd">function</span> <span class="nx">Pet</span><span class="p">(</span><span class="nx">words</span><span class="p">){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">words</span><span class="o">=</span><span class="nx">words</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">speak</span><span class="o">=</span><span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">words</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">Dog</span><span class="p">(</span><span class="nx">words</span><span class="p">){</span>
+    <span class="nx">Pet</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="nx">words</span><span class="p">);</span>
+    <span class="c1">//Pet.apply(this,arguments);</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">dog</span><span class="o">=</span><span class="k">new</span> <span class="nx">Dog</span><span class="p">(</span><span class="s1">'huang'</span><span class="p">);</span>
+<span class="nx">dog</span><span class="p">.</span><span class="nx">speak</span><span class="p">()</span>
+</code></pre></div>
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-16a038e43242f5a6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+
+              <!-- 多说评论框 start -->
+              		<!-- <span class="ds-thread-count" data-thread-key="/nodejs/2017/04/13/nodejs_one_12" data-count-type="comments"></span> -->
+					<div class="ds-thread" data-thread-key="http://www.huanghanlian.com/nodejs/2017/04/13/nodejs_one_12" data-title="Node.js-源码解读之先了解作用域、上下文" data-url="http://www.huanghanlian.com/nodejs/2017/04/13/nodejs_one_12"></div>
+				<!-- 多说评论框 end -->
+				<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+				<script type="text/javascript">
+				var duoshuoQuery = {short_name:"huanghuanlian"};
+					(function() {
+						var ds = document.createElement('script');
+						ds.type = 'text/javascript';ds.async = true;
+						ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+						ds.charset = 'UTF-8';
+						(document.getElementsByTagName('head')[0]
+						 || document.getElementsByTagName('body')[0]).appendChild(ds);
+					})();
+				</script>
+				<!-- 多说公共JS代码 end -->
+
+
+				
+            </article>
+		</article>
+
+	</main>
+	<div class="sidebar" id="sidebar">
+	<div class="sidebar-top">
+		<aside class="widjhuh">
+			<h3 class="widget-title">最新文章</h3>
+			<ul class="minty_thumblist">
+				
+                  <li>
+                    <a href="/nodejs/2017/04/15/nodejs-one-13.html">
+
+                    	<span>Node.js-HTTP 性能测试</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/nodejs/2017/04/08/nodejs-one-11.html">
+
+                    	<span>Node.js-HTTP 事件回调进阶</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/nodejs/2017/04/08/nodejs-one-10.html">
+
+                    	<span>Node.js-HTTP知识先填坑</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/nodejs/2017/04/05/nodejs-one-9.html">
+
+                    	<span>Node.js-URL网址解析的好帮手</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/nodejs/2017/03/27/nodejs-one-8.html">
+
+                    	<span>简单的Nodejs模块</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/nodejs/2017/03/27/nodejs-one-7.html">
+
+                    	<span>Node.js模块的分类</span>
+                    </a>
+                  </li>
+				
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">最近访客</h3>
+			<ul class="minty_thumblist minty_thumblist_a ds-recent-visitors visitorsopi" data-num-items="20" data-avatar-size="38">
+
+			</ul>
+
+		    <!--多说js加载开始，一个页面只需要加载一次 -->
+		    <script type="text/javascript">
+		    var duoshuoQuery = {short_name:"huanghuanlian"};
+		    (function() {
+		        var ds = document.createElement('script');
+		        ds.type = 'text/javascript';ds.async = true;
+		        ds.src = 'http://static.duoshuo.com/embed.js';
+		        ds.charset = 'UTF-8';
+		        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+		    })();
+		    </script>
+		    <!--多说js加载结束，一个页面只需要加载一次 -->
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">分类目录</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+				
+				<li>
+					<a href="/categories/Markdown/" title="view all
+posts">
+						Markdown (2)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Canvas/" title="view all
+posts">
+						Canvas (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Git/" title="view all
+posts">
+						Git (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/JavaScript/" title="view all
+posts">
+						JavaScript (30)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/AngularJS/" title="view all
+posts">
+						AngularJS (10)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/PHP/" title="view all
+posts">
+						PHP (3)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Nodejs/" title="view all
+posts">
+						Nodejs (13)
+					</a>
+				</li>
+				
+			</ul>
+		</aside>
+	</div>
+
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">标签目录</h3>
+			<div class="tagcloud" id="tagcloud">
+				
+					<a href="/tag/Markdown/" title="view all
+posts">
+						Markdown
+					</a>
+				
+					<a href="/tag/Canvas/" title="view all
+posts">
+						Canvas
+					</a>
+				
+					<a href="/tag/Git/" title="view all
+posts">
+						Git
+					</a>
+				
+					<a href="/tag/JavaScript/" title="view all
+posts">
+						JavaScript
+					</a>
+				
+					<a href="/tag/RegExp/" title="view all
+posts">
+						RegExp
+					</a>
+				
+					<a href="/tag/DOM/" title="view all
+posts">
+						DOM
+					</a>
+				
+					<a href="/tag/BOM/" title="view all
+posts">
+						BOM
+					</a>
+				
+					<a href="/tag/proto/" title="view all
+posts">
+						proto
+					</a>
+				
+					<a href="/tag/Ajax/" title="view all
+posts">
+						Ajax
+					</a>
+				
+					<a href="/tag/AngularJS/" title="view all
+posts">
+						AngularJS
+					</a>
+				
+					<a href="/tag/PHP_study/" title="view all
+posts">
+						PHP_study
+					</a>
+				
+					<a href="/tag/PHP/" title="view all
+posts">
+						PHP
+					</a>
+				
+					<a href="/tag/Nodejs_One/" title="view all
+posts">
+						Nodejs_One
+					</a>
+				
+			</div>
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">友情链接</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+
+				<li>
+					<a href="http://blog.csdn.net/u013861109?viewmode=contents" target="blank">
+						csdn博客
+					</a>
+				</li>
+				<li>
+					<a href="http://www.imooc.com/" target="blank">
+						慕课网
+					</a>
+				</li>
+				<li>
+					<a href="http://www.dglives.com/" target="blank">
+						数字生活前端
+					</a>
+				</li>
+				<li>
+					<a href="http://www.jianshu.com/" target="blank">
+						简书
+					</a>
+				</li>
+				<li>
+					<a href="http://www.runoob.com/" target="blank">
+						菜鸟
+					</a>
+				</li>
+				<li>
+					<a href="http://www.qdfuns.com/" target="blank">
+						前端网
+					</a>
+				</li>
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">QQ交流群</h3>
+			<img style="margin-top: 10px; box-shadow: none;" src="/assets/images/ertw.png">
+		</aside>
+	</div>
+
+
+	<script>
+	var box=document.getElementById("tagcloud").getElementsByTagName("a");
+	for(var i=0;i<box.length;i++){
+		var a =Math.round(Math.random()*20)/10;
+		box[i].style.fontSize=a+'em';
+	}
+	</script>
+
+</div>
+</div>
+	
+<footer id="footer">
+	<nav class="links">
+		<a href="">作品</a>
+		<a href="/about/">关于本站</a>
+		<a href="/report/">留言板</a>
+	</nav>
+	<div class="copyright">
+		© 2016 <a href="">继小鹏的前端博客</a>
+	</div>
+	<a href="javascript:pageScroll();" id="rocket" class=""></a>
+	<span id="busuanzi_container_site_pv">
+	    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+	<span id="busuanzi_container_site_uv">
+	  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+	</span>
+</footer>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+
+$(function(){
+	$("#m-btns").click(function(){
+		if($("body").hasClass('nav-is-open')){
+			$("body").removeClass('nav-is-open')
+		}else{
+			$("body").addClass('nav-is-open')
+		};
+	})
+})
+var fhdb = document.getElementById("rocket");
+
+//获取页面可视区高度
+var dqy = document.documentElement.clientHeight;
+
+var main_left=$('#main').offset().left+$('#main').width()+16;
+
+//滚动条滚动时触发   在滚动的时候触发
+window.onscroll = function() {
+	var sTop = document.documentElement.scrollTop || document.body.scrollTop;
+	if (sTop >= dqy) {
+		$("#rocket").addClass('show');
+	} else {
+		$("#rocket").removeClass('show');
+	}
+}
+
+function pageScroll() {
+	//把内容滚动指定的像素数（第一个参数是向右滚动的像素数，第二个参数是向下滚动的像素数）
+	window.scrollBy(0, -100);
+	//延时递归调用，模拟滚动向上效果
+	scrolldelay = setTimeout('pageScroll()', 5);
+	//获取scrollTop值，声明了DTD的标准网页取document.documentElement.scrollTop，否则取document.body.scrollTop；因为二者只有一个会生效，另一个就恒为0，所以取和值可以得到网页的真正的scrollTop值
+	var sTop = document.documentElement.scrollTop + document.body.scrollTop;
+	//判断当页面到达顶部，取消延时代码（否则页面滚动到顶部会无法再向下正常浏览页面）
+	if (sTop == 0) clearTimeout(scrolldelay)
+
+}
+
+
+
+</script>
+</body>
+</html>
