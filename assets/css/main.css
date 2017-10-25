@@ -100,7 +100,7 @@ code {
   font-size: 14px;
   border: 1px solid #e8e8e8;
   border-radius: 3px;
-  background: #f5f5f5; 
+  /*background: #f5f5f5; */
   font-family: Consolas, "Courier New", Courier, monospace;
 }
 
@@ -310,16 +310,19 @@ pre {
 .post-content {
   margin-bottom: 30px; }
   .post-content h2 {
+    margin: 10px 0;
     font-size: 32px; }
     @media screen and (max-width: 800px) {
       .post-content h2 {
         font-size: 28px; } }
   .post-content h3 {
+    margin: 10px 0;
     font-size: 26px; }
     @media screen and (max-width: 800px) {
       .post-content h3 {
         font-size: 22px; } }
   .post-content h4 {
+    margin: 10px 0;
     font-size: 20px; }
     @media screen and (max-width: 800px) {
       .post-content h4 {

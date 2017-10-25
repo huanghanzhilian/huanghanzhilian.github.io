@@ -9,6 +9,7 @@ url: "http://www.huanghanlian.com"
 description: 没有所谓失败，除非你不再尝试。!
 baseurl: "" # the subpath of your site, e.g. /blog
 
+#禁用 自定义插件。
 safe: false
 
 
@@ -24,11 +25,11 @@ markdown: kramdown
 #highlighter: true
 
 #设置Pygments代码高亮正确
-highlight:
-  enable: true
-  line_number: true
-  auto_detect: false
-  tab_replace:
+#highlight:
+#  enable: true
+#  line_number: true
+#  auto_detect: false
+#  tab_replace:
 
 
 
