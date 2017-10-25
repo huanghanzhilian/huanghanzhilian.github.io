@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Ajax全接触(二)例子ajax+php</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+	<!-- <link rel="stylesheet" type="text/css" href="/assets/css/pygments.css"> -->
+	<link rel="shortcut icon" href="/assets/images/logo_ioc.ico" type="images/x-icon"/>
+	<link rel="icon" href="/assets/images/logo_ioc.png" type="images/png"/>
+	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
+	<script>
+		var _hmt = _hmt || [];
+		(function() {
+		  var hm = document.createElement("script");
+		  hm.src = "https://hm.baidu.com/hm.js?ef050d936e3f9ee27851048222727175";
+		  var s = document.getElementsByTagName("script")[0]; 
+		  s.parentNode.insertBefore(hm, s);
+		})();
+	</script>
+
+	<script type="text/javascript">
+	    (function($) {
+
+	    	var temp = 0;
+	    	$(document).scroll(function() {
+
+	    		if ($(document).scrollTop() > temp) {
+	    			$("#header").addClass("hide-top");
+	    		} else {
+	    			$("#header").removeClass("hide-top");
+	    		}
+	    		temp = $(document).scrollTop();
+	    	});
+	    	
+	    	//console.log($(".menu"))
+	    })(jQuery);
+
+	</script>
+
+</head>
+<body>
+    <header id="header" role="banner">
+	<a id="hgroup" href="/" rel="home">
+		<h1 id="logo"></h1>
+		<i class="slogan" title="返回首页">
+			热爱编程，关注前端开发技术
+		</i>
+	</a>
+	<div class="connect">
+		<a href="https://github.com/huanghanzhilian" class="git" target="_blank"></a>
+		<a href="http://www.huanghanlian.com/feed.xml" class="rss"></a>
+	</div>
+	<nav id="nav">
+		<ul class="menu">
+			<li class="menu_item">
+				<a href="/">首页</a>
+			</li>
+			<li class="menu_item">
+				<a href="http://www.huanghanlian.com/widget/">Web组件库</a>
+			</li>
+			<li class="menu_item">
+				<a href="http://www.huanghanlian.com/front-end-note/">前端笔记</a>
+			</li>
+			<li class="menu_item">
+				<a href="/about/">关于本站</a>
+			</li>
+			<li class="menu_item">
+				<a href="/report/">留言板</a>
+			</li>
+		</ul>
+	</nav>
+
+	<div id="m-btns">
+		<div class="menu"></div>
+	</div>
+	<nav class="nav-bar-tabs ">
+		<ul>
+            <li>
+              	<a href="/">首页</a>
+            </li>
+            <li>
+              	<a href="http://www.huanghanlian.com/widget/">Web组件库</a>
+            </li>
+            <li>
+              	<a href="http://www.huanghanlian.com/front-end-note/">前端笔记</a>
+            </li>
+            <li>
+              	<a href="/about/">关于本站</a>
+            </li>
+            <li>
+              	<a href="/report/">留言板</a>
+            </li>
+        </ul>
+	</nav>
+</header>
+	<div id="container" class="clearfix">
+	<main id="main" class="hfeed">
+		<article id="post-157" class="post-157 hentry">
+			<header class="entry-header">
+				<h1 class="entry-title">Ajax全接触(二)例子ajax+php</h1>
+				<div class="entry-meta">2016-12-20 <span class="dot">•</span>JavaScript<span class="dot">•</span>黄继鹏<span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span></div>
+			</header>
+			<article class="post-content">
+              <p>接触Ajax</p>
+
+<p>####例子要求</p>
+
+<ol>
+  <li>
+    <p>查询员工信息，可以通过输入员工编号查询员工基本信息；</p>
+  </li>
+  <li>
+    <p>新建员工信息，包含员工姓名，员工编号，员工性别，员工职位；</p>
+  </li>
+</ol>
+
+<p>####实现步骤</p>
+
+<ol>
+  <li>
+    <p>纯html页面，用来实现员工查询和新建的页面；</p>
+  </li>
+  <li>
+    <p>php页面，用来实现员工查询和新建员工的后台接口；</p>
+  </li>
+</ol>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-9d69936adb40e955.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>在本地部署web服务器，用户来测试，通过本地web服务器，我们可以及时的查看编写的php代码实际效果。</p>
+
+<p>选择一个一体软件包，XAMMP<a href="https://www.apachefriends.org/download.html">https://www.apachefriends.org/download.html</a></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-92d38a00a7841c00.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>下载即可，傻瓜化安装。</p>
+
+<p>####Ajax-服务器端实现</p>
+
+<p><strong>设置页面内容是html编码格式是utf-8。防止页面返回值是乱码。</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;?php
+//设置页面内容是html编码格式是utf-8
+header("Content-Type: text/plain;charset=utf-8");                  //代表格式是纯文本
+//header("Content-Type: application/json;charset=utf-8");          //代表格式是json字符串
+//header("Content-Type: text/xml;charset=utf-8");
+//header("Content-Type: text/html;charset=utf-8");
+//header("Content-Type: application/javascript;charset=utf-8");
+</code></pre>
+</div>
+
+<p><strong>定义一个多维数组，包含员工的信息，每条员工信息为一个数组</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$staff = array
+	(
+		array("name" =&gt; "洪七", "number" =&gt; "101.", "sex" =&gt; "男", "job" =&gt; "总经理"),
+		array("name" =&gt; "郭靖", "number" =&gt; "102", "sex" =&gt; "男", "job" =&gt; "开发工程师"),
+		array("name" =&gt; "黄蓉", "number" =&gt; "103", "sex" =&gt; "女", "job" =&gt; "产品经理")
+	);
+</code></pre>
+</div>
+
+<p>这是php定义多维数组的方式，可以包含键值的方式，定义了三名员工，名字是洪七，郭靖，黄蓉，编号性别职位都在多维数组中。</p>
+
+<p><strong>判断如果是get请求，则进行搜索；如果是POST请求，则进行新建</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>if ($_SERVER["REQUEST_METHOD"] == "GET") {
+	search();   //搜索员工函数
+} elseif ($_SERVER["REQUEST_METHOD"] == "POST"){
+	create();   //新建员工函数
+}
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">$_SERVER</code>是一个超全局变量，在一个脚本的全部作用域中都可用，不用使用global关键字
+<code class="highlighter-rouge">$_SERVER["REQUEST_METHOD"]</code>返回访问页面使用的请求方法</p>
+
+<p>php有个很奇怪的地方，就是我们设置的全局变量，比如说<code class="highlighter-rouge">$set=1</code>他要是在函数中使用，还必须要加上一个<code class="highlighter-rouge">global</code>的关键字，就是说他不能直接在函数中去使用，在函数中使用需要加上<code class="highlighter-rouge">global $set</code>。<code class="highlighter-rouge">global</code> 关键词用于访问函数内的全局变量</p>
+
+<p><strong>搜索员工函数</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>//通过员工编号搜索员工
+function search(){
+	//检查是否有员工编号的参数
+	//isset检测变量是否设置；empty判断值为否为空
+	//超全局变量 $_GET 和 $_POST 用于收集表单数据
+	if (!isset($_GET["number"]) || empty($_GET["number"])) {
+		echo "参数错误";
+		return;
+	}
+	//函数之外声明的变量拥有 Global 作用域，只能在函数以外进行访问。
+	//global 关键词用于访问函数内的全局变量
+	global $staff;
+	//获取number参数
+	$number = $_GET["number"];
+	$result = "没有找到员工。";
+
+	//遍历$staff多维数组，查找key值为number的员工是否存在，如果存在，则修改返回结果
+	foreach ($staff as $value) {
+		if ($value["number"] == $number) {
+			$result = "找到员工：员工编号：" . $value["number"] . "，员工姓名：" . $value["name"] .
+			                  "，员工性别：" . $value["sex"] . "，员工职位：" . $value["job"];
+			break;
+		}
+	}
+    echo $result;   //输出$result
+}
+</code></pre>
+</div>
+
+<p><strong>新建员工函数</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>//创建员工
+function create(){
+	//判断信息是否填写完全
+	if (!isset($_POST["name"]) || empty($_POST["name"])
+		|| !isset($_POST["number"]) || empty($_POST["number"])
+		|| !isset($_POST["sex"]) || empty($_POST["sex"])
+		|| !isset($_POST["job"]) || empty($_POST["job"])) {
+		echo "参数错误，员工信息填写不全";
+		return;
+	}
+	//TODO: 获取POST表单数据并保存到数据库
+
+	//提示保存成功
+	echo "员工：" . $_POST["name"] . " 信息保存成功！";
+}
+</code></pre>
+</div>
+
+<p>####PHP服务端代码测试</p>
+
+<p>PHP服务端代码测试 是在没有客户端的情况下对服务端的一些请求进行测试。</p>
+
+<p>通过<code class="highlighter-rouge">Fiddler</code>工具来进行测试</p>
+
+<p>这个工具非常好用，他可以监听整个电脑所有发出的HTTP请求，可以监听传入的值和响应的值。它还可以去模拟。</p>
+
+<p><strong>使用方法</strong></p>
+
+<p>打开软件右框上部点击composer按钮，</p>
+
+<p>填写要测试的服务端页面地址</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-148fb03f8ad377c8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p><strong>GIT请求</strong></p>
+
+<p>点击执行</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-1067020176e8bcb9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>然后查看左侧记录打开</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-7a66b27c39942dcf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>这样就测试成功了</p>
+
+<p><strong>POST请求</strong></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-1b3cf2c77e739d9c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>POST请求的时候在请求地址栏下面加上<code class="highlighter-rouge">Content-type: application/x-www-form-urlencoded</code></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-229c0cb8d5792d8c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p>这样就测试成功了</p>
+
+<p>在日常开发中，有时候后台做好后，总是等待或依赖前台完成后才可以去调试，其实完全没有必要，我们只需要约定好接口，发送的报文，和返回的报文，通过Fiddler或者类似的工具，直接可以进行调试。</p>
+
+<h4 id="客户端实现">客户端实现</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;body&gt;
+
+	&lt;h1&gt;员工查询&lt;/h1&gt;
+
+	&lt;label&gt;请输入员工编号：&lt;/label&gt;
+	&lt;input type="text" id="keyword" /&gt;
+	&lt;button id="search"&gt;查询&lt;/button&gt;
+	&lt;p id="searchResult"&gt;&lt;/p&gt;
+
+	&lt;h1&gt;员工新建&lt;/h1&gt;
+	&lt;label&gt;请输入员工姓名：&lt;/label&gt;
+	&lt;input type="text" id="staffName" /&gt;&lt;br&gt;
+	&lt;label&gt;请输入员工编号：&lt;/label&gt;
+	&lt;input type="text" id="staffNumber" /&gt;&lt;br&gt;
+	&lt;label&gt;请选择员工性别：&lt;/label&gt;
+	&lt;select id="staffSex"&gt;
+	&lt;option&gt;女&lt;/option&gt;
+	&lt;option&gt;男&lt;/option&gt;
+	&lt;/select&gt;&lt;br&gt;
+	&lt;label&gt;请输入员工职位：&lt;/label&gt;
+	&lt;input type="text" id="staffJob" /&gt;&lt;br&gt;
+	&lt;button id="save"&gt;保存&lt;/button&gt;
+	&lt;p id="createResult"&gt;&lt;/p&gt;
+
+	&lt;script&gt;
+		document.getElementById("search").onclick = function() {
+			var request = new XMLHttpRequest();
+			request.open("GET", "server.php?number=" + document.getElementById("keyword").value);
+			request.send();
+			request.onreadystatechange = function() {
+				if (request.readyState === 4) {
+					if (request.status === 200) {
+						document.getElementById("searchResult").innerHTML = request.responseText;
+					} else {
+						alert("发生错误：" + request.status);
+					}
+				}
+			}
+		}
+
+		document.getElementById("save").onclick = function() {
+			var request = new XMLHttpRequest();
+			request.open("POST", "server.php");
+			var data = "name=" + document.getElementById("staffName").value + "&amp;number=" + document.getElementById("staffNumber").value + "&amp;sex=" + document.getElementById("staffSex").value + "&amp;job=" + document.getElementById("staffJob").value;
+			request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			request.send(data);
+			request.onreadystatechange = function() {
+				if (request.readyState === 4) {
+					if (request.status === 200) {
+						document.getElementById("createResult").innerHTML = request.responseText;
+					} else {
+						alert("发生错误：" + request.status);
+					}
+				}
+			}
+		}
+	&lt;/script&gt;
+&lt;/body&gt;
+</code></pre>
+</div>
+
+<p>案例源码和使用到的安装包可下载</p>
+
+              <!-- 多说评论框 start -->
+              		<!-- <span class="ds-thread-count" data-thread-key="/javascript/2016/12/20/js_ajax2" data-count-type="comments"></span> -->
+					<div class="ds-thread" data-thread-key="http://www.huanghanlian.com/javascript/2016/12/20/js_ajax2" data-title="Ajax全接触(二)例子ajax+php" data-url="http://www.huanghanlian.com/javascript/2016/12/20/js_ajax2"></div>
+				<!-- 多说评论框 end -->
+				<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+				<script type="text/javascript">
+				var duoshuoQuery = {short_name:"huanghuanlian"};
+					(function() {
+						var ds = document.createElement('script');
+						ds.type = 'text/javascript';ds.async = true;
+						ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+						ds.charset = 'UTF-8';
+						(document.getElementsByTagName('head')[0]
+						 || document.getElementsByTagName('body')[0]).appendChild(ds);
+					})();
+				</script>
+				<!-- 多说公共JS代码 end -->
+
+
+				
+            </article>
+		</article>
+
+	</main>
+	<div class="sidebar" id="sidebar">
+	<div class="sidebar-top">
+		<aside class="widjhuh">
+			<h3 class="widget-title">最新文章</h3>
+			<ul class="minty_thumblist">
+				
+                  <li>
+                    <a href="/nodejs/2017/04/15/nodejs_one_13.html">
+
+                    	<span>Node.js-HTTP 性能测试</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/nodejs/2017/04/13/nodejs_one_12.html">
+
+                    	<span>Node.js-源码解读之先了解作用域、上下文</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/nodejs/2017/04/08/nodejs_one_11.html">
+
+                    	<span>Node.js-HTTP 事件回调进阶</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/nodejs/2017/04/08/nodejs_one_10.html">
+
+                    	<span>Node.js-HTTP知识先填坑</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/nodejs/2017/04/05/nodejs_one_9.html">
+
+                    	<span>Node.js-URL网址解析的好帮手</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/nodejs/2017/03/27/nodejs_one_8.html">
+
+                    	<span>简单的Nodejs模块</span>
+                    </a>
+                  </li>
+				
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">最近访客</h3>
+			<ul class="minty_thumblist minty_thumblist_a ds-recent-visitors visitorsopi" data-num-items="20" data-avatar-size="38">
+
+			</ul>
+
+		    <!--多说js加载开始，一个页面只需要加载一次 -->
+		    <script type="text/javascript">
+		    var duoshuoQuery = {short_name:"huanghuanlian"};
+		    (function() {
+		        var ds = document.createElement('script');
+		        ds.type = 'text/javascript';ds.async = true;
+		        ds.src = 'http://static.duoshuo.com/embed.js';
+		        ds.charset = 'UTF-8';
+		        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+		    })();
+		    </script>
+		    <!--多说js加载结束，一个页面只需要加载一次 -->
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">分类目录</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+				
+				<li>
+					<a href="/categories/Markdown/" title="view all
+posts">
+						Markdown (2)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Canvas/" title="view all
+posts">
+						Canvas (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Git/" title="view all
+posts">
+						Git (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/JavaScript/" title="view all
+posts">
+						JavaScript (30)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/AngularJS/" title="view all
+posts">
+						AngularJS (10)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/PHP/" title="view all
+posts">
+						PHP (3)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Nodejs/" title="view all
+posts">
+						Nodejs (13)
+					</a>
+				</li>
+				
+			</ul>
+		</aside>
+	</div>
+
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">标签目录</h3>
+			<div class="tagcloud" id="tagcloud">
+				
+					<a href="/tag/Markdown/" title="view all
+posts">
+						Markdown
+					</a>
+				
+					<a href="/tag/Canvas/" title="view all
+posts">
+						Canvas
+					</a>
+				
+					<a href="/tag/Git/" title="view all
+posts">
+						Git
+					</a>
+				
+					<a href="/tag/JavaScript/" title="view all
+posts">
+						JavaScript
+					</a>
+				
+					<a href="/tag/RegExp/" title="view all
+posts">
+						RegExp
+					</a>
+				
+					<a href="/tag/DOM/" title="view all
+posts">
+						DOM
+					</a>
+				
+					<a href="/tag/BOM/" title="view all
+posts">
+						BOM
+					</a>
+				
+					<a href="/tag/proto/" title="view all
+posts">
+						proto
+					</a>
+				
+					<a href="/tag/Ajax/" title="view all
+posts">
+						Ajax
+					</a>
+				
+					<a href="/tag/AngularJS/" title="view all
+posts">
+						AngularJS
+					</a>
+				
+					<a href="/tag/PHP_study/" title="view all
+posts">
+						PHP_study
+					</a>
+				
+					<a href="/tag/PHP/" title="view all
+posts">
+						PHP
+					</a>
+				
+					<a href="/tag/Nodejs_One/" title="view all
+posts">
+						Nodejs_One
+					</a>
+				
+			</div>
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">友情链接</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+
+				<li>
+					<a href="http://blog.csdn.net/u013861109?viewmode=contents" target="blank">
+						csdn博客
+					</a>
+				</li>
+				<li>
+					<a href="http://www.imooc.com/" target="blank">
+						慕课网
+					</a>
+				</li>
+				<li>
+					<a href="http://www.dglives.com/" target="blank">
+						数字生活前端
+					</a>
+				</li>
+				<li>
+					<a href="http://www.jianshu.com/" target="blank">
+						简书
+					</a>
+				</li>
+				<li>
+					<a href="http://www.runoob.com/" target="blank">
+						菜鸟
+					</a>
+				</li>
+				<li>
+					<a href="http://www.qdfuns.com/" target="blank">
+						前端网
+					</a>
+				</li>
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">QQ交流群</h3>
+			<img style="margin-top: 10px; box-shadow: none;" src="/assets/images/ertw.png">
+		</aside>
+	</div>
+
+
+	<script>
+	var box=document.getElementById("tagcloud").getElementsByTagName("a");
+	for(var i=0;i<box.length;i++){
+		var a =Math.round(Math.random()*20)/10;
+		box[i].style.fontSize=a+'em';
+	}
+	</script>
+
+</div>
+</div>
+	
+<footer id="footer">
+	<nav class="links">
+		<a href="">作品</a>
+		<a href="/about/">关于本站</a>
+		<a href="/report/">留言板</a>
+	</nav>
+	<div class="copyright">
+		© 2016 <a href="">继小鹏的前端博客</a>
+	</div>
+	<a href="javascript:pageScroll();" id="rocket" class=""></a>
+	<span id="busuanzi_container_site_pv">
+	    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+	<span id="busuanzi_container_site_uv">
+	  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+	</span>
+</footer>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+
+$(function(){
+	$("#m-btns").click(function(){
+		if($("body").hasClass('nav-is-open')){
+			$("body").removeClass('nav-is-open')
+		}else{
+			$("body").addClass('nav-is-open')
+		};
+	})
+})
+var fhdb = document.getElementById("rocket");
+
+//获取页面可视区高度
+var dqy = document.documentElement.clientHeight;
+
+var main_left=$('#main').offset().left+$('#main').width()+16;
+
+//滚动条滚动时触发   在滚动的时候触发
+window.onscroll = function() {
+	var sTop = document.documentElement.scrollTop || document.body.scrollTop;
+	if (sTop >= dqy) {
+		$("#rocket").addClass('show');
+	} else {
+		$("#rocket").removeClass('show');
+	}
+}
+
+function pageScroll() {
+	//把内容滚动指定的像素数（第一个参数是向右滚动的像素数，第二个参数是向下滚动的像素数）
+	window.scrollBy(0, -100);
+	//延时递归调用，模拟滚动向上效果
+	scrolldelay = setTimeout('pageScroll()', 5);
+	//获取scrollTop值，声明了DTD的标准网页取document.documentElement.scrollTop，否则取document.body.scrollTop；因为二者只有一个会生效，另一个就恒为0，所以取和值可以得到网页的真正的scrollTop值
+	var sTop = document.documentElement.scrollTop + document.body.scrollTop;
+	//判断当页面到达顶部，取消延时代码（否则页面滚动到顶部会无法再向下正常浏览页面）
+	if (sTop == 0) clearTimeout(scrolldelay)
+
+}
+
+
+
+
+
+</script>
+</body>
+</html>
