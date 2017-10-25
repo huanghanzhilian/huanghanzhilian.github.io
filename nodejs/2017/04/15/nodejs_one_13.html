@@ -110,7 +110,7 @@
 				<div class="entry-meta">2017-04-15 <span class="dot">•</span>Nodejs<span class="dot">•</span>黄继鹏<span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span></div>
 			</header>
 			<article class="post-content">
-              <p>NODEJS性能比较不错，并发也很好</p>
+              <h3 id="nodejs性能比较不错并发也很好">NODEJS性能比较不错，并发也很好</h3>
 
 <div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'http'</span><span class="p">);</span>
 <span class="kd">var</span> <span class="nx">server</span><span class="o">=</span><span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
@@ -140,9 +140,14 @@
 
 <p>ab -n1000 -c10 http://localhost:2017/</p>
 
-<p>-n1000是说总的请求数是1000个它默认值是1，</p>
-
-<p>-c10 这是说并发数是10默认值也是1</p>
+<ul>
+  <li>
+    <p>n1000是说总的请求数是1000个它默认值是1，</p>
+  </li>
+  <li>
+    <p>c10 这是说并发数是10默认值也是1</p>
+  </li>
+</ul>
 
 <p>http://localhost:2017/
 是输入要测试的地址，注意地址后面需要加斜线</p>

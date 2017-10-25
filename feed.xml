@@ -5,13 +5,13 @@
     <description>没有所谓失败，除非你不再尝试。!</description>
     <link>http://www.huanghanlian.com/</link>
     <atom:link href="http://www.huanghanlian.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 25 Oct 2017 12:44:11 +0800</pubDate>
-    <lastBuildDate>Wed, 25 Oct 2017 12:44:11 +0800</lastBuildDate>
+    <pubDate>Wed, 25 Oct 2017 14:54:30 +0800</pubDate>
+    <lastBuildDate>Wed, 25 Oct 2017 14:54:30 +0800</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
         <title>Node.js-HTTP 性能测试</title>
-        <description>&lt;p&gt;NODEJS性能比较不错，并发也很好&lt;/p&gt;
+        <description>&lt;h3 id=&quot;nodejs性能比较不错并发也很好&quot;&gt;NODEJS性能比较不错，并发也很好&lt;/h3&gt;
 
 &lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'http'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;server&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;createServer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -41,9 +41,14 @@
 
 &lt;p&gt;ab -n1000 -c10 http://localhost:2017/&lt;/p&gt;
 
-&lt;p&gt;-n1000是说总的请求数是1000个它默认值是1，&lt;/p&gt;
-
-&lt;p&gt;-c10 这是说并发数是10默认值也是1&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;n1000是说总的请求数是1000个它默认值是1，&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;c10 这是说并发数是10默认值也是1&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;http://localhost:2017/
 是输入要测试的地址，注意地址后面需要加斜线&lt;/p&gt;
@@ -255,7 +260,7 @@
 
 &lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-3ddb7d1be3d33c03.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;image.png&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;####什么是作用域&lt;/p&gt;
+&lt;h4 id=&quot;什么是作用域&quot;&gt;什么是作用域&lt;/h4&gt;
 
 &lt;p&gt;上下文和作用域并不是一回事，作用域和调用函数访问变量的能力有关，上下文总是&lt;code class=&quot;highlighter-rouge&quot;&gt;this&lt;/code&gt;这个关键字有关，是调用当前可执行代码的引用，&lt;/p&gt;
 
@@ -280,7 +285,7 @@
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;####什么是上下文&lt;/p&gt;
+&lt;h4 id=&quot;什么是上下文&quot;&gt;什么是上下文&lt;/h4&gt;
 
 &lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;//context.js&lt;/span&gt;
 
@@ -359,7 +364,7 @@ pet.speak();*/&lt;/span&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/3877962-911bd610ad417ffe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;image.png&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;####使用&lt;code class=&quot;highlighter-rouge&quot;&gt;call&lt;/code&gt;实现js继承&lt;/p&gt;
+&lt;h4 id=&quot;使用call实现js继承&quot;&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;call&lt;/code&gt;实现js继承&lt;/h4&gt;
 
 &lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;//call_apply_extend.js&lt;/span&gt;
 
