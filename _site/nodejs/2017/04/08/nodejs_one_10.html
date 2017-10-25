@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Node.js-HTTP知识先填坑</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+	<!-- <link rel="stylesheet" type="text/css" href="/assets/css/pygments.css"> -->
+	<link rel="shortcut icon" href="/assets/images/logo_ioc.ico" type="images/x-icon"/>
+	<link rel="icon" href="/assets/images/logo_ioc.png" type="images/png"/>
+	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
+	<script>
+		var _hmt = _hmt || [];
+		(function() {
+		  var hm = document.createElement("script");
+		  hm.src = "https://hm.baidu.com/hm.js?ef050d936e3f9ee27851048222727175";
+		  var s = document.getElementsByTagName("script")[0]; 
+		  s.parentNode.insertBefore(hm, s);
+		})();
+	</script>
+
+	<script type="text/javascript">
+	    (function($) {
+
+	    	var temp = 0;
+	    	$(document).scroll(function() {
+
+	    		if ($(document).scrollTop() > temp) {
+	    			$("#header").addClass("hide-top");
+	    		} else {
+	    			$("#header").removeClass("hide-top");
+	    		}
+	    		temp = $(document).scrollTop();
+	    	});
+	    	
+	    	//console.log($(".menu"))
+	    })(jQuery);
+
+	</script>
+
+</head>
+<body>
+    <header id="header" role="banner">
+	<a id="hgroup" href="/" rel="home">
+		<h1 id="logo"></h1>
+		<i class="slogan" title="返回首页">
+			热爱编程，关注前端开发技术
+		</i>
+	</a>
+	<div class="connect">
+		<a href="https://github.com/huanghanzhilian" class="git" target="_blank"></a>
+		<a href="http://www.huanghanlian.com/feed.xml" class="rss"></a>
+	</div>
+	<nav id="nav">
+		<ul class="menu">
+			<li class="menu_item">
+				<a href="/">首页</a>
+			</li>
+			<li class="menu_item">
+				<a href="http://www.huanghanlian.com/widget/">Web组件库</a>
+			</li>
+			<li class="menu_item">
+				<a href="http://www.huanghanlian.com/front-end-note/">前端笔记</a>
+			</li>
+			<li class="menu_item">
+				<a href="/about/">关于本站</a>
+			</li>
+			<li class="menu_item">
+				<a href="/report/">留言板</a>
+			</li>
+		</ul>
+	</nav>
+
+	<div id="m-btns">
+		<div class="menu"></div>
+	</div>
+	<nav class="nav-bar-tabs ">
+		<ul>
+            <li>
+              	<a href="/">首页</a>
+            </li>
+            <li>
+              	<a href="http://www.huanghanlian.com/widget/">Web组件库</a>
+            </li>
+            <li>
+              	<a href="http://www.huanghanlian.com/front-end-note/">前端笔记</a>
+            </li>
+            <li>
+              	<a href="/about/">关于本站</a>
+            </li>
+            <li>
+              	<a href="/report/">留言板</a>
+            </li>
+        </ul>
+	</nav>
+</header>
+	<div id="container" class="clearfix">
+	<main id="main" class="hfeed">
+		<article id="post-157" class="post-157 hentry">
+			<header class="entry-header">
+				<h1 class="entry-title">Node.js-HTTP知识先填坑</h1>
+				<div class="entry-meta">2017-04-08 <span class="dot">•</span>Nodejs<span class="dot">•</span>黄继鹏<span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span></div>
+			</header>
+			<article class="post-content">
+              <p>HTTP相关知识</p>
+
+<p>####什么是HTTP</p>
+
+<p>HTTP是一种协议计算机之间要共同遵守这个协议的规则，才能彼此之间相互通信，</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-bad95d894bb96c04.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" /></p>
+
+<p>这个协议在使用中场景中的流程怎么样的呢？</p>
+
+<p>通常由http客户端发起一个请求比如用手机浏览器打开一个视频网站，那么就创建了一个到服务器指定端口，一般是80默认端口，这个一个tcp的链接。</p>
+
+<p>tttp服务器在端口监听客户端的请求，一旦收到请求服务器就会向客户端返回一个状态，比如200的一个状态码，同时返回内容比如请求的文件，错误的信息</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-1ad2de6a3ddcc771.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" /></p>
+
+<p>这是一个大概的流程，貌似听懂了，但是感觉还不是那么明白。</p>
+
+<p>现在来理清楚<strong>http</strong>走过的环节</p>
+
+<p>当我输入网址按回车，或者说我刷新页面的时候可能经过了很短的时间，页面就渲染出来了，但是在这里面计算机和浏览器做了许许多多的事情。什么事情呢？</p>
+
+<p>####首先是域名解析</p>
+
+<p>第一步，假设我使用的是chrome浏览器会先搜索浏览器自身的DNS缓存，看自身的缓存中有没有某个网站的域名的缓存IP地址。这个缓存的时间大概只有一分钟，如果说有缓存那就看有没有过期，如果过期这个解析就结束了。</p>
+
+<p>输入<code class="highlighter-rouge">chrome://net-internals/#dns</code>查看浏览器访问DNS记录</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-583273c63f00ff6c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" /></p>
+
+<p>第二步，浏览器没有找到缓存或者说DNS缓存已经失效，那么chrome会搜索系统自身的一个DNS缓存，如果找到也没有过期，那也会停止搜索，然后解析到此结束。</p>
+
+<p>第三步，如果说操作系统的DNS缓存也没有找到，那么就会尝试去读取本地的host文件。</p>
+
+<p>第四步，如果在host文件也没有找到也没有找到对应的配置项，那么浏览器就会发起一个DNS的一个系统调用，就会向本地主库DNS服务器，一般来说是你的宽带运营商提供的，发起的一个域名解析请求，</p>
+
+<ol>
+  <li>宽带运营商服务器查看本身缓存，找到对应的条目，如果说也没有过期那么就解析成功了，</li>
+  <li>如果没有找到上面的条目，那么运营商服务器会代替浏览器发起一个迭代DNS解析请求，什么意思呢？他首先会去找根域的DNS-ip地址，就会问它说知道http://www.huanghanlian.com/
+的域名地址是多少？如果它不知道就会去找com域再次问com域？这样一步步找到后，把找到后的结果发送给dns服务器，这个时候就拿到了这个域名对应的ip地址并返回给操作系统内核，最终结果返回给浏览器，最终浏览器拿到了这个域名的ip。</li>
+</ol>
+
+<p>以上就是资源请求需要耗费的时间成本，理论上的过程比这还要复杂。</p>
+
+<p>第五步，览器拿到了这个域名的ip后，发起HTTP”三次握手”</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-653b3262a91667e0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" /></p>
+
+<p>浏览器以随机端口向web服务器端口发起TCP链接请求</p>
+
+<p>第六步，TCP/IP连接建立起来后，浏览器就可以向服务器发送HTTP请求了，使用了比如说用http的get方法请求一个根域的一个域名，协议可以采用http 1.0的一个协议。</p>
+
+<p>第七步，服务端接收到了这个请求，根据路径参数，经过后端一些处理之后把结果返回给浏览器，如果是一个页面，就会把html的代码返回给浏览器</p>
+
+<p>第八步，浏览器拿到了网页的html代码，并且在解析渲染页面的时候，里面的js，css，图片静态资源，他们也同样是一个个http请求，都需要经过上面的主要七个步骤。</p>
+
+<p>第九步，浏览器根据拿到的支援对页面进行渲染，最终将一个完整的页面呈现给了用户。</p>
+
+              <!-- 多说评论框 start -->
+              		<!-- <span class="ds-thread-count" data-thread-key="/nodejs/2017/04/08/nodejs_one_10" data-count-type="comments"></span> -->
+					<div class="ds-thread" data-thread-key="http://www.huanghanlian.com/nodejs/2017/04/08/nodejs_one_10" data-title="Node.js-HTTP知识先填坑" data-url="http://www.huanghanlian.com/nodejs/2017/04/08/nodejs_one_10"></div>
+				<!-- 多说评论框 end -->
+				<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+				<script type="text/javascript">
+				var duoshuoQuery = {short_name:"huanghuanlian"};
+					(function() {
+						var ds = document.createElement('script');
+						ds.type = 'text/javascript';ds.async = true;
+						ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+						ds.charset = 'UTF-8';
+						(document.getElementsByTagName('head')[0]
+						 || document.getElementsByTagName('body')[0]).appendChild(ds);
+					})();
+				</script>
+				<!-- 多说公共JS代码 end -->
+
+
+				
+            </article>
+		</article>
+
+	</main>
+	<div class="sidebar" id="sidebar">
+	<div class="sidebar-top">
+		<aside class="widjhuh">
+			<h3 class="widget-title">最新文章</h3>
+			<ul class="minty_thumblist">
+				
+                  <li>
+                    <a href="/nodejs/2017/04/15/nodejs_one_13.html">
+
+                    	<span>Node.js-HTTP 性能测试</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/nodejs/2017/04/13/nodejs_one_12.html">
+
+                    	<span>Node.js-源码解读之先了解作用域、上下文</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/nodejs/2017/04/08/nodejs_one_11.html">
+
+                    	<span>Node.js-HTTP 事件回调进阶</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/nodejs/2017/04/05/nodejs_one_9.html">
+
+                    	<span>Node.js-URL网址解析的好帮手</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/nodejs/2017/03/27/nodejs_one_8.html">
+
+                    	<span>简单的Nodejs模块</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/nodejs/2017/03/27/nodejs_one_7.html">
+
+                    	<span>Node.js模块的分类</span>
+                    </a>
+                  </li>
+				
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">最近访客</h3>
+			<ul class="minty_thumblist minty_thumblist_a ds-recent-visitors visitorsopi" data-num-items="20" data-avatar-size="38">
+
+			</ul>
+
+		    <!--多说js加载开始，一个页面只需要加载一次 -->
+		    <script type="text/javascript">
+		    var duoshuoQuery = {short_name:"huanghuanlian"};
+		    (function() {
+		        var ds = document.createElement('script');
+		        ds.type = 'text/javascript';ds.async = true;
+		        ds.src = 'http://static.duoshuo.com/embed.js';
+		        ds.charset = 'UTF-8';
+		        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+		    })();
+		    </script>
+		    <!--多说js加载结束，一个页面只需要加载一次 -->
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">分类目录</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+				
+				<li>
+					<a href="/categories/Markdown/" title="view all
+posts">
+						Markdown (2)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Canvas/" title="view all
+posts">
+						Canvas (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Git/" title="view all
+posts">
+						Git (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/JavaScript/" title="view all
+posts">
+						JavaScript (30)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/AngularJS/" title="view all
+posts">
+						AngularJS (10)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/PHP/" title="view all
+posts">
+						PHP (3)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Nodejs/" title="view all
+posts">
+						Nodejs (13)
+					</a>
+				</li>
+				
+			</ul>
+		</aside>
+	</div>
+
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">标签目录</h3>
+			<div class="tagcloud" id="tagcloud">
+				
+					<a href="/tag/Markdown/" title="view all
+posts">
+						Markdown
+					</a>
+				
+					<a href="/tag/Canvas/" title="view all
+posts">
+						Canvas
+					</a>
+				
+					<a href="/tag/Git/" title="view all
+posts">
+						Git
+					</a>
+				
+					<a href="/tag/JavaScript/" title="view all
+posts">
+						JavaScript
+					</a>
+				
+					<a href="/tag/RegExp/" title="view all
+posts">
+						RegExp
+					</a>
+				
+					<a href="/tag/DOM/" title="view all
+posts">
+						DOM
+					</a>
+				
+					<a href="/tag/BOM/" title="view all
+posts">
+						BOM
+					</a>
+				
+					<a href="/tag/proto/" title="view all
+posts">
+						proto
+					</a>
+				
+					<a href="/tag/Ajax/" title="view all
+posts">
+						Ajax
+					</a>
+				
+					<a href="/tag/AngularJS/" title="view all
+posts">
+						AngularJS
+					</a>
+				
+					<a href="/tag/PHP_study/" title="view all
+posts">
+						PHP_study
+					</a>
+				
+					<a href="/tag/PHP/" title="view all
+posts">
+						PHP
+					</a>
+				
+					<a href="/tag/Nodejs_One/" title="view all
+posts">
+						Nodejs_One
+					</a>
+				
+			</div>
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">友情链接</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+
+				<li>
+					<a href="http://blog.csdn.net/u013861109?viewmode=contents" target="blank">
+						csdn博客
+					</a>
+				</li>
+				<li>
+					<a href="http://www.imooc.com/" target="blank">
+						慕课网
+					</a>
+				</li>
+				<li>
+					<a href="http://www.dglives.com/" target="blank">
+						数字生活前端
+					</a>
+				</li>
+				<li>
+					<a href="http://www.jianshu.com/" target="blank">
+						简书
+					</a>
+				</li>
+				<li>
+					<a href="http://www.runoob.com/" target="blank">
+						菜鸟
+					</a>
+				</li>
+				<li>
+					<a href="http://www.qdfuns.com/" target="blank">
+						前端网
+					</a>
+				</li>
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">QQ交流群</h3>
+			<img style="margin-top: 10px; box-shadow: none;" src="/assets/images/ertw.png">
+		</aside>
+	</div>
+
+
+	<script>
+	var box=document.getElementById("tagcloud").getElementsByTagName("a");
+	for(var i=0;i<box.length;i++){
+		var a =Math.round(Math.random()*20)/10;
+		box[i].style.fontSize=a+'em';
+	}
+	</script>
+
+</div>
+</div>
+	
+<footer id="footer">
+	<nav class="links">
+		<a href="">作品</a>
+		<a href="/about/">关于本站</a>
+		<a href="/report/">留言板</a>
+	</nav>
+	<div class="copyright">
+		© 2016 <a href="">继小鹏的前端博客</a>
+	</div>
+	<a href="javascript:pageScroll();" id="rocket" class=""></a>
+	<span id="busuanzi_container_site_pv">
+	    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+	<span id="busuanzi_container_site_uv">
+	  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+	</span>
+</footer>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+
+$(function(){
+	$("#m-btns").click(function(){
+		if($("body").hasClass('nav-is-open')){
+			$("body").removeClass('nav-is-open')
+		}else{
+			$("body").addClass('nav-is-open')
+		};
+	})
+})
+var fhdb = document.getElementById("rocket");
+
+//获取页面可视区高度
+var dqy = document.documentElement.clientHeight;
+
+var main_left=$('#main').offset().left+$('#main').width()+16;
+
+//滚动条滚动时触发   在滚动的时候触发
+window.onscroll = function() {
+	var sTop = document.documentElement.scrollTop || document.body.scrollTop;
+	if (sTop >= dqy) {
+		$("#rocket").addClass('show');
+	} else {
+		$("#rocket").removeClass('show');
+	}
+}
+
+function pageScroll() {
+	//把内容滚动指定的像素数（第一个参数是向右滚动的像素数，第二个参数是向下滚动的像素数）
+	window.scrollBy(0, -100);
+	//延时递归调用，模拟滚动向上效果
+	scrolldelay = setTimeout('pageScroll()', 5);
+	//获取scrollTop值，声明了DTD的标准网页取document.documentElement.scrollTop，否则取document.body.scrollTop；因为二者只有一个会生效，另一个就恒为0，所以取和值可以得到网页的真正的scrollTop值
+	var sTop = document.documentElement.scrollTop + document.body.scrollTop;
+	//判断当页面到达顶部，取消延时代码（否则页面滚动到顶部会无法再向下正常浏览页面）
+	if (sTop == 0) clearTimeout(scrolldelay)
+
+}
+
+
+
+
+
+</script>
+</body>
+</html>

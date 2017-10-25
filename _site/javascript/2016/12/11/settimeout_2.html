@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>常见的BOM功能</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+	<!-- <link rel="stylesheet" type="text/css" href="/assets/css/pygments.css"> -->
+	<link rel="shortcut icon" href="/assets/images/logo_ioc.ico" type="images/x-icon"/>
+	<link rel="icon" href="/assets/images/logo_ioc.png" type="images/png"/>
+	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
+	<script>
+		var _hmt = _hmt || [];
+		(function() {
+		  var hm = document.createElement("script");
+		  hm.src = "https://hm.baidu.com/hm.js?ef050d936e3f9ee27851048222727175";
+		  var s = document.getElementsByTagName("script")[0]; 
+		  s.parentNode.insertBefore(hm, s);
+		})();
+	</script>
+
+	<script type="text/javascript">
+	    (function($) {
+
+	    	var temp = 0;
+	    	$(document).scroll(function() {
+
+	    		if ($(document).scrollTop() > temp) {
+	    			$("#header").addClass("hide-top");
+	    		} else {
+	    			$("#header").removeClass("hide-top");
+	    		}
+	    		temp = $(document).scrollTop();
+	    	});
+	    	
+	    	//console.log($(".menu"))
+	    })(jQuery);
+
+	</script>
+
+</head>
+<body>
+    <header id="header" role="banner">
+	<a id="hgroup" href="/" rel="home">
+		<h1 id="logo"></h1>
+		<i class="slogan" title="返回首页">
+			热爱编程，关注前端开发技术
+		</i>
+	</a>
+	<div class="connect">
+		<a href="https://github.com/huanghanzhilian" class="git" target="_blank"></a>
+		<a href="http://www.huanghanlian.com/feed.xml" class="rss"></a>
+	</div>
+	<nav id="nav">
+		<ul class="menu">
+			<li class="menu_item">
+				<a href="/">首页</a>
+			</li>
+			<li class="menu_item">
+				<a href="http://www.huanghanlian.com/widget/">Web组件库</a>
+			</li>
+			<li class="menu_item">
+				<a href="http://www.huanghanlian.com/front-end-note/">前端笔记</a>
+			</li>
+			<li class="menu_item">
+				<a href="/about/">关于本站</a>
+			</li>
+			<li class="menu_item">
+				<a href="/report/">留言板</a>
+			</li>
+		</ul>
+	</nav>
+
+	<div id="m-btns">
+		<div class="menu"></div>
+	</div>
+	<nav class="nav-bar-tabs ">
+		<ul>
+            <li>
+              	<a href="/">首页</a>
+            </li>
+            <li>
+              	<a href="http://www.huanghanlian.com/widget/">Web组件库</a>
+            </li>
+            <li>
+              	<a href="http://www.huanghanlian.com/front-end-note/">前端笔记</a>
+            </li>
+            <li>
+              	<a href="/about/">关于本站</a>
+            </li>
+            <li>
+              	<a href="/report/">留言板</a>
+            </li>
+        </ul>
+	</nav>
+</header>
+	<div id="container" class="clearfix">
+	<main id="main" class="hfeed">
+		<article id="post-157" class="post-157 hentry">
+			<header class="entry-header">
+				<h1 class="entry-title">常见的BOM功能</h1>
+				<div class="entry-meta">2016-12-11 <span class="dot">•</span>JavaScript<span class="dot">•</span>黄继鹏<span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span></div>
+			</header>
+			<article class="post-content">
+              <p>window对象是BOM的核心，window对象指当前的浏览器窗口。</p>
+
+<p>####window对象</p>
+
+<blockquote>
+  <p>window对象方法:</p>
+</blockquote>
+
+<table>
+  <thead>
+    <tr>
+      <th>方法</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>alert()</td>
+      <td>显示带有一段消息和确认按钮的警告框</td>
+    </tr>
+    <tr>
+      <td>prompt()</td>
+      <td>显示可提示用户的对话框</td>
+    </tr>
+    <tr>
+      <td>comfirm()</td>
+      <td>显示带有一段消息以及确认按钮和取消按钮的对话框</td>
+    </tr>
+    <tr>
+      <td>open()</td>
+      <td>打开一个新的浏览器窗口或查找一个已命名的窗口</td>
+    </tr>
+    <tr>
+      <td>close()</td>
+      <td>关闭浏览器窗口</td>
+    </tr>
+    <tr>
+      <td>print()</td>
+      <td>打印当前窗口内容</td>
+    </tr>
+    <tr>
+      <td>focus()</td>
+      <td>把键盘焦点给予一个窗口</td>
+    </tr>
+    <tr>
+      <td>blur()</td>
+      <td>把键盘焦从顶层窗口移开</td>
+    </tr>
+    <tr>
+      <td>moveBy()</td>
+      <td>可相对窗口的当前坐标把他移动指定的像素</td>
+    </tr>
+    <tr>
+      <td>moveTo()</td>
+      <td>把窗口的左上角移动到一个指定的坐标</td>
+    </tr>
+    <tr>
+      <td>resizeBo()</td>
+      <td>按照指定的像素调整窗口大小</td>
+    </tr>
+    <tr>
+      <td>resizeTo()</td>
+      <td>把窗口的大小调整到指定的高度和宽度</td>
+    </tr>
+    <tr>
+      <td>scrollBy()</td>
+      <td>按照指定的像素来滚动内容</td>
+    </tr>
+    <tr>
+      <td>scrollTo()</td>
+      <td>把内容滚动到指定的坐标</td>
+    </tr>
+    <tr>
+      <td>setInterval()</td>
+      <td>每隔指定的时间执行代码</td>
+    </tr>
+    <tr>
+      <td>setTimeout()</td>
+      <td>在指定的延迟时间之后来执行代码</td>
+    </tr>
+    <tr>
+      <td>clearInterval()</td>
+      <td>取消setInterval()的设置</td>
+    </tr>
+    <tr>
+      <td>clearTimeout()</td>
+      <td>取消setTimeout()的设置</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;input type="button" id="but" onclick="but()" value="按钮"&gt;
+&lt;script type="text/javascript"&gt;
+	function but() {
+		window.open('http://www.huanghanlian.com/', '_blank', 'height=400,width=600,top=100,left=0');
+	}
+&lt;/script&gt;
+</code></pre>
+</div>
+
+<blockquote>
+  <p>计时器setInterval()</p>
+</blockquote>
+
+<p>在执行时,从载入页面后每隔指定的时间执行代码。</p>
+
+<p><strong>语法:</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>setInterval(代码,交互时间);
+</code></pre>
+</div>
+
+<p><strong>参数说明：</strong></p>
+
+<ol>
+  <li>
+    <p>代码：要调用的函数或要执行的代码串。</p>
+  </li>
+  <li>
+    <p>交互时间：周期性执行或调用表达式之间的时间间隔，以毫秒计（1s=1000ms）。</p>
+  </li>
+</ol>
+
+<p><strong>返回值:</strong></p>
+
+<p>一个可以传递给 clearInterval() 从而取消对”代码”的周期性执行的值。</p>
+
+<p><strong>调用函数格式(</strong>假设有一个clock()函数<strong>):</strong></p>
+
+<p>setInterval(“clock()”,1000)
+或
+setInterval(clock,1000)</p>
+
+<p>例子1</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;form&gt;
+	&lt;input type="text" id="clock" size="50"  /&gt;
+&lt;/form&gt;
+&lt;script type="text/javascript"&gt;
+var int = setInterval(clock, 100)
+
+function clock() {
+	var time = new Date();
+	document.getElementById("clock").value = time;
+}
+&lt;/script&gt;
+</code></pre>
+</div>
+
+<p>例子2</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;input type="text" id="clock" size="50"  /&gt;
+&lt;script type="text/javascript"&gt;
+	var attime;
+
+	function clock() {
+		var time = new Date();
+		attime = time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds();
+		document.getElementById("clock").value = attime;
+	}
+	setInterval(clock, 100)
+&lt;/script&gt;
+</code></pre>
+</div>
+
+<blockquote>
+  <p>取消计时器clearInterval()</p>
+</blockquote>
+
+<p>clearInterval() 方法可取消由 setInterval() 设置的交互时间。</p>
+
+<p><strong>语法：</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>clearInterval(id_of_setInterval)
+</code></pre>
+</div>
+
+<p><strong>参数说明:</strong>
+id_of_setInterval：由 setInterval() 返回的 ID 值。</p>
+
+<p>每隔 100 毫秒调用 clock() 函数,并显示时间。当点击按钮时，停止时间,代码如下:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;form&gt;
+	&lt;input type="text" id="clock" size="50"  /&gt;
+	&lt;input type="button" value="Stop" onclick="clearInterval(i)" /&gt;
+&lt;/form&gt;
+&lt;script type="text/javascript"&gt;
+	function clock() {
+		var time = new Date();
+		document.getElementById("clock").value = time;
+	}
+	// 每隔100毫秒调用clock函数，并将返回值赋值给i
+	var i = setInterval("clock()", 100);
+&lt;/script&gt;
+</code></pre>
+</div>
+
+<blockquote>
+  <p>计时器setTimeout()</p>
+</blockquote>
+
+<p>setTimeout()计时器，在载入后延迟指定时间后,去执行一次表达式,仅执行一次。</p>
+
+<p><strong>语法:</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>setTimeout(代码,延迟时间);
+</code></pre>
+</div>
+
+<p><strong>参数说明：</strong></p>
+
+<ol>
+  <li>要调用的函数或要执行的代码串。</li>
+  <li>延时时间：在执行代码前需等待的时间，以毫秒为单位（1s=1000ms)。</li>
+</ol>
+
+<p>当我们打开网页3秒后，在弹出一个提示框，<strong>代码如下:</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;script type="text/javascript"&gt;
+	setTimeout("alert('Hello!')", 3000);
+&lt;/script&gt;
+</code></pre>
+</div>
+
+<p>当按钮start被点击时，setTimeout()调用函数，在5秒后弹出一个提示框。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;form&gt;
+	&lt;input type="button" value="start" onClick="tinfo()"&gt;
+&lt;/form&gt;
+&lt;script type="text/javascript"&gt;
+	function tinfo() {
+		var t = setTimeout("alert('Hello!')", 5000);
+	}
+&lt;/script&gt;
+</code></pre>
+</div>
+
+<p>要创建一个运行于无穷循环中的计数器，我们需要编写一个函数来调用其自身。在下面的代码，当按钮被点击后，输入域便从0开始计数。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;form&gt;
+	&lt;input type="text" id="txt" /&gt;
+	&lt;input type="button" value="Start" onClick="numCount()" /&gt;
+&lt;/form&gt;
+
+&lt;script type="text/javascript"&gt;
+	var num = 0;
+	function numCount() {
+		document.getElementById('txt').value = num;
+		num = num + 1;
+		setTimeout("numCount()", 1000);
+	}
+&lt;/script&gt;
+</code></pre>
+</div>
+
+<p>或者</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;form&gt;
+	&lt;input type="text" id="txt" /&gt;
+	&lt;input type="button" value="Start" onClick="numCount()" /&gt;
+&lt;/form&gt;
+
+&lt;script type="text/javascript"&gt;
+	var num = 0;
+	function numCount() {
+		document.getElementById('txt').value = num;
+		num = num + 1;
+		setTimeout(numCount, 1000);
+	}
+&lt;/script&gt;
+</code></pre>
+</div>
+
+<blockquote>
+  <p>取消计时器clearTimeout()</p>
+</blockquote>
+
+<p>setTimeout()和clearTimeout()一起使用，停止计时器。</p>
+
+<p><strong>语法:</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>clearTimeout(id_of_setTimeout)
+</code></pre>
+</div>
+
+<p><strong>参数说明:</strong>
+<strong>id_of_setTimeout：</strong>由 setTimeout() 返回的 ID 值。该值标识要取消的延迟执行代码块。</p>
+
+<p>下面的例子和上节的无穷循环的例子相似。唯一不同是，现在我们添加了一个 “Stop” 按钮来停止这个计数器：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+	<span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;title&gt;</span>Document<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+	<span class="nt">&lt;form&gt;</span>
+	    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">id=</span><span class="s">"txt"</span><span class="nt">&gt;</span>
+	    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">value=</span><span class="s">"Stop"</span> <span class="na">onClick=</span><span class="s">"stopCount()"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;/form&gt;</span>
+
+	<span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
+	<span class="kd">var</span> <span class="nx">num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+		<span class="nx">i</span><span class="p">;</span>
+
+	<span class="kd">function</span> <span class="nx">timedCount</span><span class="p">()</span> <span class="p">{</span>
+		<span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'txt'</span><span class="p">).</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">num</span><span class="p">;</span>
+		<span class="nx">num</span> <span class="o">=</span> <span class="nx">num</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+		<span class="nx">i</span> <span class="o">=</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">timedCount</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="nx">setTimeout</span><span class="p">(</span><span class="nx">timedCount</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
+
+	<span class="kd">function</span> <span class="nx">stopCount</span><span class="p">()</span> <span class="p">{</span>
+		<span class="nx">clearTimeout</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+</div>
+
+<p>例子2</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+	<span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;title&gt;</span>Document<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;form&gt;</span>
+	<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">id=</span><span class="s">"count"</span> <span class="nt">/&gt;</span>
+	<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">value=</span><span class="s">"Start"</span> <span class="na">onClick=</span><span class="s">"startCount()"</span> <span class="nt">/&gt;</span>
+	<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">value=</span><span class="s">"Stop"</span> <span class="na">onClick=</span><span class="s">"stopCount()"</span>  <span class="nt">/&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+
+<span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
+	<span class="kd">var</span> <span class="nx">num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="kd">var</span> <span class="nx">i</span><span class="p">;</span>
+
+	<span class="kd">function</span> <span class="nx">startCount</span><span class="p">()</span> <span class="p">{</span>
+		<span class="nx">clearTimeout</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+		<span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'count'</span><span class="p">).</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">num</span><span class="p">;</span>
+		<span class="nx">num</span> <span class="o">=</span> <span class="nx">num</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+		<span class="nx">i</span> <span class="o">=</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="s2">"startCount()"</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
+	<span class="p">}</span>
+
+	<span class="kd">function</span> <span class="nx">stopCount</span><span class="p">()</span> <span class="p">{</span>
+		<span class="nx">clearTimeout</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+</div>
+
+<p>####History 对象</p>
+
+<p>history对象记录了用户曾经浏览过的页面(URL)，并可以实现浏览器前进与后退相似导航的功能。</p>
+
+<p><strong>注意:从</strong>窗口<strong>被打开的那一刻开始记录，每个浏览器窗口、每个标签页乃至每个框架，都有自己的history对象与特定的window对象关联。</strong></p>
+
+<p><strong>语法：</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>window.history.[属性|方法]
+</code></pre>
+</div>
+
+<p><strong>注意：</strong>window可以省略。</p>
+
+<p><strong>History 对象属性</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>属性</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>length</td>
+      <td>返回浏览器历史列表中的url数量</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>History 对象方法</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>对象</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>back()</td>
+      <td>加载history列表中的前一个url</td>
+    </tr>
+    <tr>
+      <td>forward()</td>
+      <td>加载history列表中的下一个url</td>
+    </tr>
+    <tr>
+      <td>go()</td>
+      <td>加载history列表中的某个具体页面</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>使用length属性，当前窗口的浏览历史总长度</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;script type="text/javascript"&gt;
+	var HL = window.history.length;
+	document.write(HL);
+&lt;/script&gt;
+</code></pre>
+</div>
+
+<blockquote>
+  <p>返回前一个浏览的页面</p>
+</blockquote>
+
+<p>back()方法，加载 history 列表中的前一个 URL。</p>
+
+<p><strong>语法：</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>window.history.back();
+</code></pre>
+</div>
+
+<p>比如，返回前一个浏览的页面，<strong>代码如下：</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>window.history.back();
+</code></pre>
+</div>
+
+<p><strong>注意：等同于点击浏览器的倒退按钮。</strong></p>
+
+<p>back()相当于go(-1),<strong>代码如下:</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>window.history.go(-1);
+
+
+&lt;input type="button" onclick="backs()" value="上一步"&gt;
+&lt;script type="text/javascript"&gt;
+	function backs(){
+		window.history.back();
+	}
+&lt;/script&gt;
+</code></pre>
+</div>
+
+<blockquote>
+  <p>返回下一个浏览的页面</p>
+</blockquote>
+
+<p>forward()方法，加载 history 列表中的下一个 URL。</p>
+
+<p>如果倒退之后，再想回到倒退之前浏览的页面，则可以使用forward()方法,<strong>代码如下:</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>window.history.forward();
+</code></pre>
+</div>
+
+<p><strong>注意：等价点击前进按钮。</strong></p>
+
+<p>forward()相当于go(1),<strong>代码如下:</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>window.history.go(1);
+</code></pre>
+</div>
+
+<blockquote>
+  <p>返回浏览历史中的其他页面</p>
+</blockquote>
+
+<p>go()方法，根据当前所处的页面，加载 history 列表中的某个具体的页面。</p>
+
+<p><strong>语法：</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>window.history.go(number);
+</code></pre>
+</div>
+
+<p><strong>参数：</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>number</th>
+      <th>参数说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>前一个，go(1)等价forward()</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>当前页面</td>
+    </tr>
+    <tr>
+      <td>-1</td>
+      <td>后一个，go(-1)等价back()</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>浏览器中，返回当前页面之前浏览过的第二个历史页面，<strong>代码如下：</strong></p>
+
+<p>window.history.go(-2);</p>
+
+<p><strong>注意：和在浏览器中单击两次后退按钮操作一样。</strong></p>
+
+<p>同理，返回当前页面之后浏览过的第三个历史页面，<strong>代码如下：</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>window.history.go(3);
+</code></pre>
+</div>
+
+<p>####Location对象</p>
+
+<p>location用于获取或设置窗体的URL，并且可以用于解析URL。</p>
+
+<p><strong>语法:</strong></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>location.[属性</td>
+      <td>方法]</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>location对象属性图示:</strong></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/3877962-0cd937d9758dc31d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" /></p>
+
+<p><strong>location 对象属性：</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>属性</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>hash</td>
+      <td>设置或返回从井号(#)开始的url(锚)</td>
+    </tr>
+    <tr>
+      <td>host</td>
+      <td>设置或返回主机名和当前url的端口号</td>
+    </tr>
+    <tr>
+      <td>hostname</td>
+      <td>设置或返回当前url的主机名</td>
+    </tr>
+    <tr>
+      <td>href</td>
+      <td>设置或返回完整的url</td>
+    </tr>
+    <tr>
+      <td>pathname</td>
+      <td>设置或返回当前url的路径部分</td>
+    </tr>
+    <tr>
+      <td>port</td>
+      <td>设置或返回url的端口号</td>
+    </tr>
+    <tr>
+      <td>protocol</td>
+      <td>设置或返回当前url的协议</td>
+    </tr>
+    <tr>
+      <td>search</td>
+      <td>设置或返回从问号(?)开始的url(查询部分)</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;script type="text/javascript"&gt;
+	console.log(window.location.hash);
+	console.log(window.location.host);
+	console.log(window.location.hostname);
+	console.log(window.location.href);
+	console.log(window.location.pathname);
+	console.log(window.location.port);
+	console.log(window.location.protocol);
+	console.log(window.location.search);
+&lt;/script&gt;
+</code></pre>
+</div>
+
+<p>输出</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>?1:9 
+?1:10 localhost
+?1:11 localhost
+?1:12 http://localhost/ajax_php/?1
+?1:13 /ajax_php/
+?1:14 
+?1:15 http:
+?1:16 ?1
+</code></pre>
+</div>
+
+<p><strong>location 对象方法:</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>属性</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>assign()</td>
+      <td>加载新的文档</td>
+    </tr>
+    <tr>
+      <td>reload()</td>
+      <td>重新加载当前文档</td>
+    </tr>
+    <tr>
+      <td>replace()</td>
+      <td>用新的文档替换当前文档</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>//刷新
+function reloadPage() {
+	window.location.reload()
+}
+//刷新
+</code></pre>
+</div>
+
+<p>####Navigator对象</p>
+
+<p>Navigator 对象包含有关浏览器的信息，通常用于检测浏览器与操作系统的版本。</p>
+
+<p><strong>对象属性:</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>属性</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>appCodeName;</td>
+      <td>浏览器代码名的字符串表示</td>
+    </tr>
+    <tr>
+      <td>appName;</td>
+      <td>返回浏览器的名称</td>
+    </tr>
+    <tr>
+      <td>appVersion;</td>
+      <td>返回浏览器的平台和版本信息</td>
+    </tr>
+    <tr>
+      <td>platform;</td>
+      <td>返回运行浏览器的操作系统平台</td>
+    </tr>
+    <tr>
+      <td>userAgent;</td>
+      <td>返回由客户机发送服务器的user-agent头部的值</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>查看浏览器的名称和版本，<strong>代码如下:</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var browser = navigator.appName;
+var version = navigator.appVersion;
+var appCode = navigator.appCodeName;
+var platSys = navigator.platform;
+var usersAg = navigator.userAgent;
+document.write("浏览器名称：" + browser + "&lt;br /&gt;" + "平台和版本信息：" + version + "&lt;br /&gt;" + "浏览器代码名称字符：" + appCode + "&lt;br /&gt;" + "浏览器操作系统平台：" + platSys + "&lt;br /&gt;" + "服务器头部的值：" + usersAg)
+</code></pre>
+</div>
+
+<p><strong>userAgent</strong></p>
+
+<p>返回用户代理头的字符串表示(就是包括浏览器版本信息等的字符串)</p>
+
+<p><strong>语法</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>navigator.userAgent
+</code></pre>
+</div>
+
+<p>几种浏览的user_agent.，像360的兼容模式用的是IE、极速模式用的是chrom的内核。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>浏览器</th>
+      <th>userAgent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Chrome</td>
+      <td>Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.87 Safari/537.36</td>
+    </tr>
+    <tr>
+      <td>Firefox</td>
+      <td>Mozilla/5.0 (Windows NT 6.1; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0</td>
+    </tr>
+    <tr>
+      <td>IE8</td>
+      <td>Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; .NET4.0C; .NET4.0E)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>使用userAgent判断使用的是什么浏览器</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE HTML&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+	<span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"Content-Type"</span> <span class="na">content=</span><span class="s">"text/html; charset=utf-8"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;title&gt;</span>navigator<span class="nt">&lt;/title&gt;</span>
+	<span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
+		<span class="kd">function</span> <span class="nx">validB</span><span class="p">()</span> <span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">u_agent</span> <span class="o">=</span> <span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">;</span>
+			<span class="kd">var</span> <span class="nx">B_name</span> <span class="o">=</span> <span class="s2">"不是想用的主流浏览器!"</span><span class="p">;</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">u_agent</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">"Firefox"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">B_name</span> <span class="o">=</span> <span class="s2">"Firefox"</span><span class="p">;</span>
+			<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">u_agent</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">"Chrome"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">B_name</span> <span class="o">=</span> <span class="s2">"Chrome"</span><span class="p">;</span>
+			<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">u_agent</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">"MSIE"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nx">u_agent</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">"Trident"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">B_name</span> <span class="o">=</span> <span class="s2">"IE(8-10)"</span><span class="p">;</span>
+			<span class="p">}</span>
+			<span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">"浏览器:"</span> <span class="o">+</span> <span class="nx">B_name</span> <span class="o">+</span> <span class="s2">"&lt;br&gt;"</span><span class="p">);</span>
+			<span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">"u_agent:"</span> <span class="o">+</span> <span class="nx">u_agent</span> <span class="o">+</span> <span class="s2">"&lt;br&gt;"</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+	<span class="nt">&lt;form&gt;</span>
+	<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">value=</span><span class="s">"查看浏览器"</span> <span class="na">onClick=</span><span class="s">validB()</span>   <span class="nt">&gt;</span>
+	<span class="nt">&lt;/form&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+</div>
+
+<p>####screen对象</p>
+
+<p>screen对象用于获取用户的屏幕信息。</p>
+
+<p><strong>语法：</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>window.screen.属性
+</code></pre>
+</div>
+
+<p><strong>对象属性:</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>属性</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>availHeight</td>
+      <td>窗口可以使用的屏幕高，单位像素</td>
+    </tr>
+    <tr>
+      <td>availWidth</td>
+      <td>窗口可以使用的屏幕宽，单位像素</td>
+    </tr>
+    <tr>
+      <td>colorDepth</td>
+      <td>用户浏览器表示的颜色位数，通常为32位(每像素的位数)</td>
+    </tr>
+    <tr>
+      <td>pixelDepth</td>
+      <td>用户浏览器表示的颜色位数，通常为32位(每像素的位数)(IE不支持)</td>
+    </tr>
+    <tr>
+      <td>height</td>
+      <td>屏幕的高，单位像素</td>
+    </tr>
+    <tr>
+      <td>width</td>
+      <td>屏幕的宽，单位像素</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE HTML&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"Content-Type"</span> <span class="na">content=</span><span class="s">"text/html; charset=utf-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span>navigator<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
+        <span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">"窗口可以使用的屏幕宽高: "</span><span class="p">);</span>
+        <span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">screen</span><span class="p">.</span><span class="nx">availWidth</span> <span class="o">+</span> <span class="s2">"*"</span> <span class="o">+</span> <span class="nx">screen</span><span class="p">.</span><span class="nx">availHeight</span><span class="p">);</span>
+        <span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">"&lt;br&gt;"</span><span class="p">);</span>
+        <span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">"屏幕的宽高: "</span><span class="p">);</span>
+        <span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">screen</span><span class="p">.</span><span class="nx">width</span> <span class="o">+</span> <span class="s2">"*"</span> <span class="o">+</span> <span class="nb">window</span><span class="p">.</span><span class="nx">screen</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+        <span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">"&lt;br&gt;"</span><span class="p">);</span>
+        <span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">"用户浏览器表示的颜色位数: "</span><span class="p">);</span>
+        <span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">screen</span><span class="p">.</span><span class="nx">colorDepth</span><span class="p">);</span>
+        <span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">"&lt;br&gt;"</span><span class="p">);</span>
+        <span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s2">"用户浏览器表示的颜色位数（ps：IE不支持？亲测好像支持唉）: "</span><span class="p">);</span>
+        <span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">screen</span><span class="p">.</span><span class="nx">pixelDepth</span><span class="p">);</span>
+    <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+</div>
+
+<p>BOM例子</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+	<span class="nt">&lt;title&gt;</span>浏览器对象<span class="nt">&lt;/title&gt;</span>
+	<span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"Content-Type"</span> <span class="na">content=</span><span class="s">"text/html; charset=gkb"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+	<span class="c">&lt;!--先编写好网页布局--&gt;</span>
+	<span class="nt">&lt;h1&gt;</span>操作成功<span class="nt">&lt;/h1&gt;</span>
+	<span class="nt">&lt;p&gt;&lt;span</span> <span class="na">id=</span><span class="s">"sd"</span><span class="nt">&gt;</span>5<span class="nt">&lt;/span &gt;</span>秒后返回主页<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"javascript:back();"</span><span class="nt">&gt;</span>返回<span class="nt">&lt;/a&gt;</span> <span class="nt">&lt;/p&gt;</span>
+
+	<span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
+		<span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">"sd"</span><span class="p">).</span><span class="nx">innerHTML</span><span class="p">;</span>
+		<span class="kd">function</span> <span class="nx">count</span><span class="p">()</span> <span class="p">{</span>
+			<span class="nx">n</span><span class="o">--</span><span class="p">;</span>
+			<span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">"sd"</span><span class="p">).</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">n</span><span class="p">;</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">location</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="s2">"http://www.huanghanlian.com/"</span><span class="p">);</span>
+			<span class="p">}</span>
+
+		<span class="p">}</span>
+		<span class="nx">setInterval</span><span class="p">(</span><span class="s2">"count()"</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
+		<span class="c1">//通过window的location和history对象来控制网页的跳转。</span>
+		<span class="kd">function</span> <span class="nx">back</span><span class="p">()</span> <span class="p">{</span>
+			<span class="nb">window</span><span class="p">.</span><span class="nx">history</span><span class="p">.</span><span class="nx">back</span><span class="p">();</span>
+		<span class="p">}</span>
+	<span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+</div>
+
+              <!-- 多说评论框 start -->
+              		<!-- <span class="ds-thread-count" data-thread-key="/javascript/2016/12/11/settimeout_2" data-count-type="comments"></span> -->
+					<div class="ds-thread" data-thread-key="http://www.huanghanlian.com/javascript/2016/12/11/settimeout_2" data-title="常见的BOM功能" data-url="http://www.huanghanlian.com/javascript/2016/12/11/settimeout_2"></div>
+				<!-- 多说评论框 end -->
+				<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+				<script type="text/javascript">
+				var duoshuoQuery = {short_name:"huanghuanlian"};
+					(function() {
+						var ds = document.createElement('script');
+						ds.type = 'text/javascript';ds.async = true;
+						ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+						ds.charset = 'UTF-8';
+						(document.getElementsByTagName('head')[0]
+						 || document.getElementsByTagName('body')[0]).appendChild(ds);
+					})();
+				</script>
+				<!-- 多说公共JS代码 end -->
+
+
+				
+            </article>
+		</article>
+
+	</main>
+	<div class="sidebar" id="sidebar">
+	<div class="sidebar-top">
+		<aside class="widjhuh">
+			<h3 class="widget-title">最新文章</h3>
+			<ul class="minty_thumblist">
+				
+                  <li>
+                    <a href="/nodejs/2017/04/15/nodejs_one_13.html">
+
+                    	<span>Node.js-HTTP 性能测试</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/nodejs/2017/04/13/nodejs_one_12.html">
+
+                    	<span>Node.js-源码解读之先了解作用域、上下文</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/nodejs/2017/04/08/nodejs_one_11.html">
+
+                    	<span>Node.js-HTTP 事件回调进阶</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/nodejs/2017/04/08/nodejs_one_10.html">
+
+                    	<span>Node.js-HTTP知识先填坑</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/nodejs/2017/04/05/nodejs_one_9.html">
+
+                    	<span>Node.js-URL网址解析的好帮手</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/nodejs/2017/03/27/nodejs_one_8.html">
+
+                    	<span>简单的Nodejs模块</span>
+                    </a>
+                  </li>
+				
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">最近访客</h3>
+			<ul class="minty_thumblist minty_thumblist_a ds-recent-visitors visitorsopi" data-num-items="20" data-avatar-size="38">
+
+			</ul>
+
+		    <!--多说js加载开始，一个页面只需要加载一次 -->
+		    <script type="text/javascript">
+		    var duoshuoQuery = {short_name:"huanghuanlian"};
+		    (function() {
+		        var ds = document.createElement('script');
+		        ds.type = 'text/javascript';ds.async = true;
+		        ds.src = 'http://static.duoshuo.com/embed.js';
+		        ds.charset = 'UTF-8';
+		        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+		    })();
+		    </script>
+		    <!--多说js加载结束，一个页面只需要加载一次 -->
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">分类目录</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+				
+				<li>
+					<a href="/categories/Markdown/" title="view all
+posts">
+						Markdown (2)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Canvas/" title="view all
+posts">
+						Canvas (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Git/" title="view all
+posts">
+						Git (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/JavaScript/" title="view all
+posts">
+						JavaScript (30)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/AngularJS/" title="view all
+posts">
+						AngularJS (10)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/PHP/" title="view all
+posts">
+						PHP (3)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Nodejs/" title="view all
+posts">
+						Nodejs (13)
+					</a>
+				</li>
+				
+			</ul>
+		</aside>
+	</div>
+
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">标签目录</h3>
+			<div class="tagcloud" id="tagcloud">
+				
+					<a href="/tag/Markdown/" title="view all
+posts">
+						Markdown
+					</a>
+				
+					<a href="/tag/Canvas/" title="view all
+posts">
+						Canvas
+					</a>
+				
+					<a href="/tag/Git/" title="view all
+posts">
+						Git
+					</a>
+				
+					<a href="/tag/JavaScript/" title="view all
+posts">
+						JavaScript
+					</a>
+				
+					<a href="/tag/RegExp/" title="view all
+posts">
+						RegExp
+					</a>
+				
+					<a href="/tag/DOM/" title="view all
+posts">
+						DOM
+					</a>
+				
+					<a href="/tag/BOM/" title="view all
+posts">
+						BOM
+					</a>
+				
+					<a href="/tag/proto/" title="view all
+posts">
+						proto
+					</a>
+				
+					<a href="/tag/Ajax/" title="view all
+posts">
+						Ajax
+					</a>
+				
+					<a href="/tag/AngularJS/" title="view all
+posts">
+						AngularJS
+					</a>
+				
+					<a href="/tag/PHP_study/" title="view all
+posts">
+						PHP_study
+					</a>
+				
+					<a href="/tag/PHP/" title="view all
+posts">
+						PHP
+					</a>
+				
+					<a href="/tag/Nodejs_One/" title="view all
+posts">
+						Nodejs_One
+					</a>
+				
+			</div>
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">友情链接</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+
+				<li>
+					<a href="http://blog.csdn.net/u013861109?viewmode=contents" target="blank">
+						csdn博客
+					</a>
+				</li>
+				<li>
+					<a href="http://www.imooc.com/" target="blank">
+						慕课网
+					</a>
+				</li>
+				<li>
+					<a href="http://www.dglives.com/" target="blank">
+						数字生活前端
+					</a>
+				</li>
+				<li>
+					<a href="http://www.jianshu.com/" target="blank">
+						简书
+					</a>
+				</li>
+				<li>
+					<a href="http://www.runoob.com/" target="blank">
+						菜鸟
+					</a>
+				</li>
+				<li>
+					<a href="http://www.qdfuns.com/" target="blank">
+						前端网
+					</a>
+				</li>
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">QQ交流群</h3>
+			<img style="margin-top: 10px; box-shadow: none;" src="/assets/images/ertw.png">
+		</aside>
+	</div>
+
+
+	<script>
+	var box=document.getElementById("tagcloud").getElementsByTagName("a");
+	for(var i=0;i<box.length;i++){
+		var a =Math.round(Math.random()*20)/10;
+		box[i].style.fontSize=a+'em';
+	}
+	</script>
+
+</div>
+</div>
+	
+<footer id="footer">
+	<nav class="links">
+		<a href="">作品</a>
+		<a href="/about/">关于本站</a>
+		<a href="/report/">留言板</a>
+	</nav>
+	<div class="copyright">
+		© 2016 <a href="">继小鹏的前端博客</a>
+	</div>
+	<a href="javascript:pageScroll();" id="rocket" class=""></a>
+	<span id="busuanzi_container_site_pv">
+	    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+	<span id="busuanzi_container_site_uv">
+	  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+	</span>
+</footer>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+
+$(function(){
+	$("#m-btns").click(function(){
+		if($("body").hasClass('nav-is-open')){
+			$("body").removeClass('nav-is-open')
+		}else{
+			$("body").addClass('nav-is-open')
+		};
+	})
+})
+var fhdb = document.getElementById("rocket");
+
+//获取页面可视区高度
+var dqy = document.documentElement.clientHeight;
+
+var main_left=$('#main').offset().left+$('#main').width()+16;
+
+//滚动条滚动时触发   在滚动的时候触发
+window.onscroll = function() {
+	var sTop = document.documentElement.scrollTop || document.body.scrollTop;
+	if (sTop >= dqy) {
+		$("#rocket").addClass('show');
+	} else {
+		$("#rocket").removeClass('show');
+	}
+}
+
+function pageScroll() {
+	//把内容滚动指定的像素数（第一个参数是向右滚动的像素数，第二个参数是向下滚动的像素数）
+	window.scrollBy(0, -100);
+	//延时递归调用，模拟滚动向上效果
+	scrolldelay = setTimeout('pageScroll()', 5);
+	//获取scrollTop值，声明了DTD的标准网页取document.documentElement.scrollTop，否则取document.body.scrollTop；因为二者只有一个会生效，另一个就恒为0，所以取和值可以得到网页的真正的scrollTop值
+	var sTop = document.documentElement.scrollTop + document.body.scrollTop;
+	//判断当页面到达顶部，取消延时代码（否则页面滚动到顶部会无法再向下正常浏览页面）
+	if (sTop == 0) clearTimeout(scrolldelay)
+
+}
+
+
+
+
+
+</script>
+</body>
+</html>

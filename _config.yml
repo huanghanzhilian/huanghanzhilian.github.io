@@ -18,7 +18,8 @@ twitter_username: jekyllrb
 github_username:  jekyll
 
 #redcarpet解析包||markdown解析包
-markdown: redcarpet
+#markdown: redcarpet
+markdown: kramdown
 #设置Pygments代码高亮
 #highlighter: true
 

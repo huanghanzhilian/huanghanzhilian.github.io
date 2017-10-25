@@ -11,7 +11,16 @@
 	<link rel="shortcut icon" href="/assets/images/logo_ioc.ico" type="images/x-icon"/>
 	<link rel="icon" href="/assets/images/logo_ioc.png" type="images/png"/>
 	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
-	
+	<script>
+		var _hmt = _hmt || [];
+		(function() {
+		  var hm = document.createElement("script");
+		  hm.src = "https://hm.baidu.com/hm.js?ef050d936e3f9ee27851048222727175";
+		  var s = document.getElementsByTagName("script")[0]; 
+		  s.parentNode.insertBefore(hm, s);
+		})();
+	</script>
+
 	<script type="text/javascript">
 	    (function($) {
 
@@ -261,7 +270,7 @@
   
   
   <li class="archive_list">
-    <time style="color:#666;font-size:11px;" datetime='2016-12-11'>12/11/16</time> <a class="archive_list_article_link" href='/javascript/2016/12/11/settimeout-2.html'>常见的BOM功能</a>
+    <time style="color:#666;font-size:11px;" datetime='2016-12-11'>12/11/16</time> <a class="archive_list_article_link" href='/javascript/2016/12/11/settimeout_2.html'>常见的BOM功能</a>
     <p class="summary"></p>
     <ul class="tag_list">
       
@@ -275,7 +284,7 @@
   
   
   <li class="archive_list">
-    <time style="color:#666;font-size:11px;" datetime='2016-12-11'>12/11/16</time> <a class="archive_list_article_link" href='/javascript/2016/12/11/settimeout-1.html'>setTimeout()和setInterval() 何时被调用执行</a>
+    <time style="color:#666;font-size:11px;" datetime='2016-12-11'>12/11/16</time> <a class="archive_list_article_link" href='/javascript/2016/12/11/settimeout_1.html'>setTimeout()和setInterval() 何时被调用执行</a>
     <p class="summary"></p>
     <ul class="tag_list">
       
@@ -528,12 +537,13 @@
       
       
       　　<li class="entry_list">
-          <a href="/javascript/2016/12/11/settimeout-2.html">
+          <a href="/javascript/2016/12/11/settimeout_2.html">
             <h2 class="entry-title">常见的BOM功能</h2>
             <div class="entry-meta">2016-12-11 <span class="dot">•</span>BOM<span class="dot">•</span>继小鹏</div>
             <div class="entry-summary">
               <p>
                 <p>window对象是BOM的核心，window对象指当前的浏览器窗口。</p>
+
 
               </p>
             </div>
@@ -545,12 +555,13 @@
       
       
       　　<li class="entry_list">
-          <a href="/javascript/2016/12/11/settimeout-1.html">
+          <a href="/javascript/2016/12/11/settimeout_1.html">
             <h2 class="entry-title">setTimeout()和setInterval() 何时被调用执行</h2>
             <div class="entry-meta">2016-12-11 <span class="dot">•</span>BOM<span class="dot">•</span>继小鹏</div>
             <div class="entry-summary">
               <p>
                 <p>setTimeout()和setInterval()经常被用来处理延时和定时任务。<strong>setTimeout</strong>() 方法用于在指定的毫秒数后调用函数或计算表达式,而<strong>setInterval</strong>()则可以在每隔指定的毫秒数循环调用函数或表达式，直到clearInterval把它清除。</p>
+
 
               </p>
             </div>
@@ -910,6 +921,8 @@ function pageScroll() {
 	if (sTop == 0) clearTimeout(scrolldelay)
 
 }
+
+
 
 
 

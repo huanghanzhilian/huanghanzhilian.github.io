@@ -11,7 +11,16 @@
 	<link rel="shortcut icon" href="/assets/images/logo_ioc.ico" type="images/x-icon"/>
 	<link rel="icon" href="/assets/images/logo_ioc.png" type="images/png"/>
 	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
-	
+	<script>
+		var _hmt = _hmt || [];
+		(function() {
+		  var hm = document.createElement("script");
+		  hm.src = "https://hm.baidu.com/hm.js?ef050d936e3f9ee27851048222727175";
+		  var s = document.getElementsByTagName("script")[0]; 
+		  s.parentNode.insertBefore(hm, s);
+		})();
+	</script>
+
 	<script type="text/javascript">
 	    (function($) {
 
@@ -98,6 +107,7 @@
             <div class="entry-summary">
               <p>
                 <p>有时候需要从远程git服务器获取某个远程分支的代码，命令是 git fetch origin  remote-branch:local-branch ，这个命令比较容易忘记，特别记录下。</p>
+
  
               </p>
             </div>
@@ -116,48 +126,6 @@
 		<aside class="widjhuh">
 			<h3 class="widget-title">最新文章</h3>
 			<ul class="minty_thumblist">
-				
-                  <li>
-                    <a href="/nodejs/2017/04/13/nodejs-one-12.html">
-
-                    	<span>Node.js-源码解读之先了解作用域、上下文</span>
-                    </a>
-                  </li>
-				
-                  <li>
-                    <a href="/nodejs/2017/04/08/nodejs-one-11.html">
-
-                    	<span>Node.js-HTTP 事件回调进阶</span>
-                    </a>
-                  </li>
-				
-                  <li>
-                    <a href="/nodejs/2017/04/08/nodejs-one-10.html">
-
-                    	<span>Node.js-HTTP知识先填坑</span>
-                    </a>
-                  </li>
-				
-                  <li>
-                    <a href="/nodejs/2017/04/05/nodejs-one-9.html">
-
-                    	<span>Node.js-URL网址解析的好帮手</span>
-                    </a>
-                  </li>
-				
-                  <li>
-                    <a href="/nodejs/2017/03/27/nodejs-one-8.html">
-
-                    	<span>简单的Nodejs模块</span>
-                    </a>
-                  </li>
-				
-                  <li>
-                    <a href="/nodejs/2017/03/27/nodejs-one-7.html">
-
-                    	<span>Node.js模块的分类</span>
-                    </a>
-                  </li>
 				
 			</ul>
 		</aside>
@@ -435,6 +403,8 @@ function pageScroll() {
 	if (sTop == 0) clearTimeout(scrolldelay)
 
 }
+
+
 
 
 

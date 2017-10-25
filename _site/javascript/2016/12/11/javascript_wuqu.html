@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>JavaScript 误区</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/public.css">
+	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+	<!-- <link rel="stylesheet" type="text/css" href="/assets/css/pygments.css"> -->
+	<link rel="shortcut icon" href="/assets/images/logo_ioc.ico" type="images/x-icon"/>
+	<link rel="icon" href="/assets/images/logo_ioc.png" type="images/png"/>
+	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
+	<script>
+		var _hmt = _hmt || [];
+		(function() {
+		  var hm = document.createElement("script");
+		  hm.src = "https://hm.baidu.com/hm.js?ef050d936e3f9ee27851048222727175";
+		  var s = document.getElementsByTagName("script")[0]; 
+		  s.parentNode.insertBefore(hm, s);
+		})();
+	</script>
+
+	<script type="text/javascript">
+	    (function($) {
+
+	    	var temp = 0;
+	    	$(document).scroll(function() {
+
+	    		if ($(document).scrollTop() > temp) {
+	    			$("#header").addClass("hide-top");
+	    		} else {
+	    			$("#header").removeClass("hide-top");
+	    		}
+	    		temp = $(document).scrollTop();
+	    	});
+	    	
+	    	//console.log($(".menu"))
+	    })(jQuery);
+
+	</script>
+
+</head>
+<body>
+    <header id="header" role="banner">
+	<a id="hgroup" href="/" rel="home">
+		<h1 id="logo"></h1>
+		<i class="slogan" title="返回首页">
+			热爱编程，关注前端开发技术
+		</i>
+	</a>
+	<div class="connect">
+		<a href="https://github.com/huanghanzhilian" class="git" target="_blank"></a>
+		<a href="http://www.huanghanlian.com/feed.xml" class="rss"></a>
+	</div>
+	<nav id="nav">
+		<ul class="menu">
+			<li class="menu_item">
+				<a href="/">首页</a>
+			</li>
+			<li class="menu_item">
+				<a href="http://www.huanghanlian.com/widget/">Web组件库</a>
+			</li>
+			<li class="menu_item">
+				<a href="http://www.huanghanlian.com/front-end-note/">前端笔记</a>
+			</li>
+			<li class="menu_item">
+				<a href="/about/">关于本站</a>
+			</li>
+			<li class="menu_item">
+				<a href="/report/">留言板</a>
+			</li>
+		</ul>
+	</nav>
+
+	<div id="m-btns">
+		<div class="menu"></div>
+	</div>
+	<nav class="nav-bar-tabs ">
+		<ul>
+            <li>
+              	<a href="/">首页</a>
+            </li>
+            <li>
+              	<a href="http://www.huanghanlian.com/widget/">Web组件库</a>
+            </li>
+            <li>
+              	<a href="http://www.huanghanlian.com/front-end-note/">前端笔记</a>
+            </li>
+            <li>
+              	<a href="/about/">关于本站</a>
+            </li>
+            <li>
+              	<a href="/report/">留言板</a>
+            </li>
+        </ul>
+	</nav>
+</header>
+	<div id="container" class="clearfix">
+	<main id="main" class="hfeed">
+		<article id="post-157" class="post-157 hentry">
+			<header class="entry-header">
+				<h1 class="entry-title">JavaScript 误区</h1>
+				<div class="entry-meta">2016-12-11 <span class="dot">•</span>JavaScript<span class="dot">•</span>黄继鹏<span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span></div>
+			</header>
+			<article class="post-content">
+              <p>接触JavaScript两年多遇到过各种错误，其中有一些让人防不胜防，原来对JavaScript的误会如此之深，仅以此文总结一下常见的各种想当然的误区</p>
+
+<p>####String replace</p>
+
+<p>string的replace方法我们经常用，替换string中的某些字符，语法像这样子</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>string.replace(subStr/reg,replaceStr/function)
+</code></pre>
+</div>
+
+<p>第一个参数是要查找的字符串或者一个正则表达式，第二个参数是想替换成的字符串或一个方法，我们可以这么使用</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>"I'm Byron".replace("B","b") // I'm byron
+</code></pre>
+</div>
+
+<p>结果和我们想得一样，但是</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>"I'm a student, and you?".replace("n","N"); // I'm a studeNt, and you?
+</code></pre>
+</div>
+
+<p>和我们预期的不一样，第二个‘n’没有被替换。<strong>字符串的 replace 方法如果第一个参数传入字符串，那么只有第一个匹配项会被替换。如果要替换全部匹配项，需要传入一个 RegExp 对象并指定其 global 属性。</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>"I'm a student, and you?".replace(/n/g,"N"); // I'm a studeNt, aNd you?
+</code></pre>
+</div>
+
+<p>这样才可以达到我们目的，关于string replace方法详细使用可以看看<a href="">JavaScript string 的replace</a></p>
+
+<p>####typeof</p>
+
+<p>关于typeof最容易让人误会的就是typeof是操作符，并不是函数，也就是说我们在判断一变量类型时没必要加括号，直接使用即可</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>typeof 1; //number
+typeof(1); //number, 没必要这么写，但是也没错，等于是给变量或常量包装了一下
+</code></pre>
+</div>
+
+<p>typeof 的返回值是字符串，在大多数情况下返回的和我们预期结果是一样的，但是有几点注意的地方,我们知道JavaScript有几种基本类型，number、string、boolean、null、undefined，再就是对象object了，我们看几个例子</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>typeof 123; //number
+typeof NaN //number
+typeof "123" //string
+typeof false; //boolean
+typeof undefined; //undefined
+typeof null //object
+typeof new Array(); //object
+typeof(new Array()); //觉得不够清晰可以这么用，结果是一样的
+typeof(function() {}); //function
+typeof a; //undefined
+</code></pre>
+</div>
+
+<ol>
+  <li>
+    <p>123是个数字返回number</p>
+  </li>
+  <li>
+    <p>虽然NaN表示不是数字，但是typeof仍然会返回number</p>
+  </li>
+  <li>
+    <p>“123” 变成了字符串，所以返回string</p>
+  </li>
+  <li>
+    <p>false 类型就是boolean</p>
+  </li>
+  <li>
+    <p>undefined的类型就是undefined，这个类型的变量只能有一个字面值”undefined”</p>
+  </li>
+  <li>
+    <p>null的类型并不是null，而是object，所以我们不要寄希望与typeof帮我们判断null</p>
+  </li>
+  <li>
+    <p>typeof如果判断是对象只会返回object,而不会返回Array、Date的具体类型</p>
+  </li>
+  <li>
+    <p>function也是object的一种，按说也应该直接返回object。但是typeof对它区别对待了，返回了function，我们可以用此判断变量是否为函数</p>
+  </li>
+  <li>
+    <p>没定义的变量同样返回undefined</p>
+  </li>
+</ol>
+
+<p>####if和==</p>
+
+<p>在javascript中if并不仅仅判断boolean决定真假，0、NaN、””、undefined、null、false都会被认为是假</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>if (!false) {
+	console.log(1);
+};
+if (!0) {
+	console.log(2);
+};
+if (!"") {
+	console.log(3);
+};
+if (!undefined) {
+	console.log(4);
+};
+if (!null) {
+	console.log(5);
+};
+
+if (!NaN) {
+
+	console.log(6);
+
+};
+</code></pre>
+</div>
+
+<p>在console中123456都会被打印出来</p>
+
+<p>但是这并不意味着这些值就==false</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>0 == false; //true
+"0" == false; //true,这个也是true
+undefined == false //false
+null == false //false
+null == null //true
+NaN == NaN //false
+null == undefined //true
+</code></pre>
+</div>
+
+<p>纳尼！！！</p>
+
+<p><strong>相等运算符 （==、!=） ** 如果两表达式的类型不同，则试图将它们</strong>转换为字符串、数字或 Boolean 量**。</p>
+
+<p>NaN 与包括其本身在内的任何值都不相等。</p>
+
+<p>负零等于正零。</p>
+
+<p>null 与 null 和 undefined 相等。</p>
+
+<p><strong>相同的字符串、数值上相等的数字、相同的对象、相同的 Boolean 值或者（当类型不同时）能被强制转化为上述情况之一，均被认为是相等的</strong>。其他比较均被认为是不相等的。</p>
+
+<p>所以说 0==”0”; 返回的也会是true。</p>
+
+<p>那么应该则么判断两个变量究竟是不是一回事儿呢</p>
+
+<p>**恒等运算符 （===、!==） **</p>
+
+<p>除了不进行类型转换，并且类型必须相同以外，这些运算符与相等运算符的作用是一样的，这下就搞定了。</p>
+
+<p>####Date 对象</p>
+
+<p>我们可以这样构造一个Date对象</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>new Date() //Date {Fri Aug 02 2013 16:50:33 GMT+0800 (China Standard Time)}
+new Date(milliseconds) //Date {Fri Aug 02 2013 16:53:26 GMT+0800 (China Standard Time)}
+new Date("2013/08/02") //Date {Fri Aug 02 2013 00:00:00 GMT+0800 (China Standard Time)}
+new Date(year, month, day, hours, minutes, seconds, ms)
+</code></pre>
+</div>
+
+<p>前三种方式没有什么问题，但第四种得到的结果回合我们预期的不一致</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>new Date(2013,08,02) //Date {Mon Sep 02 2013 00:00:00 GMT+0800 (China Standard Time)}
+</code></pre>
+</div>
+
+<p>我们可以看到，传入的月份是08，返回的结果却是九月。这是因为<strong>Date对象的月份是从0开始计数的（天却不是），即0代表一月，1代表二月…11代表12月</strong>。在调用Date实例的getMonth方法时尤其要注意</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var d = new Date(2012, 4, 15); // 2012年5月15日
+alert(d.getMonth()); // 结果为4
+</code></pre>
+</div>
+
+<p>####Date.parse</p>
+
+<p>Date.parse方法可以识别两种格式的字符串参数<em>（标准的长日期格式，比如带星期的那种，也可以识别，不过不常用）</em>：</p>
+
+<ol>
+  <li>
+    <p>“M/d/yyyy”: 美国的日期显示格式。如果年传入2位则作为 19xx 处理</p>
+  </li>
+  <li>
+    <p>“yyyy-MM-dd” 或 “yyyy/MM/dd”: 注意月和日都必须是两位</p>
+  </li>
+</ol>
+
+<p><strong>Date.parse 的返回结果不是一个Date对象，而是从1970-01-01午夜（GMT）到给定日期之间的毫秒数</strong>。可以用Date的构造函数将其转换为Date对象。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>new Date(Date.parse("8/2/2012")); // 正确识别为2012年8月2日
+new Date(Date.parse("2012-08-02")); // 正确识别为2012年8月2日
+new Date(Date.parse("2012-8-2")); // 不能识别
+</code></pre>
+</div>
+
+<p>####for…in 遍历数组</p>
+
+<p>for…in用来遍历一个对象中的成员（属性，方法），如果用来遍历数组的到的结果并不是预期中数组每项的值，方法神马的会被遍历出来</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Array.prototype.contains = function(item) {
+	for (var i = 0; i &lt;= this.length - 1; i++) {
+		if (this[i] == item)
+			return this[i];
+	}
+}
+var staff = ["Staff A", "Staff B"];
+// Normal Enumeration: Only the 2 items are enumerated
+for (var i = 0; i &lt;= staff.length - 1; i++) {
+	var singleStaff = staff[i];
+	alert(singleStaff);
+}
+// for...in Enumeration: the method "contains" are enumerated, too
+for (var singleStaff in staff) {
+	alert(singleStaff);
+}
+</code></pre>
+</div>
+
+<p>事实上很多时候我们都会给数组加上其他属性。比如 jQuery 对象就是一个数组对象加上一些扩展方法；再比如 String.prototype.match 方法返回值就是一个数组（正则表达式及其子表达式的匹配项）加上 index 和 input 两个属性。</p>
+
+<p>####parseInt</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>参数</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>string</td>
+      <td>必需。要被解析的字符串。</td>
+    </tr>
+    <tr>
+      <td>radix</td>
+      <td>1. 可选。表示要解析的数字的基数。该值介于 2 ~ 36 之间。</td>
+    </tr>
+    <tr>
+      <td>radix</td>
+      <td>2. 如果省略该参数或其值为 0，则数字将以 10 为基础来解析。</td>
+    </tr>
+    <tr>
+      <td>radix</td>
+      <td>3. 如果它以 “0x” 或 “0X” 开头，将以 16 为基数。如果该参数小于 2 或者大于 36，则 parseInt() 将返回 NaN。</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>当参数 <em>radix</em> 的值为 0，或没有设置该参数时，parseInt() 会根据 <em>string</em> 来判断数字的基数。</p>
+
+<p>举例，如果 <em>string（开头结尾空格自动省略）</em> 以 “0x” 开头，parseInt() 会把 <em>string</em> 的其余部分解析为十六进制的整数。如果 <em>string</em> 以 0 开头，那么 ECMAScript v3 允许 parseInt() 的一个实现把其后的字符解析为八进制或十六进制的数字。如果 <em>string</em> 以 1 ~ 9 的数字开头，parseInt() 将把它解析为十进制的整数。如果字符串的第一个字符不能被转换为数字，那么 parseFloat() 会返回 NaN。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>parseInt("10");        //返回 10
+parseInt("19",10);        //返回 19 (10+9)
+parseInt("11",2);        //返回 3 (2+1)
+parseInt("17",8);        //返回 15 (8+7)
+parseInt("1f",16);        //返回 31 (16+15)
+parseInt("010");        //未定：返回 10 或 8
+</code></pre>
+</div>
+
+<p>####setTimeout/setInterval执行时机</p>
+
+<p>setTimeout()和setInterval()经常被用来处理延时和定时任务。<strong>setTimeout</strong>() 方法用于在指定的毫秒数后调用函数或计算表达式,而<strong>setInterval</strong>()则可以在每隔指定的毫秒数循环调用函数或表达式，直到clearInterval把它清除。</p>
+
+<p><strong>JavaScript其实是运行在单线程的环境中的</strong>，这就意味着定时器仅仅是<strong>计划</strong>代码在未来的某个时间执行，而<strong>具体执行时机是不能保证的</strong>，因为页面的生命周期中，不同时间可能有其他代码在控制JavaScript进程。在页面下载完成后代码的运行、事件处理程序、Ajax回调函数都是使用同样的线程，实际上浏览器负责进行排序，指派某段程序在某个时间点运行的<strong>优先级</strong>。</p>
+
+<p>我们可以可以把JavaScript想象成在时间线上运行。当页面载入的时候首先执行的是页面生命周期后面要用的方法和变量声明和数据处理，在这之后JavaScript进程将等待更多代码执行。当进程空闲的时候，下一段代码会被触发</p>
+
+<p>除了主JavaScript进程外，还需要一个在进程下一次空闲时执行的代码队列。随着页面生命周期推移，代码会按照执行顺序添加入队列，例如当按钮被按下的时候他的事件处理程序会被添加到队列中，并在下一个可能时间内执行。在接到某个Ajax响应时，回调函数的代码会被添加到队列。<strong>JavaScript中没有任何代码是立即执行的，但一旦进程空闲则尽快执行。</strong>定时器对队列的工作方式是当特定时间过去后将代码插入，这并不意味着它会马上执行，只能表示它尽快执行。</p>
+
+<p>关于setTimeout/setInterval执行时机详细说明可以看看 <a href="http://www.huanghanlian.com/javascript/2016/12/11/settimeout-1.html">setTimeout()和setInterval() 何时被调用执行</a></p>
+
+<p>####预解析</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>console.log(a); //Error:a is not defined ,直接报错，下面语句没法执行，一下结果为注释该句后结果
+console.log(b) //undefined
+var b = "Test";
+console.log(b); //Test
+</code></pre>
+</div>
+
+<p>很奇怪前两句变量a,b都没有声明，第一句却报错，第二句能够输出undefined？这是因为<strong>JavaScript是解释型语言，但它并不是直接逐步执行的，JavaScript解析过程分为先后两个阶段，一个是预处理阶段，另外一个就是执行阶段。在预处理阶段JavaScript解释器将完成把JavaScript脚本代码转换到字节码，然后第二阶段JavaScript解释器借助执行环境把字节码生成机械码，并顺序执行。</strong></p>
+
+<p>也就说JavaScript值执行第一句语句之前就已经将函数/变量声明预处理了，var b=”Test” 相当于两个语句，var 
+b;（undefined结果的来源，在执行第一句语句之前已经解析），b=”Test”（这句是顺序执行的，在第二句之后执行）。这也是为什么我们可以在方法声明语句之前就调用方法的原因。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>showMsg(); // This is message
+function showMsg() {
+	alert('This is message');
+}
+</code></pre>
+</div>
+
+<p>####块级作用域</p>
+
+<p><strong>JavaScript没有块级作用域，只有函数级作用域，这就意味着{}在JavaScript中只能起到语法块的作用，而不能起到作用域块作用</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>if (true) { //语法块，保证{}内代码if条件成立执行
+	//...
+	var a = 3;
+}
+console.log(a); //3
+</code></pre>
+</div>
+
+<p>上面例子可以清楚看到属于window的console.log方法依然可以访问貌似是局部变量的a</p>
+
+<p>####闭包</p>
+
+<p>首先从一个经典错误谈起，页面上有若干个div， 我们想给它们绑定一个onclick方法，于是有了下面的代码</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;div id="divTest"&gt;
+    &lt;span&gt;0&lt;/span&gt; &lt;span&gt;1&lt;/span&gt; &lt;span&gt;2&lt;/span&gt; &lt;span&gt;3&lt;/span&gt;
+&lt;/div&gt;
+&lt;div id="divTest2"&gt;
+    &lt;span&gt;0&lt;/span&gt; &lt;span&gt;1&lt;/span&gt; &lt;span&gt;2&lt;/span&gt; &lt;span&gt;3&lt;/span&gt;
+&lt;/div&gt;
+&lt;script type="text/javascript"&gt;
+$(document).ready(function() {
+	var spans = $("#divTest span");
+	for (var i = 0; i &lt; spans.length; i++) {
+		spans[i].onclick = function() {
+			alert(i);
+		}
+	}
+});
+&lt;/script&gt;
+</code></pre>
+</div>
+
+<p>很简单的功能可是却偏偏出错了，每次alert出的值都是4，简单的修改就好使了</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var spans2 = $("#divTest2 span");
+$(document).ready(function() {
+	for (var i = 0; i &lt; spans2.length; i++) {
+		(function(num) {
+			spans2[i].onclick = function() {
+				alert(num);
+			}
+		})(i);
+	}
+});
+</code></pre>
+</div>
+
+<p>闭包是指有权限访问另一个函数作用域的变量的函数，创建闭包的常见方式就是在一个函数内部创建另一个函数,只要存在调用内部函数的可能，JavaScript就需要保留被引用的函数。而且JavaScript运行时需要跟踪引用这个内部函数的所有变量，直到最后一个变量废弃，JavaScript的垃圾收集器才能释放相应的内存空间。</p>
+
+<p>这笔书的很肤浅，想简单了解闭包可以看看<a href="http://www.huanghanlian.com/javascript/2016/12/05/javascript-bbssm.html">JavaScript 闭包究竟是什么</a></p>
+
+              <!-- 多说评论框 start -->
+              		<!-- <span class="ds-thread-count" data-thread-key="/javascript/2016/12/11/javascript_wuqu" data-count-type="comments"></span> -->
+					<div class="ds-thread" data-thread-key="http://www.huanghanlian.com/javascript/2016/12/11/javascript_wuqu" data-title="JavaScript 误区" data-url="http://www.huanghanlian.com/javascript/2016/12/11/javascript_wuqu"></div>
+				<!-- 多说评论框 end -->
+				<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+				<script type="text/javascript">
+				var duoshuoQuery = {short_name:"huanghuanlian"};
+					(function() {
+						var ds = document.createElement('script');
+						ds.type = 'text/javascript';ds.async = true;
+						ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+						ds.charset = 'UTF-8';
+						(document.getElementsByTagName('head')[0]
+						 || document.getElementsByTagName('body')[0]).appendChild(ds);
+					})();
+				</script>
+				<!-- 多说公共JS代码 end -->
+
+
+				
+            </article>
+		</article>
+
+	</main>
+	<div class="sidebar" id="sidebar">
+	<div class="sidebar-top">
+		<aside class="widjhuh">
+			<h3 class="widget-title">最新文章</h3>
+			<ul class="minty_thumblist">
+				
+                  <li>
+                    <a href="/nodejs/2017/04/15/nodejs_one_13.html">
+
+                    	<span>Node.js-HTTP 性能测试</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/nodejs/2017/04/13/nodejs_one_12.html">
+
+                    	<span>Node.js-源码解读之先了解作用域、上下文</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/nodejs/2017/04/08/nodejs_one_11.html">
+
+                    	<span>Node.js-HTTP 事件回调进阶</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/nodejs/2017/04/08/nodejs_one_10.html">
+
+                    	<span>Node.js-HTTP知识先填坑</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/nodejs/2017/04/05/nodejs_one_9.html">
+
+                    	<span>Node.js-URL网址解析的好帮手</span>
+                    </a>
+                  </li>
+				
+                  <li>
+                    <a href="/nodejs/2017/03/27/nodejs_one_8.html">
+
+                    	<span>简单的Nodejs模块</span>
+                    </a>
+                  </li>
+				
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">最近访客</h3>
+			<ul class="minty_thumblist minty_thumblist_a ds-recent-visitors visitorsopi" data-num-items="20" data-avatar-size="38">
+
+			</ul>
+
+		    <!--多说js加载开始，一个页面只需要加载一次 -->
+		    <script type="text/javascript">
+		    var duoshuoQuery = {short_name:"huanghuanlian"};
+		    (function() {
+		        var ds = document.createElement('script');
+		        ds.type = 'text/javascript';ds.async = true;
+		        ds.src = 'http://static.duoshuo.com/embed.js';
+		        ds.charset = 'UTF-8';
+		        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+		    })();
+		    </script>
+		    <!--多说js加载结束，一个页面只需要加载一次 -->
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">分类目录</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+				
+				<li>
+					<a href="/categories/Markdown/" title="view all
+posts">
+						Markdown (2)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Canvas/" title="view all
+posts">
+						Canvas (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Git/" title="view all
+posts">
+						Git (1)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/JavaScript/" title="view all
+posts">
+						JavaScript (30)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/AngularJS/" title="view all
+posts">
+						AngularJS (10)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/PHP/" title="view all
+posts">
+						PHP (3)
+					</a>
+				</li>
+				
+				<li>
+					<a href="/categories/Nodejs/" title="view all
+posts">
+						Nodejs (13)
+					</a>
+				</li>
+				
+			</ul>
+		</aside>
+	</div>
+
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">标签目录</h3>
+			<div class="tagcloud" id="tagcloud">
+				
+					<a href="/tag/Markdown/" title="view all
+posts">
+						Markdown
+					</a>
+				
+					<a href="/tag/Canvas/" title="view all
+posts">
+						Canvas
+					</a>
+				
+					<a href="/tag/Git/" title="view all
+posts">
+						Git
+					</a>
+				
+					<a href="/tag/JavaScript/" title="view all
+posts">
+						JavaScript
+					</a>
+				
+					<a href="/tag/RegExp/" title="view all
+posts">
+						RegExp
+					</a>
+				
+					<a href="/tag/DOM/" title="view all
+posts">
+						DOM
+					</a>
+				
+					<a href="/tag/BOM/" title="view all
+posts">
+						BOM
+					</a>
+				
+					<a href="/tag/proto/" title="view all
+posts">
+						proto
+					</a>
+				
+					<a href="/tag/Ajax/" title="view all
+posts">
+						Ajax
+					</a>
+				
+					<a href="/tag/AngularJS/" title="view all
+posts">
+						AngularJS
+					</a>
+				
+					<a href="/tag/PHP_study/" title="view all
+posts">
+						PHP_study
+					</a>
+				
+					<a href="/tag/PHP/" title="view all
+posts">
+						PHP
+					</a>
+				
+					<a href="/tag/Nodejs_One/" title="view all
+posts">
+						Nodejs_One
+					</a>
+				
+			</div>
+
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">友情链接</h3>
+			<ul class="minty_thumblist minty_thumblist_a">
+
+				<li>
+					<a href="http://blog.csdn.net/u013861109?viewmode=contents" target="blank">
+						csdn博客
+					</a>
+				</li>
+				<li>
+					<a href="http://www.imooc.com/" target="blank">
+						慕课网
+					</a>
+				</li>
+				<li>
+					<a href="http://www.dglives.com/" target="blank">
+						数字生活前端
+					</a>
+				</li>
+				<li>
+					<a href="http://www.jianshu.com/" target="blank">
+						简书
+					</a>
+				</li>
+				<li>
+					<a href="http://www.runoob.com/" target="blank">
+						菜鸟
+					</a>
+				</li>
+				<li>
+					<a href="http://www.qdfuns.com/" target="blank">
+						前端网
+					</a>
+				</li>
+			</ul>
+		</aside>
+	</div>
+
+	<div class="sidebar-top">
+		<aside class="widjhuh clearfix">
+			<h3 class="widget-title">QQ交流群</h3>
+			<img style="margin-top: 10px; box-shadow: none;" src="/assets/images/ertw.png">
+		</aside>
+	</div>
+
+
+	<script>
+	var box=document.getElementById("tagcloud").getElementsByTagName("a");
+	for(var i=0;i<box.length;i++){
+		var a =Math.round(Math.random()*20)/10;
+		box[i].style.fontSize=a+'em';
+	}
+	</script>
+
+</div>
+</div>
+	
+<footer id="footer">
+	<nav class="links">
+		<a href="">作品</a>
+		<a href="/about/">关于本站</a>
+		<a href="/report/">留言板</a>
+	</nav>
+	<div class="copyright">
+		© 2016 <a href="">继小鹏的前端博客</a>
+	</div>
+	<a href="javascript:pageScroll();" id="rocket" class=""></a>
+	<span id="busuanzi_container_site_pv">
+	    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+	<span id="busuanzi_container_site_uv">
+	  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+	</span>
+</footer>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+
+$(function(){
+	$("#m-btns").click(function(){
+		if($("body").hasClass('nav-is-open')){
+			$("body").removeClass('nav-is-open')
+		}else{
+			$("body").addClass('nav-is-open')
+		};
+	})
+})
+var fhdb = document.getElementById("rocket");
+
+//获取页面可视区高度
+var dqy = document.documentElement.clientHeight;
+
+var main_left=$('#main').offset().left+$('#main').width()+16;
+
+//滚动条滚动时触发   在滚动的时候触发
+window.onscroll = function() {
+	var sTop = document.documentElement.scrollTop || document.body.scrollTop;
+	if (sTop >= dqy) {
+		$("#rocket").addClass('show');
+	} else {
+		$("#rocket").removeClass('show');
+	}
+}
+
+function pageScroll() {
+	//把内容滚动指定的像素数（第一个参数是向右滚动的像素数，第二个参数是向下滚动的像素数）
+	window.scrollBy(0, -100);
+	//延时递归调用，模拟滚动向上效果
+	scrolldelay = setTimeout('pageScroll()', 5);
+	//获取scrollTop值，声明了DTD的标准网页取document.documentElement.scrollTop，否则取document.body.scrollTop；因为二者只有一个会生效，另一个就恒为0，所以取和值可以得到网页的真正的scrollTop值
+	var sTop = document.documentElement.scrollTop + document.body.scrollTop;
+	//判断当页面到达顶部，取消延时代码（否则页面滚动到顶部会无法再向下正常浏览页面）
+	if (sTop == 0) clearTimeout(scrolldelay)
+
+}
+
+
+
+
+
+</script>
+</body>
+</html>
